@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import{ View,
-        TouchableWithoutFeedback,
+        TouchableOpacity,
         StyleSheet,
         Text,
       } from 'react-native';
@@ -10,6 +10,10 @@ export default class StartButton extends Component {
     text: PropTypes.string
   }
   
+  static navigationOptions = {
+    header: null
+  }
+
   static defaultProps = {
     text: 'Choose port actor'
   }
@@ -23,14 +27,15 @@ export default class StartButton extends Component {
     
     return(
       <View style={styles.container}>
-        <TouchableWithoutFeedback
-              onPress={() => navigate('ActorListView')}>
+        <TouchableOpacity
+           activeOpacity = {0.8}
+           onPress={() => navigate('ActorListView')}>
           <View style={[styles.buttonContainer, styles.circularButton]}>
             <Text style={styles.buttonText}>
               {this.props.text}
             </Text>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -39,22 +44,31 @@ export default class StartButton extends Component {
 const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+    fontWeight: 'bold'
   },
   circularButton: {
     height: 200,
     width: 200,
     borderRadius: 100,
-    backgroundColor: 'red',
+    backgroundColor: '#89bdd3',
   },
   buttonContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    shadowColor: '#000000', 
+    shadowRadius: 1,
+    shadowOffset: {
+      width: 3,
+      height: 2
+    },
+    shadowOpacity: 1.0
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#e3e3e3',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+
 });
