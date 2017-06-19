@@ -4,10 +4,8 @@ import{ View,
         StyleSheet,
         Text,
       } from 'react-native';
-import { StackNavigator } from 'react-navigation';
 
 export default class StartButton extends Component {
-
   static propTypes = {
     text: PropTypes.string
   }
@@ -21,15 +19,19 @@ export default class StartButton extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
+    
     return(
-      <TouchableWithoutFeedback
-            onPress={this._onButtonPress}>
-        <View style={[styles.buttonContainer, styles.circularButton]}>
-          <Text style={styles.buttonText}>
-            {this.props.text}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
+      <View style={styles.container}>
+        <TouchableWithoutFeedback
+              onPress={() => navigate('ActorListView')}>
+          <View style={[styles.buttonContainer, styles.circularButton]}>
+            <Text style={styles.buttonText}>
+              {this.props.text}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     );
   }
 }
@@ -48,5 +50,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
