@@ -14,10 +14,6 @@ export default class StartButton extends Component {
     text: 'Choose port actor'
   }
 
-  _onButtonPress() {
-    
-  }
-
   render() {
     const { navigate } = this.props.navigation;
     
