@@ -5,7 +5,7 @@ import{ View,
         Text,
       } from 'react-native';
 
-export default class StartButton extends Component {
+export default class Home extends Component {
   static propTypes = {
     text: PropTypes.string
   }
@@ -25,7 +25,7 @@ export default class StartButton extends Component {
       <View style={styles.container}>
         <TouchableOpacity
            activeOpacity = {0.8}
-           onPress={() => navigate('ActorListView')}>
+           onPress={() => navigate('ActorSelection')}>
           <View style={[styles.buttonContainer, styles.circularButton]}>
             <Text style={styles.buttonText}>
               {this.props.text}
