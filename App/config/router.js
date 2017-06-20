@@ -6,7 +6,7 @@ import Home from '../components/home-view';
 import MainMenu from    '../components/main-menu-view';
 
 export const MainRouter = StackNavigator({
-  Home: { screen: StartButton },
+  Home: { screen: Home },
   ActorSelection: { screen: ActorList },
   MainMenu: { screen: MainMenu }
 });

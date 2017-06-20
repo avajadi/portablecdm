@@ -26,7 +26,7 @@ export default class ActorList extends Component {
       <View style={styles.container}>
         <FlatList
           data={this.state.actors} 
-          renderItem={({item}) => <ActorListItem actorName={item.key} navigation={this.props.navigation} />}
+          renderItem={({item}) => <ActorListItem actor={item} navigation={this.props.navigation}/>}
         />               
       </View>
     );
@@ -35,32 +35,21 @@ export default class ActorList extends Component {
 
 class ActorListItem extends Component {
   static propTypes = {
-    actorName: PropTypes.string.isRequired
+    actor: PropTypes.object.isRequired
   }
 
   render() {
     const { navigate } = this.props.navigation;
-
     return(
-      <View style={styles.itemContainer}>
-        <Button style={styles.itemButton} 
-                title={this.props.actorName}
-                onPress={() => navigate('MainMenu')} />
-      </View>
+      <Button title={this.props.actor.displayName}
+              onPress={() => navigate('MainMenu', {selectedActor: this.props.actor})} />
+      
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  itemContainer: {
     flex: 1
-  },
-  itemButton: {
-    width: Dimensions.get('window').width
   }
 })
