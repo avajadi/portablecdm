@@ -7,10 +7,9 @@ import { View,
          Dimensions,
          Alert } from 'react-native';
 
-import existingActors from '../config/actors';
+import existingActors from '../../config/actors';
 
-
-export default class ActorListView extends Component {
+export default class ActorList extends Component {
   static navigationOptions = {
     title: 'Choose your actor'
   };

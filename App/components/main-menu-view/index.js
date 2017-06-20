@@ -6,7 +6,7 @@ import {
   FlatList
 } from 'react-native';
 
-export default class MenuScreen extends Component {
+export default class MainMenu extends Component {
     static navigationOptions = {
     title: 'Change actor choice'
   };

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import ActorListView from '../components/actorlistview';
-import StartButton from '../components/startbutton';
-import MenuScreen from '../components/menuscreen';
+import ActorList from   '../components/actor-list-view';
+import Home from '../components/home-view';
+import MainMenu from    '../components/main-menu-view';
 
-export const StackNav = StackNavigator({
+export const MainRouter = StackNavigator({
   Home: { screen: StartButton },
-  ActorListView: { screen: ActorListView },
-  MainMenu: { screen: MenuScreen }
+  ActorSelection: { screen: ActorList },
+  MainMenu: { screen: MainMenu }
 });
