@@ -9,7 +9,6 @@ import SendPortcall from './components/send-portcall-view';
 export default class App extends React.Component {
   render() {
     return (
-        // <SendPortcall />
         <MainRouter />
     );
   }

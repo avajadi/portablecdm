@@ -2,7 +2,7 @@ const uuid = require('uuid/v4');
 
 const preVesselImo = 'urn:mrn:stm:vessel:IMO:';
 const preMessageId = 'urn:mrn:stm:portcdm:message:';  
-const preLocationMRN  = 'urn:mrn:stm:location:';
+const preLocationMRN  = 'urn:mrn:stm:location:SEGOT:';
 const prePortCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:';
 
 // ALLT I DENNA FILEN BEHÖVER TESTAS RIKTGIT ORDENTLIGT!!!

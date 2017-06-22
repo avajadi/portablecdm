@@ -5,76 +5,105 @@ import {
   TextInput,
   StyleSheet,
   Button,
-  Alert
+  Picker,
+  ActivityIndicator
 } from 'react-native';
 
-import { sendPortCall } from '../../util/sendportcall'
+import DateTimePicker from 'react-native-modal-datetime-picker';
+
+import { sendPortCall } from '../../util/sendportcall';
+import { objectToXml  } from '../../util/xmlUtils';
 
 export default class SendPortcall extends Component {
-  static defaultProps = {
-    portCall: {
-      vesselImo: 9440605,
-      payload: {
-        type: 'ServiceState',
-        serviceObject: 'ANCHORING',
-        timeSequence: 'COMMENCED',
-        time: '2017-06-25T03:04:05Z',
-        timeType: 'ESTIMATED',
-        at: 'urn:mrn:stm:location:segot:BERTH:majnabbe46'
-      }
-    }
-  }
-
   constructor(props) {
     super(props);
     this.state = {
-      host: 'http://dev.portcdm.eu:8080',
-      username: 'viktoria',
-      password: 'vik123'
-    };
+      vesselImo: '',
+      portCallId: '',
+      showDateTimePicker: false,
+      timeType: 'ACTUAL',
+      date: new Date(),
+      showActivityIndicator: false
+    }
   }
 
+  _showDateTimePicker = () => this.setState({showDateTimePicker: true});
+  _hideDateTimePicker = () => this.setState({showDateTimePicker: false});
 
-  _sendPortCall() {
-    //Anchoring_Commenced
-    // let anchoringCommenced = {
-    //   vesselImo: 9440605,
-    //   payload: {
-    //     type: 'ServiceState',
-    //     serviceObject: 'ANCHORING',
-    //     timeSequence: 'COMMENCED',
-    //     time: '2017-06-25T03:04:05Z',
-    //     timeType: 'ESTIMATED',
-    //     at: 'urn:mrn:stm:location:segot:BERTH:majnabbe46'
-    //   }
-    // };
+  _handleDateTimePicked = (date) => {
+    this.setState({date: date});
+    this._hideDateTimePicker();
+  }
 
-    // //Arrival_Vessel_Berth
-    // let arrivalVesselBerth = {
-    //   vesselImo: 9440605,
-    //   payload: {
-    //     type: 'LocationState',
-    //     referenceObject: 'VESSEL',
-    //     time: '2017-06-27T03:10:05Z',
-    //     timeType: 'ESTIMATED',
-    //     arrivalLocation: {
-    //       to: 'segot:BERTH:majnabbe46'
-    //     } 
-    //   }
-    // }
+  _sendPortCall(state, preDefinedPcm) {
+    let pcm = {
+      vesselImo: state.vesselImo,
+      portCallId: state.portCallId,
+      payload: {... preDefinedPcm.payload,
+        timeType: state.timeType,
+        time: state.date.toISOString()    
+      }
+    }
 
-    sendPortCall(this.props.portCall)
-      .then((result) => {console.log(result)})
-      .catch((error) => {console.log(error)});
-
-
+    this.setState({showActivityIndicator: true});
+    sendPortCall(pcm)
+      .then(result => {console.log(result)})
+      .then(result => {this.setState({showActivityIndicator: false})})
+      .catch(error => {console.log(error)})
   }
 
   render() {
+    const { params } = this.props.navigation.state;
+
     return(
       <View style={styles.container}>
-        <Button title='Send portcall' onPress={() => this._sendPortCall(this.props.portCall)} />
+        <Text style={styles.formHeader}>Vessel IMO</Text>
+        <TextInput
+          style={styles.formTextInput}
+          onChangeText={(text) => this.setState({vesselImo: text})}      
+          placeholder='Enter Vessel IMO'
+          />
+
+        <Text style={styles.formHeader}>PortCall Id</Text>
+        <TextInput
+          style={styles.formTextInput}      
+          placeholder='Enter PortCall Id'
+          onChangeText={(text) => this.setState({vesselImo: text})}                
+          />
+
+        <View style={styles.timeContainer}>
+          <Button
+            title='Pick time'
+            onPress={this._showDateTimePicker}
+          />  
+          <Text style={styles.infoText}>{this.state.date.toUTCString()}</Text>
+        </View>
+        
+        <Picker
+          style={styles.timeTypePicker}
+          selectedValue={this.state.timeType}
+          onValueChange={(itemValue, itemIndex) => this.setState({timeType: itemValue})}>
+          <Picker.Item label="Actual" value='ACTUAL' />
+          <Picker.Item label="Estimated" value='ESTIMATED' />
+        </Picker>     
+
+        <DateTimePicker
+          isVisible={this.state.showDateTimePicker}
+          onConfirm={this._handleDateTimePicked}
+          onCancel= {this._hideDateTimePicker}
+          mode='datetime'
+        />
+
+        <Button
+          title="Send PortCall"
+          onPress={() => this._sendPortCall(this.state, params.selectedState)} />
+        
+        <ActivityIndicator 
+          animating={this.state.showActivityIndicator}
+          size='large'/>
       </View>
+
+      
     );
   }
 }
@@ -82,7 +111,33 @@ export default class SendPortcall extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10
+  },
+  formHeader: {
+    marginTop: 15,
+    fontSize: 20
+  },
+  formTextInput: {
+    marginLeft: 10,
+    marginRight: 10,
+    height: 40,
+    alignSelf: 'stretch'
+  },
+  timeContainer: {
+    marginTop: 15,
+    flexDirection: 'row',
+  },
+  infoText: {
+    marginLeft: 10,
+    fontSize: 10,
+    color: 'grey',
+    alignSelf: 'center'
+  },
+  timeTypePicker: {
+    marginTop: 15,
+    width: 150
   }
 });
