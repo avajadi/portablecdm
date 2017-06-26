@@ -101,6 +101,7 @@ export default class SendPortcall extends Component {
 
         <Button
           title="Send PortCall"
+          disabled={!(this.state.portCallId || this.state.vesselImo)}
           onPress={() => this._sendPortCall(this.state, params.selectedState)} />
         
         <ActivityIndicator 
