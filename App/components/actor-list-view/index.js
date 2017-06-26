@@ -42,7 +42,7 @@ class ActorListItem extends Component {
     const { navigate } = this.props.navigation;
     return(
       <Button title={this.props.actor.displayName}
-              onPress={() => navigate('MainMenu', {selectedActor: this.props.actor})} />
+              onPress={() => navigate('StateSelection', {selectedActor: this.props.actor})} />
       
     );
   }
