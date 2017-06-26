@@ -29,11 +29,13 @@ export default class SendPortcall extends Component {
 
   _showDateTimePicker = () => this.setState({showDateTimePicker: true});
   _hideDateTimePicker = () => this.setState({showDateTimePicker: false});
-
   _handleDateTimePicked = (date) => {
     this.setState({date: date});
     this._hideDateTimePicker();
   }
+
+  _showActivityIndicator = () => this.setState({showActivityIndicator: true});
+  _hideActivityIndicator = () => this.setState({showActivityIndicator: false});
 
   _sendPortCall(state, preDefinedPcm) {
     let pcm = {
@@ -44,11 +46,12 @@ export default class SendPortcall extends Component {
         time: state.date.toISOString()    
       }
     }
+    
 
-    this.setState({showActivityIndicator: true});
+    this._showActivityIndicator();
     sendPortCall(pcm)
       .then(result => {console.log(result)})
-      .then(result => {this.setState({showActivityIndicator: false})})
+      .then(result => {this._hideActivityIndicator()})
       .catch(error => {console.log(error)})
   }
 
@@ -68,7 +71,7 @@ export default class SendPortcall extends Component {
         <TextInput
           style={styles.formTextInput}      
           placeholder='Enter PortCall Id'
-          onChangeText={(text) => this.setState({vesselImo: text})}                
+          onChangeText={(text) => this.setState({portCallId: text})}                
           />
 
         <View style={styles.timeContainer}>

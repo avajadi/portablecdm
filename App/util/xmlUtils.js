@@ -11,7 +11,7 @@ const prePortCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:';
  * @param {PortCallMessage} pcm 
  *   A plain javascript object, containing information for a PortCallMessage
  * @return {string}
- *  The argument js object as an xml string
+ *  The argument js object as an xml string in the PortCallMessage format
  */
 export function objectToXml (pcm) {
   let asXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
@@ -24,7 +24,7 @@ export function objectToXml (pcm) {
   }
   
   if(pcm.portCallId) {
-    asXml += parsePortCallId(pcm.portcallId);
+    asXml += parsePortCallId(pcm.portCallId);
   }
 
   if(pcm.vesselImo) {
