@@ -27,6 +27,7 @@ export default class SendPortcall extends Component {
     }
   }
 
+  // These handle the DateTime picker
   _showDateTimePicker = () => this.setState({showDateTimePicker: true});
   _hideDateTimePicker = () => this.setState({showDateTimePicker: false});
   _handleDateTimePicked = (date) => {
@@ -34,6 +35,7 @@ export default class SendPortcall extends Component {
     this._hideDateTimePicker();
   }
 
+  // Activity Indicator shows while submitting
   _showActivityIndicator = () => this.setState({showActivityIndicator: true});
   _hideActivityIndicator = () => this.setState({showActivityIndicator: false});
 
@@ -46,7 +48,6 @@ export default class SendPortcall extends Component {
         time: state.date.toISOString()    
       }
     }
-    
 
     this._showActivityIndicator();
     sendPortCall(pcm)
@@ -60,6 +61,7 @@ export default class SendPortcall extends Component {
 
     return(
       <View style={styles.container}>
+        
         <Text style={styles.formHeader}>Vessel IMO</Text>
         <TextInput
           style={styles.formTextInput}
