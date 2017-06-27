@@ -15,6 +15,9 @@ import { sendPortCall } from '../../util/sendportcall';
 import { objectToXml  } from '../../util/xmlUtils';
 
 export default class SendPortcall extends Component {
+  // params:
+  // selectedState
+
   constructor(props) {
     super(props);
     this.state = {
