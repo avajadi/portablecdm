@@ -13,8 +13,7 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch",
-    "prepublish": "java -jar node_modules/jsonix-schema-compiler/lib/jsonix-schema-compiler-full.jar xml_schemas/* -d xml_bindings"
+    "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
     "preset": "jest-expo"
@@ -24,6 +23,8 @@
     "react": "16.0.0-alpha.6",
     "react-native": "^0.44.0",
     "react-native-modal-datetime-picker": "^4.7.0",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-navigation": "^1.0.0-beta.11",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.1"
   }
 }

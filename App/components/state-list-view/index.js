@@ -7,7 +7,7 @@ import {
   Button
 } from 'react-native';
 
-import { getDefaultStates } from '../../services/staterepo';
+import { getDefaultStates, getState } from '../../services/staterepo';
 
 export default class StateList extends Component {
   static defaultProps = {
@@ -17,21 +17,18 @@ export default class StateList extends Component {
     }
   }
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     states: getDefaultStates('vessel')
-  //   };
-  // }
+  _keyExtractor = (item, index) => item;
 
   render() {
     const { params } = this.props.navigation.state;
+    const { navigation } = this.props;
 
     return(
       <View style={styles.container}>
         <FlatList
+          keyExtractor={this._keyExtractor}
           data={getDefaultStates(params.selectedActor)}
-          renderItem={({item}) => <StateListItem itemState={item} navigation={this.props.navigation}/>}
+          renderItem={({item}) => <StateListItem itemState={getState(item)} navigation={navigation} />}
         />
       </View>
     );
