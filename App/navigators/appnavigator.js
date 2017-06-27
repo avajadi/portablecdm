@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StackNavigator, addNavigationHelpers } from 'react-navigation';
-import { connect } from 'react-redux';
+import { StackNavigator } from 'react-navigation';
 
 
 import ActorList    from '../components/actor-list-view';
