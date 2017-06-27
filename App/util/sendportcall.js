@@ -18,11 +18,11 @@ export function sendPortCall(pcm) {
 }
 
 function sendThroughAmss(pcm) {
-  return send(pcm, PortCDMConfig.endpoints.AMSS.state_update);
+  return send(pcm, PortCDMConfig.endpoints.AMSS.state_update());
 }
 
 function sendThroughMss(pcm) {
-  return send(pcm, PortCDMConfig.endpoints.MSS.mss);
+  return send(pcm, PortCDMConfig.endpoints.MSS.mss());
 }
 
 function send(pcm, endpoint) {

@@ -12,9 +12,15 @@ export const PortCDMConfig = {
 
 PortCDMConfig.endpoints = {
   AMSS: {
-    state_update: `${PortCDMConfig.host}/amss/state_update/`
+    state_update:() =>  `${PortCDMConfig.host}/amss/state_update/`
   },
   MSS: {
-    mss: `${PortCDMConfig.host}/mb/mss`
+    mss: () => `${PortCDMConfig.host}/mb/mss`
+  },
+  PCBS: {
+    port_call: (portCallId) =>  `${PortCDMConfig.host}/pcb/port_call/${portCallId}/operations`    
   }
 }
+
+
+//vr/vessel För vessel-info
