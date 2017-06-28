@@ -52,13 +52,14 @@ export default class TimeLineView extends Component {
                 <TimeLine
                     data={operations.map(this.fromOperationToTimeLine)}
                     circleSize={20}
-                    circleColor = 'grey'
-                    lineColor = 'grey'
+                    circleColor = '#89bdd3'
+                    lineColor = '#89bdd3'
                     timeContainerStyle ={{minWidth: 52, marginTop: -5}}
                     renderDetail={this.renderDetail}
                     timeStyle = {{textAlign: 'center', 
-                        backgroundColor: 'grey', 
+                        backgroundColor: '#89bdd3', 
                         color: 'white', 
+                        fontWeight: 'bold',
                         padding: 5, 
                         borderRadius: 13, 
                         minWidth: 60
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         borderWidth: 1,
-        borderColor: 'pink',
+        borderColor: '#89bdd3',
         marginBottom: 10,
         height: 60
     },
@@ -138,8 +139,15 @@ const styles = StyleSheet.create({
     timeRow: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: 'lightblue',
+        backgroundColor: 'white',
         alignItems: 'center'
     }
 
 });
+
+
+// Colors: 
+// #c9c9c9 Dark grey
+// #e3e3e3 Light grey
+// #9ad3de Light blue
+// #89bdd3 Dark blue
