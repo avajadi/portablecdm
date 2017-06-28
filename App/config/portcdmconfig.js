@@ -18,7 +18,9 @@ PortCDMConfig.endpoints = {
     mss: () => `${PortCDMConfig.host}/mb/mss`
   },
   PCBS: {
-    port_call: (portCallId) =>  `${PortCDMConfig.host}/pcb/port_call/${portCallId}/operations`    
+    port_call: {
+      operations: (portCallId) =>  `${PortCDMConfig.host}/pcb/port_call/${portCallId}/operations`    
+    } 
   }
 }
 
