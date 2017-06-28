@@ -7,11 +7,34 @@ import {
     FlatList
 } from 'react-native';
 
+import TimeLine from 'react-native-timeline-listview';
+
 import portCDM from '../../services/backendservices';
 
-export default class TimeLine extends Component {
+
+export default class TimeLineView extends Component {
     state = {
         operations: []
+    }
+
+    constructor() {
+        super();
+        this.renderDetail = this.renderDetail.bind(this);
+    }
+
+    fromOperationToTimeLine(operation) {
+        return {
+            time: new Date(operation.startTime).toLocaleTimeString().slice(0, -3),
+            operation: operation
+        }
+    }
+
+    renderDetail(data, sectionId, rowIndex) {
+        const { operation } = data;
+        
+        return (
+            <Text>{operation.definitionId}</Text>
+        );
     }
 
     _sortFunction(a, b) {
@@ -55,14 +78,23 @@ export default class TimeLine extends Component {
         const {operations} = this.state;
         return(
             <View style={styles.container}>
-                <FlatList
-                    extraData={this.state}
-                    keyExtractor={this._operationKeyExtractor}
-                    data={operations}
-                    renderItem={this._renderOperation}  
+                <TimeLine
+                    data={operations.map(this.fromOperationToTimeLine)}
+                    circleSize={0}
+                    renderDetail={this.renderDetail}
                 />
             </View>
-        )
+        );
+        // return(
+        //     <View style={styles.container}>
+        //         <FlatList
+        //             extraData={this.state}
+        //             keyExtractor={this._operationKeyExtractor}
+        //             data={operations}
+        //             renderItem={this._renderOperation}  
+        //         />
+        //     </View>
+        // )
     }
 }
 
@@ -95,12 +127,8 @@ class Operation extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 30,
-        marginLeft: 10,
-        marginRight: 10,
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+        marginTop: 40,
     },
     operationContainer: {
         backgroundColor: 'grey'
