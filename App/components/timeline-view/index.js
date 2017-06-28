@@ -6,9 +6,7 @@ import {
     ScrollView,
     FlatList
 } from 'react-native';
-
 import TimeLine from 'react-native-timeline-listview';
-
 import portCDM from '../../services/backendservices';
 
 
@@ -24,7 +22,7 @@ export default class TimeLineView extends Component {
 
     fromOperationToTimeLine(operation) {
         return {
-            time: new Date(operation.startTime).toLocaleTimeString().slice(0, -3),
+            time: new Date(operation.startTime).toLocaleTimeString().slice(0, 5),
             operation: operation
         }
     }
@@ -33,26 +31,8 @@ export default class TimeLineView extends Component {
         const { operation } = data;
         
         return (
-            <Text>{operation.definitionId}</Text>
+            <Operation operation = {operation}/> 
         );
-    }
-
-    _sortFunction(a, b) {
-        let aStartTime = new Date(a);
-        let bStartTime = new Date(b);
-
-        // is a earlier than b?
-        if(aStartTime < bStartTime) {
-            return -1;
-        }
-
-        // is a later than b
-        if(aStartTime > bStartTime) {
-            return 1;
-        }
-
-        // Must be the same time
-        return 0;
     }
 
     componentWillMount() {
@@ -61,18 +41,9 @@ export default class TimeLineView extends Component {
 
         portCDM.getPortCallOperations(params.portCallId)
             .then(result => (result.json()) )
-            .then(result => result.sort(this._sortFunction))
             .then(result => (this.setState({operations: result})) )  
             .catch(error => console.log(`ERROR in fetching portcall operations!!, ERRORMESSAGE: ${error}`))
     }
-
-    _renderOperation = ({item}) => {
-        return (
-            <Operation operation={item} />
-        );
-    }
-
-    _operationKeyExtractor = (op, index) => op.operationId;
 
     render() {
         const {operations} = this.state;
@@ -80,46 +51,57 @@ export default class TimeLineView extends Component {
             <View style={styles.container}>
                 <TimeLine
                     data={operations.map(this.fromOperationToTimeLine)}
-                    circleSize={0}
+                    circleSize={20}
+                    circleColor = 'grey'
+                    lineColor = 'grey'
+                    timeContainerStyle ={{minWidth: 52, marginTop: -5}}
                     renderDetail={this.renderDetail}
+                    timeStyle = {{textAlign: 'center', 
+                        backgroundColor: 'grey', 
+                        color: 'white', 
+                        padding: 5, 
+                        borderRadius: 13, 
+                        minWidth: 60
+                    }}
+                    detailContainerStyle = {{
+                        paddingTop: 0
+                    }}
                 />
             </View>
         );
-        // return(
-        //     <View style={styles.container}>
-        //         <FlatList
-        //             extraData={this.state}
-        //             keyExtractor={this._operationKeyExtractor}
-        //             data={operations}
-        //             renderItem={this._renderOperation}  
-        //         />
-        //     </View>
-        // )
     }
 }
 
 class Operation extends Component {
-
-    _renderItem(statement) {
-        return(
-            <View>
-                {statement.timeType==='ACTUAL' && <Text>ACTUAL</Text>}
-                {statement.timeType==='ESTIMATE' && <Text>ESTIMATE</Text>}
-                <Text>{statement.stateDefinition} - {new Date(statement.time).toLocaleTimeString()}</Text>
+    render() {
+        const {operation} = this.props;
+        return( 
+            <View style = {styles.operationContainer}>
+                <Text style = {styles.operationHeader}>  {operation.definitionId} </Text>
+                <FlatList
+                    data={operation.statements}
+                    renderItem={({item}) => <StatementRow statement={item} />}
+                    keyExtractor = {(item, index) => item.messageId}
+                />
+            
             </View>
         );
     }
+}
 
+class StatementRow extends Component {
     render() {
-        const { operation } = this.props;
+        const {statement} = this.props; 
         return(
-            <View style={styles.operationContainer}>
-                <Text>{operation.definitionId} : {operation.startTime}</Text>
-                <FlatList style={{marginLeft: 10}}
-                    data={operation.statements}
-                    keyExtractor={(statement, index) => statement.messageId}
-                    renderItem={({item}) => this._renderItem(item)}
-                />
+            <View style={styles.statementContainer}>
+                <Text>{statement.stateDefinition}</Text>  
+                
+
+                <View style = {styles.timeRow}>
+                    <Text> { new Date(statement.time).toLocaleTimeString().slice(0,5)  } </Text>
+                    {statement.timeType === 'ACTUAL' && <Text>A</Text>}
+                    {statement.timeType === 'ESTIMATED' && <Text>E</Text>}
+                </View>
             </View>
         );
     }
@@ -129,8 +111,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 40,
+        backgroundColor: '#e3e3e3'
     },
     operationContainer: {
-        backgroundColor: 'grey'
+        paddingTop: 0,
+        backgroundColor: 'white'
+    },
+    statementContainer:{
+        flex: 1,
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: 'pink',
+        marginBottom: 10,
+        height: 60
+    },
+    operationHeader: {
+        fontWeight: 'bold'
+    },
+        operationDescription: {
+        fontStyle: 'italic'
+    },
+    statement: {
+        borderWidth: 1,
+        marginBottom: 10
+    },
+    timeRow: {
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: 'lightblue',
+        alignItems: 'center'
     }
+
 });
