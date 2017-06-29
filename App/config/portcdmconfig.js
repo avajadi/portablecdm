@@ -20,7 +20,13 @@ PortCDMConfig.endpoints = {
   PCBS: {
     port_call: {
       operations: (portCallId) =>  `${PortCDMConfig.host}/pcb/port_call/${portCallId}/operations`    
+    },
+    definition: {
+      process: (processId) => `${PortCDMConfig.host}/pcb/definition/${processId}`
     } 
+  },
+  LR: {
+    location: (locationId) => `${PortCDMConfig.host}/location-registry/location/${locationId}`
   }
 }
 

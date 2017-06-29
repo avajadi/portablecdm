@@ -37,7 +37,7 @@ export default class TimeLineView extends Component {
 
     componentWillMount() {
         // const { params } = this.props.navigation.state;
-        params = { portCallId:  'urn:mrn:stm:portcdm:port_call:SEGOT:111722cd-904c-4f01-b6b9-fe8a109d80b8' }
+        params = { portCallId:  'urn:mrn:stm:portcdm:port_call:SEGOT:9b028843-d7fb-4222-afbc-8f40c2710e5c' }
 
         portCDM.getPortCallOperations(params.portCallId)
             .then(result => (result.json()) )
@@ -74,11 +74,48 @@ export default class TimeLineView extends Component {
 }
 
 class Operation extends Component {
+    
+    state = {
+        at: {}
+    }
+
+    componentWillMount() {
+        portCDM.getLocation(this.props.operation.at)
+            .then(result => result.json())
+            .then(result => this.setState({at: result}))
+            .catch(error => console.log(error));
+    }
+
     render() {
         const {operation} = this.props;
+        const {statements} = operation;
+        const {at} = this.state;
+
+        // let arrivals = [{}, {}];
+        // let departure = [{}] 
+        let a = {};
+        // {
+        //     ArrivalVesselBerth: [{}, {}],
+        //     DepartureVesselBerth: [{}]
+
+        // }
+        // for(let i = 0; i < statements.length; i++) {
+        //     const statement = statements[i];
+        //     console.log(statement.stateDefinition);
+        //     console.log(!statement.stateDefinition);
+        //     console.log(a.stateDefinition);
+        //     if(!a[statement.stateDefinition]) {
+        //         const statementAsArray = new Array();
+        //         statementAsArray.push(statement)
+        //         a = {...a, [statement.stateDefinition] : statementAsArray };
+        //     } else {
+        //         // a[statements[i]].push(statements[0]);
+        //     }            
+        // }      
+
         return( 
             <View style = {styles.operationContainer}>
-                <Text style = {styles.operationHeader}>  {operation.definitionId} </Text>
+                <Text style = {styles.operationHeader}>{operation.definitionId} at {at.shortName} </Text>
                 <FlatList
                     data={operation.statements}
                     renderItem={({item}) => <StatementRow statement={item} />}

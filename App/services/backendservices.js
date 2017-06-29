@@ -23,7 +23,19 @@ const portCDM = {
             'X-PortCDM-APIKey': 'eeee'
           },
         });
-}
+  },
+  getLocation: function (locationId) {
+    return fetch(PortCDMConfig.endpoints.LR.location(locationId),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-PortCDM-UserId': PortCDMConfig.user.name,
+        'X-PortCDM-Password': PortCDMConfig.user.password,
+        'X-PortCDM-APIKey': 'eeee'
+      }
+    });
+  }
+  
 };
 
 // Helper functions
