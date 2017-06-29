@@ -10,8 +10,7 @@ import TimeLineView from './components/timeline-view';
 export default class App extends React.Component {
   render() {
     return (
-        <TimeLineView/>
-      //  <AppNavigator />
+        <AppNavigator />
     );
   }
 }

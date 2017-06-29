@@ -36,9 +36,8 @@ export default class TimeLineView extends Component {
     }
 
     componentWillMount() {
-        // const { params } = this.props.navigation.state;
-        params = { portCallId:  'urn:mrn:stm:portcdm:port_call:SEGOT:9b028843-d7fb-4222-afbc-8f40c2710e5c' }
-
+        const { params } = this.props.navigation.state;
+        
         portCDM.getPortCallOperations(params.portCallId)
             .then(result => (result.json()) )
             .then(result => (this.setState({operations: result})) )  
