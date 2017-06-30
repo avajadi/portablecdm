@@ -26,15 +26,43 @@ const portCDM = {
   },
   getLocation: function (locationId) {
     return fetch(PortCDMConfig.endpoints.LR.location(locationId),
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-PortCDM-UserId': PortCDMConfig.user.name,
-        'X-PortCDM-Password': PortCDMConfig.user.password,
-        'X-PortCDM-APIKey': 'eeee'
-      }
-    });
-  }
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PortCDM-UserId': PortCDMConfig.user.name,
+          'X-PortCDM-Password': PortCDMConfig.user.password,
+          'X-PortCDM-APIKey': 'eeee'
+        }
+      });
+  },
+  /**
+   * Fetches all Port Calls matching the filters
+   */
+  getPortCalls: async function (filters) {
+    return await fetch(PortCDMConfig.endpoints.PCBS.port_call.list(filters),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PortCDM-UserId': PortCDMConfig.user.name,
+          'X-PortCDM-Password': PortCDMConfig.user.password,
+          'X-PortCDM-APIKey': 'eeee'
+        }
+      });
+  },
+  /**
+   * Fetches the vessel info for vesselId
+   */
+  getVessel: async function (vesselId) {
+    return await fetch(PortCDMConfig.endpoints.VR.vessel(vesselId),
+      {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-PortCDM-UserId': PortCDMConfig.user.name,
+            'X-PortCDM-Password': PortCDMConfig.user.password,
+            'X-PortCDM-APIKey': 'eeee'
+          }
+        });
+  },
   
 };
 
