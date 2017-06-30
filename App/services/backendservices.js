@@ -39,7 +39,7 @@ const portCDM = {
    * Fetches all Port Calls matching the filters
    */
   getPortCalls: async function (filters) {
-    return await fetch(PortCDMConfig.endpoints.PCBS.port_call.list(filters),
+    return fetch(PortCDMConfig.endpoints.PCBS.port_call.list(filters),
       {
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const portCDM = {
    * Fetches the vessel info for vesselId
    */
   getVessel: async function (vesselId) {
-    return await fetch(PortCDMConfig.endpoints.VR.vessel(vesselId),
+    return fetch(PortCDMConfig.endpoints.VR.vessel(vesselId),
       {
           headers: {
             'Content-Type': 'application/json',

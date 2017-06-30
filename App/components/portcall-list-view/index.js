@@ -17,11 +17,11 @@ export default class PortCallList extends Component {
         portCalls: []
     }
 
-    componentDidMount() {
+    componentWillMount() {
         portCDM.getPortCalls()
             .then(result => result.json())
             .then(result => this.setState({portCalls: result}))
-            .catch(error => console.log(`Error in fetching all portcalls, ERRORMESSAGE: ${error}`));
+            .catch(portCallError => console.log(`Error in fetching all portcalls, ERRORMESSAGE: ${portCallError}`));
     }
 
     render() {
@@ -32,7 +32,7 @@ export default class PortCallList extends Component {
                 <FlatList
                     data={this.state.portCalls}
                     keyExtractor={(item, index) => item.portCallId}
-                    renderItem={({item}) => <PortCallViewItem portCall={item}/>}
+                    renderItem={({item}) => <PortCallViewItem portCall={item} />}
                 />
             </View>
         );        
@@ -45,24 +45,32 @@ class PortCallViewItem extends Component {
         this.state = {portCall: props.portCall}
     }
 
-    // async getVessel(vesselId) {
-
-    // }
-
     componentWillMount() {
-        const { portCall } = this.props;
-        portCDM.getVessel(portCall.vesselId)
+        const {vesselId} = this.state.portCall;
+
+        portCDM.getVessel(vesselId)
             .then(result => result.json())
-            // .then(result => console.log(result))
-            .then(result => this.setState({vessel: result}))
-            .catch(error => console.log(`Error fetching vessel in PortCallViewItem, ERRORMESSAGE: ${error}`))
+            .then(vesselResult => {this.setState({vessel: vesselResult} ); return vesselResult})
+            .catch(vesselError => console.log(`error getting vessel, ERRORMESSAGE: ${vesselError}`))
     }
 
     render() {
-        const { portCall, vessel } = this.state;
+        const { portCall, vessel, vesselPhoto } = this.state;
+        const {startTime} = portCall;
+
+        if(!vessel) {
+            return(
+                <View></View>
+            );
+        }
+        
         return (
-            <Text>{vessel.name}</Text>
+            <View style={styles.portCallContainer}>
+                <Text style={styles.portCallHeader}>{vessel.name}</Text>
+                <Text style={styles.portCallInfo}>{startTime}</Text>
+            </View>
         );
+    
     }
 }
 
@@ -70,5 +78,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    portCallContainer: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+    portCallHeader: {
+        fontWeight: 'bold',
+        fontSize: 24,
+    },
+    portCallInfo: {
+        color: 'lightgrey',
+        fontSize: 20,
+
+    }
 })
 
