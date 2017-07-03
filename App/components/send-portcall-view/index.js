@@ -11,8 +11,7 @@ import {
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
-import { sendPortCall } from '../../util/sendportcall';
-import { objectToXml  } from '../../util/xmlUtils';
+import portCDM from '../../services/backendservices';
 
 export default class SendPortcall extends Component {
   // params:
@@ -53,7 +52,7 @@ export default class SendPortcall extends Component {
     }
 
     this._showActivityIndicator();
-    sendPortCall(pcm)
+    portCDM.sendPortCall(pcm)
       .then(result => {console.log(result)})
       .then(result => {this._hideActivityIndicator()})
       .catch(error => {console.log(error)})
