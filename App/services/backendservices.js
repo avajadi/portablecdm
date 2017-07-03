@@ -38,9 +38,8 @@ const portCDM = {
   /**
    * Fetches all Port Calls matching the filters
    */
-  getPortCalls: function (filters) {
-    console.log(PortCDMConfig.endpoints.PCBS.port_call.list(filters));
-    return fetch(PortCDMConfig.endpoints.PCBS.port_call.list(filters),
+  getPortCalls: function () {
+    return fetch(PortCDMConfig.endpoints.PCBS.port_call.list(),
       {
         headers: {
           'Content-Type': 'application/json',
