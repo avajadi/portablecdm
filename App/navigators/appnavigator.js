@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Text} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 
@@ -11,7 +12,9 @@ import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
 
 export const AppNavigator = StackNavigator({
-  PortCallList: {screen: PortCallList}, 
+  PortCallList: { screen: PortCallList,
+                  header: (headerProps) => <Text>HEJSAN</Text>
+  }, 
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },
   ActorSelection: { screen: ActorList },
