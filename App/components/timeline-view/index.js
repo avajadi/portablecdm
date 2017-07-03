@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import TimeLine from 'react-native-timeline-listview';
 import portCDM from '../../services/backendservices';
+import colorScheme from '../../config/colors';
 
 
 export default class TimeLineView extends Component {
@@ -51,13 +52,13 @@ export default class TimeLineView extends Component {
                 <TimeLine
                     data={operations.map(this.fromOperationToTimeLine)}
                     circleSize={20}
-                    circleColor = '#89bdd3'
-                    lineColor = '#89bdd3'
+                    circleColor = {colorScheme.primaryColor}
+                    lineColor = {colorScheme.primaryColor}
                     timeContainerStyle ={{minWidth: 52, marginTop: -5}}
                     renderDetail={this.renderDetail}
                     timeStyle = {{textAlign: 'center', 
-                        backgroundColor: '#89bdd3', 
-                        color: 'white', 
+                        backgroundColor: colorScheme.primaryColor, 
+                        color: colorScheme.primaryTextColor, 
                         fontWeight: 'bold',
                         padding: 5, 
                         borderRadius: 13, 
@@ -148,17 +149,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 40,
-        backgroundColor: '#e3e3e3'
+        backgroundColor: colorScheme.backgroundColor 
     },
     operationContainer: {
         paddingTop: 0,
-        backgroundColor: 'white'
+        backgroundColor: colorScheme.secondaryContainerColor 
     },
     statementContainer:{
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: colorScheme.secondaryContainerColor, 
         borderWidth: 1,
-        borderColor: '#89bdd3',
+        borderColor: colorScheme.primaryColor, 
         marginBottom: 10,
         height: 60
     },
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     timeRow: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: 'white',
+        backgroundColor: colorScheme.primaryContainerColor,
         alignItems: 'center'
     }
 
@@ -187,3 +188,7 @@ const styles = StyleSheet.create({
 // #e3e3e3 Light grey
 // #9ad3de Light blue
 // #89bdd3 Dark blue
+
+// NEW
+// Dark blue: #3a6ea5
+// Darkdark grey: #3e4552
