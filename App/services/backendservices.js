@@ -38,7 +38,8 @@ const portCDM = {
   /**
    * Fetches all Port Calls matching the filters
    */
-  getPortCalls: async function (filters) {
+  getPortCalls: function (filters) {
+    console.log(PortCDMConfig.endpoints.PCBS.port_call.list(filters));
     return fetch(PortCDMConfig.endpoints.PCBS.port_call.list(filters),
       {
         headers: {
@@ -52,7 +53,7 @@ const portCDM = {
   /**
    * Fetches the vessel info for vesselId
    */
-  getVessel: async function (vesselId) {
+  getVessel: function (vesselId) {
     return fetch(PortCDMConfig.endpoints.VR.vessel(vesselId),
       {
           headers: {

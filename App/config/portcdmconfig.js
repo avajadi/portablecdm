@@ -1,3 +1,5 @@
+import filterToQueryString from '../util/filtertoquerystring';
+
 /**
  * Stores everything that is related to the specific portcdm instance
  * we want to use
@@ -19,7 +21,7 @@ PortCDMConfig.endpoints = {
   },
   PCBS: { // PortCall Builder Service
     port_call: {
-      list: (filters) => `${PortCDMConfig.host}/pcb/port_call?limit=10`, // TODO(johan): add filters!
+      list: (filters) => `${PortCDMConfig.host}/pcb/port_call${filterToQueryString(filters)}`, // TODO(johan): add filters!
       operations: (portCallId) =>  `${PortCDMConfig.host}/pcb/port_call/${portCallId}/operations`    
     },
     definition: {

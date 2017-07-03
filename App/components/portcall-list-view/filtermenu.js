@@ -5,8 +5,13 @@ import {
     Button,
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    TextInput
 } from 'react-native';
+
+import DateTimePicker from 'react-native-modal-datetime-picker';
+
+import Filter from '../../model/filter';
 
 export default class FilterMenu extends Component {
 
@@ -14,82 +19,75 @@ export default class FilterMenu extends Component {
     super(props);
 
     this.state = {
-      ... this.props.filters
+      incomingfilters: this.props.filters,
+      showDateTimePicker: false,
+      pickDateTimeFor: ''
     };
   }
 
-  render() {
-    return(
-      <View style={styles.container}>
-        <View style={styles.filterContainer}>
-            <Text>Arriving after: </Text>
-            <Button title="Pick" onPress={() => console.log("Arriving after clicked")} />
-        </View>
-        <View style={styles.filterContainer}>
-            <Text>Arriving before: </Text>
-            <Button title="Pick" onPress={() => console.log("Arriving before clicked")} />
-        </View>
-        <View style={styles.filterContainer}>
-            <Text>Updated after: </Text>
-            <Button title="Pick" onPress={() => console.log("Updated after clicked")} />
-        </View>
-        <View style={styles.filterContainer}>
-            <Text>Updated after: </Text>
-            <Button title="Pick" onPress={() => console.log("Updated before clicked")} />
-        </View>
-        <View style={styles.filterContainer}>
-            <Text>Status: </Text>
-            <Picker
-                style={{width: 150}}
-                selectedValue='ALL'
-                onValueChange={(itemValue, itemIndex) => this.setState({timeType: itemValue})}>
-                <Picker.Item label='All' value='ALL' />
-                <Picker.Item label='Ok' value='OK' />
-                <Picker.Item label='Warning' value='WARNING' />
-                <Picker.Item label='Critical' value='CRITICAL' />
-            </Picker>  
-        </View>
-        <View style={{flex: 1}}>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-                <Text>Limit number of Port calls returned: </Text>
-                <Text>{this.state.countLimit}</Text>                       
-            </View>
-            <Slider
-                minimumValue={0}
-                maximumValue={1000}
-                onValueChange={val => this.setState({countLimit: val})}
-                step={1}
-                value={300}
-            />
-        </View>
-        <View style={styles.filterContainer}>
-            <Text>Sort by:</Text>
-            <Picker
-                style={{width: 150}}
-                selectedValue='ARRIVAL_DATE'
-                onValueChange={(itemValue, itemIndex) => this.setState({timeType: itemValue})}>
-                <Picker.Item label='Arrival Date' value='ARRIVAL_DATE' />
-                <Picker.Item label='Last Updated' value='LAST_UPDATE' />
-            </Picker>  
-        </View>
-        <View style={styles.filterContainer}>
-            <Text>Order by:</Text>
-            <Picker
-                style={{width: 150}}
-                selectedValue='ASCENDING'
-                onValueChange={(itemValue, itemIndex) => this.setState({timeType: itemValue})}>
-                <Picker.Item label='Ascending' value='ASCENDING' />
-                <Picker.Item label='Descending' value='DESCENDING' />
-            </Picker>  
-        </View>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Button title='Save as standard' onPress={this.saveFilters} />
-            <Button title='Ok' onPress={this.applyFilters} style={{width: 200}} />
-        </View>
+  // These handle the DateTime picker
+  _showDateTimePicker = (pickFor) => this.setState({showDateTimePicker: true, pickDateTimeFor: pickFor});
+  _hideDateTimePicker = () => this.setState({showDateTimePicker: false, pickDateTimeFor: ''});
+  _handleDateTimePicked = (date) => {
+    this.setState({[this.state.pickDateTimeFor]: date, pickDateTimeFor: ''});
+    this._hideDateTimePicker();
+  }
 
-      </View>
+  applyFilters = (functionToRun) => {
+    const { after, before } = this.state;
+    console.log('In applyFilters in filtermenu');
+    let filters = new Filter();
+    if(after) filters.after = after;
+    if(before) filters.before = before;
+
+    functionToRun(filters);
+  };
+
+  render() {
+    const { after, before } = this.state;
+    const { onApplyFilters } = this.props;
+    
+    return(
+        <View style={styles.container}>
+            <View style={styles.filterContainer}>
+                <Text>Count: </Text>
+                <TextInput
+                    style={{width: 40}}
+                    keyboardType='numeric'
+
+                />
+            </View>
+            {/*<View style={styles.filterContainer}>
+                <Text>Starting after: </Text>
+                {after && <Text>{after.toLocaleString()}</Text>}
+                <Button 
+                    title="Pick time"
+                    onPress={() => this._showDateTimePicker('after')}
+                />
+            </View>
+            <View style={styles.filterContainer}>
+                <Text>Starting before: </Text>
+                {before && <Text>{before.toLocaleString()}</Text>}
+                <Button 
+                    title="Pick time"
+                    onPress={() => this._showDateTimePicker('before')}
+                />
+            </View>
+            <Button
+                title="Ok"
+                onPress={() => this.applyFilters(onApplyFilters)}
+            />*/}
+            <DateTimePicker
+                isVisible={this.state.showDateTimePicker}
+                onConfirm={this._handleDateTimePicked}
+                onCancel= {this._hideDateTimePicker}
+                mode='datetime'
+            />
+        </View> 
     );
   }
+
+  
 }
 
 const styles = StyleSheet.create({

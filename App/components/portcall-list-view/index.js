@@ -17,6 +17,7 @@ import {
 import PortCallViewItem from './portcallviewitem';
 import FilterMenu from './filtermenu';
 
+import Filter from '../../model/filter';
 import portCDM from '../../services/backendservices';
 
 export default class PortCallList extends Component {
@@ -25,9 +26,6 @@ export default class PortCallList extends Component {
         portCalls: [],
         searchTerm: '',
         modalVisible: false,
-        filters: {
-            countLimit: 200,
-        },
     }
 
     _showFilterModal = () => {this.setState({modalVisible: true})};
@@ -42,7 +40,6 @@ export default class PortCallList extends Component {
     render() {
         const {navigation} = this.props;
         const {portCalls, searchTerm} = this.state;
-
         return(
             <View style={styles.container}>
                 <View style={styles.containerRow}>
@@ -71,8 +68,8 @@ export default class PortCallList extends Component {
                     onRequestClose={this._hideFilterModal}>
 
                     <FilterMenu 
-                        filters={this.state.filters}
-                        
+                        filters={new Filter()}
+                        onApplyFilters={this.applyFilters.bind(this)}
                     />
 
                 </Modal>
@@ -80,20 +77,26 @@ export default class PortCallList extends Component {
         );        
     }
 
-    saveFilters() {
-
-    }
-
-    applyFilters() {
-
+    /**
+     * 
+     * @param {Filter} filters 
+     *  The filters that should be used for fetching portcalls
+     */
+    applyFilters(filters) {
+        console.log('In applyFilters!!!');
+        console.log(filters);
+        this.fetchData(filters)
+            .then(portCalls => this.setState({portCalls: portCalls}))
+            .catch(portCallError => console.log(`Error in fetching all portcalls, ERRORMESSAGE: ${portCallError}`));
+        this._hideFilterModal();
     }
 
     search(portCalls, searchTerm) {
         return portCalls.filter(portCall => portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()));        
     }
 
-    fetchData() {
-        return portCDM.getPortCalls()
+    fetchData(filters) {
+        return portCDM.getPortCalls(filters)
             .then(result => result.json())
             .then(portCalls => Promise.all(portCalls.map(portCall => {
                  return portCDM.getVessel(portCall.vesselId)
