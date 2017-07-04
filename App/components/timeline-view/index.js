@@ -63,7 +63,7 @@ class OperationDetails extends Component {
                 title = {
                     <View style={{flexDirection:'row'}}>
                         <Text>{new Date(state.time).toTimeString().slice(0, 5)} </Text>
-                        {state.timeType === 'ACTUAL' && <Icon name='rowing' />}
+                        {state.timeType === 'ACTUAL' && <Icon name='directions-boat' />}
                         {state.timeType === 'ESTIMATED' && <Icon name='rowing'/>}
                         <Text>{state.stateDefinition}</Text>
                     </View>

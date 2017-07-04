@@ -18,7 +18,8 @@ import {
     SearchBar, 
     Button, 
     List, 
-    ListItem 
+    ListItem,
+    Icon 
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
@@ -52,11 +53,13 @@ export default class PortCallList extends Component {
         const {navigate} = navigation;
         const {portCalls, searchTerm} = this.state;
 
+//alignItems: 'center'
+
         return(
             <View style={styles.container}>
                 {/*Render the search/filters header*/}
                 <View style={{height: 75}}>
-                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
                         <SearchBar 
                             containerStyle = {styles.containerStyle}
                             showLoadingIcon={this.state.showLoadingIcon}
@@ -69,11 +72,17 @@ export default class PortCallList extends Component {
                         />
                         <Button
                             containerViewStyle={{flex: 1}}
-                            small
-                            backgroundColor = {colorScheme.primaryContainerColor} 
-                            title='Filters'
-                            color = {colorScheme.tertiaryTextColor}
-                        />                        
+                            small    // Tror inte den här gör något
+                            icon={{
+                                name: 'filter-list',
+                                size: 30,
+                                color: colorScheme.primaryTextColor
+                            }}
+                            backgroundColor = {colorScheme.primaryColor} 
+                            //title='Filters'
+                            color = {colorScheme.primaryTextColor}
+                            fontSize={10}
+                        /> 
                     </View> 
                 </View>
 
@@ -120,8 +129,9 @@ const styles = StyleSheet.create({
     },
     containerStyle: {
         backgroundColor: colorScheme.primaryColor,
-        flex: 3,
-    
+        flex: 4,
+        
+
     }
     // containerRow: {
     //     flexDirection: 'row',
