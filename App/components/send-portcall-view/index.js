@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
-
+import colorScheme from '../../config/colors';
 import portCDM from '../../services/backendservices';
 
 export default class SendPortcall extends Component {
@@ -122,26 +122,29 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 10
+    paddingTop: 10,
+    backgroundColor: colorScheme.backgroundColor
   },
   formHeader: {
     marginTop: 15,
-    fontSize: 20
+    fontSize: 20,
+    color: colorScheme.tertiaryColor
   },
   formTextInput: {
     marginLeft: 10,
     marginRight: 10,
     height: 40,
-    alignSelf: 'stretch'
+    alignSelf: 'stretch',
+    color: colorScheme.tertiaryTextColor
   },
   timeContainer: {
     marginTop: 15,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   infoText: {
     marginLeft: 10,
     fontSize: 10,
-    color: 'grey',
+    color: colorScheme.tertiaryTextColor,
     alignSelf: 'center'
   },
   timeTypePicker: {

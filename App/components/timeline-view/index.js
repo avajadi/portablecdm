@@ -9,9 +9,13 @@ import {
 import TimeLine from 'react-native-timeline-listview';
 import portCDM from '../../services/backendservices';
 import colorScheme from '../../config/colors';
-
+import TopHeader from '../top-header-view';
 
 export default class TimeLineView extends Component {
+static navigationOptions = {
+    header: <TopHeader title = 'Timeline' />
+}
+
     state = {
         operations: []
     }
