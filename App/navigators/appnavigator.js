@@ -12,9 +12,7 @@ import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
 
 export const AppNavigator = StackNavigator({
-  PortCallList: { screen: PortCallList,
-                  header: (headerProps) => <Text>HEJSAN</Text>
-  }, 
+  PortCallList: { screen: PortCallList },
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },
   ActorSelection: { screen: ActorList },
