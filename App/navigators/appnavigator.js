@@ -13,9 +13,7 @@ import TimeLineView from '../components/timeline-view';
 //import TopHeader    from '../components/top-header-view';
 
 export const AppNavigator = StackNavigator({
-  PortCallList: { screen: PortCallList,
-                  header: (headerProps) => <Text>HEJSAN</Text>
-  }, 
+  PortCallList: { screen: PortCallList },
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  
   ActorSelection: { screen: ActorList },

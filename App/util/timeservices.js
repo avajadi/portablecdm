@@ -32,3 +32,26 @@ export function getDateTimeString(date) {
     return date.toUTCString();
   }
 }
+
+/** Gets a string that says how many seconds, minutes or hours ago
+ *  a date was
+ * 
+ * @param {Date} time 
+ *  A time in the past, to compare with the time now
+ */
+export function getTimeDifferenceString(time) {
+  let timeDif = new Date() - time;
+  timeDif = timeDif / 1000; // seconds
+ 
+  if(timeDif < 60) {
+    return `${Math.floor(timeDif)} sec`;
+  }
+  
+  timeDif = timeDif / 60; // minutes
+  if(timeDif < 60) {
+    return `${Math.floor(timeDif)} min`;
+  }
+
+  timeDif = timeDif / 60; // hours
+  return `${Math.floor(timeDif)}h`;
+}
