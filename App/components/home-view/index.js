@@ -4,6 +4,7 @@ import{ View,
         StyleSheet,
         Text,
       } from 'react-native';
+import colorScheme from '../../config/colors';
 
 export default class Home extends Component {
   static propTypes = {
@@ -40,29 +41,29 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
-    color: 'white',
+    color: colorScheme.primaryTextColor,
     fontWeight: 'bold'
   },
   circularButton: {
     height: 200,
     width: 200,
     borderRadius: 100,
-    backgroundColor: '#89bdd3',
+    backgroundColor: colorScheme.primaryColor, 
   },
   buttonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000000', 
+    shadowColor: colorScheme.shadowColor, 
     shadowRadius: 1,
     shadowOffset: {
       width: 3,
       height: 2
     },
     shadowOpacity: 1.0
-  },
+  }, 
   container: {
     flex: 1,
-    backgroundColor: '#e3e3e3',
+    backgroundColor: colorScheme.backgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
   },

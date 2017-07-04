@@ -14,9 +14,10 @@ import {
 
 import portCDM from '../../services/backendservices';
 import { getTimeDifferenceString } from '../../util/timeservices';
+import colorScheme from '../../config/colors';
+import TopHeader from '../top-header-view';
 
 class OperationDetails extends Component {
-
     state = {
         at: null,
         to: null,
@@ -110,6 +111,9 @@ class OperationDetails extends Component {
 }
 
 export default class TimeLineView extends Component {
+    static navigationOptions = {
+        header: <TopHeader title = 'Timeline' />
+    }
     state = {
         operations: [],
     }

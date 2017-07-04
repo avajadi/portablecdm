@@ -10,11 +10,12 @@ import SendPortCall from '../components/send-portcall-view';
 import StateList    from '../components/state-list-view';
 import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
+//import TopHeader    from '../components/top-header-view';
 
 export const AppNavigator = StackNavigator({
   PortCallList: { screen: PortCallList },
   TimeLineDetails: {screen: TimeLineView},
-  Home: { screen: Home },
+  Home: { screen: Home },  
   ActorSelection: { screen: ActorList },
   MainMenu: { screen: MainMenu },
   SendPortCall: { screen: SendPortCall },
