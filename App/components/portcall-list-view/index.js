@@ -21,8 +21,8 @@ import {
     ListItem 
 } from 'react-native-elements';
 
+import colorScheme from '../../config/colors';
 import TopHeader from '../top-header-view';
-
 import portCDM from '../../services/backendservices';
 import {getDateTimeString} from '../../util/timeservices';
 
@@ -57,18 +57,22 @@ export default class PortCallList extends Component {
                 {/*Render the search/filters header*/}
                 <View style={{height: 75}}>
                     <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                        <SearchBar
+                        <SearchBar 
+                            containerStyle = {styles.containerStyle}
                             showLoadingIcon={this.state.showLoadingIcon}
-                            containerStyle={{flex: 3}}
                             clearIcon
-                            lightTheme
+                            inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+                            lightTheme  
                             placeholder='Search'
+                            placeholderTextColor = {colorScheme.tertiaryTextColor}
                             onChangeText={text => this.setState({searchTerm: text})}
                         />
                         <Button
                             containerViewStyle={{flex: 1}}
                             small
+                            backgroundColor = {colorScheme.primaryContainerColor} 
                             title='Filters'
+                            color = {colorScheme.tertiaryTextColor}
                         />                        
                     </View> 
                 </View>
@@ -112,30 +116,36 @@ export default class PortCallList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: colorScheme.primaryColor  // Har denna grå färgen lite brunt i sig? 
     },
-    containerRow: {
-        flexDirection: 'row',
-        height: 40,
-        marginTop: 10,
-        marginBottom: 30,
-        paddingLeft: 5,
-        paddingRight: 5
-    },
-    searchBox: {
+    containerStyle: {
+        backgroundColor: colorScheme.primaryColor,
         flex: 3,
-        height: 50
-    },
-    filterIcon: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    filterText: {
-        fontSize: 20
-    },
-    list: {
-        flex: 4
+    
     }
+    // containerRow: {
+    //     flexDirection: 'row',
+    //     height: 40,
+    //     marginTop: 10,
+    //     marginBottom: 30,
+    //     paddingLeft: 5,
+    //     paddingRight: 5,
+    // },
+    // searchBox: {
+    //     flex: 3,
+    //     height: 50,
+    // },
+    // filterIcon: {
+    //     flex: 1,
+    //     alignItems: 'center',
+    //     justifyContent: 'center'
+    // },
+    // filterText: {
+    //     fontSize: 20,
+    // },
+    // list: {
+    //     flex: 4,
+    // }
 
 })
 
