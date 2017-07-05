@@ -22,7 +22,6 @@ export default class TopHeader extends Component {
 
     return(
       <View style={styles.container}>
-        <View style={styles.iconContainer}>    
           <Icon
             name='menu'
             color= {colorScheme.primaryContainerColor}
@@ -30,22 +29,19 @@ export default class TopHeader extends Component {
             onPress={() => console.log('Menu button was pressed')}
             // onPress={() => navigate('SideBarMenu')}
           /> 
+          <Text 
+            style= {styles.headerText} 
+            h4 
+          >
+            {title}
+          </Text>
           <Icon
             name='add-circle'
             size = {50}
             color= {colorScheme.primaryContainerColor}
             onPress={() => console.log('Adding button was pressed')}
           />
-        </View> 
-      
-       <View style={styles.textContainer}>
-          <Text 
-            style= {styles.headerText} 
-            h4 
-          >
-            {title}
-          </Text> 
-      </View>  
+
     </View>
     );
   }
@@ -56,35 +52,18 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 15,
     paddingRight: 15,
-    flexDirection: 'column',
-    backgroundColor: colorScheme.primaryColor,
-   // justifyContent: 'space-between'
-  },
-  iconContainer: {
-    paddingTop: 0,
-    paddingLeft: 0, //15
-    paddingRight: 0, 
-    flexDirection: 'row',
-    backgroundColor: colorScheme.primaryColor,
-    justifyContent: 'space-between'
-  },
-  textContainer: {
-    paddingTop: 15,
     paddingBottom: 15,
     flexDirection: 'row',
     backgroundColor: colorScheme.primaryColor,
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
-
-
   headerText: {
       color: colorScheme.primaryTextColor,
   },
   signText: {
     color: colorScheme.primaryTextColor,
   }
-
-
 });
 
 

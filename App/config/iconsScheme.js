@@ -1,6 +1,6 @@
 
-const iconScheme {
+const iconScheme = {
 
-
+    menuIcon: '', 
     
-}
+};

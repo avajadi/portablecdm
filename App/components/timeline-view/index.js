@@ -22,7 +22,6 @@ import colorScheme from '../../config/colors';
 import TopHeader from '../top-header-view';
 import OperationView from './sections/operationsview';
 
-
 export default class TimeLineView extends Component {
     static navigationOptions = {
         header: <TopHeader title = 'Timeline' />
