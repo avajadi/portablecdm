@@ -29,7 +29,7 @@ import {getDateTimeString} from '../../util/timeservices';
 
 export default class PortCallList extends Component {
     static navigationOptions = {
-        header: <TopHeader title="PortCalls" />
+        header: <TopHeader title="PortCalls" firstPage={true}/>
     }
 
     state = {
@@ -58,32 +58,33 @@ export default class PortCallList extends Component {
         return(
             <View style={styles.container}>
                 {/*Render the search/filters header*/}
-                <View style={{height: 75}}>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <SearchBar 
-                            containerStyle = {styles.containerStyle}
-                            showLoadingIcon={this.state.showLoadingIcon}
-                            clearIcon
-                            inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
-                            lightTheme  
-                            placeholder='Search'
-                            placeholderTextColor = {colorScheme.tertiaryTextColor}
-                            onChangeText={text => this.setState({searchTerm: text})}
-                        />
-                        <Button
-                            containerViewStyle={{flex: 1}}
-                            small    // Tror inte den här gör något
-                            icon={{
-                                name: 'filter-list',
-                                size: 30,
-                                color: colorScheme.primaryTextColor
-                            }}
-                            backgroundColor = {colorScheme.primaryColor} 
-                            //title='Filters'
-                            color = {colorScheme.primaryTextColor}
-                            fontSize={10}
-                        /> 
-                    </View> 
+                <View style={{flexDirection: 'row'}}>
+                    <SearchBar 
+                        containerStyle = {styles.containerStyle}
+                        showLoadingIcon={this.state.showLoadingIcon}
+                        clearIcon
+                        inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+                        lightTheme  
+                        placeholder='Search'
+                        placeholderTextColor = {colorScheme.tertiaryTextColor}
+                        onChangeText={text => this.setState({searchTerm: text})}
+                    />
+                    <Button
+                        containerViewStyle={{flex: 1, marginRight: 0, marginLeft: 0, alignSelf: 'stretch'}}
+                        small    // Tror inte den här gör något
+                        icon={{
+                            name: 'filter-list',
+                            size: 30,
+                            color: colorScheme.primaryTextColor,
+                            style: {
+                                alignSelf: 'stretch'
+                            },
+                        }}
+                        backgroundColor = {colorScheme.primaryColor} 
+                        //title='Filters'
+                        color = {colorScheme.primaryTextColor}
+                        fontSize={10}
+                    /> 
                 </View>
 
                 {/*Render the List of PortCalls*/}
@@ -130,7 +131,9 @@ const styles = StyleSheet.create({
     containerStyle: {
         backgroundColor: colorScheme.primaryColor,
         flex: 4,
-        
+        marginRight: 0,
+        borderBottomWidth: 0,
+        borderTopWidth: 0,      
 
     }
     // containerRow: {
