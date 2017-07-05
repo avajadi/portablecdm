@@ -33,7 +33,6 @@ export default class OperationView extends Component {
   }
   
   renderStateRow(operation, allOfTheseStatements) {
-
     const state = this.findMostRelevantStatement(allOfTheseStatements); // this is the most relevant message for this state
     console.log(state);
 
@@ -96,11 +95,11 @@ export default class OperationView extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={{width: 75}}>
+        <View style={{width: 70}}>
           {/* TIME HERE! */}
         </View>
         <View
-          style={{flex: 1, flexDirection: 'column', borderLeftWidth: 2, borderColor: colorScheme.primaryColor}}>
+          style={{flex: 1, flexDirection: 'column'}}>
           <Accordion
             style={{alignSelf: 'stretch', paddingLeft: 10}}
             header={header}
@@ -148,17 +147,4 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row'
   },
-  dot: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: colorScheme.primaryColor
-  },
-  line: {
-    position: 'absolute',
-    top: 0,
-    left: 18,
-    width: 4,
-    bottom: 0
-  }
 });
