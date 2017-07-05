@@ -61,19 +61,32 @@ class OperationDetails extends Component {
             <ListItem
                 key={state.messageId}
                 title = {
-                    <View style={{flexDirection:'row'}}>
-                        <Text>{new Date(state.time).toTimeString().slice(0, 5)} </Text>
-                        {state.timeType === 'ACTUAL' && <Icon name='directions-boat' />}
-                        {state.timeType === 'ESTIMATED' && <Icon name='rowing'/>}
-                        <Text>{state.stateDefinition}</Text>
+                    <View style={{flexDirection:'column'}}>
+                        <Text style={{fontWeight: 'bold'}} >{state.stateDefinition}</Text>
+                        <View style= {{flexDirection: 'row'}} >
+                            <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(state.time).toTimeString().slice(0, 5)} </Text>
+                            {state.timeType === 'ACTUAL' && <Icon 
+                                                                    name='font-download' 
+                                                                    color={colorScheme.tertiaryColor
+                                                                    } />}
+                            {state.timeType === 'ESTIMATED' && <Icon 
+                                                                    name='access-time' 
+                                                                    color={colorScheme.tertiaryColor
+                                                                    } />}
+                        </View>
                     </View>
                 }
                 subtitle = {
-                    <View>
-                        {this.state.at && <Text style={{fontSize: 9}}>AT {this.state.at.name}</Text>}
-                        {this.state.from && <Text style={{fontSize: 9}}>FROM {this.state.from.name} </Text>}
-                        {this.state.to && <Text style={{fontSize: 9}}>TO {this.state.to.name} </Text>}
-                        <Text style={{fontSize: 9}}>Reported by: {state.reportedBy} {reportedTimeAgo} ago</Text>
+                    <View style={{flexDirection: 'column'}} >
+                        {this.state.at && <Text style={{fontSize: 9}}>
+                            <Text style = {{fontWeight: 'bold'}}>AT:</Text> {this.state.at.name}</Text>}
+                        {this.state.from && <Text style={{fontSize: 9}}>
+                            <Text style = {{fontWeight: 'bold'}} >FROM:</Text> {this.state.from.name} </Text>}
+                        {this.state.to && <Text style={{fontSize: 9}}>
+                            <Text style = {{fontWeight: 'bold'}}>TO</Text> {this.state.to.name} </Text>}
+                        <Text style={{fontSize: 9}}>
+                            <Text style= {{fontWeight: 'bold'}}>REPORTED BY:</Text> {state.reportedBy} 
+                            <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                     </View>
                 }
             />
