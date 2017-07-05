@@ -18,7 +18,8 @@ import {
     SearchBar, 
     Button, 
     List, 
-    ListItem 
+    ListItem,
+    Icon 
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
@@ -28,7 +29,7 @@ import {getDateTimeString} from '../../util/timeservices';
 
 export default class PortCallList extends Component {
     static navigationOptions = {
-        header: <TopHeader title="PortCalls" />
+        header: <TopHeader title="PortCalls" firstPage={true}/>
     }
 
     state = {
@@ -52,29 +53,36 @@ export default class PortCallList extends Component {
         const {navigate} = navigation;
         const {portCalls, searchTerm} = this.state;
 
+//alignItems: 'center'
+
         return(
             <View style={styles.container}>
                 {/*Render the search/filters header*/}
-                <View style={{height: 75}}>
-                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                        <SearchBar 
-                            containerStyle = {styles.containerStyle}
-                            showLoadingIcon={this.state.showLoadingIcon}
-                            clearIcon
-                            inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
-                            lightTheme  
-                            placeholder='Search'
-                            placeholderTextColor = {colorScheme.tertiaryTextColor}
-                            onChangeText={text => this.setState({searchTerm: text})}
-                        />
-                        <Button
-                            containerViewStyle={{flex: 1}}
-                            small
-                            backgroundColor = {colorScheme.primaryContainerColor} 
-                            title='Filters'
-                            color = {colorScheme.tertiaryTextColor}
-                        />                        
-                    </View> 
+                <View style={styles.containerRow}>
+                    <SearchBar 
+                        containerStyle = {styles.searchBarContainer}
+                        showLoadingIcon={this.state.showLoadingIcon}
+                        clearIcon
+                        inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+                        lightTheme  
+                        placeholder='Search'
+                        placeholderTextColor = {colorScheme.tertiaryTextColor}
+                        onChangeText={text => this.setState({searchTerm: text})}
+                    />
+                    <Button
+                        containerViewStyle={styles.buttonContainer}
+                        small    // Tror inte den här gör något
+                        icon={{
+                            name: 'filter-list',
+                            size: 30,
+                            color: colorScheme.primaryTextColor,
+                            style: styles.iconStyle,
+                        }}
+                        backgroundColor = {colorScheme.primaryColor} 
+                        //title='Filters'
+                        //color = {colorScheme.primaryTextColor}
+                        //fontSize={10}
+                    /> 
                 </View>
 
                 {/*Render the List of PortCalls*/}
@@ -118,28 +126,33 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colorScheme.primaryColor  // Har denna grå färgen lite brunt i sig? 
     },
-    containerStyle: {
+    // Search bar and filter button  
+    containerRow: {
+        flexDirection: 'row',
+        alignItems:'center',
+        marginTop: 10,
+        paddingLeft: 15,
+        paddingRight: 0,
+    },
+    searchBarContainer: {
         backgroundColor: colorScheme.primaryColor,
-        flex: 3,
-    
-    }
-    // containerRow: {
-    //     flexDirection: 'row',
-    //     height: 40,
-    //     marginTop: 10,
-    //     marginBottom: 30,
-    //     paddingLeft: 5,
-    //     paddingRight: 5,
-    // },
-    // searchBox: {
-    //     flex: 3,
-    //     height: 50,
-    // },
-    // filterIcon: {
-    //     flex: 1,
-    //     alignItems: 'center',
-    //     justifyContent: 'center'
-    // },
+        flex: 4,
+        marginRight: 0,
+        borderBottomWidth: 0,
+        borderTopWidth: 0,      
+    },
+    // Filter button container 
+    buttonContainer: {
+        flex: 1,
+        marginRight: 0,
+        marginLeft: 0,
+        alignSelf: 'stretch',
+    },
+    iconStyle: {
+        alignSelf: 'stretch',
+    },
+
+
     // filterText: {
     //     fontSize: 20,
     // },
