@@ -11,8 +11,10 @@ import StateList    from '../components/state-list-view';
 import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
 //import TopHeader    from '../components/top-header-view';
+import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 
 export const AppNavigator = StackNavigator({
+  FilterMenu: {screen: FilterMenu} ,
   PortCallList: { screen: PortCallList },
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  

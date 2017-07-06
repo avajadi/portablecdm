@@ -16,9 +16,10 @@ import colorScheme from '../../config/colors';
 // Class showing the first header. The header should later adjust to other pages. 
 export default class TopHeader extends Component {
   render() {
-    const {title} = this.props;
+    const {title, firstPage} = this.props;
 //  const {navigation} = this.props; // Testade om det gick att navigera med knapparna...
 //  const {navigate} = navigation;
+
 
     return(
       <View style={styles.container}>
@@ -67,3 +68,4 @@ const styles = StyleSheet.create({
 });
 
 
+ 
