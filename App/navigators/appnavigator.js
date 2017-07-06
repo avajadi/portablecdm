@@ -14,7 +14,6 @@ import TimeLineView from '../components/timeline-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 
 export const AppNavigator = StackNavigator({
-  FilterMenu: {screen: FilterMenu} ,
   PortCallList: { screen: PortCallList },
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  
@@ -23,3 +22,5 @@ export const AppNavigator = StackNavigator({
   SendPortCall: { screen: SendPortCall },
   StateSelection: { screen: StateList },
 });
+
+//FilterMenu: {screen: FilterMenu} ,
