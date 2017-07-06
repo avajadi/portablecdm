@@ -11,6 +11,7 @@ import StateList    from '../components/state-list-view';
 import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
 //import TopHeader    from '../components/top-header-view';
+import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 
 export const AppNavigator = StackNavigator({
   PortCallList: { screen: PortCallList },
@@ -21,3 +22,5 @@ export const AppNavigator = StackNavigator({
   SendPortCall: { screen: SendPortCall },
   StateSelection: { screen: StateList },
 });
+
+//FilterMenu: {screen: FilterMenu} ,
