@@ -34,12 +34,14 @@ export default class OperationView extends Component {
   
   renderStateRow(operation, allOfTheseStatements) {
     const state = this.findMostRelevantStatement(allOfTheseStatements); // this is the most relevant message for this state
-    console.log(state);
-
     const reportedTimeAgo = getTimeDifferenceString(new Date(state.reportedAt));
 
     return (
       <ListItem
+        containerStyle = {{
+          borderTopWidth: 0,
+          borderBottomWidth: 0
+        }}
         key={state.messageId}
         title = {
             <View style={{flexDirection:'column'}}>
@@ -76,6 +78,9 @@ export default class OperationView extends Component {
 
   render() {
     const { operation, reportedStates } = this.state;
+    const { rowNumber } = this.props;
+
+    const topLineStyle = rowNumber == 0 ? [styles.topLine, styles.hiddenLine] : styles.topLine;
     
     let header = (
       <View>
@@ -85,7 +90,8 @@ export default class OperationView extends Component {
 
     let content = (
       <View>
-        <List>
+        <List
+          containerStyle = {{borderTopWidth: 0, borderBottomWidth: 0, marginTop: 0}}>
           {
             Object.keys(reportedStates).map((stateDef) => this.renderStateRow(operation, reportedStates[stateDef]))
           }
@@ -98,8 +104,15 @@ export default class OperationView extends Component {
         <View style={{width: 70}}>
           {/* TIME HERE! */}
         </View>
+        <View style={styles.timeline}>
+          <View style={styles.line}>
+            {rowNumber != 0 && <View style={topLineStyle} />}
+            <View style={styles.bottomLine} />
+          </View>
+          <View style={styles.completeDot} />
+        </View>
         <View
-          style={{flex: 1, flexDirection: 'column'}}>
+          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0}}>
           <Accordion
             style={{alignSelf: 'stretch', paddingLeft: 10}}
             header={header}
@@ -145,6 +158,49 @@ export default class OperationView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: colorScheme.primaryContainerColor,
+    paddingTop: 5,
   },
+  timeline: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 60,
+    width: 16,
+    alignItems: 'center',
+  },
+  line: {
+    position: 'absolute',
+    top: 0,
+    left: 6,
+    width: 4,
+    bottom: 0,
+  },
+  topLine: {
+    flex: 1,
+    width: 4,
+    backgroundColor: 'black',
+  },
+  bottomLine: {
+    flex: 1,
+    width: 4,
+    backgroundColor: 'black',
+  },
+  hiddenLine: {
+    width: 0,
+  },
+  completeDot: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: 'black',
+    marginTop: 15,
+  },
+  activedot: {
+
+  },
+  futureDot: {
+
+  }
 });

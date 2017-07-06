@@ -42,9 +42,9 @@ export default class TimeLineView extends Component {
     }
 
     componentDidMount() {
-        const { params } = this.props.navigation.state;
-        const { portCallId } = params;
-        // const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:741e183d-fbf4-41bf-87b2-5146a4f4e978';
+        // const { params } = this.props.navigation.state;
+        // const { portCallId } = params;
+        const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:723d08b1-9bad-461c-9bf6-0820ab97f291';
 
         const { dataSource } = this.state;
 
@@ -72,7 +72,7 @@ export default class TimeLineView extends Component {
                     !this.state.loading && <ListView
                                                 enableEmptySections
                                                 dataSource={this.state.dataSource} 
-                                                renderRow={(data) => <OperationView operation={data}/>}                
+                                                renderRow={(data, sectionId, rowId) => <OperationView operation={data} rowNumber={rowId}/>}                
                                             />
                 }
             </View>
@@ -105,7 +105,6 @@ export default class TimeLineView extends Component {
             } catch(error) {
                 console.log(error);
             }finally {
-                // operation.key = operation.operationId;
                 return operation;
             }
         }));
