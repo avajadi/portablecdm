@@ -4,7 +4,8 @@ import {
     StyleSheet,
     FlatList,
     TouchableWithoutFeedback,
-    ListView
+    ListView,
+    ScrollView
 } from 'react-native'
 
 // import TimeLine from 'react-native-timeline-listview';
@@ -70,10 +71,10 @@ export default class TimeLineView extends Component {
                 {!!this.state.loading && <Text>Loading!</Text>}
                 {
                     !this.state.loading && <ListView
-                                                enableEmptySections
-                                                dataSource={this.state.dataSource} 
-                                                renderRow={(data, sectionId, rowId) => <OperationView operation={data} rowNumber={rowId}/>}                
-                                            />
+                                                    enableEmptySections
+                                                    dataSource={this.state.dataSource} 
+                                                    renderRow={(data, sectionId, rowId) => <OperationView operation={data} rowNumber={rowId}/>}                
+                                                />
                 }
             </View>
         );

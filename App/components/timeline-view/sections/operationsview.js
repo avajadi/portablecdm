@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import {
   List,
   ListItem,
-  Text,
   Icon
 } from 'react-native-elements';
 
-import Accordion from 'react-native-accordion';
+import Collapsible from 'react-native-collapsible';
 
-import {getTimeDifferenceString} from '../../../util/timeservices'
+import {getTimeDifferenceString, getTimeString} from '../../../util/timeservices'
 import colorScheme from '../../../config/colors';
 
 export default class OperationView extends Component {
@@ -27,8 +28,11 @@ export default class OperationView extends Component {
     this.state = {
       operation: operation,
       reportedStates: reportedStates,
+      isCollapsed: true,
 
     }
+
+    this._toggleCollapsed = this._toggleCollapsed.bind(this);
 
   }
   
@@ -76,53 +80,55 @@ export default class OperationView extends Component {
     );
   }
 
+  _toggleCollapsed() {
+    this.setState({isCollapsed: !this.state.isCollapsed})
+  }
+
   render() {
-    const { operation, reportedStates } = this.state;
+    const { operation, reportedStates, isCollapsed } = this.state;
     const { rowNumber } = this.props;
 
     const topLineStyle = rowNumber == 0 ? [styles.topLine, styles.hiddenLine] : styles.topLine;
-    
-    let header = (
-      <View>
-        <Text h3>{operation.definitionId}</Text>
-      </View>
-    );
-
-    let content = (
-      <View>
-        <List
-          containerStyle = {{borderTopWidth: 0, borderBottomWidth: 0, marginTop: 0}}>
-          {
-            Object.keys(reportedStates).map((stateDef) => this.renderStateRow(operation, reportedStates[stateDef]))
-          }
-        </List>
-      </View>
-    );
 
     return (
       <View style={styles.container}>
-        <View style={{width: 70}}>
-          {/* TIME HERE! */}
+        <View style={styles.timeContainer}>
+          <Text>{operation.startTime}</Text>
         </View>
         <View style={styles.timeline}>
           <View style={styles.line}>
-            {rowNumber != 0 && <View style={topLineStyle} />}
             <View style={styles.bottomLine} />
           </View>
-          <View style={styles.completeDot} />
+          <View style={styles.outerDot}>
+            <View style={styles.innerCompleteDot} />
+          </View>
+          
         </View>
         <View
-          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0}}>
-          <Accordion
-            style={{alignSelf: 'stretch', paddingLeft: 10}}
-            header={header}
-            content={content}
-          />
+          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0, paddingLeft: 15}}>
+          <TouchableWithoutFeedback
+            onPress={this._toggleCollapsed}>
+            <View>
+              <Text style={styles.operationHeader}>{operation.definitionId}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <Collapsible
+            collapsed = {isCollapsed}
+            renderHeader={() => header}
+          >
+            <List>    
+              {
+                Object.keys(reportedStates).map((stateDef) => this.renderStateRow(operation, reportedStates[stateDef]))
+              }
+            </List>
+          </Collapsible>
         </View>
         
       </View>
     );
   }
+
+  
 
   /**
    * Finds the most relevant statement, i.e the latest Estimate or the latest Actual. 
@@ -155,12 +161,24 @@ export default class OperationView extends Component {
   }
 }
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: colorScheme.primaryContainerColor,
     paddingTop: 5,
+  },
+  timeContainer: {
+    width: 70,
+    backgroundColor: colorScheme.secondaryContainerColor,
+    borderRadius: 10,
+    paddingRight: 5
+  },
+  operationHeader: {
+    fontWeight: 'bold', 
+    fontSize: 23
   },
   timeline: {
     position: 'absolute',
@@ -180,27 +198,37 @@ const styles = StyleSheet.create({
   topLine: {
     flex: 1,
     width: 4,
-    backgroundColor: 'black',
+    backgroundColor: colorScheme.primaryColor,
   },
   bottomLine: {
     flex: 1,
     width: 4,
-    backgroundColor: 'black',
+    backgroundColor: colorScheme.primaryColor,
   },
   hiddenLine: {
     width: 0,
   },
-  completeDot: {
+  outerDot: {
     width: 16,
     height: 16,
     borderRadius: 8,
-    backgroundColor: 'black',
-    marginTop: 15,
+    backgroundColor: colorScheme.primaryColor,
+    marginTop: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  activedot: {
-
+  innerDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 6,
   },
-  futureDot: {
-
+  innerCompleteDot: {
+    backgroundColor: colorScheme.primaryColor,
+  },
+  innerActiveDot: {
+    backgroundColor: colorScheme.secondaryColor,
+  },
+  innerFutureDot: {
+    backgroundColor: colorScheme.primaryContainerColor,
   }
 });

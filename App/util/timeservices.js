@@ -15,7 +15,9 @@ export function getDateString(date) {
  *  Date object, representing the DateTime in UTC
  */
 export function getTimeString(date) {
-  return "not yet implemented";
+  if(userConfig.timeDisplayMode === timeDisplayModes.local) {
+    return `${date.toTimeString()}`;
+  }
 }
 
 /**
