@@ -5,7 +5,8 @@ import {
     FlatList,
     TouchableWithoutFeedback,
     ListView,
-    ScrollView
+    ScrollView,
+    ActivityIndicator
 } from 'react-native'
 
 import { 
@@ -37,9 +38,9 @@ export default class TimeLineView extends Component {
     }
 
     componentDidMount() {
-        // const { params } = this.props.navigation.state;
-        // const { portCallId } = params;
-        const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
+        const { params } = this.props.navigation.state;
+        const { portCallId } = params;
+        // const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
 
         const { dataSource } = this.state;
 
@@ -61,14 +62,17 @@ export default class TimeLineView extends Component {
         // const { operations } = this.state;
 
         return(
-            <View>
-                {!!this.state.loading && <Text>Loading!</Text>}
-                {
-                    !this.state.loading && <ListView
-                                                    enableEmptySections
-                                                    dataSource={this.state.dataSource} 
-                                                    renderRow={(data, sectionId, rowId) => <OperationView operation={data} rowNumber={rowId}/>}                
-                                                />
+            <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
+                {!!this.state.loading && <ActivityIndicator 
+                                                color={colorScheme.primaryColor}
+                                                style={{alignSelf: 'center'}}
+                                                animating={this.state.loading}
+                                                size='large'/>}
+                {!this.state.loading && <ListView
+                                            enableEmptySections
+                                            dataSource={this.state.dataSource} 
+                                            renderRow={(data, sectionId, rowId) => <OperationView operation={data} rowNumber={rowId}/>}                
+                                        />
                 }
             </View>
         );
