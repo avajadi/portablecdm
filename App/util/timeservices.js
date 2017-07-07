@@ -1,12 +1,18 @@
 import userConfig, { timeDisplayModes } from '../config/userconfig';
 
+
+  // TODO: tiderna blir fel!, den antar UTC eller nåt!
+
 /**
  * 
  * @param {Date} date 
  *  Date object, representing the DateTime in UTC
  */
 export function getDateString(date) {
-  return "not yet implemented";
+  if(userConfig.timeDisplayMode === timeDisplayModes.local) {
+    return date.getTime() === new Date(null).getTime() ? '' : `${date.toLocaleDateString()}`;
+    // return `${date.toLocaleDateString()}`;
+  }
 }
 
 /**
@@ -15,8 +21,9 @@ export function getDateString(date) {
  *  Date object, representing the DateTime in UTC
  */
 export function getTimeString(date) {
+
   if(userConfig.timeDisplayMode === timeDisplayModes.local) {
-    return `${date.toTimeString()}`;
+    return date.getTime() === new Date(null).getTime() ? '??' : `${date.toLocaleTimeString().slice(0, 5)}`;
   }
 }
 

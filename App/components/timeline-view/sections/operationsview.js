@@ -14,7 +14,7 @@ import {
 
 import Collapsible from 'react-native-collapsible';
 
-import {getTimeDifferenceString, getTimeString} from '../../../util/timeservices'
+import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
 import colorScheme from '../../../config/colors';
 
 export default class OperationView extends Component {
@@ -28,7 +28,7 @@ export default class OperationView extends Component {
     this.state = {
       operation: operation,
       reportedStates: reportedStates,
-      isCollapsed: true,
+      isCollapsed: operation.endTimeType === 'ACTUAL',
 
     }
 
@@ -36,9 +36,95 @@ export default class OperationView extends Component {
 
   }
   
-  renderStateRow(operation, allOfTheseStatements) {
-    const state = this.findMostRelevantStatement(allOfTheseStatements); // this is the most relevant message for this state
-    const reportedTimeAgo = getTimeDifferenceString(new Date(state.reportedAt));
+  
+
+  _toggleCollapsed() {
+    this.setState({isCollapsed: !this.state.isCollapsed})
+  }
+
+  render() {
+    const { operation, reportedStates, isCollapsed } = this.state;
+    const { rowNumber } = this.props;
+
+    // Decide what dot to display
+    let dotStyle = [styles.innerDot, styles.innerFutureDot];
+    if(operation.endTimeType === 'ACTUAL') dotStyle = [styles.innerDot, styles.innerCompleteDot];
+
+    return (
+      <View style={styles.container}>
+        
+        {/* Time Display */}
+        <View style={styles.timeContainer}>
+          {/*Start Time*/}
+          <View style={styles.timeDisplayContainer}>
+            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.startTime))}</Text>
+            <Text style={styles.timeDisplay}>{getTimeString(new Date(operation.startTime))}</Text>
+          </View>
+          {/*End Time*/}
+          <View style={[styles.timeDisplayContainer, {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colorScheme.tertiaryColor}]}>
+            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.endTime))}</Text>
+            <Text style={styles.timeDisplay}>{getTimeString(new Date(operation.endTime))}</Text>
+          </View>
+        </View>
+
+        {/* Line and dots */}
+        <View style={styles.timeline}>
+          <View style={styles.line}>
+            <View style={styles.bottomLine} />
+          </View>
+          <View style={styles.outerDot}>
+            <View style={dotStyle} />
+          </View>
+          
+        </View>
+
+        {/*Everything to the right of the line*/}
+        <View
+          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0, paddingLeft: 15}}>
+          
+          {/*Clickable header to expand information*/}
+          <TouchableWithoutFeedback
+            onPress={this._toggleCollapsed}>
+            <View>
+              <Text style={styles.operationHeader}>{operation.definitionId}</Text>
+              {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM</Text> {operation.fromLocation.name}</Text>}
+              {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO</Text> {operation.toLocation.name}</Text>}
+              {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT</Text> {operation.atLocation.name}</Text>}
+            </View>
+          </TouchableWithoutFeedback>
+
+          {/*The information, displayed in a list*/}
+          <Collapsible
+            collapsed = {isCollapsed}
+          >
+            <List style={{borderTopWidth: 0}}>    
+              {
+                Object.keys(reportedStates)
+                  .map((stateDef) => this.findMostRelevantStatement(reportedStates[stateDef]))
+                  .sort((a, b) => {
+                    const aTime = new Date(a.time);
+                    const bTime = new Date(b.time);
+
+                    if(aTime < bTime) return -1;
+                    if(aTime > bTime) return 1;
+                    else return 0;
+
+                  }) 
+                  .map((mostRelevantStatement) => this.renderStateRow(operation, 
+                                                      mostRelevantStatement, 
+                                                      reportedStates[mostRelevantStatement.stateDefinition]))
+              }
+            </List>
+          </Collapsible>
+        </View>
+        
+      </View>
+    );
+  }
+
+  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements) {
+    const stateToDisplay = mostRelevantStatement;
+    const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
 
     return (
       <ListItem
@@ -46,17 +132,17 @@ export default class OperationView extends Component {
           borderTopWidth: 0,
           borderBottomWidth: 0
         }}
-        key={state.messageId}
+        key={stateToDisplay.messageId}
         title = {
             <View style={{flexDirection:'column'}}>
-                <Text style={{fontWeight: 'bold'}} >{state.stateDefinition}</Text>
+                <Text style={{fontWeight: 'bold'}} >{stateToDisplay.stateDefinition}</Text>
                 <View style= {{flexDirection: 'row'}} >
-                    <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(state.time).toTimeString().slice(0, 5)} </Text>
-                    {state.timeType === 'ACTUAL' && <Icon 
+                    <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
+                    {stateToDisplay.timeType === 'ACTUAL' && <Icon 
                                                             name='font-download' 
                                                             color={colorScheme.tertiaryColor
                                                             } />}
-                    {state.timeType === 'ESTIMATED' && <Icon 
+                    {stateToDisplay.timeType === 'ESTIMATED' && <Icon 
                                                             name='access-time' 
                                                             color={colorScheme.tertiaryColor
                                                             } />}
@@ -72,59 +158,11 @@ export default class OperationView extends Component {
                 {operation.toLocation && <Text style={{fontSize: 9}}>
                     <Text style = {{fontWeight: 'bold'}}>TO</Text> {operation.toLocation.name} </Text>}
                 <Text style={{fontSize: 9}}>
-                    <Text style= {{fontWeight: 'bold'}}>REPORTED BY:</Text> {state.reportedBy} 
+                    <Text style= {{fontWeight: 'bold'}}>REPORTED BY:</Text> {stateToDisplay.reportedBy} 
                     <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
             </View>
         }
       />
-    );
-  }
-
-  _toggleCollapsed() {
-    this.setState({isCollapsed: !this.state.isCollapsed})
-  }
-
-  render() {
-    const { operation, reportedStates, isCollapsed } = this.state;
-    const { rowNumber } = this.props;
-
-    const topLineStyle = rowNumber == 0 ? [styles.topLine, styles.hiddenLine] : styles.topLine;
-
-    return (
-      <View style={styles.container}>
-        <View style={styles.timeContainer}>
-          <Text>{operation.startTime}</Text>
-        </View>
-        <View style={styles.timeline}>
-          <View style={styles.line}>
-            <View style={styles.bottomLine} />
-          </View>
-          <View style={styles.outerDot}>
-            <View style={styles.innerCompleteDot} />
-          </View>
-          
-        </View>
-        <View
-          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0, paddingLeft: 15}}>
-          <TouchableWithoutFeedback
-            onPress={this._toggleCollapsed}>
-            <View>
-              <Text style={styles.operationHeader}>{operation.definitionId}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <Collapsible
-            collapsed = {isCollapsed}
-            renderHeader={() => header}
-          >
-            <List>    
-              {
-                Object.keys(reportedStates).map((stateDef) => this.renderStateRow(operation, reportedStates[stateDef]))
-              }
-            </List>
-          </Collapsible>
-        </View>
-        
-      </View>
     );
   }
 
@@ -172,13 +210,20 @@ const styles = StyleSheet.create({
   },
   timeContainer: {
     width: 70,
-    backgroundColor: colorScheme.secondaryContainerColor,
-    borderRadius: 10,
-    paddingRight: 5
+    paddingRight: 5,
+    justifyContent: 'space-between'
+  },
+  timeDisplayContainer: {
+    // backgroundColor: colorScheme.secondaryContainerColor,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   operationHeader: {
     fontWeight: 'bold', 
     fontSize: 23
+  },
+  operationInfo: {
+    fontSize: 10,
   },
   timeline: {
     position: 'absolute',
@@ -230,5 +275,12 @@ const styles = StyleSheet.create({
   },
   innerFutureDot: {
     backgroundColor: colorScheme.primaryContainerColor,
+  },
+  dateDisplay: {
+    fontSize: 9,
+    color: 'black'
+  },
+  timeDisplay: {
+    color: colorScheme.tertiaryColor,
   }
 });

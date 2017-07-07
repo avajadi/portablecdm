@@ -8,7 +8,6 @@ import {
     ScrollView
 } from 'react-native'
 
-// import TimeLine from 'react-native-timeline-listview';
 import { 
     List, 
     ListItem, 
@@ -16,7 +15,6 @@ import {
     Text
 } from 'react-native-elements';
 
-import renderIf from '../../util/renderif';
 import portCDM from '../../services/backendservices';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
@@ -33,19 +31,15 @@ export default class TimeLineView extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         
         this.state = {
-            // operations: [],
             loading: true,
             dataSource: ds.cloneWithRows(['row 1, row 2'])
         }
-
-        // this.state.dataSource = ds.cloneWithRows();
-
     }
 
     componentDidMount() {
         // const { params } = this.props.navigation.state;
         // const { portCallId } = params;
-        const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:723d08b1-9bad-461c-9bf6-0820ab97f291';
+        const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
 
         const { dataSource } = this.state;
 
@@ -131,6 +125,10 @@ export default class TimeLineView extends Component {
 
     sortOperations(operations) {
         return operations.sort((a, b) => {
+            // Port visit should be on top!
+            if(a.definitionId === 'PORT_VISIT') return -1;
+            if(b.definitionId === 'PORT_VISIT') return 1;
+
             let aTime = new Date(a.startTime);
             let bTime = new Date(b.startTime);
 
