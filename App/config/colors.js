@@ -11,6 +11,7 @@ const colorScheme = {
   secondaryContainerColor: '#c9c9c9', // Grey | little darker than background color
   sidebarColor : '#3e4552', //DarkDark grey | sidebar, maybe some special buttons
   shadowColor : 'black',
+  warningColor: '#cc891e',
 
   //Text
   primaryTextColor : 'white', // White text | Headers, 

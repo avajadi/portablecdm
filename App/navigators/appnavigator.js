@@ -13,8 +13,8 @@ import TimeLineView from '../components/timeline-view';
 //import TopHeader    from '../components/top-header-view';
 
 export const AppNavigator = StackNavigator({
-  PortCallList: { screen: PortCallList },
   TimeLineDetails: {screen: TimeLineView},
+  PortCallList: { screen: PortCallList },
   Home: { screen: Home },  
   ActorSelection: { screen: ActorList },
   MainMenu: { screen: MainMenu },

@@ -46,6 +46,8 @@ export default class OperationView extends Component {
     const { operation, reportedStates, isCollapsed } = this.state;
     const { rowNumber } = this.props;
 
+    console.log(operation.warnings);
+
     // Decide what dot to display
     let dotStyle = [styles.innerDot, styles.innerFutureDot];
     if(operation.endTimeType === 'ACTUAL') dotStyle = [styles.innerDot, styles.innerCompleteDot];
@@ -86,7 +88,10 @@ export default class OperationView extends Component {
           <TouchableWithoutFeedback
             onPress={this._toggleCollapsed}>
             <View>
-              <Text style={styles.operationHeader}>{operation.definitionId}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.operationHeader}>{operation.definitionId}</Text>
+                {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
+              </View>
               {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM</Text> {operation.fromLocation.name}</Text>}
               {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO</Text> {operation.toLocation.name}</Text>}
               {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT</Text> {operation.atLocation.name}</Text>}
@@ -97,6 +102,16 @@ export default class OperationView extends Component {
           <Collapsible
             collapsed = {isCollapsed}
           >
+            {/* Render warnings */}
+            {operation.warnings.map(warning => {
+              return (
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Icon name='warning' color={colorScheme.warningColor} size={14} />
+                  <Text>{warning.message}</Text>
+                </View>
+              );
+            })}
+
             <List style={{borderTopWidth: 0}}>    
               {
                 Object.keys(reportedStates)
@@ -123,6 +138,7 @@ export default class OperationView extends Component {
   }
 
   renderStateRow(operation, mostRelevantStatement, allOfTheseStatements) {
+    const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
 
@@ -135,7 +151,10 @@ export default class OperationView extends Component {
         key={stateToDisplay.messageId}
         title = {
             <View style={{flexDirection:'column'}}>
-                <Text style={{fontWeight: 'bold'}} >{stateToDisplay.stateDefinition}</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{fontWeight: 'bold'}} >{stateToDisplay.stateDefinition}</Text>
+                  {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
+                </View>
                 <View style= {{flexDirection: 'row'}} >
                     <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
                     {stateToDisplay.timeType === 'ACTUAL' && <Icon 

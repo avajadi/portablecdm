@@ -38,9 +38,9 @@ export default class TimeLineView extends Component {
     }
 
     componentDidMount() {
-        const { params } = this.props.navigation.state;
-        const { portCallId } = params;
-        // const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
+        // const { params } = this.props.navigation.state;
+        // const { portCallId } = params;
+        const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
 
         const { dataSource } = this.state;
 
@@ -48,6 +48,7 @@ export default class TimeLineView extends Component {
             .then(this.sortOperations)
             .then(this.filterStatements)
             .then(this.addLocationsToOperations)
+            .then(this.extractWarnings)
             .then(operations => {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(operations), 
@@ -71,7 +72,9 @@ export default class TimeLineView extends Component {
                 {!this.state.loading && <ListView
                                             enableEmptySections
                                             dataSource={this.state.dataSource} 
-                                            renderRow={(data, sectionId, rowId) => <OperationView operation={data} rowNumber={rowId}/>}                
+                                            renderRow={(data, sectionId, rowId) => <OperationView 
+                                                                                        operation={data} 
+                                                                                        rowNumber={rowId}/>}                
                                         />
                 }
             </View>
@@ -141,4 +144,48 @@ export default class TimeLineView extends Component {
             else return 0;
         });
     }
+
+    /**
+     * Removes warnings from the operation level, and instead assigns it to 
+     * the reportedState it warns about. Only thing left should be warnings
+     * that aren't about a certain state.
+     * 
+     * @param {[Operation]} operations 
+     * 
+     * @return
+     *  all operations, with warnings that is connected to a certain state
+     */
+    extractWarnings(operations) {
+        // Go through all operations
+        return operations.map(operation => {
+            let { warnings, reportedStates } = operation;
+            // And for each warning in each operation
+            for(let i = 0; i < warnings.length; i++){
+                let found = false;
+                warning = warnings[i];
+                // See if any warning contains the id of any reported state
+                for(let state in reportedStates) {
+                    let index = warning.message.indexOf(state);
+                    // If it does, add it to the warnings of the reportedState instead
+                    if(index >= 0) {
+                        if(!operation.reportedStates[state].warnings) {
+                            operation.reportedStates[state].warnings = [warning];
+                        } else {
+                            operation.reportedStates[state].warnings.push(warning);
+                        }
+
+                        found = true;
+                    }
+                }
+                if(found) {
+                    warnings[i] = null;
+                }
+            }
+            // And remove the warnings that was connected to a state
+            operation.warnings = warnings.filter(warning => !!warning);
+
+            return operation;
+        });
+    }
+
 }
