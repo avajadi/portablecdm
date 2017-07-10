@@ -38,9 +38,9 @@ export default class TimeLineView extends Component {
     }
 
     componentDidMount() {
-        // const { params } = this.props.navigation.state;
-        // const { portCallId } = params;
-        const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
+        const { params } = this.props.navigation.state;
+        const { portCallId } = params;
+        // const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
 
         const { dataSource } = this.state;
 

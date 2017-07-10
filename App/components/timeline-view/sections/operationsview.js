@@ -9,7 +9,8 @@ import {
 import {
   List,
   ListItem,
-  Icon
+  Icon,
+  Badge
 } from 'react-native-elements';
 
 import Collapsible from 'react-native-collapsible';
@@ -45,8 +46,6 @@ export default class OperationView extends Component {
   render() {
     const { operation, reportedStates, isCollapsed } = this.state;
     const { rowNumber } = this.props;
-
-    console.log(operation.warnings);
 
     // Decide what dot to display
     let dotStyle = [styles.innerDot, styles.innerFutureDot];
@@ -103,9 +102,9 @@ export default class OperationView extends Component {
             collapsed = {isCollapsed}
           >
             {/* Render warnings */}
-            {operation.warnings.map(warning => {
+            {operation.warnings.map((warning, index) => {
               return (
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}} key={index}>
                   <Icon name='warning' color={colorScheme.warningColor} size={14} />
                   <Text>{warning.message}</Text>
                 </View>
@@ -141,6 +140,7 @@ export default class OperationView extends Component {
     const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
+    const stateCount = allOfTheseStatements.length;
 
     return (
       <ListItem
@@ -181,6 +181,7 @@ export default class OperationView extends Component {
                     <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
             </View>
         }
+        badge = {{value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, containerStyle: {backgroundColor: colorScheme.secondaryContainerColor, marginTop: 30} }}
       />
     );
   }
