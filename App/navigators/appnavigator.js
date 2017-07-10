@@ -10,6 +10,7 @@ import SendPortCall from '../components/send-portcall-view';
 import StateList    from '../components/state-list-view';
 import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
+import SideMenu     from '../components/side-menu-view';
 //import TopHeader    from '../components/top-header-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 
@@ -22,6 +23,8 @@ export const AppNavigator = DrawerNavigator({
   MainMenu: { screen: MainMenu },
   SendPortCall: { screen: SendPortCall },
   StateSelection: { screen: StateList },
+}, {
+  contentComponent: props => <SideMenu />
 });
 
 export const StackNav = StackNavigator({

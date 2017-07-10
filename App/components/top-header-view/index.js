@@ -17,8 +17,6 @@ import colorScheme from '../../config/colors';
 export default class TopHeader extends Component {
   render() {
     const {title, firstPage} = this.props;
-//  const {navigation} = this.props; // Testade om det gick att navigera med knapparna...
-//  const {navigate} = navigation;
 
 
     return(
@@ -27,8 +25,7 @@ export default class TopHeader extends Component {
             name='menu'
             color= {colorScheme.primaryContainerColor}
             size = {50}
-            onPress={() => console.log('Menu button was pressed')}
-            // onPress={() => navigate('SideBarMenu')}
+            onPress={() => navigate('SideBarMenu')}
           /> 
           <Text 
             style= {styles.headerText} 
