@@ -4,10 +4,11 @@ import {
     StyleSheet,
     FlatList,
     TouchableWithoutFeedback,
-    ListView
+    ListView,
+    ScrollView,
+    ActivityIndicator
 } from 'react-native'
 
-// import TimeLine from 'react-native-timeline-listview';
 import { 
     List, 
     ListItem, 
@@ -15,7 +16,6 @@ import {
     Text
 } from 'react-native-elements';
 
-import renderIf from '../../util/renderif';
 import portCDM from '../../services/backendservices';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
@@ -32,19 +32,15 @@ export default class TimeLineView extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         
         this.state = {
-            // operations: [],
             loading: true,
             dataSource: ds.cloneWithRows(['row 1, row 2'])
         }
-
-        // this.state.dataSource = ds.cloneWithRows();
-
     }
 
     componentDidMount() {
         const { params } = this.props.navigation.state;
         const { portCallId } = params;
-        // const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:741e183d-fbf4-41bf-87b2-5146a4f4e978';
+        // const portCallId = 'urn:mrn:stm:portcdm:port_call:SEGOT:6bf6d8a0-9bc3-40d2-8499-2658c7838bb6';
 
         const { dataSource } = this.state;
 
@@ -52,6 +48,7 @@ export default class TimeLineView extends Component {
             .then(this.sortOperations)
             .then(this.filterStatements)
             .then(this.addLocationsToOperations)
+            .then(this.extractWarnings)
             .then(operations => {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(operations), 
@@ -66,14 +63,19 @@ export default class TimeLineView extends Component {
         // const { operations } = this.state;
 
         return(
-            <View>
-                {!!this.state.loading && <Text>Loading!</Text>}
-                {
-                    !this.state.loading && <ListView
-                                                enableEmptySections
-                                                dataSource={this.state.dataSource} 
-                                                renderRow={(data) => <OperationView operation={data}/>}                
-                                            />
+            <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
+                {!!this.state.loading && <ActivityIndicator 
+                                                color={colorScheme.primaryColor}
+                                                style={{alignSelf: 'center'}}
+                                                animating={this.state.loading}
+                                                size='large'/>}
+                {!this.state.loading && <ListView
+                                            enableEmptySections
+                                            dataSource={this.state.dataSource} 
+                                            renderRow={(data, sectionId, rowId) => <OperationView 
+                                                                                        operation={data} 
+                                                                                        rowNumber={rowId}/>}                
+                                        />
                 }
             </View>
         );
@@ -105,7 +107,6 @@ export default class TimeLineView extends Component {
             } catch(error) {
                 console.log(error);
             }finally {
-                // operation.key = operation.operationId;
                 return operation;
             }
         }));
@@ -131,6 +132,10 @@ export default class TimeLineView extends Component {
 
     sortOperations(operations) {
         return operations.sort((a, b) => {
+            // Port visit should be on top!
+            if(a.definitionId === 'PORT_VISIT') return -1;
+            if(b.definitionId === 'PORT_VISIT') return 1;
+
             let aTime = new Date(a.startTime);
             let bTime = new Date(b.startTime);
 
@@ -139,4 +144,48 @@ export default class TimeLineView extends Component {
             else return 0;
         });
     }
+
+    /**
+     * Removes warnings from the operation level, and instead assigns it to 
+     * the reportedState it warns about. Only thing left should be warnings
+     * that aren't about a certain state.
+     * 
+     * @param {[Operation]} operations 
+     * 
+     * @return
+     *  all operations, with warnings that is connected to a certain state
+     */
+    extractWarnings(operations) {
+        // Go through all operations
+        return operations.map(operation => {
+            let { warnings, reportedStates } = operation;
+            // And for each warning in each operation
+            for(let i = 0; i < warnings.length; i++){
+                let found = false;
+                warning = warnings[i];
+                // See if any warning contains the id of any reported state
+                for(let state in reportedStates) {
+                    let index = warning.message.indexOf(state);
+                    // If it does, add it to the warnings of the reportedState instead
+                    if(index >= 0) {
+                        if(!operation.reportedStates[state].warnings) {
+                            operation.reportedStates[state].warnings = [warning];
+                        } else {
+                            operation.reportedStates[state].warnings.push(warning);
+                        }
+
+                        found = true;
+                    }
+                }
+                if(found) {
+                    warnings[i] = null;
+                }
+            }
+            // And remove the warnings that was connected to a state
+            operation.warnings = warnings.filter(warning => !!warning);
+
+            return operation;
+        });
+    }
+
 }
