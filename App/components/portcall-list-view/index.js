@@ -19,7 +19,7 @@ import {
     Button, 
     List, 
     ListItem,
-    Icon 
+    Icon, 
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
@@ -79,6 +79,7 @@ export default class PortCallList extends Component {
                             style: styles.iconStyle,
                         }}
                         backgroundColor = {colorScheme.primaryColor} 
+                        onPress= {() => navigate('FilterMenu')}
                         //title='Filters'
                         //color = {colorScheme.primaryTextColor}
                         //fontSize={10}
