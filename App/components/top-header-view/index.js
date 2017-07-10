@@ -8,13 +8,23 @@ import {
   Text,
   Header,
   Icon,
-  Button
+  Button,
+  SideMenu
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
+import SideMenuView from '../side-menu-view';
 
 // Class showing the first header. The header should later adjust to other pages. 
 export default class TopHeader extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      sideMenuOpen: false,
+    };
+  }
+
   render() {
     const {title, firstPage} = this.props;
 
@@ -22,10 +32,10 @@ export default class TopHeader extends Component {
     return(
       <View style={styles.container}>
           <Icon
-            name='menu'
+            name= 'menu'
             color= {colorScheme.primaryContainerColor}
-            size = {50}
-            onPress={() => navigate('SideBarMenu')}
+            size= {50}
+            onPress={() => console.log('MENU button was pressed')}
           /> 
           <Text 
             style= {styles.headerText} 
