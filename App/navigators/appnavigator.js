@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Text} from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 
 import ActorList    from '../components/actor-list-view';
@@ -13,7 +13,8 @@ import TimeLineView from '../components/timeline-view';
 //import TopHeader    from '../components/top-header-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 
-export const AppNavigator = StackNavigator({
+
+export const AppNavigator = DrawerNavigator({
   PortCallList: { screen: PortCallList },
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  
@@ -22,5 +23,11 @@ export const AppNavigator = StackNavigator({
   SendPortCall: { screen: SendPortCall },
   StateSelection: { screen: StateList },
 });
+
+export const StackNav = StackNavigator({
+  App: { screen: AppNavigator }
+});
+
+
 
 //FilterMenu: {screen: FilterMenu} ,
