@@ -23,19 +23,10 @@ export default class TopHeader extends Component {
     this.state = {
       sideMenuOpen: false,
     };
-
-    this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
-
-  toggleSideMenu() {
-    this.setState({sideMenuOpen: !this.state.sideMenuOpen});
-  }
-
 
   render() {
     const {title, firstPage} = this.props;
-//  const {navigation} = this.props; // Testade om det gick att navigera med knapparna...
-//  const {navigate} = navigation;
 
 
     return(
@@ -45,8 +36,6 @@ export default class TopHeader extends Component {
             color= {colorScheme.primaryContainerColor}
             size= {50}
             onPress={() => console.log('MENU button was pressed')}
-          //onPress={this.toggleSideMenu}
-          //onPress={() => navigate('SideBarMenu')}
           /> 
           <Text 
             style= {styles.headerText} 
