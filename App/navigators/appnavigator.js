@@ -14,13 +14,14 @@ import TimeLineView from '../components/timeline-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 
 export const AppNavigator = StackNavigator({
-  PortCallList: { screen: PortCallList },
+  PortCallList: { screen: PortCallList }, 
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  
   ActorSelection: { screen: ActorList },
   MainMenu: { screen: MainMenu },
   SendPortCall: { screen: SendPortCall },
   StateSelection: { screen: StateList },
+  FilterMenu: {screen: FilterMenu} ,
 });
 
-//FilterMenu: {screen: FilterMenu} ,
+//
