@@ -1,16 +1,18 @@
-import React from 'react';
-import { StyleSheet, Text, View, AppRegistry } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducers from './reducers';
 
 import {AppNavigator, StackNav} from './navigators/appnavigator';
 
-import SendPortcall from './components/send-portcall-view';
-import TimeLineView from './components/timeline-view';
-
-export default class App extends React.Component {
+class App extends Component {
   render() {
     return (
+      <Provider store={createStore(reducers)}>
         <StackNav />
+      </Provider>
     );
   }
 }
+
+export default App;

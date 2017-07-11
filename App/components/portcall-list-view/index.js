@@ -25,7 +25,7 @@ import {
 import colorScheme from '../../config/colors';
 import TopHeader from '../top-header-view';
 import portCDM from '../../services/backendservices';
-import {getDateTimeString} from '../../util/timeservices';
+import { getDateTimeString } from '../../util/timeservices';
 
 export default class PortCallList extends Component {
     static navigationOptions = {
