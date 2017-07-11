@@ -56,14 +56,14 @@ export default class OperationDetails extends Component {
         // state.reportedBy : användaren som rapporterade saken
         // state.reportedAt : när denna sak rapporterades in
 
-
+// Är den här return gammal??
         return (
             <ListItem
                 key={state.messageId}
                 title = {
                     <View style={{flexDirection:'row'}}>
                         <Text>{new Date(state.time).toTimeString().slice(0, 5)} </Text>
-                        {state.timeType === 'ACTUAL' && <Icon name='directions-boat' />}
+                        {state.timeType === 'ACTUAL' && <Icon name='directions-boat' />} 
                         {state.timeType === 'ESTIMATED' && <Icon name='rowing'/>}
                         <Text>{state.stateDefinition}</Text>
                     </View>

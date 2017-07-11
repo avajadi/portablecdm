@@ -28,9 +28,9 @@ export default class TopHeader extends Component {
   render() {
     const {title, firstPage} = this.props;
 
-
     return(
-      <View style={styles.container}>
+      <View >
+          <View style={styles.container}>
           <Icon
             name= 'menu'
             color= {colorScheme.primaryContainerColor}
@@ -49,7 +49,7 @@ export default class TopHeader extends Component {
             color= {colorScheme.primaryContainerColor}
             onPress={() => console.log('Adding button was pressed')}
           />
-
+        </View>
     </View>
     );
   }
@@ -71,8 +71,26 @@ const styles = StyleSheet.create({
   },
   signText: {
     color: colorScheme.primaryTextColor,
-  }
+  },
 });
 
 
- 
+          //  <Button
+          //   title='A'
+          //   rounded
+          //   allowFontScaling
+          //   color= {colorScheme.primaryTextColor}
+          //   fontWeight={'bold'}
+          //   backgroundColor={colorScheme.actualColor}
+          //   onPress={() => console.log('A button was pressed')}
+          // />
+
+          // <Button
+          //   title='E'
+          //   rounded
+          //   allowFontScaling
+          //   color= {colorScheme.primaryTextColor}
+          //   fontWeight={'bold'}
+          //   backgroundColor={colorScheme.estimateColor}
+          //   onPress={() => console.log('A button was pressed')}
+          // />
