@@ -61,9 +61,18 @@ export default class TimeLineView extends Component {
 
     render() {
         // const { operations } = this.state;
+        const {params} =this.props.navigation.state;
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
+                
+                <View style={styles.headerContainer} >
+                    <Text 
+                        style={styles.headerText}
+                        h4
+                        > {params.vesselName} </Text>
+                </View>
+                
                 {!!this.state.loading && <ActivityIndicator 
                                                 color={colorScheme.primaryColor}
                                                 style={{alignSelf: 'center'}}
@@ -189,3 +198,22 @@ export default class TimeLineView extends Component {
     }
 
 }
+
+const styles = StyleSheet.create ({
+
+    headerContainer: {
+        backgroundColor: colorScheme.primaryColor,
+        alignItems: 'center',
+
+    },
+    headerText: {
+       // fontWeight: 'bold',
+        textAlign: 'center',
+        color: colorScheme.primaryTextColor,
+        
+    },
+
+
+
+
+}); 
