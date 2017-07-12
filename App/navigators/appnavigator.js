@@ -15,7 +15,7 @@ import SideMenu     from '../components/side-menu-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 
 
-export const AppNavigator = DrawerNavigator({
+export const AppNavigator = StackNavigator({
   PortCallList: { screen: PortCallList }, 
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  
@@ -28,6 +28,6 @@ export const AppNavigator = DrawerNavigator({
   contentComponent: props => <SideMenu />
 });
 
-export const StackNav = StackNavigator({
-  App: { screen: AppNavigator }
-});
+// export const StackNav = StackNavigator({
+//   App: { screen: AppNavigator }
+// });

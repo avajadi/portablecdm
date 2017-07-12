@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
+import PortCallReducer from './portcallreducer';
+import StateReducer from './statereducer';
 
 export default combineReducers({
-  banana: () => []
+  portCalls: PortCallReducer,
+  portCDMStates: StateReducer
 })
