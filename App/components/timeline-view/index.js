@@ -49,10 +49,10 @@ class TimeLineView extends Component {
         let { dataSource } = this.state;
 
         dataSource = dataSource.cloneWithRows(operations);
-        
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
+
                 {loading && <ActivityIndicator 
                                 color={colorScheme.primaryColor}
                                 style={{alignSelf: 'center'}}
@@ -63,9 +63,9 @@ class TimeLineView extends Component {
                                 dataSource={dataSource} 
                                 renderRow={(data, sectionId, rowId) => <OperationView 
                                                                             operation={data} 
-                                                                            rowNumber={rowId}/>}                
+                                                                            rowNumber={rowId}
+                                                                            navigation={this.props.navigation}/>}                
                               />
-
                 }
             </View>
         );

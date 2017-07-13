@@ -6,7 +6,6 @@ import {
 
 import { 
   Text,
-  Header,
   Icon,
   Button,
   SideMenu
@@ -26,7 +25,7 @@ export default class TopHeader extends Component {
   }
 
   render() {
-    const {title, firstPage} = this.props;
+    const {title} = this.props;
 
     return(
       <View >
@@ -35,7 +34,7 @@ export default class TopHeader extends Component {
             name= 'menu'
             color= {colorScheme.primaryContainerColor}
             size= {50}
-            onPress={() => console.log('MENU button was pressed')}
+            onPress={() => this.props.navigation.navigate('DrawerOpen', {test: 'TEST'})}
           /> 
           <Text 
             style= {styles.headerText} 

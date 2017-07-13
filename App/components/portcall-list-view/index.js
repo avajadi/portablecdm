@@ -22,7 +22,7 @@ import { getDateTimeString } from '../../util/timeservices';
 
 class PortCallList extends Component {
     static navigationOptions = {
-        header: <TopHeader title="PortCalls" firstPage={true}/>
+        header: <TopHeader title="PortCalls"/>
     }
 
     state = {
