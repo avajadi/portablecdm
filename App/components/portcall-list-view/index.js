@@ -78,7 +78,7 @@ class PortCallList extends Component {
                                     key={portCall.portCallId}
                                     title={portCall.vessel.name}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
-                                    onPress={() => navigate('TimeLineDetails', {portCallId: portCall.portCallId})}
+                                    onPress={() => navigate('TimeLineDetails', {portCallId: portCall.portCallId, vesselName: portCall.vessel.name})}
                                 />
                             ))
                         }                    

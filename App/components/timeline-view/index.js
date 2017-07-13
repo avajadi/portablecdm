@@ -65,6 +65,7 @@ class TimeLineView extends Component {
                                                                             operation={data} 
                                                                             rowNumber={rowId}/>}                
                               />
+
                 }
             </View>
         );
@@ -72,7 +73,6 @@ class TimeLineView extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state.portCalls.selectedPortCallOperations);
     return {
         loading: state.portCalls.selectedPortCallIsLoading,
         operations: state.portCalls.selectedPortCallOperations
@@ -80,3 +80,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {fetchPortCallOperations})(TimeLineView);
+

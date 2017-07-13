@@ -155,14 +155,14 @@ export default class OperationView extends Component {
                 </View>
                 <View style= {{flexDirection: 'row'}} >
                     <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
-                    {stateToDisplay.timeType === 'ACTUAL' && <Icon 
-                                                            name='font-download' 
-                                                            color={colorScheme.tertiaryColor
-                                                            } />}
-                    {stateToDisplay.timeType === 'ESTIMATED' && <Icon 
-                                                            name='access-time' 
-                                                            color={colorScheme.tertiaryColor
-                                                            } />}
+                    {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
+                                                                  <Text style={styles.actualText}>A</Text>
+                                                            </View>
+                    }
+                    {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
+                                                                    <Text style={styles.estimateText}>E</Text>
+                                                                </View>
+                    }
                 </View>
             </View>
         }
@@ -179,7 +179,7 @@ export default class OperationView extends Component {
                     <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
             </View>
         }
-        badge = {{value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, containerStyle: {backgroundColor: colorScheme.secondaryContainerColor, marginTop: 30} }}
+        badge = {{value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, containerStyle: {backgroundColor: colorScheme.backgroundColor, marginTop: 30} }}
       />
     );
   }
@@ -300,5 +300,52 @@ const styles = StyleSheet.create({
   },
   timeDisplay: {
     color: colorScheme.tertiaryColor,
-  }
+  },
+
+
+  actualText: {
+    color: colorScheme.primaryTextColor,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+
+    actualContainer: {
+    backgroundColor: colorScheme.actualColor,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    alignItems: 'center',
+  },
+
+  estimateText: {
+    color: colorScheme.primaryTextColor,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+
+  estimateContainer: {
+    backgroundColor: colorScheme.estimateColor,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    alignItems: 'center',
+  },  
+
 });
+
+
+
+
+{/*<Icon 
+  name='font-download' 
+  color={colorScheme.tertiaryColor
+  } />*/}
+
+  // <Icon 
+  //     name='access-time' 
+  //     color={colorScheme.tertiaryColor
+  //   } />
