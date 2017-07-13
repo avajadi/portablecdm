@@ -41,16 +41,12 @@ class TimeLineView extends Component {
     componentWillMount() {
         const { params } = this.props.navigation.state;
         const { portCallId } = params;
-        // const { dataSource } = this.state;
         this.props.fetchPortCallOperations(portCallId);
     }
 
     render() {
-        // const { operations } = this.state;
         const { loading, operations } = this.props;
         let { dataSource } = this.state;
-
-        console.log(this.props);
 
         dataSource = dataSource.cloneWithRows(operations);
         

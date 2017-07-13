@@ -17,6 +17,7 @@ export const removeFavoriteState = (stateId) => {
 
 export const fetchPortCalls = () => {
   return (dispatch) => {
+    dispatch({type: types.FETCH_PORTCALLS_COMMENCED});
     portCDM.getPortCalls()
             .then(result => result.json())
             .then(portCalls => Promise.all(portCalls.map(portCall => {
@@ -32,6 +33,7 @@ export const fetchPortCalls = () => {
 
 export const fetchPortCallOperations = (portCallId) => {
   return (dispatch) => {
+    dispatch({type: types.FETCH_PORTCALL_OPERATIONS_COMMENCED})
     portCDM.getPortCallOperations(portCallId)
       .then(result => result.json())
       .then(sortOperations)
@@ -39,7 +41,6 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(addLocationsToOperations)
       .then(extractWarnings)
       .then(operations => {
-        console.log(operations);
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_COMPLETED, payload: operations})
       })      
       .catch(error => console.log(error));

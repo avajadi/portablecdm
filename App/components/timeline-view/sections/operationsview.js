@@ -37,8 +37,6 @@ export default class OperationView extends Component {
 
   }
   
-  
-
   _toggleCollapsed() {
     this.setState({isCollapsed: !this.state.isCollapsed})
   }
