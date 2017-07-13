@@ -37,15 +37,15 @@ export default class OperationView extends Component {
 
   }
   
-  
-
   _toggleCollapsed() {
     this.setState({isCollapsed: !this.state.isCollapsed})
   }
 
   render() {
     const { operation, reportedStates, isCollapsed } = this.state;
-    const { rowNumber } = this.props;
+    const { rowNumber, navigation } = this.props;
+
+    console.log(navigation);
 
     // Decide what dot to display
     let dotStyle = [styles.innerDot, styles.innerFutureDot];

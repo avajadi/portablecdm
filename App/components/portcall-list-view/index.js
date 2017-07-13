@@ -1,17 +1,12 @@
-import React from 'react';
-import {Component} from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchPortCalls } from '../../actions';
+
 import {
     View,
     Text,
     StyleSheet,
-    FlatList,
-    Dimensions,
-    Image,
-    TextInput,
-    TouchableHighlight,
-    Modal,
     ScrollView
-
 } from 'react-native';
 
 import { 
@@ -19,62 +14,48 @@ import {
     Button, 
     List, 
     ListItem,
-    Icon, 
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
 import TopHeader from '../top-header-view';
-import portCDM from '../../services/backendservices';
-import {getDateTimeString} from '../../util/timeservices';
+import { getDateTimeString } from '../../util/timeservices';
 
-export default class PortCallList extends Component {
-    static navigationOptions =  {
-        header: (headerProps) => <TopHeader title="PortCalls" navigation={headerProps.navigation}/>
+class PortCallList extends Component {
+    static navigationOptions = {
+        header: <TopHeader title="PortCalls"/>
     }
 
     state = {
-        portCalls: [],
         searchTerm: '',
-        modalVisible: false,
-        showLoadingIcon: true
     }
-
-
-    _showFilterModal = () => {this.setState({modalVisible: true})};
-    _hideFilterModal = () => {this.setState({modalVisible: false})};
 
     componentWillMount() {
-        this.props.navigation.setParams({navigation: this.props.navigation});
-    }
-    
-    componentDidMount() {
-        this.fetchData()
-            .then(portCalls => this.setState({portCalls: portCalls, showLoadingIcon: false}))
-            .catch(portCallError => console.log(`Error in fetching all portcalls, ERRORMESSAGE: ${portCallError}`));
+        this.props.fetchPortCalls();
     }
 
     render() {
-        const {navigation} = this.props;
+        const {navigation, showLoadingIcon, portCalls} = this.props;
         const {navigate} = navigation;
-        const {portCalls, searchTerm} = this.state;
-        
+        const {searchTerm} = this.state;
+
         return(
             <View style={styles.container}>
                 {/*Render the search/filters header*/}
                 <View style={styles.containerRow}>
                     <SearchBar 
                         containerStyle = {styles.searchBarContainer}
-                        showLoadingIcon={this.state.showLoadingIcon}
+                        showLoadingIcon={showLoadingIcon}
                         clearIcon
                         inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
                         lightTheme  
                         placeholder='Search'
                         placeholderTextColor = {colorScheme.tertiaryTextColor}
                         onChangeText={text => this.setState({searchTerm: text})}
+                        textInputRef='textInput'
                     />
                     <Button
                         containerViewStyle={styles.buttonContainer}
-                        small    // Tror inte den här gör något
+                        small
                         icon={{
                             name: 'filter-list',
                             size: 30,
@@ -83,9 +64,6 @@ export default class PortCallList extends Component {
                         }}
                         backgroundColor = {colorScheme.primaryColor} 
                         onPress= {() => navigate('FilterMenu')}
-                        //title='Filters'
-                        //color = {colorScheme.primaryTextColor}
-                        //fontSize={10}
                     /> 
                 </View>
 
@@ -112,16 +90,6 @@ export default class PortCallList extends Component {
 
     search(portCalls, searchTerm) {
         return portCalls.filter(portCall => portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()));        
-    }
-
-    fetchData() {
-        return portCDM.getPortCalls()
-            .then(result => result.json())
-            .then(portCalls => Promise.all(portCalls.map(portCall => {
-                 return portCDM.getVessel(portCall.vesselId)
-                    .then(result => result.json())
-                    .then(vessel => {portCall.vessel = vessel; return portCall})
-            })))
     }
 }
 
@@ -155,14 +123,14 @@ const styles = StyleSheet.create({
     iconStyle: {
         alignSelf: 'stretch',
     },
-
-
-    // filterText: {
-    //     fontSize: 20,
-    // },
-    // list: {
-    //     flex: 4,
-    // }
-
 })
+
+function mapStateToProps(state) {
+    return {
+        portCalls: state.portCalls.foundPortCalls,
+        showLoadingIcon: state.portCalls.portCallsAreLoading
+    }
+}
+
+export default connect(mapStateToProps, {fetchPortCalls})(PortCallList);
 

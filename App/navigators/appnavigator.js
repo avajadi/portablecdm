@@ -16,10 +16,10 @@ import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 import StateDetails from '../components/timeline-view/sections/statedetails';
 
 
-export const AppNavigator = DrawerNavigator({
 
-  StateDetails: { screen: StateDetails},
+export const AppNavigator = StackNavigator({
   PortCallList: { screen: PortCallList }, 
+  StateDetails: { screen: StateDetails},
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  
   ActorSelection: { screen: ActorList },
@@ -30,8 +30,4 @@ export const AppNavigator = DrawerNavigator({
 
 }, {
   contentComponent: props => <SideMenu />
-});
-
-export const StackNav = StackNavigator({
-  App: { screen: AppNavigator }
 });
