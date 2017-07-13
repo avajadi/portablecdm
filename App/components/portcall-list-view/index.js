@@ -29,7 +29,7 @@ class PortCallList extends Component {
         searchTerm: '',
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.fetchPortCalls();
     }
 
@@ -55,7 +55,7 @@ class PortCallList extends Component {
                     />
                     <Button
                         containerViewStyle={styles.buttonContainer}
-                        small    // Tror inte den här gör något
+                        small
                         icon={{
                             name: 'filter-list',
                             size: 30,
