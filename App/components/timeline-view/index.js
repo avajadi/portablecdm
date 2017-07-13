@@ -82,6 +82,7 @@ export default class TimeLineView extends Component {
                                             enableEmptySections
                                             dataSource={this.state.dataSource} 
                                             renderRow={(data, sectionId, rowId) => <OperationView 
+                                                                                        navigation={this.props.navigation}
                                                                                         operation={data} 
                                                                                         rowNumber={rowId}/>}                
                                         />

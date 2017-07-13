@@ -28,8 +28,8 @@ import portCDM from '../../services/backendservices';
 import {getDateTimeString} from '../../util/timeservices';
 
 export default class PortCallList extends Component {
-    static navigationOptions = {
-        header: <TopHeader title="PortCalls" firstPage={true}/>
+    static navigationOptions =  {
+        header: (headerProps) => <TopHeader title="PortCalls" navigation={headerProps.navigation}/>
     }
 
     state = {
@@ -39,9 +39,14 @@ export default class PortCallList extends Component {
         showLoadingIcon: true
     }
 
+
     _showFilterModal = () => {this.setState({modalVisible: true})};
     _hideFilterModal = () => {this.setState({modalVisible: false})};
 
+    componentWillMount() {
+        this.props.navigation.setParams({navigation: this.props.navigation});
+    }
+    
     componentDidMount() {
         this.fetchData()
             .then(portCalls => this.setState({portCalls: portCalls, showLoadingIcon: false}))
@@ -52,9 +57,7 @@ export default class PortCallList extends Component {
         const {navigation} = this.props;
         const {navigate} = navigation;
         const {portCalls, searchTerm} = this.state;
-
-//alignItems: 'center'
-
+        
         return(
             <View style={styles.container}>
                 {/*Render the search/filters header*/}

@@ -13,9 +13,12 @@ import TimeLineView from '../components/timeline-view';
 import SideMenu     from '../components/side-menu-view';
 //import TopHeader    from '../components/top-header-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
+import StateDetails from '../components/timeline-view/sections/statedetails';
 
 
 export const AppNavigator = DrawerNavigator({
+
+  StateDetails: { screen: StateDetails},
   PortCallList: { screen: PortCallList }, 
   TimeLineDetails: {screen: TimeLineView},
   Home: { screen: Home },  
@@ -23,7 +26,8 @@ export const AppNavigator = DrawerNavigator({
   MainMenu: { screen: MainMenu },
   SendPortCall: { screen: SendPortCall },
   StateSelection: { screen: StateList },
-  FilterMenu: {screen: FilterMenu}
+  FilterMenu: {screen: FilterMenu},
+
 }, {
   contentComponent: props => <SideMenu />
 });

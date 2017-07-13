@@ -126,7 +126,9 @@ export default class OperationView extends Component {
                   }) 
                   .map((mostRelevantStatement) => this.renderStateRow(operation, 
                                                       mostRelevantStatement, 
-                                                      reportedStates[mostRelevantStatement.stateDefinition]))
+                                                      reportedStates[mostRelevantStatement.stateDefinition],
+                                                      this.props.navigation.navigate
+                                                      ))
               }
             </List>
           </Collapsible>
@@ -136,11 +138,12 @@ export default class OperationView extends Component {
     );
   }
 
-  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements) {
+  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate) {
     const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
     const stateCount = allOfTheseStatements.length;
+    console.log(navigate);
 
     return (
       <ListItem
@@ -150,23 +153,28 @@ export default class OperationView extends Component {
         }}
         key={stateToDisplay.messageId}
         title = {
-            <View style={{flexDirection:'column'}}>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={{fontWeight: 'bold'}} >{stateToDisplay.stateDefinition}</Text>
-                  {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
-                </View>
-                <View style= {{flexDirection: 'row'}} >
-                    <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
-                    {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
-                                                                  <Text style={styles.actualText}>A</Text>
-                                                            </View>
-                    }
-                    {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
-                                                                    <Text style={styles.estimateText}>E</Text>
-                                                                </View>
-                    }
-                </View>
-            </View>
+            <TouchableWithoutFeedback 
+                style={{flexDirection:'column'}}
+                onPress={ () => navigate('StateDetails') }
+            >
+              <View>  
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={{fontWeight: 'bold'}} >{stateToDisplay.stateDefinition}</Text>
+                    {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
+                  </View>
+                  <View style= {{flexDirection: 'row'}} >
+                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
+                      {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
+                                                                    <Text style={styles.actualText}>A</Text>
+                                                              </View>
+                      }
+                      {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
+                                                                      <Text style={styles.estimateText}>E</Text>
+                                                                  </View>
+                      }
+                  </View>
+              </View>
+            </TouchableWithoutFeedback>
         }
         subtitle = {
             <View style={{flexDirection: 'column'}} >
