@@ -39,7 +39,6 @@ class TimeLineView extends Component {
     }
 
     componentWillMount() {
-        // const { params } = this.props.navigation.state;
         const { portCallId } = this.props;
         this.props.fetchPortCallOperations(portCallId);
     }

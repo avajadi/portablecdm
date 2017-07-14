@@ -9,14 +9,45 @@ const INITIAL_STATE = {
   selectedPortCallIsLoading: false,
 }
 
-// MÅSTE LISTA UT HUR MAN SKA GÖRA UTAN LOADING BOOLEANSARNA, ATT SÄTTA DOM TILL TRUE NÄR VI INITIERAR EN 
+/*
+  Operation data structure:
+  operation = {
+    operationId: string (urn),
+    definitionId: string (ex: PORT_VISIT),
+    portCallId: string (urn),
+    startTime: string (time),
+    startTimeType: string (ACTUAL | ESTIMATED)
+    endTime: string (time),
+    endTimeType: string (ACTUAL | ESTIMATED),
+    from: string (urn),
+    fromLocation: {
+      name: string,
+      aliases: [string],
+      area: {
+        coordinates: [ {longitude, latitude} ]
+      },
+      position: {longitude, latitude},
+      locationType: string (ex: BERTH),
+      urn: string (urn)
+    }
+    to: string (urn),
+    toLocation: SEE fromLocation
+    at: string (urn),
+    atLocation: SEE fromLocation,
+    isExpired: boolean,
+    status: (WARNING | CRITICAL | OK) ...tror jag, inte säker på vilka alternativ som finns
+    warnings: [string] (array with warnings that isn't tied to a specific state)
+    reportedStates: {
+      Arrival_Vessel_Berth: [all reported statements of this state]. also has a member .warnings, that is an array of warnings, as above but they are tied to this state (ex: op.reportedStates.Arrival_Vessel_Berth.warnings)
+    }
+  }
+*/
 
 export default (state = INITIAL_STATE, action) => {
 
   switch(action.type) {
     case types.SELECT_PORTCALL:
-      // const vessel = action.payload.vessel;
-      let {vessel, ...portCall} = action.payload;
+      const {vessel, ...portCall} = action.payload;
       return { ... state, vessel: vessel, selectedPortCall: portCall }
     case types.FETCH_PORTCALLS:
       return { ... state, portCallsAreLoading: true};
