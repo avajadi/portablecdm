@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPortCalls } from '../../actions';
+import { fetchPortCalls, selectPortCall } from '../../actions';
 
 import {
     View,
@@ -34,7 +34,7 @@ class PortCallList extends Component {
     }
 
     render() {
-        const {navigation, showLoadingIcon, portCalls} = this.props;
+        const {navigation, showLoadingIcon, portCalls, selectPortCall} = this.props;
         const {navigate} = navigation;
         const {searchTerm} = this.state;
 
@@ -78,7 +78,10 @@ class PortCallList extends Component {
                                     key={portCall.portCallId}
                                     title={portCall.vessel.name}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
-                                    onPress={() => navigate('TimeLineDetails', {portCallId: portCall.portCallId, vesselName: portCall.vessel.name})}
+                                    onPress={() => {
+                                        selectPortCall(portCall);
+                                        navigate('TimeLineDetails')
+                                    }}
                                 />
                             ))
                         }                    
@@ -132,5 +135,5 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchPortCalls})(PortCallList);
+export default connect(mapStateToProps, {fetchPortCalls, selectPortCall})(PortCallList);
 
