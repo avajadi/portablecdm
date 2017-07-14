@@ -46,12 +46,20 @@ class TimeLineView extends Component {
 
     render() {
         const { loading, operations } = this.props;
+        const {params} = this.props.navigation.state;
         let { dataSource } = this.state;
 
         dataSource = dataSource.cloneWithRows(operations);
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
+
+                <View style={styles.headerContainer} >
+                    <Text 
+                        style={styles.headerText}
+                        h4
+                        > {params.vesselName}</Text>
+                </View>
 
                 {loading && <ActivityIndicator 
                                 color={colorScheme.primaryColor}
@@ -64,7 +72,9 @@ class TimeLineView extends Component {
                                 renderRow={(data, sectionId, rowId) => <OperationView 
                                                                             operation={data} 
                                                                             rowNumber={rowId}
-                                                                            navigation={this.props.navigation}/>}                
+                                                                            navigation={this.props.navigation}
+                                                                            vesselName={params.vesselName}
+                                                                            />}                
                               />
                 }
             </View>
@@ -72,12 +82,33 @@ class TimeLineView extends Component {
     }
 }
 
+
+const styles = StyleSheet.create ({
+
+    headerContainer: {
+        backgroundColor: colorScheme.primaryColor,
+        alignItems: 'center',
+
+    },
+    headerText: {
+       // fontWeight: 'bold',
+        textAlign: 'center',
+        color: colorScheme.primaryTextColor,
+        
+    },
+});
+
+
+
 function mapStateToProps(state) {
     return {
         loading: state.portCalls.selectedPortCallIsLoading,
-        operations: state.portCalls.selectedPortCallOperations
+        operations: state.portCalls.selectedPortCallOperations,
     };
 }
 
 export default connect(mapStateToProps, {fetchPortCallOperations})(TimeLineView);
+
+
+
 

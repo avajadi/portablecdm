@@ -19,8 +19,8 @@ import StateDetails from '../components/timeline-view/sections/statedetails';
 
 export const AppNavigator = StackNavigator({
   PortCallList: { screen: PortCallList }, 
-  StateDetails: { screen: StateDetails},
   TimeLineDetails: {screen: TimeLineView},
+  StateDetails: { screen: StateDetails}, 
   Home: { screen: Home },  
   ActorSelection: { screen: ActorList },
   MainMenu: { screen: MainMenu },
