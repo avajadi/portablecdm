@@ -53,7 +53,6 @@ export default class SendPortcall extends Component {
 
     this._showActivityIndicator();
     portCDM.sendPortCall(pcm)
-      .then(result => {console.log(result)})
       .then(result => {this._hideActivityIndicator()})
       .catch(error => {console.log(error)})
   }

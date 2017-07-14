@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Text} from 'react-native';
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 
 
 import ActorList    from '../components/actor-list-view';

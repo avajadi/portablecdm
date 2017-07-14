@@ -22,7 +22,7 @@ import { fetchPortCallOperations } from '../../actions';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
 import TopHeader from '../top-header-view';
-import OperationView from './sections/operationsview';
+import OperationView from './sections/operationview';
 
 class TimeLineView extends Component {
     static navigationOptions = {

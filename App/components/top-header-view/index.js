@@ -72,24 +72,3 @@ const styles = StyleSheet.create({
     color: colorScheme.primaryTextColor,
   },
 });
-
-
-          //  <Button
-          //   title='A'
-          //   rounded
-          //   allowFontScaling
-          //   color= {colorScheme.primaryTextColor}
-          //   fontWeight={'bold'}
-          //   backgroundColor={colorScheme.actualColor}
-          //   onPress={() => console.log('A button was pressed')}
-          // />
-
-          // <Button
-          //   title='E'
-          //   rounded
-          //   allowFontScaling
-          //   color= {colorScheme.primaryTextColor}
-          //   fontWeight={'bold'}
-          //   backgroundColor={colorScheme.estimateColor}
-          //   onPress={() => console.log('A button was pressed')}
-          // />

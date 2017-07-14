@@ -33,6 +33,3 @@ PortCDMConfig.endpoints = {
     vessel: (vesselId) => `${PortCDMConfig.host}/vr/vessel/${vesselId}`
   },
 }
-
-
-//vr/vessel För vessel-info

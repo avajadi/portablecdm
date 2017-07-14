@@ -21,8 +21,6 @@ import colorScheme from '../../config/colors';
 
 export default class SideMenu extends Component {
   render() {
-    //const {params} = this.props.navigation.state;
-    //const {test} = params;
     return(
       <ScrollView style={styles.container}>
 
