@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+
+import { connect } from 'react-redux';
+
 import { 
     View,
     StyleSheet,
@@ -27,8 +30,8 @@ class StateDetails extends Component {
 
  
     render () {
-        const {params} = this.props.navigation.state;
-
+        const operation = this.props.navigation.state.params.operation;
+        const { vessel, portCall} = this.props;
 
         return(
             
@@ -37,10 +40,10 @@ class StateDetails extends Component {
                 <View style={styles.headerContainer} >
                    {/* Vessel Name and avatar */}
                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.headerTitleText}> vesselName </Text>
+                        <Text style={styles.headerTitleText}> {vessel.name} </Text>
                     </View>
                     {/* Operation subtitle */}
-                    <Text style={styles.headerSubText}> Port Visit at Gothenburg </Text>
+                    <Text style={styles.headerSubText}> {operation.definitionId} at {operation.atLocation.name} </Text>
                 </View>
 
             {/* State List of this state */}
@@ -119,7 +122,6 @@ class StateDetails extends Component {
     }
 }
 
-export default StateDetails;
 
 const styles = StyleSheet.create({
     container: {
@@ -245,8 +247,11 @@ const styles = StyleSheet.create({
 
 });
 
+function mapStateToProps (state) {
+    return {
+        vessel: state.portCalls.vessel,
+        portCall: state.portCalls.selectedPortCall,
+    }
+}
 
-
-                // <Divider 
-                //     style={{backgroundColor: 'blue'}}
-                // />
+export default connect(mapStateToProps)(StateDetails);

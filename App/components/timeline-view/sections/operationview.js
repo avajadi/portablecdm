@@ -123,10 +123,9 @@ export default class OperationView extends Component {
 
                   }) 
                   .map((mostRelevantStatement) => this.renderStateRow(operation, 
-                                                      mostRelevantStatement, 
-                                                      reportedStates[mostRelevantStatement.stateDefinition],
-                                                      this.props.navigation.navigate,
-                                                      this.props.vesselName,
+                                                        mostRelevantStatement, 
+                                                        reportedStates[mostRelevantStatement.stateDefinition],
+                                                        this.props.navigation.navigate,
                                                       ))
               }
             </List>
@@ -137,7 +136,7 @@ export default class OperationView extends Component {
     );
   }
 
-  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, vesselName) {
+  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate) {
     const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
@@ -153,7 +152,7 @@ export default class OperationView extends Component {
         title = {
             <TouchableWithoutFeedback 
                 style={{flexDirection:'column'}}
-                onPress={ () => navigate('StateDetails', {vesselName: vesselName} ) }
+                onPress={ () => navigate('StateDetails', {operation: operation} ) }
             >
               <View>  
                   <View style={{flexDirection: 'row'}}>
