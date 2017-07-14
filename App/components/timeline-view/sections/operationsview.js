@@ -45,8 +45,6 @@ export default class OperationView extends Component {
     const { operation, reportedStates, isCollapsed } = this.state;
     const { rowNumber, navigation } = this.props;
 
-    console.log(navigation);
-
     // Decide what dot to display
     let dotStyle = [styles.innerDot, styles.innerFutureDot];
     if(operation.endTimeType === 'ACTUAL') dotStyle = [styles.innerDot, styles.innerCompleteDot];
@@ -127,7 +125,8 @@ export default class OperationView extends Component {
                   .map((mostRelevantStatement) => this.renderStateRow(operation, 
                                                       mostRelevantStatement, 
                                                       reportedStates[mostRelevantStatement.stateDefinition],
-                                                      this.props.navigation.navigate
+                                                      this.props.navigation.navigate,
+                                                      this.props.vesselName,
                                                       ))
               }
             </List>
@@ -138,12 +137,11 @@ export default class OperationView extends Component {
     );
   }
 
-  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate) {
+  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, vesselName) {
     const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
     const stateCount = allOfTheseStatements.length;
-    console.log(navigate);
 
     return (
       <ListItem
@@ -155,7 +153,7 @@ export default class OperationView extends Component {
         title = {
             <TouchableWithoutFeedback 
                 style={{flexDirection:'column'}}
-                onPress={ () => navigate('StateDetails') }
+                onPress={ () => navigate('StateDetails', {vesselName: vesselName} ) }
             >
               <View>  
                   <View style={{flexDirection: 'row'}}>

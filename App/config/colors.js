@@ -20,7 +20,7 @@ const colorScheme = {
   primaryTextColor : 'white', // White text | Headers, 
   secondaryTextColor : 'black', // Black text | Containers and boxes
   tertiaryTextColor : '#86939e', // Dark grey text for seach bars
-
+  quaternaryTextColor: '#171e2a', // Dark dark grey, almost black
 };
 
 export default colorScheme;
