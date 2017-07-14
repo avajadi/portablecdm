@@ -39,17 +39,16 @@ class TimeLineView extends Component {
     }
 
     componentWillMount() {
-        const { params } = this.props.navigation.state;
-        const { portCallId } = params;
+        const { portCallId } = this.props;
         this.props.fetchPortCallOperations(portCallId);
     }
 
     render() {
-        const { loading, operations } = this.props;
+        const { loading, operations, vesselName } = this.props;
         const {params} = this.props.navigation.state;
         let { dataSource } = this.state;
 
-        dataSource = dataSource.cloneWithRows(operations);
+        if(!loading) dataSource = dataSource.cloneWithRows(operations);
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
@@ -58,7 +57,7 @@ class TimeLineView extends Component {
                     <Text 
                         style={styles.headerText}
                         h4
-                        > {params.vesselName}</Text>
+                        > {vesselName}</Text>
                 </View>
 
                 {loading && <ActivityIndicator 
@@ -73,7 +72,7 @@ class TimeLineView extends Component {
                                                                             operation={data} 
                                                                             rowNumber={rowId}
                                                                             navigation={this.props.navigation}
-                                                                            vesselName={params.vesselName}
+                                                                            vesselName={vesselName}
                                                                             />}                
                               />
                 }
@@ -104,6 +103,8 @@ function mapStateToProps(state) {
     return {
         loading: state.portCalls.selectedPortCallIsLoading,
         operations: state.portCalls.selectedPortCallOperations,
+        vesselName: state.portCalls.vessel.name,
+        portCallId: state.portCalls.selectedPortCall.portCallId
     };
 }
 

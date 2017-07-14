@@ -44,7 +44,6 @@ export default class OperationView extends Component {
   render() {
     const { operation, reportedStates, isCollapsed } = this.state;
     const { rowNumber, navigation } = this.props;
-    const {params} = this.props.navigation.state;
 
     // Decide what dot to display
     let dotStyle = [styles.innerDot, styles.innerFutureDot];
@@ -127,7 +126,7 @@ export default class OperationView extends Component {
                                                       mostRelevantStatement, 
                                                       reportedStates[mostRelevantStatement.stateDefinition],
                                                       this.props.navigation.navigate,
-                                                      params.vesselName,
+                                                      this.props.vesselName,
                                                       ))
               }
             </List>

@@ -17,7 +17,7 @@ export const removeFavoriteState = (stateId) => {
 
 export const fetchPortCalls = () => {
   return (dispatch) => {
-    dispatch({type: types.FETCH_PORTCALLS_COMMENCED});
+    dispatch({type: types.FETCH_PORTCALLS});
     portCDM.getPortCalls()
             .then(result => result.json())
             .then(portCalls => Promise.all(portCalls.map(portCall => {
@@ -26,14 +26,21 @@ export const fetchPortCalls = () => {
                     .then(vessel => {portCall.vessel = vessel; return portCall})
             })))
             .then(portCalls => {
-              dispatch({type: types.FETCH_PORTCALLS_COMPLETED, payload: portCalls})
+              dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
             })
   };
 }
 
+export const selectPortCall = (portCall) => {
+    return {
+        type: types.SELECT_PORTCALL,
+        payload: portCall        
+    };
+}
+
 export const fetchPortCallOperations = (portCallId) => {
   return (dispatch) => {
-    dispatch({type: types.FETCH_PORTCALL_OPERATIONS_COMMENCED})
+    dispatch({type: types.FETCH_PORTCALL_OPERATIONS})
     portCDM.getPortCallOperations(portCallId)
       .then(result => result.json())
       .then(sortOperations)
@@ -41,7 +48,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(addLocationsToOperations)
       .then(extractWarnings)
       .then(operations => {
-        dispatch({type: types.FETCH_PORTCALL_OPERATIONS_COMPLETED, payload: operations})
+        dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
       .catch(error => console.log(error));
   };
@@ -53,8 +60,7 @@ function addLocationsToOperations(operations) {
         try {
             if(operation.at) {
                 operation.atLocation = await portCDM.getLocation(operation.at)
-                                            .then(result => result.json());
-                
+                                            .then(result => result.json());               
             }
 
             if(operation.from) {
