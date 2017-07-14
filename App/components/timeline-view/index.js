@@ -39,8 +39,7 @@ class TimeLineView extends Component {
     }
 
     componentWillMount() {
-        const { params } = this.props.navigation.state;
-        const { portCallId } = params;
+        const { portCallId } = this.props;
         this.props.fetchPortCallOperations(portCallId);
     }
 
@@ -48,7 +47,7 @@ class TimeLineView extends Component {
         const { loading, operations } = this.props;
         let { dataSource } = this.state;
 
-        dataSource = dataSource.cloneWithRows(operations);
+        if(!loading) dataSource = dataSource.cloneWithRows(operations);
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
@@ -75,7 +74,9 @@ class TimeLineView extends Component {
 function mapStateToProps(state) {
     return {
         loading: state.portCalls.selectedPortCallIsLoading,
-        operations: state.portCalls.selectedPortCallOperations
+        operations: state.portCalls.selectedPortCallOperations,
+        vesselName: state.portCalls.vessel.name,
+        portCallId: state.portCalls.selectedPortCall.portCallId
     };
 }
 
