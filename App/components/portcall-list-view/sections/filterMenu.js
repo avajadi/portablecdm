@@ -5,6 +5,8 @@ import {
     StyleSheet,
     ScrollView,
     Dimensions,
+    Modal,
+    TouchableHighlight,
 } from 'react-native';
 import colorScheme from '../../../config/colors';
 import {
@@ -15,6 +17,7 @@ import {
     ButtonGroup,
     Badge,
     Slider,
+    CheckBox,
 } from 'react-native-elements';
 
 
@@ -24,9 +27,11 @@ export default class FilterMenu extends Component {
 constructor(){
     super()
     this.state = {
-        selectedIndex: 2
+        selectedSortByIndex: 0,
+        selectedOrderByIndex: 0,
+        modalVisible: false,
     }
-    this.updateIndex = this.updateIndex.bind(this)
+  //  this.updateIndex = this.updateIndex.bind(this)
 }
 
 static navigationOptions = {
@@ -37,14 +42,23 @@ static navigationOptions = {
                     />,
 }
 
-updateIndex (selectedIndex) {
-    this.setState({selectedIndex})
+// updateIndex (selectedSortByIndex) {
+//     this.setState({selectedSortByIndex})
+// }
+// updateIndex (selectedOrderByIndex) {
+//     this.setState({selectedOrderByIndex})
+// }
+
+setModalVisible(visible){
+    this.setState({modalVisible: visible});
 }
 
+
 render() {
-const sortTextNames = ['Arrival Date', 'Last Update', 'Vessel Name']
-const buttonstextnames = ['DECENDING', 'ASCENDING']
-const {selectedIndex} =this.state
+const buttonsSortBy = ['Arrival Date', 'Last Update', 'Vessel Name']
+const buttonsOrderBy = ['DECENDING', 'ASCENDING']
+const {selectedSortByIndex, selectedOrderByIndex} =this.state
+
 
 
     return(
@@ -53,46 +67,136 @@ const {selectedIndex} =this.state
             <View style={styles.smallContainer}> 
                 <Text style={styles.textTitle}> Sort by </Text>
                     <ButtonGroup
-                        buttons={sortTextNames}
-                        selectedIndex={selectedIndex}
+                        buttons={buttonsSortBy}
+                        selectedIndex={selectedSortByIndex}
                         containerStyle={styles.buttonStyle}
-                        textStyle={{color: 'black', textAlign: 'center'}}
+                        textStyle={{color: colorScheme.quaternaryTextColor, textAlign: 'center'}}
                         underlayColor= {colorScheme.secondaryColor}
-                        selectedTextStyle='red'
-                        onPress={() => console.log('SortGruop was pressed')}
+                        selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                        selectedBackgroundColor={colorScheme.primaryColor}
+                        onPress={(index) => this.setState({selectedSortByIndex: index})}
                     />
             </View>
 
             <View style={styles.smallContainer}> 
                 <Text style={styles.textTitle}> Order by </Text>
                     <ButtonGroup
-                        buttons={buttonstextnames}
-                        selectedIndex={selectedIndex}
+                        buttons={buttonsOrderBy}
+                        selectedIndex={selectedOrderByIndex}
                         containerStyle={styles.buttonStyle}
-                        textStyle={{color: 'black'}}
+                        textStyle={{color: colorScheme.quaternaryTextColor}}
                         underlayColor= {colorScheme.secondaryColor}
-                        selectedTextStyle='red'
-                        onPress={() => console.log('BUTTONGROUP was pressed')}
+                        selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                        selectedBackgroundColor={colorScheme.primaryColor}
+                        onPress={(index) => this.setState({selectedOrderByIndex: index})}
                     />
             </View>
           
+{/*height: Dimensions.get('window').height*/}
+
+
+
+            <View style={styles.smallContainer}> 
+            
+
+            {/*Testing Modal*/}
+            <Modal
+                animationType={"slide"}
+                transparent={false}
+                visible={this.state.modalVisible}
+                onRequestClose={ () => {alert("Modal has been closed")}}
+            >
+
+
+
+                {/*Modal View*/}
+                <View style={styles.modalContainerStyle}>
+                    
+                    {/*Modal Header with close, title and reset button*/}
+                    <View style={styles.modalHeaderStyle}> 
+                        <Icon 
+                            name= "close"
+                            onPress={() => {
+                            this.setModalVisible(!this.state.modalVisible)
+                            }}>
+                        </Icon>
+                       <Text style={styles.modalHeaderTextStyle}>TimeType</Text> 
+                       <Text style={{color: colorScheme.primaryColor}}> Reset </Text> 
+                    </View>
+                    
+                    {/*Modal Sub Container with filter options*/}
+                    <View style={styles.modalSubContainer}>
+                        <View>
+                            <List>
+                                
+                                <CheckBox // Testa att ändra färgen på Icon
+                                    title='Click Here'
+                                    containerStyle={{backgroundColor: 'white'}}
+                                    textStyle={{color: colorScheme.primaryColor}}
+                                    iconType='material'
+                                    checkedIcon='close'
+                                    uncheckedIcon='check'
+                                    checked= {console.log('Pressed CHECKBOX ')}
+                                    iconRight
+                                  //checkedColor='red'
+                                />
+                                <CheckBox // Testa att ändra färgen på Icon
+                                    title='Click Here'
+                                    containerStyle={{backgroundColor: 'white'}}
+                                    textStyle={{color: colorScheme.primaryColor}}
+                                    iconType='material'
+                                    checkedIcon='close'
+                                    uncheckedIcon='check'
+                                    checked= {console.log('Pressed CHECKBOX #2 ')}
+                                    iconRight
+                                    checkedColor='red'
+                                />
+                                <ListItem
+                                    title='Arrival Time'    
+                                    titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                                    badge={{
+                                        value: 'CHECKED', 
+                                        textStyle: { color: colorScheme.secondaryColor },
+                                        containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
+                                        
+                                        }}
+                                    onPress={ () => console.log('List item pressed')}
+                                />
+                                <ListItem
+                                    title='Departure Time'    
+                                    titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                                    badge={{
+                                        value: 'ICON', 
+                                        textStyle: { color: colorScheme.secondaryColor },
+                                        containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
+                                        
+                                        }}
+                                    onPress={ () => console.log('List item pressed')}
+                                />
+                            </List>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
 
 
 
 
-            <View> 
-                <Text style={styles.textTitle}> Mixed </Text>
+
+
+                <Text style={styles.textTitle}> Mixed filters </Text>
                 {/* List first then sliding bar */}
                 <List>
                     <ListItem
                         title='Time Type'    
-                        //titleStyle= {color= 'black'}
+                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
                         badge={{
                             value: 'Arrival', 
-                            textStyle: { color: colorScheme.tertiaryTextColor },
+                            textStyle: { color: colorScheme.secondaryColor },
                             containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
                             
                             }}
+                        onPress={ () => {this.setModalVisible(true)}}
                     />
                 </List>
                 <Text style={styles.textTitle}> Time Within </Text>
@@ -112,27 +216,30 @@ const {selectedIndex} =this.state
                 <List>
                     <ListItem
                         title='Stages'    
+                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
                         badge={{
                             value: 5, 
-                            textStyle: { color: colorScheme.tertiaryTextColor },
+                            textStyle: { color: colorScheme.secondaryColor },
                             containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
                             
                             }}
                     />
                     <ListItem
                         title='Status'    
+                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
                         badge={{
                             value: 'OK', 
-                            textStyle: { color: colorScheme.tertiaryTextColor },
+                            textStyle: { color: colorScheme.secondaryColor },
                             containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
                             
                             }}
                     />
                     <ListItem
                         title='Vessel Type'    
+                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
                         badge={{
                             value: 'Tanker, Cargo',
-                            textStyle: { color: colorScheme.tertiaryTextColor },
+                            textStyle: { color: colorScheme.secondaryColor },
                             containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
                             
                             }}
@@ -140,7 +247,8 @@ const {selectedIndex} =this.state
                 </List>
             </View>
 
-                        <View> 
+            {/*Limit View with title and slider*/}
+            <View> 
                 <Text style={styles.textTitle}> Limit </Text>
                 {/* List first then sliding bar */}
                 <Slider
@@ -150,13 +258,23 @@ const {selectedIndex} =this.state
                 />
                 <Text> Value: {this.state.value} </Text>
             </View>
+        
+            {/*Button - SHOW RESULTS*/}
+            <View style={{backgroundColor: colorScheme.primaryColor, marginTop: 10, paddingVertical: 5,}}>
+                <Button 
+                    title="Show Results"
+                    textStyle={{color: colorScheme.primaryTextColor}}
+                    buttonStyle={{backgroundColor: colorScheme.primaryColor}}
+                    onPress={ () => console.log('Show Results button were pressed')}
+                />
+            </View>
 
         </ScrollView>
     ); //Return
-
-
 } //Render
 }; //Class FilterMenu 
+
+
 
 
 const styles = StyleSheet.create({
@@ -166,7 +284,7 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         textAlign: 'center',
-        color: colorScheme.secondaryTextColor,
+        color: colorScheme.quaternaryTextColor,
         fontWeight: 'bold',
         paddingBottom: 10 ,
     },
@@ -183,14 +301,42 @@ const styles = StyleSheet.create({
         flex: 1,
          justifyContent: 'center',
     },
-
-
     // Bara för ButtonGroup
     buttonStyle: { 
        // borderRadius: 2,
         backgroundColor: colorScheme.primaryContainerColor,
-      //  height: 50,
+        height: 50,
      //   paddingLeft: 50,
+    },
+
+    // MODAL
+    modalContainerStyle: {
+        backgroundColor: colorScheme.primaryContainerColor ,
+        flex: 1,
+    },
+    modalHeaderStyle: {
+        backgroundColor: colorScheme.primaryContainerColor,
+        flexDirection:'row',
+        marginTop: 27,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 5,
+    },
+    modalHeaderTextStyle: {
+        color: 'black',
+        fontSize: 16,
+        //fontWeight: 'bold',
+        marginBottom: 5,
+        textAlign: 'center',
+        justifyContent: 'center',
+    },
+    modalSubContainer: {
+        backgroundColor: colorScheme.backgroundColor,
+        flex: 1,
+        borderColor: colorScheme.secondaryContainerColor,
+        borderTopWidth: 1,        
     },
 
 

@@ -34,9 +34,12 @@ export function getTimeString(date) {
  */
 export function getDateTimeString(date) {
   if(userConfig.timeDisplayMode === timeDisplayModes.local) {
-    let onlyDate = date.toLocaleDateString();
-    let onlyTime = date.toLocaleTimeString();
-    return `${onlyDate} ${onlyTime}`;
+    let onlyYear = date.getFullYear();
+    let onlyDay = date.getDate();
+    let onlyMonth = date.getMonth() +1 ;
+    let onlyHour = date.getHours();
+    let onlyMin = date.getMinutes();
+    return `${('0' + onlyMonth).slice(-2)}/${('0' + onlyDay).slice(-2)}/${onlyYear} ${('0' + onlyHour).slice(-2)}:${('0' + onlyMin).slice(-2)}`;
   } else if (userConfig.timeDisplayMode === timeDisplayModes.local) {
     return date.toUTCString();
   }

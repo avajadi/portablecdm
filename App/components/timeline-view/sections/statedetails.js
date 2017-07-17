@@ -21,6 +21,8 @@ import {
 } from 'react-native-elements';
 import colorScheme from '../../../config/colors';
 import TopHeader from '../../top-header-view';
+import {getDateTimeString} from '../../../util/timeservices';
+import {removeStringReportedBy, removeStringAtLocation} from '../../../util/stringutils';
 
 
 class StateDetails extends Component {
@@ -32,6 +34,7 @@ class StateDetails extends Component {
     render () {
         const operation = this.props.navigation.state.params.operation;
         const { vessel, portCall} = this.props;
+        const statements = this.props.navigation.state.params.statements;
 
         return(
             
@@ -39,83 +42,96 @@ class StateDetails extends Component {
                 {/* Vessel Name and Operation subtitle */}
                 <View style={styles.headerContainer} >
                    {/* Vessel Name and avatar */}
-                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={styles.headerTitleText}> {vessel.name} </Text>
                     </View>
                     {/* Operation subtitle */}
-                    <Text style={styles.headerSubText}> {operation.definitionId} at {operation.atLocation.name} </Text>
+                        { operation.atLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} at {operation.atLocation.name} </Text>}
+                        { operation.fromLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} from {operation.fromLocation.name} </Text>}
+                        { operation.toLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} to {operation.toLocation.name} </Text>}
+                        
                 </View>
-
             {/* State List of this state */}
             <ScrollView style={styles.container}>
+ 
+
+                {/*Warnings*/}
+                {statements.warnings &&
+                    statements.warnings.map(warning => {
+                    return (
+                        <View style={styles.warningContainer}>
+                            <Icon name='warning' color={colorScheme.warningColor} size={24} paddingLeft={0}/>
+                            <Text style={styles.warningText} >Warning: {warning.message}</Text>
+                        </View>
+                    );
+                })} 
+
 
                 {/*StateView*/}
-                <View style={styles.stateContainer}> 
-                    {/*TitleView*/}
-                    <View style={styles.titleContainer}> 
-                        <Text style={styles.stateTitleText}>ARRIVAL VESSEL TRAFFIC AREA</Text>  
-                    </View>
-                    <Divider style={{backgroundColor: colorScheme.actualColor}}/>   
-                    {/*tertiaryTextColor*/}
-                    {/*DetailView*/}
-                    <View style={styles.detailContainer}>
-                        <View style={styles.timeView}> 
-                            <Text style={styles.stateSubTitleText}>Time: </Text> 
-                            <Text style={styles.detailText}>20.00   </Text>
-                            <View style={styles.actualContainer}>
-                                <Text style={styles.actualText}>A</Text>
-                            </View>  
-                        </View>
-                        <Text style={styles.stateSubTitleText}>At:</Text>   
-                        <Text style={styles.stateSubTitleText}>Reported By:</Text>  
-                        <Text style={styles.stateSubTitleTextDisabled}>From:</Text>
-                        <Text style={styles.stateSubTitleTextDisabled}>To:</Text>
-                                 
-                        <Text style={styles.stateSubTitleTextDisabled}>Reliability: %</Text>
-                        <Text style={styles.stateSubTitleTextDisabled}>Warnings:</Text>  
-                    </View>     
-                </View>
 
+                {statements.map( statement => {
+                    return(
+                        <View style={styles.stateContainer}> 
+                            {/*TitleView*/}
+                            <View style={styles.titleContainer}> 
+                                <Text style={styles.stateTitleText}> {statements[0].stateDefinition} </Text>  
 
-
-{/*StateView*/}
-                <View style={styles.stateContainer}> 
-                    {/*TitleView*/}
-                    <View style={styles.titleContainer}> 
-                        <Text style={styles.stateTitleText}>DEPARTURE VESSEL TRAFFIC AREA</Text>  
-                    </View>
-                    <Divider style={{backgroundColor: colorScheme.estimateColor}}/>
-                    {/*DetailView*/}
-                    <View style={styles.detailContainer}>
-                        <View style={styles.timeView}> 
-                            <Text style={styles.stateSubTitleText}>Time: </Text> 
-                            <Text style={styles.detailText}>20.00   </Text>
-                            <View style={styles.estimateContainer}>
-                                <Text style={styles.estimateText}>E</Text>
                             </View>
+
+                            {/*Dividers that change colors*/}
+                            {statement.timeType === 'ACTUAL' && 
+                                <Divider style={{height: 5 , backgroundColor: colorScheme.actualColor}}/> }
+                            {statement.timeType === 'ESTIMATED' &&  
+                                <Divider style={{height: 5, backgroundColor: colorScheme.estimateColor}}/> } 
+                            {!statement.timeType &&
+                                <Divider style={{height: 5 , backgroundColor: colorScheme.secondaryColor}}/>}
+
+                            {/*DetailContainer*/}
+                            <View style={styles.detailContainer}>
+                                <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>TIME: </Text> 
+                                    <Text style={styles.detailText}>{getDateTimeString(new Date(statement.time))}  </Text>
+                                    {statement.timeType === 'ACTUAL' && 
+                                        <View style={styles.actualContainer}>
+                                            <Text style={styles.actualText}>A</Text>
+                                        </View>  }
+                                    {statement.timeType === 'ESTIMATED' && 
+                                        <View style={styles.estimateContainer}>
+                                            <Text style={styles.estimateText}>E</Text>
+                                        </View>}
+                                </View>
+
+                                {operation.atLocation && 
+                                <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>AT: </Text>
+                                    <Text style={styles.detailText}>{operation.atLocation.name}</Text>
+                                </View>}
+                                {operation.fromLocation && 
+                                <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>FROM: </Text>
+                                    <Text style={styles.detailText}>{operation.fromLocation.name}</Text>        
+                                </View>}
+                                {operation.toLocation && 
+                                <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>TO: </Text>
+                                    <Text style={styles.detailText}>{operation.toLocation.name}</Text>        
+                                </View>}
+                                
+                                <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>REPORTED BY: </Text>
+                                    <Text style={styles.detailText}>{removeStringReportedBy(statement.reportedBy)} </Text>  
+                                </View>
+                                <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>REPORTED AT: </Text>  
+                                    <Text style={styles.detailText}>{getDateTimeString(new Date(statement.reportedAt))}</Text>        
+                                </View>
+                                
+                                <Text style={styles.stateSubTitleTextDisabled}>RELIABILITY: %</Text>
+
+                            </View>     
                         </View>
-                        <Text style={styles.stateSubTitleText}>At:</Text> 
-                        <Text style={styles.stateSubTitleText}>Reported By:</Text>   
-                        <Text style={styles.stateSubTitleText}>From:</Text>
-                        <Text style={styles.stateSubTitleText}>To:</Text>
-                                  
-                        <Text style={styles.stateSubTitleText}>Reliability:</Text>
-                        <Text style={styles.stateSubTitleText}>Warnings:</Text> 
-                    </View>     
-                </View>
-
-
-
-
-
-
-
-                <Button
-                    title='See more'
-                    onPress={() => this.props.navigation.navigate('DrawerOpen')}  
-                />
-
-
+                    )
+                } )} 
             </ScrollView>
         </View>
         );
@@ -140,14 +156,18 @@ const styles = StyleSheet.create({
     headerSubText: {
         textAlign: 'center',
         color: colorScheme.primaryTextColor,
-        fontSize: 16,
+        fontSize: 14,
+       
     },
     stateContainer: {
         backgroundColor: colorScheme.primaryContainerColor,
-        marginTop: 5,
+        marginTop: 10,
         marginLeft: 5,
         marginRight: 5,
-        marginBottom: 5,
+        marginBottom: 0,
+        borderColor: colorScheme.sidebarColor,
+        borderWidth: 1,
+        borderRadius: 10,
     },
     stateTitleText: {
         fontWeight: 'bold',
@@ -168,7 +188,7 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
     detailText: {
-        color: colorScheme.quaternaryTextColor,
+        color: colorScheme.quaternaryTextColor, 
         fontSize: 12,
         paddingLeft: 5,
     },
@@ -194,7 +214,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 12,
     },
-        actualContainer: {
+    actualContainer: {
         backgroundColor: colorScheme.actualColor,
         borderRadius: 9,
         width: 18,
@@ -218,31 +238,32 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         alignItems: 'center',
     },  
-    timeView: {
+    detailView: {
         backgroundColor: colorScheme.primaryContainerColor,
         flexDirection: 'row',
         alignItems: 'center',
      //   justifyContent: 'space-between',
     },
-
-
-
-    testView: {
-        backgroundColor: colorScheme.tertiaryColor,
+    warningContainer: {
+        backgroundColor: colorScheme.primaryContainerColor, 
+        flexDirection: 'row',
+        marginTop: 10,
+        marginLeft: 5,
+        marginRight: 5,
+        marginBottom: 0, 
+        borderColor: colorScheme.warningColor,
+        borderWidth: 1,
+        borderRadius: 10,
         paddingLeft: 10,
+        alignItems: 'center',
+       // justifyContent: 'center',
         paddingRight: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
-      //  alignItems: 'center',
-      //  flexDirection: 'column',
-       
     },
-    testText: {
-       fontWeight: 'bold',
-        color: colorScheme.primaryTextColor,
+    warningText: {
+        paddingLeft: 10, 
+        color: colorScheme.quaternaryTextColor,
         fontSize: 12,
-        textAlign: 'center',
-        justifyContent: 'center',
+     //   paddingRight: 10,
     },
 
 });
@@ -255,3 +276,14 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps)(StateDetails);
+
+
+
+
+
+
+
+                // <Button
+                //     title='See more'
+                //     onPress={() => this.props.navigation.navigate('DrawerOpen')}  
+                // />
