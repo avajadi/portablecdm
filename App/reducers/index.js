@@ -4,5 +4,5 @@ import StateReducer from './statereducer';
 
 export default combineReducers({
   portCalls: PortCallReducer,
-  portCDMStates: StateReducer
+  states: StateReducer
 })

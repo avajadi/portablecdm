@@ -149,6 +149,12 @@ export default class OperationView extends Component {
           borderBottomWidth: 0
         }}
         key={stateToDisplay.messageId}
+        rightIcon = { <Icon
+                        color = {colorScheme.primaryColor}
+                        name='add-circle'
+                        size={35}
+                        onPress={() => navigate('SendPortCall', {stateId: stateToDisplay.stateDefinition, fromLocation: operation.fromLocation, toLocation: operation.toLocation, atLocation: operation.atLocation})} />
+        }
         title = {
             <TouchableWithoutFeedback 
                 style={{flexDirection:'column'}}

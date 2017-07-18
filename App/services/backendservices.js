@@ -6,11 +6,11 @@ const portCDM = {
   /**
    * Testing, testing
    */
-  sendPortCall: function (pcm) {
-    if(pcm.vesselImo) {
-      return sendThroughAmss(pcm);
-    } else {
-      return sendThroughMss(pcm);
+  sendPortCall: function (pcm, type) {
+    if(pcm.portCallid) {
+      return sendThroughMss(pcm, type);
+    } else if(pcm.vesselId) {
+      return sendThroughAmss(pcm, type);
     }
   },
   getPortCallOperations: function (portCallId) {
@@ -67,15 +67,15 @@ const portCDM = {
 };
 
 // Helper functions
-function sendThroughAmss(pcm) {
-  return send(pcm, PortCDMConfig.endpoints.AMSS.state_update());
+function sendThroughAmss(pcm, type) {
+  return send(pcm, PortCDMConfig.endpoints.AMSS.state_update(), type);
 }
 
-function sendThroughMss(pcm) {
-  return send(pcm, PortCDMConfig.endpoints.MSS.mss());
+function sendThroughMss(pcm, type) {
+  return send(pcm, PortCDMConfig.endpoints.MSS.mss(), type);
 }
 
-function send(pcm, endpoint) {
+function send(pcm, endpoint, stateType) {
   return fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -84,7 +84,7 @@ function send(pcm, endpoint) {
       'X-PortCDM-Password': PortCDMConfig.user.password,
       'X-PortCDM-APIKey': 'eeee'
     },
-    body: objectToXml(pcm)
+    body: objectToXml(pcm, stateType)
   });
 }
 
