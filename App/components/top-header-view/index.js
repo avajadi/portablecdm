@@ -26,7 +26,7 @@ export default class TopHeader extends Component {
 
   render() {
     const {title} = this.props;
-
+    
     return(
       <View >
           <View style={styles.container}>

@@ -10,10 +10,6 @@ import { View,
 import existingActors from '../../config/actors';
 
 export default class ActorList extends Component {
-  static navigationOptions = {
-    title: 'Choose your actor'
-  };
-
   constructor() {
     super();
     this.state = {

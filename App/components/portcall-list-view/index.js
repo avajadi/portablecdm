@@ -21,10 +21,6 @@ import TopHeader from '../top-header-view';
 import { getDateTimeString } from '../../util/timeservices';
 
 class PortCallList extends Component {
-    static navigationOptions = {
-        header: <TopHeader title="PortCalls"/>
-    }
-
     state = {
         searchTerm: '',
     }
@@ -40,6 +36,7 @@ class PortCallList extends Component {
 
         return(
             <View style={styles.container}>
+                <TopHeader title="PortCalls" navigation={this.props.navigation}/>
                 {/*Render the search/filters header*/}
                 <View style={styles.containerRow}>
                     <SearchBar 
