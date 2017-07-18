@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
+  Dimensions,
 } from 'react-native';
 
 import {
@@ -102,9 +103,9 @@ export default class OperationView extends Component {
             {/* Render warnings */}
             {operation.warnings.map((warning, index) => {
               return (
-                <View style={{flexDirection: 'row', alignItems: 'center'}} key={index}>
-                  <Icon name='warning' color={colorScheme.warningColor} size={14} />
-                  <Text>{warning.message}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10,}} key={index}>
+                  <Icon name='warning' color={colorScheme.warningColor} size={14} paddingRight={10} />
+                  <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{warning.message}</Text>
                 </View>
               );
             })}
@@ -152,7 +153,7 @@ export default class OperationView extends Component {
         title = {
             <TouchableWithoutFeedback 
                 style={{flexDirection:'column'}}
-                onPress={ () => navigate('StateDetails', {operation: operation} ) }
+                onPress={ () => navigate('StateDetails', {operation: operation, statements: allOfTheseStatements} ) }
             >
               <View>  
                   <View style={{flexDirection: 'row'}}>
