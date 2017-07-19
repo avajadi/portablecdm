@@ -25,17 +25,27 @@ export default class TopHeader extends Component {
   }
 
   render() {
-    const {title} = this.props;
+    const {title, firstPage} = this.props;
     
     return(
       <View >
           <View style={styles.container}>
+          {firstPage && 
           <Icon
             name= 'menu'
             color= {colorScheme.primaryContainerColor}
             size= {50}
             onPress={() => this.props.navigation.navigate('DrawerOpen', {test: 'TEST'})}
           /> 
+          }
+          {!firstPage &&
+          <Icon
+            name= 'arrow-back'
+            color= {colorScheme.primaryContainerColor}
+            size= {50}
+            onPress={() => this.props.navigation.goBack()}
+          /> 
+          }
           <Text 
             style= {styles.headerText} 
             h4 
