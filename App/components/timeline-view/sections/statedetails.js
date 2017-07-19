@@ -26,11 +26,6 @@ import {removeStringReportedBy, removeStringAtLocation} from '../../../util/stri
 
 
 class StateDetails extends Component {
-    static navigationOptions = {
-        header: <TopHeader title = 'Details' />
-    }
-
- 
     render () {
         const operation = this.props.navigation.state.params.operation;
         const { vessel, portCall} = this.props;
@@ -39,6 +34,7 @@ class StateDetails extends Component {
         return(
             
         <View style= {styles.container} >
+            <TopHeader title = 'Details' navigation={this.props.navigation}/>
                 {/* Vessel Name and Operation subtitle */}
                 <View style={styles.headerContainer} >
                    {/* Vessel Name and avatar */}

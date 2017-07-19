@@ -50,6 +50,33 @@ export default class OperationView extends Component {
     let dotStyle = [styles.innerDot, styles.innerFutureDot];
     if(operation.endTimeType === 'ACTUAL') dotStyle = [styles.innerDot, styles.innerCompleteDot];
 
+    let startTimeDisplayStyle;
+    if (operation.startTimeType === 'ACTUAL'){
+      startTimeDisplayStyle = styles.timeDisplayActual;
+    }
+    else if (operation.startTimeType === 'ESTIMATED'){
+      startTimeDisplayStyle = styles.timeDisplayEstimate;
+    }
+    else {
+      startTimeDisplayStyle = styles.timeDisplay;
+    }
+
+    let endTimeDisplayStyle;
+    if (operation.endTimeType === 'ACTUAL'){
+      endTimeDisplayStyle = styles.timeDisplayActual;
+    }
+    else if (operation.endTimeType === 'ESTIMATED'){
+      endTimeDisplayStyle = styles.timeDisplayEstimate;
+    }
+    else if (!operation.endTimeType) {
+      endTimeDisplayStyle = styles.timeDisplayWarning;
+    }
+    else {
+      endTimeDisplayStyle = styles.timeDisplay;
+    }
+
+
+
     return (
       <View style={styles.container}>
         
@@ -58,12 +85,12 @@ export default class OperationView extends Component {
           {/*Start Time*/}
           <View style={styles.timeDisplayContainer}>
             <Text style={styles.dateDisplay}>{getDateString(new Date(operation.startTime))}</Text>
-            <Text style={styles.timeDisplay}>{getTimeString(new Date(operation.startTime))}</Text>
+            <Text style={startTimeDisplayStyle}>{getTimeString(new Date(operation.startTime))}</Text>
           </View>
           {/*End Time*/}
           <View style={[styles.timeDisplayContainer, {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colorScheme.tertiaryColor}]}>
             <Text style={styles.dateDisplay}>{getDateString(new Date(operation.endTime))}</Text>
-            <Text style={styles.timeDisplay}>{getTimeString(new Date(operation.endTime))}</Text>
+            <Text style={endTimeDisplayStyle }>{getTimeString(new Date(operation.endTime))}</Text>
           </View>
         </View>
 
@@ -141,7 +168,18 @@ export default class OperationView extends Component {
     const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
-    const stateCount = allOfTheseStatements.length;
+   // const stateCount = allOfTheseStatements.length;
+    let stateCount = 0;
+    if (stateToDisplay.timeType === 'ACTUAL') {
+      stateCount = allOfTheseStatements.filter((statement)=> statement.timeType === 'ACTUAL').length;
+    }
+    else if (stateToDisplay.timeType === 'ESTIMATED') {
+      stateCount = allOfTheseStatements.filter((statement)=> statement.timeType === 'ESTIMATED').length;
+    }
+    else {
+      stateCount = allOfTheseStatements.length;
+    }
+    
 
     return (
       <ListItem
@@ -163,14 +201,14 @@ export default class OperationView extends Component {
             >
               <View>  
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={{fontWeight: 'bold'}} >{stateToDisplay.stateDefinition}</Text>
+                    <Text style={styles.stateDisplayTitle} >{stateToDisplay.stateDefinition}</Text>
                     {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
                   </View>
                   <View style= {{flexDirection: 'row'}} >
                       <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
                       {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
                                                                     <Text style={styles.actualText}>A</Text>
-                                                              </View>
+                                                               </View>
                       }
                       {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
                                                                       <Text style={styles.estimateText}>E</Text>
@@ -185,13 +223,13 @@ export default class OperationView extends Component {
         subtitle = {
             <View style={{flexDirection: 'column'}} >
                 {operation.atLocation && <Text style={{fontSize: 9}}>
-                    <Text style = {{fontWeight: 'bold'}}>AT:</Text> {operation.atLocation.name}</Text>}
+                    <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{operation.atLocation.name}</Text>}
                 {operation.fromLocation && <Text style={{fontSize: 9}}>
-                    <Text style = {{fontWeight: 'bold'}} >FROM:</Text> {operation.fromLocation.name} </Text>}
+                    <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{operation.fromLocation.name}</Text>}
                 {operation.toLocation && <Text style={{fontSize: 9}}>
-                    <Text style = {{fontWeight: 'bold'}}>TO</Text> {operation.toLocation.name} </Text>}
+                    <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
-                    <Text style= {{fontWeight: 'bold'}}>REPORTED BY:</Text> {stateToDisplay.reportedBy.replace('urn:mrn:legacy:user:', '')} 
+                    <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:legacy:user:', '')} 
                     <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
             </View>
         }
@@ -245,20 +283,34 @@ const styles = StyleSheet.create({
   timeContainer: {
     width: 70,
     paddingRight: 5,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   timeDisplayContainer: {
     // backgroundColor: colorScheme.secondaryContainerColor,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   operationHeader: {
     fontWeight: 'bold', 
-    fontSize: 23
+    fontSize: 23,
+    color: colorScheme.quaternaryTextColor, // Snyggare med EmeraldBlue(queaternaryColor)
   },
   operationInfo: {
     fontSize: 10,
+    color: colorScheme.quaternaryTextColor
   },
+  stateDisplayTitle: {
+    fontWeight: 'bold', 
+    color: colorScheme.quaternaryTextColor,
+  },
+  stateDisplaySubTitle: {
+    fontWeight: 'bold',
+    color: colorScheme.quaternaryTextColor
+  },
+
+
+
+
   timeline: {
     position: 'absolute',
     top: 0,
@@ -312,10 +364,19 @@ const styles = StyleSheet.create({
   },
   dateDisplay: {
     fontSize: 9,
-    color: 'black'
+    color: colorScheme.quaternaryTextColor
   },
   timeDisplay: {
     color: colorScheme.tertiaryColor,
+  },
+  timeDisplayActual: {
+    color: colorScheme.actualColor,
+  },
+  timeDisplayEstimate: {
+    color: colorScheme.estimateColor,
+  },
+  timeDisplayWarning: {
+    color: colorScheme.warningColor,
   },
 
 

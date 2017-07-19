@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Text} from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 
 import ActorList    from '../components/actor-list-view';
@@ -14,16 +14,24 @@ import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 import StateDetails from '../components/timeline-view/sections/statedetails';
 
 
-
-export const AppNavigator = StackNavigator({
-  PortCallList: { screen: PortCallList }, 
+export const PortCallNavigator = StackNavigator({
+  PortCallList: { screen: PortCallList},
   TimeLineDetails: {screen: TimeLineView},
   StateDetails: { screen: StateDetails}, 
+}, {
+  navigationOptions: {
+    gesturesEnabled: false
+  },
+  headerMode: 'none'
+});
+
+export const AppNavigator = DrawerNavigator({
+  PortCalls: { screen: PortCallNavigator },
   Home: { screen: Home },  
   ActorSelection: { screen: ActorList },
   MainMenu: { screen: MainMenu },
   SendPortCall: { screen: SendPortCall },
   StateSelection: { screen: StateList },
   FilterMenu: {screen: FilterMenu},
-
 });
+
