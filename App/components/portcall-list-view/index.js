@@ -77,7 +77,9 @@ class PortCallList extends Component {
                                     avatar={{uri: portCall.vessel.photoURL}}
                                     key={portCall.portCallId}
                                     title={portCall.vessel.name}
+                                    titleStyle={styles.titleStyle}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
+                                    subtitleStyle={styles.subTitleStyle}
                                     onPress={() => {
                                         selectPortCall(portCall);
                                         navigate('TimeLineDetails')
@@ -99,7 +101,7 @@ class PortCallList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colorScheme.primaryColor  // Har denna grå färgen lite brunt i sig? 
+        backgroundColor: colorScheme.primaryColor  
     },
     // Search bar and filter button  
     containerRow: {
@@ -126,6 +128,12 @@ const styles = StyleSheet.create({
     iconStyle: {
         alignSelf: 'stretch',
     },
+    titleStyle: {
+        color: colorScheme.quaternaryTextColor,
+    },
+    subTitleStyle: {
+        color: colorScheme.tertiaryTextColor,
+    }, 
 })
 
 function mapStateToProps(state) {
