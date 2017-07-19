@@ -10,6 +10,10 @@ export const PortCDMConfig = {
   }
 };
 
+export const ReliabilityConfig = {
+  host: `http://10.170.20.151:4567`
+}
+
 PortCDMConfig.endpoints = {
   AMSS: { // Assisted Message Submission Service
     state_update:() =>  `${PortCDMConfig.host}/amss/state_update/`
@@ -32,4 +36,8 @@ PortCDMConfig.endpoints = {
   VR: { // Vessel Registry
     vessel: (vesselId) => `${PortCDMConfig.host}/vr/vessel/${vesselId}`
   },
+}
+
+ReliabilityConfig.endpoints = {
+  PORT_CALL: (portCallId) => `${ReliabilityConfig.host}/dqa/reliability/${portCallId}`
 }

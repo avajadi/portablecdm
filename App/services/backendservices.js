@@ -1,5 +1,5 @@
 import {objectToXml} from '../util/xmlUtils';
-import { PortCDMConfig } from '../config/portcdmconfig';
+import { PortCDMConfig, ReliabilityConfig } from '../config/portcdmconfig';
 
 
 const portCDM = {
@@ -64,7 +64,18 @@ const portCDM = {
         });
   },
   
-};
+}; // END portCDM
+
+export const reliability = {
+  getPortCallReliability: function (portCallId) {
+    return fetch(ReliabilityConfig.endpoints.PORT_CALL(portCallId),
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+}
 
 // Helper functions
 function sendThroughAmss(pcm, type) {

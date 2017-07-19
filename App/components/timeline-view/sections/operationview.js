@@ -114,7 +114,7 @@ export default class OperationView extends Component {
             onPress={this._toggleCollapsed}>
             <View>
               <View style={{flexDirection: 'row'}}>
-                <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')}</Text>
+                <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')} - {operation.reliability}%</Text>
                 {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
               </View>
               {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM</Text> {operation.fromLocation.name}</Text>}
