@@ -176,6 +176,8 @@ export default class OperationView extends Component {
                                                                       <Text style={styles.estimateText}>E</Text>
                                                                   </View>
                       }
+                      {/*  RELIABILITY  */}
+                      {stateToDisplay.reliability && <Text>Reliability: {stateToDisplay.reliability}%</Text>}
                   </View>
               </View>
             </TouchableWithoutFeedback>
