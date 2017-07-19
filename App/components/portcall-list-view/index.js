@@ -14,6 +14,7 @@ import {
     Button, 
     List, 
     ListItem,
+    Icon,
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
@@ -21,6 +22,19 @@ import TopHeader from '../top-header-view';
 import { getDateTimeString } from '../../util/timeservices';
 
 class PortCallList extends Component {
+    
+    // static navigationOptions = {
+    //     tabBarLabel: 'PortCall',
+    //     tabBarIcon: () => (
+    //         <Icon
+    //             name='home'
+    //             size = {20}
+    //             color= {colorScheme.primaryColor}
+    //             onPress={ () => this.props.navigation.navigate('Home') }
+    //         />
+    //     ),
+    // }
+    
     state = {
         searchTerm: '',
     }
@@ -36,7 +50,7 @@ class PortCallList extends Component {
 
         return(
             <View style={styles.container}>
-                <TopHeader title="PortCalls" navigation={this.props.navigation}/>
+                <TopHeader title="PortCalls" navigation={this.props.navigation} firstPage/>
                 {/*Render the search/filters header*/}
                 <View style={styles.containerRow}>
                     <SearchBar 

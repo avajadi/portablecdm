@@ -41,6 +41,7 @@ static navigationOptions = {
                     title="Reset" 
                     backgroundColor={colorScheme.primaryColor}
                     />,
+   // headerMode: 'float',
 }
 
 setModalStagesVisible(visible){
