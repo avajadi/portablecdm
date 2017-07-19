@@ -25,10 +25,6 @@ import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
 class TimeLineView extends Component {
-    static navigationOptions = {
-        header: <TopHeader title = 'Timeline' />
-    }
-
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -52,6 +48,7 @@ class TimeLineView extends Component {
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
+                <TopHeader title = 'Timeline' navigation={this.props.navigation}/>
 
                 <View style={styles.headerContainer} >
                     <Text 
