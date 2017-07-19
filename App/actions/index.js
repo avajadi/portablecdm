@@ -1,5 +1,5 @@
 import * as types from './types';
-import portCDM from '../services/backendservices'
+import portCDM, { reliability } from '../services/backendservices'
 
 export const addFavoriteState = (stateId) => {
   return {
@@ -47,6 +47,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(filterStatements)
       .then(addLocationsToOperations)
       .then(extractWarnings)
+      .then(fetchReliability)
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
@@ -55,6 +56,18 @@ export const fetchPortCallOperations = (portCallId) => {
 }
 
 // HELPER FUNCTIONS
+
+function fetchReliability(operations) {
+    if(operations.length <= 0) return operations;
+    reliability.getPortCallReliability(operations[0].portCallId)
+                .then(result => result.json())
+                .then(rel => rel.operations.map(relOp => {
+                    console.log(relOp.operationId);
+                }));
+    
+    return operations;
+}
+
 function addLocationsToOperations(operations) {
     return Promise.all(operations.map(async operation => {
         try {
