@@ -122,7 +122,7 @@ class StateDetails extends Component {
                                     <Text style={styles.detailText}>{getDateTimeString(new Date(statement.reportedAt))}</Text>        
                                 </View>
                                 
-                                <Text style={styles.stateSubTitleTextDisabled}>RELIABILITY: %</Text>
+                                <Text style={styles.stateSubTitleTextDisabled}>RELIABILITY: {statement.reliability}%</Text>
 
                             </View>     
                         </View>

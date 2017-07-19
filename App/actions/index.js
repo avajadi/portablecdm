@@ -57,14 +57,27 @@ export const fetchPortCallOperations = (portCallId) => {
 
 // HELPER FUNCTIONS
 
-function fetchReliability(operations) {
+async function fetchReliability(operations) {
     if(operations.length <= 0) return operations;
-    reliability.getPortCallReliability(operations[0].portCallId)
+    await reliability.getPortCallReliability(operations[0].portCallId)
                 .then(result => result.json())
-                .then(rel => rel.operations.map(relOp => {
-                    console.log(relOp.operationId);
-                }));
-    
+                .then(rel => rel.operations.find(operation => operation.operationId == 'PORT_VISIT'))
+                .then(portVisit => {
+                    if(!portVisit) return operations;
+                    let existingPortVisit = operations.find(operation => operation.definitionId === 'PORT_VISIT');
+                    existingPortVisit.reliability = Math.floor(portVisit.reliability * 100);
+                    portVisit.states.map(state => {
+                        // find the state in reported states?
+                        existingPortVisit.reportedStates[state.stateId].forEach(statement => {
+                            for(let i = 0; i< state.messages.length; i++) {
+                                if(statement.messageId == state.messages[i].messageId) {
+                                    statement.reliability = Math.floor(state.messages[i].reliability * 100);
+                                }
+                            }
+                        })
+                    });
+                })
+                
     return operations;
 }
 
