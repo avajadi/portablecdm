@@ -22,10 +22,6 @@ import portCDM from '../../services/backendservices';
 import TopHeader from '../top-header-view';
 
 class SendPortcall extends Component {
-  static navigationOptions = {
-        header: <TopHeader title = 'Report' />
-    }
-
   state = {
     selectedTimeType: 'ACTUAL',
     selectedDate: new Date(),
@@ -74,6 +70,7 @@ class SendPortcall extends Component {
  
     return(
       <View style={styles.container}>
+        <TopHeader title = 'Report' />
         {/* Information header */}
         <View style={styles.headerContainer} >
           <Text 

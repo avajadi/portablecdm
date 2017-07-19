@@ -26,4 +26,6 @@ export const AppNavigator = StackNavigator({
   StateSelection: { screen: StateList },
   FilterMenu: {screen: FilterMenu},
 
+}, {
+  headerMode: 'none'
 });
