@@ -4,32 +4,89 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Button
+  Button,
+  Modal,
+  ListView
 } from 'react-native';
 
-import { getDefaultStates, getState } from '../../services/staterepo';
+import {
+  List,
+  ListItem,
+  Icon
+} from 'react-native-elements';
 
-export default class StateList extends Component {
-  static defaultProps = {
-    selectedActor: {
-      key: 'vessel', 
-      displayName: 'Vessel'
+import { connect } from 'react-redux';
+import { removeFavoriteState, addFavoriteState } from '../../actions'
+import TopHeader from '../top-header-view';
+
+class StateList extends Component {
+  constructor(props) {
+    super(props);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+    this.state = {
+      showAddStatesModal: false,
+      stateDataSource: ds.cloneWithRows(props.stateCatalogue)
+
     }
+
+    this.onDeletePress = this.onDeletePress.bind(this);
+  }
+  state = {
   }
 
   _keyExtractor = (item, index) => item;
 
+  onDeletePress = (stateId) => {
+    this.props.removeFavoriteState(stateId)
+  }
+
+  onAddStatesPress() {
+    this.setState({showAddStatesModal: !this.state.showAddStatesModal});
+  }
+
   render() {
     const { params } = this.props.navigation.state;
-    const { navigation } = this.props;
+    const { favoriteStates, getState, stateCatalogue } = this.props;
 
     return(
       <View style={styles.container}>
-        <FlatList
-          keyExtractor={this._keyExtractor}
-          data={getDefaultStates(params.selectedActor)}
-          renderItem={({item}) => <StateListItem itemState={getState(item)} navigation={navigation} />}
-        />
+        <TopHeader title="Favorite States" rightIconFunction={this.onAddStatesPress.bind(this)}/>
+        <List>
+           {favoriteStates.map((stateId, index) => {
+            const state = getState(stateId);
+            return (
+              <ListItem
+                key={index}
+                title={state.Name}
+                rightIcon={{
+                  name: 'delete',
+                  color: 'red'
+                }}
+                onPressRightIcon={() => this.onDeletePress(stateId)}
+              />
+            );
+          })} 
+        </List>
+        <Modal
+          visible={this.state.showAddStatesModal}
+          onRequestClose={() => this.setState({showAddStatesModal: false})}
+        >
+          <List>
+            <ListView
+              dataSource={this.state.stateDataSource}
+              renderRow={(stateDefinition => {
+                return (
+                  <ListItem
+                    key={stateDefinition.stateId}
+                    title={stateDefinition.Name}
+                  />
+                );
+              })}
+            />
+
+          </List>
+        </Modal>
       </View>
     );
   }
@@ -52,3 +109,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
+
+function mapStateToProps(state) {
+  return {
+    favoriteStates: state.states.favoriteStates,
+    getState: state.states.stateById,
+    stateCatalogue: state.states.stateCatalogue
+  }
+}
+
+export default connect(mapStateToProps, {removeFavoriteState, addFavoriteState})(StateList);

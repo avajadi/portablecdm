@@ -16,17 +16,11 @@ import SideMenuView from '../side-menu-view';
 
 // Class showing the first header. The header should later adjust to other pages. 
 export default class TopHeader extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      sideMenuOpen: false,
-    };
-  }
 
   render() {
     const {title} = this.props;
-
+    const {rightIconFunction} = this.props;
+    
     return(
       <View >
           <View style={styles.container}>
@@ -46,7 +40,7 @@ export default class TopHeader extends Component {
             name='add-circle'
             size = {50}
             color= {colorScheme.primaryContainerColor}
-            onPress={() => console.log('Adding button was pressed')}
+            onPress={() => rightIconFunction()}
           />
         </View>
     </View>

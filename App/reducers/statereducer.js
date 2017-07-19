@@ -3,7 +3,7 @@ import stateCatalogue from './state_catalogue.json';
 
 const INITIAL_STATE = { 
   stateCatalogue: stateCatalogue,
-  favoriteStates: [] 
+  favoriteStates: ['CargoOp_Commenced', 'Bunkering_Commenced'] 
 };
 
 let lookup = {};

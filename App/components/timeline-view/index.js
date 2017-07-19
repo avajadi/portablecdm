@@ -25,10 +25,6 @@ import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
 class TimeLineView extends Component {
-    static navigationOptions = {
-        header: <TopHeader title = 'Timeline' />
-    }
-
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -36,11 +32,17 @@ class TimeLineView extends Component {
         this.state = {
             dataSource: ds.cloneWithRows(['row 1, row 2'])
         }
+
+        this.goToStateList = this.goToStateList.bind(this);
     }
 
     componentWillMount() {
         const { portCallId } = this.props;
         this.props.fetchPortCallOperations(portCallId);
+    }
+
+    goToStateList = () => {
+        this.props.navigation.navigate('StateList');
     }
 
     render() {
@@ -52,6 +54,7 @@ class TimeLineView extends Component {
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
+                <TopHeader title = 'Timeline' navigation={this.props.navigation} rightIconFunction={this.goToStateList}/>
 
                 <View style={styles.headerContainer} >
                     <Text 

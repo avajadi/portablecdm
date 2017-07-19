@@ -42,14 +42,6 @@ class SendPortcall extends Component {
   _hideActivityIndicator = () => this.setState({showActivityIndicator: false});
 
   _sendPortCall() {
-    // let pcm = {
-    //   vesselImo: state.vesselImo,
-    //   portCallId: state.portCallId,
-    //   payload: {... preDefinedPcm.payload,
-    //     timeType: state.timeType,
-    //     time: state.date.toISOString()    
-    //   }
-    // }
     const { stateId, atLocation, fromLocation, toLocation} = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
     const { vesselId, portCallId, getState } = this.props;
