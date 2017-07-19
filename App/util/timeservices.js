@@ -23,7 +23,7 @@ export function getDateString(date) {
 export function getTimeString(date) {
 
   if(userConfig.timeDisplayMode === timeDisplayModes.local) {
-    return date.getTime() === new Date(null).getTime() ? '??' : `${date.toLocaleTimeString().slice(0, 5)}`;
+    return date.getTime() === new Date(null).getTime() ? 'N/A' : `${date.toLocaleTimeString().slice(0, 5)}`;
   }
 }
 
