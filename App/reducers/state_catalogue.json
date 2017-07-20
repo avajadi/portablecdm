@@ -4,7 +4,7 @@
     "ServiceType": "STATIONARY",
     "ServiceObject": "ARRIVAL_PORTAREA",
     "TimeSequence": "CONFIRMED",
-    "Name": "Does not exist",
+    "Name": "Arrival Port Area Confirmed",
     "Description": "I really dont know this ones description"
   },
   {
@@ -12,7 +12,7 @@
     "ServiceType": "STATIONARY",
     "ServiceObject": "ARRIVAL_PORTAREA",
     "TimeSequence": "REQUESTED",
-    "Name": "Does not exist iether",
+    "Name": "Arrival Port Area Requested",
     "Description": "I really dont know this ones description"
   },
   {

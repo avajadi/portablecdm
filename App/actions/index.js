@@ -61,23 +61,19 @@ async function fetchReliability(operations) {
     if(operations.length <= 0) return operations;
     await reliability.getPortCallReliability(operations[0].portCallId)
                 .then(result => result.json())
-                .then(rel => rel.operations.find(operation => operation.operationId == 'PORT_VISIT'))
-                .then(portVisit => {
-                    if(!portVisit) return operations;
-                    let existingPortVisit = operations.find(operation => operation.definitionId === 'PORT_VISIT');
-                    existingPortVisit.reliability = Math.floor(portVisit.reliability * 100);
-                    portVisit.states.map(state => {
-                        // find the state in reported states?
-                        existingPortVisit.reportedStates[state.stateId].forEach(statement => {
-                            for(let i = 0; i< state.messages.length; i++) {
-                                if(statement.messageId == state.messages[i].messageId) {
-                                    statement.reliability = Math.floor(state.messages[i].reliability * 100);
+                .then(result => result.operations.map(resultOperation => {
+                    let ourOperation = operations.find(operation => operation.operationId === resultOperation.operationId);
+                    ourOperation.reliability = Math.floor(resultOperation.reliability * 100);
+                    resultOperation.states.map(resultState => {
+                        ourOperation.reportedStates[resultState.stateId].forEach(ourStatement => {
+                            for(let i = 0; i< resultState.messages.length; i++) {
+                                if(ourStatement.messageId == resultState.messages[i].messageId) {
+                                    ourStatement.reliability = Math.floor(resultState.messages[i].reliability * 100);
                                 }
-                            }
+                            }            
                         })
                     });
-                })
-                
+                }));                
     return operations;
 }
 
