@@ -114,7 +114,7 @@ export default class OperationView extends Component {
             onPress={this._toggleCollapsed}>
             <View>
               <View style={{flexDirection: 'row'}}>
-                <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')}</Text>
+                <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')} - {operation.reliability}%</Text>
                 {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
               </View>
               {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM</Text> {operation.fromLocation.name}</Text>}
@@ -185,7 +185,7 @@ export default class OperationView extends Component {
       <ListItem
         containerStyle = {{
           borderTopWidth: 0,
-          borderBottomWidth: 0
+          borderBottomWidth: 0,
         }}
         key={stateToDisplay.messageId}
         rightIcon = { <Icon
@@ -214,6 +214,7 @@ export default class OperationView extends Component {
                                                                       <Text style={styles.estimateText}>E</Text>
                                                                   </View>
                       }
+                      {/*  RELIABILITY  */}
                   </View>
               </View>
             </TouchableWithoutFeedback>
@@ -221,17 +222,24 @@ export default class OperationView extends Component {
         subtitle = {
             <View style={{flexDirection: 'column'}} >
                 {operation.atLocation && <Text style={{fontSize: 9}}>
-                    <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{operation.atLocation.name}</Text>}
+                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{operation.atLocation.name}</Text>}
                 {operation.fromLocation && <Text style={{fontSize: 9}}>
-                    <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{operation.fromLocation.name}</Text>}
+                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{operation.fromLocation.name}</Text>}
                 {operation.toLocation && <Text style={{fontSize: 9}}>
-                    <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
+                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
-                    <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:legacy:user:', '')} 
-                    <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:legacy:user:', '')} 
+                  <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
+                {stateToDisplay.reliability && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
             </View>
         }
-        badge = {{value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, containerStyle: {backgroundColor: colorScheme.backgroundColor, marginTop: 30} }}
+        badge = {
+          {value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, 
+          containerStyle: {backgroundColor: colorScheme.backgroundColor} , // 30
+          wrapperStyle: {justifyContent: 'center'},
+          }
+        }
       />
     );
   }
@@ -303,7 +311,8 @@ const styles = StyleSheet.create({
   },
   stateDisplaySubTitle: {
     fontWeight: 'bold',
-    color: colorScheme.quaternaryTextColor
+    color: colorScheme.quaternaryTextColor,
+    fontSize: 9,
   },
 
 

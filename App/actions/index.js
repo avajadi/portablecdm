@@ -1,5 +1,5 @@
 import * as types from './types';
-import portCDM from '../services/backendservices'
+import portCDM, { reliability } from '../services/backendservices'
 
 export const addFavoriteState = (stateId) => {
   return {
@@ -47,6 +47,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(filterStatements)
       .then(addLocationsToOperations)
       .then(extractWarnings)
+      .then(fetchReliability)
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
@@ -55,6 +56,31 @@ export const fetchPortCallOperations = (portCallId) => {
 }
 
 // HELPER FUNCTIONS
+
+async function fetchReliability(operations) {
+    if(operations.length <= 0) return operations;
+    await reliability.getPortCallReliability(operations[0].portCallId)
+                .then(result => result.json())
+                .then(rel => rel.operations.find(operation => operation.operationId == 'PORT_VISIT'))
+                .then(portVisit => {
+                    if(!portVisit) return operations;
+                    let existingPortVisit = operations.find(operation => operation.definitionId === 'PORT_VISIT');
+                    existingPortVisit.reliability = Math.floor(portVisit.reliability * 100);
+                    portVisit.states.map(state => {
+                        // find the state in reported states?
+                        existingPortVisit.reportedStates[state.stateId].forEach(statement => {
+                            for(let i = 0; i< state.messages.length; i++) {
+                                if(statement.messageId == state.messages[i].messageId) {
+                                    statement.reliability = Math.floor(state.messages[i].reliability * 100);
+                                }
+                            }
+                        })
+                    });
+                })
+                
+    return operations;
+}
+
 function addLocationsToOperations(operations) {
     return Promise.all(operations.map(async operation => {
         try {

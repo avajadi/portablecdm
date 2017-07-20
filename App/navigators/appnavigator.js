@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Text} from 'react-native';
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
+import { StackNavigator, DrawerNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 
 
 import ActorList    from '../components/actor-list-view';
@@ -17,6 +17,7 @@ import StateDetails from '../components/timeline-view/sections/statedetails';
 export const PortCallNavigator = StackNavigator({
   PortCallList: { screen: PortCallList},
   TimeLineDetails: {screen: TimeLineView},
+  //FilterMenu: {screen: FilterMenu},  
   StateDetails: { screen: StateDetails}, 
   StateList: { screen: StateList },
 }, {
@@ -26,14 +27,38 @@ export const PortCallNavigator = StackNavigator({
   headerMode: 'none'
 });
 
+// export const TabBarNavigator = TabNavigator({
+//   TimeLineDetails: {screen: TimeLineView},
+//   Home: { screen: Home },  
+//   ActorSelection: { screen: ActorList },  
+  
+// }, {   
+//   tabBarOptions: {
+//     activeTintColor: '#e91e63',
+//   }, 
+//   tabBarComponent: TabBarBottom,
+//   tabBarPosition: 'bottom',
+// },
+// );
+
 export const AppNavigator = DrawerNavigator({
-  PortCalls: { screen: PortCallNavigator },
+  PortCalls: { screen: PortCallNavigator }, 
+ // TabBar: {screen: TabBarNavigator},
   Home: { screen: Home },  
-  ActorSelection: { screen: ActorList },
   MainMenu: { screen: MainMenu },
   SendPortCall: { screen: SendPortCall },
   FilterMenu: {screen: FilterMenu},
+
 }, {
   headerMode: 'none'
 });
+
+// }, 
+// // {
+// // navigationOptions: {
+// //   gesturesEnabled: true
+// // },
+// // }
+// );
+
 

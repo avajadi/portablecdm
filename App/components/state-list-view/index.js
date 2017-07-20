@@ -12,7 +12,8 @@ import {
 import {
   List,
   ListItem,
-  Icon
+  Icon,
+  CheckBox
 } from 'react-native-elements';
 
 import { connect } from 'react-redux';
@@ -26,16 +27,13 @@ class StateList extends Component {
 
     this.state = {
       showAddStatesModal: false,
-      stateDataSource: ds.cloneWithRows(props.stateCatalogue)
+      stateDataSource: ds.cloneWithRows(props.stateCatalogue),
+      chosenStates: []
 
     }
 
     this.onDeletePress = this.onDeletePress.bind(this);
   }
-  state = {
-  }
-
-  _keyExtractor = (item, index) => item;
 
   onDeletePress = (stateId) => {
     this.props.removeFavoriteState(stateId)
