@@ -19,6 +19,7 @@ export const PortCallNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
   //FilterMenu: {screen: FilterMenu},  
   StateDetails: { screen: StateDetails}, 
+  StateList: { screen: StateList },
 }, {
   navigationOptions: {
     gesturesEnabled: false
@@ -46,13 +47,18 @@ export const AppNavigator = DrawerNavigator({
   Home: { screen: Home },  
   MainMenu: { screen: MainMenu },
   SendPortCall: { screen: SendPortCall },
-  StateSelection: { screen: StateList },
   FilterMenu: {screen: FilterMenu},
-}, 
-// {
-// navigationOptions: {
-//   gesturesEnabled: true
-// },
-// }
-);
+
+}, {
+  headerMode: 'none'
+});
+
+// }, 
+// // {
+// // navigationOptions: {
+// //   gesturesEnabled: true
+// // },
+// // }
+// );
+
 

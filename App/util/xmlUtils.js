@@ -73,8 +73,24 @@ export function createPortCallMessageAsObject(params, stateDefinition) {
     // We know it's an Administration State
     pcm.payload['serviceObject'] = stateDefinition.ServiceObject;
     pcm.payload['timeSequence'] = stateDefinition.TimeSequence;
-    type = 'AdministrationState';
 
+    // at or between
+    if(stateDefinition.ServiceType == 'STATIONARY') {
+      pcm.payload['at'] = {
+        locationMRN: atLocation ? atLocation.URN : null
+      };
+    } else if (stateDefinition.ServiceType == 'NAUTICAL') {
+      pcm.payload['between'] = {
+        from: {
+          locationMRN: fromLocation ? fromLocation.URN : null,
+        },
+        to: {
+          locationMRN: toLocation ? toLocation.URN : null
+        } 
+      };
+    }
+
+    type = 'AdministrationState';
   } else {
     // We can assume it's a LocationState
     pcm.payload['referenceObject'] = stateDefinition.ReferenceObject;
@@ -91,6 +107,7 @@ export function createPortCallMessageAsObject(params, stateDefinition) {
         }
       };
     }
+
     type = 'LocationState';
   }
 
@@ -159,11 +176,13 @@ const parsePayload = (payload, stateType) => {
       }
 
       break;
+    case "AdministrationState":
+      // Fall-through, since administrationstate and service state are the same except for no timetype in adminState
     case "ServiceState":
       asXml += payload.serviceObject ? `\t\t<ns2:serviceObject>${payload.serviceObject}</ns2:serviceObject>\n` : '';    
       asXml += payload.timeSequence ? `\t\t<ns2:timeSequence>${payload.timeSequence}</ns2:timeSequence>\n` : '';
       asXml += payload.time ? `\t\t<ns2:time>${payload.time}</ns2:time>\n` : '';
-      asXml += payload.timeType ? `\t\t<ns2:timeType>${payload.timeType}</ns2:timeType>\n` : '';
+      asXml += payload.timeType && stateType == 'ServiceState' ? `\t\t<ns2:timeType>${payload.timeType}</ns2:timeType>\n` : '';
 
       // at or between      
       if(payload.at) {
@@ -174,11 +193,8 @@ const parsePayload = (payload, stateType) => {
         asXml += payload.between.from ? `\t\t\t<ns2:from><ns3:locationMRN>${payload.between.from.locationMRN}</ns3:locationMRN></ns2:from>\n` : '';
         asXml += `\t\t</ns2:between>\n`;
       }
-
-
       break;
-    case "AdministrationState":
-      break;
+
   }
 
   return asXml;

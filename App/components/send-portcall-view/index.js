@@ -22,10 +22,6 @@ import portCDM from '../../services/backendservices';
 import TopHeader from '../top-header-view';
 
 class SendPortcall extends Component {
-  static navigationOptions = {
-        header: <TopHeader title = 'Report' />
-    }
-
   state = {
     selectedTimeType: 'ACTUAL',
     selectedDate: new Date(),
@@ -46,14 +42,6 @@ class SendPortcall extends Component {
   _hideActivityIndicator = () => this.setState({showActivityIndicator: false});
 
   _sendPortCall() {
-    // let pcm = {
-    //   vesselImo: state.vesselImo,
-    //   portCallId: state.portCallId,
-    //   payload: {... preDefinedPcm.payload,
-    //     timeType: state.timeType,
-    //     time: state.date.toISOString()    
-    //   }
-    // }
     const { stateId, atLocation, fromLocation, toLocation} = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
     const { vesselId, portCallId, getState } = this.props;
@@ -74,6 +62,7 @@ class SendPortcall extends Component {
  
     return(
       <View style={styles.container}>
+        <TopHeader title = 'Report' />
         {/* Information header */}
         <View style={styles.headerContainer} >
           <Text 

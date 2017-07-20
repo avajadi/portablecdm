@@ -215,7 +215,6 @@ export default class OperationView extends Component {
                                                                   </View>
                       }
                       {/*  RELIABILITY  */}
-                      {stateToDisplay.reliability && <Text>Reliability: {stateToDisplay.reliability}%</Text>}
                   </View>
               </View>
             </TouchableWithoutFeedback>
