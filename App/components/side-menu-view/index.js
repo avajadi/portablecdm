@@ -40,7 +40,7 @@ class SideMenu extends Component {
                 <List>
                     {/* Menu */}
                     <ListItem
-                        containerStyle={activeItemKey === 'PortCalls' ? [containerStyle, styles.selectedContainer] : containerStyle}
+                        containerStyle={activeItemKey === 'PortCalls' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{
                           name:'home',
                           color: 'white'
@@ -146,6 +146,10 @@ class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
+                        onPress={() => {
+                            if (activeItemKey !== 'PortInfo')
+                                navigate('PortInfo');
+                        }}
                     />
 
                     <ListItem

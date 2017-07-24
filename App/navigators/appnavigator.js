@@ -11,7 +11,9 @@ import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 import StateDetails from '../components/timeline-view/sections/statedetails';
-
+import OverView     from '../components/overview-view';
+import VesselInfo   from '../components/vessel-info-view';
+import PortInfo     from '../components/port-info-view';
 import SideMenu     from '../components/side-menu-view';
 
 
@@ -47,6 +49,9 @@ export const AppNavigator = DrawerNavigator({
   TimeLine: {screen: TimeLineNavigator},
   StateList: { screen: StateList },
   Home: { screen: Home },  
+  OverView: { screen: OverView },
+  VesselInfo: { screen: VesselInfo },
+  PortInfo: { screen: PortInfo },
 }, {
   headerMode: 'none',
   drawerWidth: 250,
