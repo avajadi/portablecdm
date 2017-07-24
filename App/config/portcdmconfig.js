@@ -11,7 +11,7 @@ export const PortCDMConfig = {
 };
 
 export const ReliabilityConfig = {
-  host: `http://10.170.20.151:4567`
+  host: `http://sandbox-5.portcdm.eu:1337`
 }
 
 PortCDMConfig.endpoints = {

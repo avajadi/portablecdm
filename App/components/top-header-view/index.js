@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
+  Platform,
   StyleSheet,
 } from 'react-native';
 
@@ -12,7 +13,6 @@ import {
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
-import SideMenuView from '../side-menu-view';
 
 // Class showing the first header. The header should later adjust to other pages. 
 export default class TopHeader extends Component {
@@ -23,16 +23,18 @@ export default class TopHeader extends Component {
     
     return(
       <View >
-          <View style={styles.container}>
-          {firstPage && 
+        <View style={styles.container}>
+          {/* On the landing page on IOS, and all pages on android we want to show a meny icon */}
+          {(firstPage || Platform.OS === 'android') && 
           <Icon
             name= 'menu'
             color= {colorScheme.primaryContainerColor}
             size= {50}
-            onPress={() => this.props.navigation.navigate('DrawerOpen', {test: 'TEST'})}
+            onPress={() => this.props.navigation.navigate('DrawerOpen')}
           /> 
           }
-          {!firstPage &&
+          {/* But on all other pages on IOS, we want to show a back button  */}
+          {(!firstPage && Platform.OS === 'ios') &&
           <Icon
             name= 'arrow-back'
             color= {colorScheme.primaryContainerColor}

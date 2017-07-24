@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   View,
   StyleSheet,
@@ -19,7 +20,7 @@ import Collapsible from 'react-native-collapsible';
 import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
 import colorScheme from '../../../config/colors';
 
-export default class OperationView extends Component {
+class OperationView extends Component {
 
   constructor(props) {
     super(props);
@@ -44,7 +45,7 @@ export default class OperationView extends Component {
 
   render() {
     const { operation, reportedStates, isCollapsed } = this.state;
-    const { rowNumber, navigation } = this.props;
+    const { rowNumber, navigation, getStateDefinition } = this.props;
 
     // Decide what dot to display
     let dotStyle = [styles.innerDot, styles.innerFutureDot];
@@ -154,6 +155,7 @@ export default class OperationView extends Component {
                                                         mostRelevantStatement, 
                                                         reportedStates[mostRelevantStatement.stateDefinition],
                                                         this.props.navigation.navigate,
+                                                        getStateDefinition(mostRelevantStatement.stateDefinition)
                                                       ))
               }
             </List>
@@ -164,7 +166,7 @@ export default class OperationView extends Component {
     );
   }
 
-  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate) {
+  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, stateDef) {
     const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
@@ -201,7 +203,9 @@ export default class OperationView extends Component {
             >
               <View>  
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.stateDisplayTitle} >{stateToDisplay.stateDefinition}</Text>
+                    {!stateDef && <Text style={styles.stateDisplayTitle} >{stateToDisplay.stateDefinition}</Text>}
+                    {stateDef && <Text style={styles.stateDisplayTitle} >{stateDef.Name}</Text>}
+
                     {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
                   </View>
                   <View style= {{flexDirection: 'row'}} >
@@ -214,7 +218,6 @@ export default class OperationView extends Component {
                                                                       <Text style={styles.estimateText}>E</Text>
                                                                   </View>
                       }
-                      {/*  RELIABILITY  */}
                   </View>
               </View>
             </TouchableWithoutFeedback>
@@ -277,7 +280,13 @@ export default class OperationView extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    getStateDefinition: state.states.stateById
+  }
+}
 
+export default connect(mapStateToProps)(OperationView);
 
 const styles = StyleSheet.create({
   container: {
