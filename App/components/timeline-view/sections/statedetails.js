@@ -36,23 +36,24 @@ class StateDetails extends Component {
         this.gotoReportPortCall = this.gotoReportPortCall.bind(this);
     }
 
-    gotoReportPortCall = () => {
-
+    gotoReportPortCall = (operation, statements) => {
+        this.props.navigation.navigate('SendPortCall', {
+            stateId: statements[0].stateDefinition, 
+            atLocation: operation.atLocation, 
+            fromLocation: operation.fromLocation, 
+            toLocation: operation.toLocation
+        });
     }
 
     render () {
-        console.log(this.state);
         const { operation, statements } = this.state;
-        // const operation = this.props.navigation.state.params.operation;
         const { vessel, portCall, getStateDefinition } = this.props;
-        // const statements = this.props.navigation.state.params.statements;
-
         const stateDef = getStateDefinition(statements[0].stateDefinition);
 
         return(
             
         <View style= {styles.container} >
-            <TopHeader title = 'Details' navigation={this.props.navigation} rightIconFunction={this.gotoReportPortCall}/>
+            <TopHeader title = 'Details' navigation={this.props.navigation} rightIconFunction={() => this.gotoReportPortCall(operation, statements)}/>
                 {/* Vessel Name and Operation subtitle */}
                 <View style={styles.headerContainer} >
                    {/* Vessel Name and avatar */}

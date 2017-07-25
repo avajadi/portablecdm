@@ -62,7 +62,7 @@ class SendPortcall extends Component {
  
     return(
       <View style={styles.container}>
-        <TopHeader title = 'Report' />
+        <TopHeader title = 'Report' navigation={this.props.navigation}/>
         {/* Information header */}
         <View style={styles.headerContainer} >
           <Text 
