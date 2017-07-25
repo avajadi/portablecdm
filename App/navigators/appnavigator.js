@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Text} from 'react-native';
+import {Text, Dimensions} from 'react-native';
 import { StackNavigator, DrawerNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 
 
@@ -60,7 +60,7 @@ export const AppNavigator = DrawerNavigator({
   Settings: { screen: Settings },
 }, {
   headerMode: 'none',
-  drawerWidth: 250,
+  drawerWidth: 3*Dimensions.get('window').width/4, 
   contentComponent: SideMenu,
   // contentOptions: {
   //   items: ['PortCalls', 'TimeLine', 'Home', 'SendPortCall'],

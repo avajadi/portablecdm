@@ -19,6 +19,9 @@ import {
     Icon,
     Avatar,
 } from 'react-native-elements';
+
+import Collapsible from 'react-native-collapsible';
+
 import colorScheme from '../../../config/colors';
 import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
@@ -140,7 +143,18 @@ class StateDetails extends Component {
                                     <Text style={styles.detailText}>{getDateTimeString(new Date(statement.reportedAt))}</Text>        
                                 </View>
                                 
+                                {/* Reliability for the message, and reliability changes  */}
                                 <Text style={styles.stateSubTitleTextDisabled}>RELIABILITY: {statement.reliability}%</Text>
+                                {statement.reliabilityChanges.map((change, i) => (
+                                    <Text 
+                                        key={i}
+                                        style={styles.reliabilityChangeText}
+                                    >
+                                        {Math.floor(change.reliability*100)}% : {change.reason}
+                                    </Text>
+                                ))}
+                                
+                            
 
                             </View>     
                         </View>
@@ -279,6 +293,10 @@ const styles = StyleSheet.create({
         fontSize: 12,
      //   paddingRight: 10,
     },
+    reliabilityChangeText: {
+        fontSize: 10,
+        marginLeft: 10
+    }
 
 });
 
