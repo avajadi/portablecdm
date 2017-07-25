@@ -8,6 +8,13 @@ export const addFavoriteState = (stateId) => {
   };
 };
 
+export const replaceFavoriteStates = (stateIds) => {
+    return {
+        type: types.REPLACE_FAVORITE_STATES,
+        payload: stateIds
+    }
+};
+
 export const removeFavoriteState = (stateId) => {
   return {
     type: types.REMOVE_FAVORITE_STATE,
@@ -47,7 +54,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(filterStatements)
       .then(addLocationsToOperations)
       .then(extractWarnings)
-      .then(fetchReliability)
+    //   .then(fetchReliability)
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
