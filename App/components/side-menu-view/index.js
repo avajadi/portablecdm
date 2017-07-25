@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   View,
   StyleSheet,
@@ -19,8 +20,15 @@ import {
 
 import colorScheme from '../../config/colors';
 
-export default class SideMenu extends Component {
+class SideMenu extends Component {
   render() {
+
+    const { navigate, state } = this.props.navigation;
+    const { selectedPortCall, vessel, activeItemKey } = this.props;
+
+    const haveSelectedPortCall = !!selectedPortCall;
+    const containerStyle = haveSelectedPortCall ? styles.menuContainer : [styles.menuContainer, styles.unavailableContainer];
+    
     return(
       <ScrollView style={styles.container}>
 
@@ -29,7 +37,7 @@ export default class SideMenu extends Component {
                 <List>
                     {/* Menu */}
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={activeItemKey === 'PortCalls' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{
                           name:'home',
                           color: 'white'
@@ -38,15 +46,16 @@ export default class SideMenu extends Component {
                       //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > Home 
+                                <Text style={styles.menuText} > Select PortCall 
                                 </Text>     
                             </View>
                         }
+                        onPress={() => navigate('PortCalls')}
                     />
      
                     <ListItem
-                        containerStyle={styles.menuContainer}
-                        leftIcon={{
+                        containerStyle={activeItemKey === 'StateList' ? [containerStyle, styles.selectedContainer] : containerStyle}
+                          leftIcon={{
                           name: 'access-time',
                           color: 'white'
                         
@@ -58,11 +67,15 @@ export default class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
-                    
+                        onPress={() => {
+                            if (haveSelectedPortCall && activeItemKey !== 'StateList')
+                                navigate('StateList');
+                        }}
+                        
                     />
     
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={activeItemKey === 'OverView' ? [containerStyle, styles.selectedContainer] : containerStyle}
                         leftIcon={{name:'remove-red-eye',
                         color: 'white'
                         }}
@@ -74,10 +87,14 @@ export default class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
+                        onPress={() => {
+                            if (haveSelectedPortCall && activeItemKey !== 'OverView')
+                                navigate('OverView');
+                        }}
                     />
 
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={activeItemKey === 'TimeLine' ? [containerStyle, styles.selectedContainer] : containerStyle}
                         leftIcon={{
                           name:'timeline',
                           color: 'white'}}
@@ -89,9 +106,13 @@ export default class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
+                        onPress={() => {
+                            if (haveSelectedPortCall && activeItemKey !== 'TimeLine')
+                                navigate('TimeLine');
+                        }}
                     />
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={activeItemKey === 'VesselInfo' ? [containerStyle, styles.selectedContainer] : containerStyle}
                         leftIcon={{
                           name:'directions-boat',
                           color: 'white'}}
@@ -103,10 +124,14 @@ export default class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
+                        onPress={() => {
+                            if (haveSelectedPortCall && activeItemKey !== 'VesselInfo')
+                                navigate('VesselInfo');
+                        }}
                     />
 
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={activeItemKey === 'PortInfo' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{
                           name:'business',
                           color: 'white'}}
@@ -118,10 +143,14 @@ export default class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
+                        onPress={() => {
+                            if (activeItemKey !== 'PortInfo')
+                                navigate('PortInfo');
+                        }}
                     />
 
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={activeItemKey === 'MultiView' ? [containerStyle, styles.selectedContainer] : containerStyle}
                         leftIcon={{
                           name:'dashboard', 
                           color: 'white'
@@ -136,7 +165,7 @@ export default class SideMenu extends Component {
                         }
                     />
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={activeItemKey === 'Settings' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{
                           name:'settings',
                           color: 'white'
@@ -149,6 +178,10 @@ export default class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
+                        onPress={() => {
+                            if(activeItemKey !== 'Settings')
+                                navigate('Settings');
+                        }}
                     />
 
                     <ListItem
@@ -194,5 +227,21 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
 
   },
+  selectedContainer: {
+    backgroundColor: 'black',
+  },
+  unavailableContainer: {
+    backgroundColor: 'grey',
+  }
 
 })
+
+
+function mapStateToProps(state) {
+    return {
+        selectedPortCall: state.portCalls.selectedPortCall,
+        vessel: state.portCalls.vessel,
+    }
+}
+
+export default connect(mapStateToProps)(SideMenu);

@@ -3,7 +3,9 @@ import stateCatalogue from './state_catalogue.json';
 
 const INITIAL_STATE = { 
   stateCatalogue: stateCatalogue,
-  favoriteStates: ['CargoOp_Commenced', 'Bunkering_Commenced'] 
+  favoriteStates: ['CargoOp_Commenced', 'Bunkering_Commenced'],
+  lookup: {},
+  stateById: (stateId) => null,
 };
 
 let lookup = {};

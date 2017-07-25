@@ -28,8 +28,10 @@ import {removeStringReportedBy, removeStringAtLocation} from '../../../util/stri
 class StateDetails extends Component {
     render () {
         const operation = this.props.navigation.state.params.operation;
-        const { vessel, portCall} = this.props;
+        const { vessel, portCall, getStateDefinition } = this.props;
         const statements = this.props.navigation.state.params.statements;
+
+        const stateDef = getStateDefinition(statements[0].stateDefinition);
 
         return(
             
@@ -49,13 +51,12 @@ class StateDetails extends Component {
                 </View>
             {/* State List of this state */}
             <ScrollView style={styles.container}>
- 
 
                 {/*Warnings*/}
                 {statements.warnings &&
-                    statements.warnings.map(warning => {
+                    statements.warnings.map((warning, index) => {
                     return (
-                        <View style={styles.warningContainer}>
+                        <View style={styles.warningContainer} key={index}>
                             <Icon name='warning' color={colorScheme.warningColor} size={24} paddingLeft={0}/>
                             <Text style={styles.warningText} >Warning: {warning.message}</Text>
                         </View>
@@ -64,14 +65,14 @@ class StateDetails extends Component {
 
 
                 {/*StateView*/}
-
                 {statements.map( statement => {
                     return(
-                        <View style={styles.stateContainer}> 
+                        <View style={styles.stateContainer}
+                            key={statement.messageId}> 
                             {/*TitleView*/}
                             <View style={styles.titleContainer}> 
-                                <Text style={styles.stateTitleText}> {statements[0].stateDefinition} </Text>  
-
+                                {stateDef && <Text style={styles.stateTitleText}> {stateDef.Name} </Text>  }
+                                {!stateDef && <Text style={styles.stateTitleText}> {statement.stateDefinition} </Text>  }
                             </View>
 
                             {/*Dividers that change colors*/}
@@ -268,6 +269,7 @@ function mapStateToProps (state) {
     return {
         vessel: state.portCalls.vessel,
         portCall: state.portCalls.selectedPortCall,
+        getStateDefinition: state.states.stateById
     }
 }
 

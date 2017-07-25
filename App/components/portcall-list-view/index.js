@@ -22,6 +22,10 @@ import TopHeader from '../top-header-view';
 import { getDateTimeString } from '../../util/timeservices';
 
 class PortCallList extends Component {
+    static navigationOptions = {
+        title: 'Select PortCall',
+        drawerIcon: <Icon name='home' color='white' />
+    }
     
     // static navigationOptions = {
     //     tabBarLabel: 'PortCall',
@@ -93,7 +97,7 @@ class PortCallList extends Component {
                                     subtitleStyle={styles.subTitleStyle}
                                     onPress={() => {
                                         selectPortCall(portCall);
-                                        navigate('TimeLineDetails')
+                                        navigate('TimeLine')
                                     }}
                                 />
                             ))

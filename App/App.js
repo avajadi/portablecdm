@@ -10,8 +10,7 @@ import {AppNavigator, StackNav} from './navigators/appnavigator';
 class App extends Component {
   render() {
     return (
-      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
-        
+      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>       
         <AppNavigator />
       </Provider>
     );
