@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   },
   operationHeader: {
     fontWeight: 'bold', 
-    fontSize: 23,
+    fontSize: 18,
     color: colorScheme.quaternaryTextColor, // Snyggare med EmeraldBlue(queaternaryColor)
   },
   operationInfo: {
@@ -384,15 +384,19 @@ const styles = StyleSheet.create({
   },
   timeDisplay: {
     color: colorScheme.tertiaryColor,
+  //  fontSize: 12,
   },
   timeDisplayActual: {
     color: colorScheme.actualColor,
+  //  fontSize: 12,
   },
   timeDisplayEstimate: {
     color: colorScheme.estimateColor,
+  //  fontSize: 12,
   },
   timeDisplayWarning: {
     color: colorScheme.warningColor,
+    fontSize: 9,
   },
 
 
