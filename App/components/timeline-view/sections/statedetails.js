@@ -24,19 +24,35 @@ import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
 import {removeStringReportedBy, removeStringAtLocation} from '../../../util/stringutils';
 
-
 class StateDetails extends Component {
+    constructor(props) {
+        super(props);
+
+        const {operation, statements} = props.navigation.state.params;
+        this.state = {
+            operation: operation,
+            statements: statements
+        }
+        this.gotoReportPortCall = this.gotoReportPortCall.bind(this);
+    }
+
+    gotoReportPortCall = () => {
+
+    }
+
     render () {
-        const operation = this.props.navigation.state.params.operation;
+        console.log(this.state);
+        const { operation, statements } = this.state;
+        // const operation = this.props.navigation.state.params.operation;
         const { vessel, portCall, getStateDefinition } = this.props;
-        const statements = this.props.navigation.state.params.statements;
+        // const statements = this.props.navigation.state.params.statements;
 
         const stateDef = getStateDefinition(statements[0].stateDefinition);
 
         return(
             
         <View style= {styles.container} >
-            <TopHeader title = 'Details' navigation={this.props.navigation}/>
+            <TopHeader title = 'Details' navigation={this.props.navigation} rightIconFunction={this.gotoReportPortCall}/>
                 {/* Vessel Name and Operation subtitle */}
                 <View style={styles.headerContainer} >
                    {/* Vessel Name and avatar */}
