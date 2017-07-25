@@ -14,6 +14,8 @@ import StateDetails from '../components/timeline-view/sections/statedetails';
 import OverView     from '../components/overview-view';
 import VesselInfo   from '../components/vessel-info-view';
 import PortInfo     from '../components/port-info-view';
+import Settings     from '../components/settings-view';
+import LoginView    from '../components/login-view';
 import SideMenu     from '../components/side-menu-view';
 
 
@@ -45,6 +47,7 @@ const PortCallListNavigator = StackNavigator({
 });
 
 export const AppNavigator = DrawerNavigator({
+  // Login : { screen: LoginView },
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   StateList: { screen: StateList },
@@ -52,6 +55,7 @@ export const AppNavigator = DrawerNavigator({
   OverView: { screen: OverView },
   VesselInfo: { screen: VesselInfo },
   PortInfo: { screen: PortInfo },
+  Settings: { screen: Settings },
 }, {
   headerMode: 'none',
   drawerWidth: 250,

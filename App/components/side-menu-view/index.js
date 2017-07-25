@@ -27,9 +27,6 @@ class SideMenu extends Component {
     const { selectedPortCall, vessel, activeItemKey } = this.props;
 
     const haveSelectedPortCall = !!selectedPortCall;
-
-    console.log(activeItemKey);
-    
     const containerStyle = haveSelectedPortCall ? styles.menuContainer : [styles.menuContainer, styles.unavailableContainer];
     
     return(
@@ -181,6 +178,10 @@ class SideMenu extends Component {
                                 </Text>     
                             </View>
                         }
+                        onPress={() => {
+                            if(activeItemKey !== 'Settings')
+                                navigate('Settings');
+                        }}
                     />
 
                     <ListItem
