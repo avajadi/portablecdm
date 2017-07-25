@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Dimensions, 
+  Image
 } from 'react-native';
 
 import {
@@ -28,26 +29,44 @@ class SideMenu extends Component {
 
     const haveSelectedPortCall = !!selectedPortCall;
     const containerStyle = haveSelectedPortCall ? styles.menuContainer : [styles.menuContainer, styles.unavailableContainer];
+    const textStyle = haveSelectedPortCall ? styles.menuText : [styles.menuText, styles.unavailableMenuText];
     
     return(
-      <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}>    
+            <View style={styles.headerContainer}>
+                {!! vessel &&
+                <Image
+                    style={{ 
+                        width: 3*Dimensions.get('window').width/4-20,
+                        height: Dimensions.get('window').height/4,
+                        borderRadius: 5,
+                        }}
+          
+                source={{uri:vessel.photoURL }}   //"http://cdn.channelblade.com/boat_graphics/electronic_brochure/company78478/354570_p_t_640x480_image01.jpg"
+              //  containerStyle={{borderRadius: 300}}
+                />}
+                {!!vessel && 
+                    <Text style={styles.headerText}>{vessel.name}</Text>}
+                {!vessel && 
+                <Text style={styles.headerText}>Select a Portcall</Text>}
+            </View>    
 
-        <Text style={styles.menuText}>Det här är en sidomeny!</Text>
 
-                <List>
+<Divider style={{backgroundColor: colorScheme.secondaryContainerColor, height: 0.7,}}/>
+
+            <View style={styles.listContainer}>
+                <List style={{paddingTop: 0}}>
                     {/* Menu */}
                     <ListItem
                         containerStyle={activeItemKey === 'PortCalls' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{
                           name:'home',
-                          color: 'white'
+                          color: 'white',
                           }}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > Select PortCall 
-                                </Text>     
+                                <Text style={styles.menuText}>Select PortCall</Text>     
                             </View>
                         }
                         onPress={() => navigate('PortCalls')}
@@ -58,20 +77,17 @@ class SideMenu extends Component {
                           leftIcon={{
                           name: 'access-time',
                           color: 'white'
-                        
                         }}
                         hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > Report Portcall
-                                </Text>     
+                                <Text style={textStyle}>Report Portcall</Text>     
                             </View>
                         }
                         onPress={() => {
                             if (haveSelectedPortCall && activeItemKey !== 'StateList')
                                 navigate('StateList');
                         }}
-                        
                     />
     
                     <ListItem
@@ -80,11 +96,9 @@ class SideMenu extends Component {
                         color: 'white'
                         }}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > PortCall Overview
-                                </Text>     
+                                <Text style={textStyle}>PortCall Overview</Text>     
                             </View>
                         }
                         onPress={() => {
@@ -99,11 +113,9 @@ class SideMenu extends Component {
                           name:'timeline',
                           color: 'white'}}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > PortCall Timeline
-                                </Text>     
+                                <Text style={textStyle}>PortCall Timeline</Text>     
                             </View>
                         }
                         onPress={() => {
@@ -117,11 +129,9 @@ class SideMenu extends Component {
                           name:'directions-boat',
                           color: 'white'}}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > Vessel Info
-                                </Text>     
+                                <Text style={textStyle}>Vessel Info</Text>     
                             </View>
                         }
                         onPress={() => {
@@ -136,11 +146,9 @@ class SideMenu extends Component {
                           name:'business',
                           color: 'white'}}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > Port Info
-                                </Text>     
+                                <Text style={styles.menuText} >Port Info</Text>     
                             </View>
                         }
                         onPress={() => {
@@ -156,11 +164,9 @@ class SideMenu extends Component {
                           color: 'white'
                           }}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > PortCall Multiple View
-                                </Text>     
+                                <Text style={textStyle}>PortCall Multiple View</Text>     
                             </View>
                         }
                     />
@@ -168,14 +174,12 @@ class SideMenu extends Component {
                         containerStyle={activeItemKey === 'Settings' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{
                           name:'settings',
-                          color: 'white'
+                          color: 'white',
                         }}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > Settings
-                                </Text>     
+                                <Text style={styles.menuText} >Settings</Text>     
                             </View>
                         }
                         onPress={() => {
@@ -191,50 +195,66 @@ class SideMenu extends Component {
                           color: 'white'
                           }}
                         hideChevron
-                      //  hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} > Logout
-                                </Text>     
+                                <Text style={styles.menuText} >Logout</Text>     
                             </View>
                         }
                     />
-
                 </List>
-          
-
-      </ScrollView>
+            </View>
+        </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+  //  flex: 1,
     backgroundColor: colorScheme.sidebarColor,
+    paddingTop: 25,
   },
-  menuText: {
+  headerContainer: {
+    backgroundColor: colorScheme.sidebarColor,
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 20,
+  },
+  headerText: {
+    textAlign: 'center',
     color: colorScheme.primaryTextColor,
-    //fontWeight: 'bold',
+    paddingTop: 20,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  listContainer: {
+    backgroundColor: colorScheme.sidebarColor,
+ //   paddingTop: 10,
+    marginTop: 0,
   },
   menuContainer: {
     backgroundColor: colorScheme.sidebarColor,
     paddingLeft: 10,
-    
+  },  
+  menuText: {
+    color: colorScheme.primaryTextColor,
+  },
+  unavailableMenuText: {
+      color: colorScheme.tertiaryTextColor,
   },
   textContainer: {
-    //backgroundColor: 'pink',
-    paddingLeft: 10,
-
+    marginLeft: 10,
   },
   selectedContainer: {
-    backgroundColor: 'black',
+    backgroundColor: colorScheme.primaryColor,
   },
   unavailableContainer: {
-    backgroundColor: 'grey',
-  }
+    backgroundColor: colorScheme.sidebarColor,
+  },
 
 })
+
 
 
 function mapStateToProps(state) {
