@@ -71,8 +71,7 @@ class TimeLineView extends Component {
                 <View style={styles.headerContainer} >
                     <Text 
                         style={styles.headerText}
-                        h4
-                        > {vesselName}</Text>
+                        >{vesselName}</Text>
                 </View>
 
                 {loading && <ActivityIndicator 
@@ -107,6 +106,7 @@ const styles = StyleSheet.create ({
     headerText: {
        // fontWeight: 'bold',
         textAlign: 'center',
+        fontSize: 20,
         color: colorScheme.primaryTextColor,
         
     },
