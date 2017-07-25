@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-
 } from 'react-native';
 
 import {
