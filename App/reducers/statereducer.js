@@ -1,9 +1,9 @@
-import { ADD_FAVORITE_STATE, REMOVE_FAVORITE_STATE } from '../actions/types';
+import { ADD_FAVORITE_STATE, REMOVE_FAVORITE_STATE, REPLACE_FAVORITE_STATES } from '../actions/types';
 import stateCatalogue from './state_catalogue.json';
 
 const INITIAL_STATE = { 
   stateCatalogue: stateCatalogue,
-  favoriteStates: ['CargoOp_Commenced', 'Bunkering_Commenced'],
+  favoriteStates: ['CargoOp_Commenced', 'Bunkering_Commenced', 'Arrival_PortArea_Confirmed', 'AnchoringOp_Confirmed'],
   lookup: {},
   stateById: (stateId) => null,
 };
@@ -27,6 +27,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, favoriteStates: [...state.favoriteStates, action.payload] }
     case REMOVE_FAVORITE_STATE:
       return { ...state, favoriteStates: state.favoriteStates.filter(elem => action.payload !== elem)}
+    case REPLACE_FAVORITE_STATES:
+      return { ...state, favoriteStates: action.payload}
     default:
       return state;
   }

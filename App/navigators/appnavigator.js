@@ -20,18 +20,6 @@ import SelectFavoriteState from '../components/select-favorite-state-view';
 import SideMenu     from '../components/side-menu-view';
 
 
-// const PortCallListNavigator = StackNavigator({
-//   PortCallList: { screen: PortCallList},
-//   FilterMenu: {screen: FilterMenu},
-//   TimeLineDetails: {screen: TimeLineView},
-//   StateDetails: { screen: StateDetails}  
-//   }, {
-//   navigationOptions: {
-//     gesturesEnabled: false
-//   },
-//   headerMode: 'none'
-// });
-
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
   StateDetails: { screen: StateDetails},
@@ -49,7 +37,7 @@ const PortCallListNavigator = StackNavigator({
   headerMode: 'none',
 });
 
-export const AppNavigator = DrawerNavigator({
+export const AppNavigator = DrawerNavigator({  
   // Login : { screen: LoginView },
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
