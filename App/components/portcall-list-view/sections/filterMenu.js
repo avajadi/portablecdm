@@ -20,6 +20,8 @@ import {
     CheckBox,
 } from 'react-native-elements';
 
+import MiniHeader from '../../mini-header-view';
+
 export default class FilterMenu extends Component {
 
 constructor(){
@@ -55,204 +57,207 @@ const buttonsTime = ['Arrival Time', 'Departure Time']
 const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
 
     return(
-        <ScrollView style= {styles.container} >
+        <View style={{flex: 1}}>
+            <MiniHeader navigation={this.props.navigation} title="Filter"/>
+            <ScrollView style= {styles.container} >
 
-            <View style={styles.smallContainer}> 
-                <Text style={styles.textTitle}> Sort by </Text>
-                    <ButtonGroup
-                        buttons={buttonsSortBy}
-                        selectedIndex={selectedSortByIndex}
-                        containerStyle={styles.buttonStyle}
-                        textStyle={{color: colorScheme.quaternaryTextColor, textAlign: 'center'}}
-                        underlayColor= {colorScheme.secondaryColor}
-                        selectedTextStyle={{color: colorScheme.primaryTextColor}}
-                        selectedBackgroundColor={colorScheme.primaryColor}
-                        onPress={(index) => this.setState({selectedSortByIndex: index})}
+                <View style={styles.smallContainer}> 
+                    <Text style={styles.textTitle}> Sort by </Text>
+                        <ButtonGroup
+                            buttons={buttonsSortBy}
+                            selectedIndex={selectedSortByIndex}
+                            containerStyle={styles.buttonStyle}
+                            textStyle={{color: colorScheme.quaternaryTextColor, textAlign: 'center'}}
+                            underlayColor= {colorScheme.secondaryColor}
+                            selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                            selectedBackgroundColor={colorScheme.primaryColor}
+                            onPress={(index) => this.setState({selectedSortByIndex: index})}
 
+                        />
+                </View>
+
+                <View style={styles.smallContainer}> 
+                    <Text style={styles.textTitle}> Order by </Text>
+                        <ButtonGroup
+                            buttons={buttonsOrderBy}
+                            selectedIndex={selectedOrderByIndex}
+                            containerStyle={styles.buttonStyle}
+                            textStyle={{color: colorScheme.quaternaryTextColor}}
+                            underlayColor= {colorScheme.secondaryColor}
+                            selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                            selectedBackgroundColor={colorScheme.primaryColor}
+                            onPress={(index) => this.setState({selectedOrderByIndex: index})}
+                        />
+                </View>
+
+                <View style={styles.smallTimeContainer}> 
+                    <Text style={styles.textTitle}> Time </Text>
+                        <ButtonGroup
+                            buttons={buttonsTime}
+                            selectedIndex={selectedTimeIndex}
+                            containerStyle={styles.buttonStyle}
+                            textStyle={{color: colorScheme.quaternaryTextColor}}
+                            underlayColor= {colorScheme.secondaryColor}
+                            selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                            selectedBackgroundColor={colorScheme.primaryColor}
+                            onPress={(index) => this.setState({selectedTimeIndex: index})}
+                        />
+                    <Slider
+                        value={this.state.value}
+                        onValueChange={(value) => this.setState({value})}  
+                        thumbTintColor={colorScheme.primaryColor}
                     />
-            </View>
+                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.value} </Text>
+                </View>
 
-            <View style={styles.smallContainer}> 
-                <Text style={styles.textTitle}> Order by </Text>
-                    <ButtonGroup
-                        buttons={buttonsOrderBy}
-                        selectedIndex={selectedOrderByIndex}
-                        containerStyle={styles.buttonStyle}
-                        textStyle={{color: colorScheme.quaternaryTextColor}}
-                        underlayColor= {colorScheme.secondaryColor}
-                        selectedTextStyle={{color: colorScheme.primaryTextColor}}
-                        selectedBackgroundColor={colorScheme.primaryColor}
-                        onPress={(index) => this.setState({selectedOrderByIndex: index})}
-                    />
-            </View>
+                {/*MODAL BIG VIEW #1*/}
+                <View style={styles.smallContainer}> 
 
-            <View style={styles.smallTimeContainer}> 
-                <Text style={styles.textTitle}> Time </Text>
-                    <ButtonGroup
-                        buttons={buttonsTime}
-                        selectedIndex={selectedTimeIndex}
-                        containerStyle={styles.buttonStyle}
-                        textStyle={{color: colorScheme.quaternaryTextColor}}
-                        underlayColor= {colorScheme.secondaryColor}
-                        selectedTextStyle={{color: colorScheme.primaryTextColor}}
-                        selectedBackgroundColor={colorScheme.primaryColor}
-                        onPress={(index) => this.setState({selectedTimeIndex: index})}
-                    />
-                <Slider
-                    value={this.state.value}
-                    onValueChange={(value) => this.setState({value})}  
-                    thumbTintColor={colorScheme.primaryColor}
-                />
-                <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.value} </Text>
-            </View>
-
-            {/*MODAL BIG VIEW #1*/}
-            <View style={styles.smallContainer}> 
-
-            {/*Testing Modal                       TESTING TESTING                TESTING MODAL #1*/}
-            <Modal
-                animationType={"slide"}
-                transparent={false}
-                visible={this.state.modalStagesVisible}
-            >
-                {/*Modal View*/}
-                <View style={styles.modalContainerStyle}>
-                    
-                    {/*Modal Header with close, title and reset button*/}
-                    <View style={styles.modalHeaderStyle}> 
-                        <Icon 
-                            name= "close"
-                            onPress={() => {
-                            this.setModalStagesVisible.bind(this)(!this.state.modalStagesVisible)
-                            }}>
-                        </Icon>
-                       <Text style={styles.modalHeaderTextStyle}>Stages</Text> 
-                       <Text style={{color: colorScheme.primaryColor}}> Reset </Text> 
-                    </View>
-                    
-                    {/*Modal Sub Container with filter options*/}
-                    <View style={styles.modalSubContainer}>
-                        <View>
-                            <List>
-                                <ListItem
-                                    title='Planned'    
-                                    titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                    onPress={ () => console.log('List item pressed at MODAL 1')}
-                                    hideChevron
-                                />
-                                <ListItem
-                                    title='Arrived'    
-                                    titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                    onPress={ () => console.log('List item pressed')}
-                                    hideChevron
-                                />
-                                <ListItem
-                                    title='To Be Nominated'    
-                                    titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                    onPress={ () => console.log('List item pressed')}
-                                    hideChevron
-                                />
-                                <ListItem
-                                    title='Anchored'    
-                                    titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                    onPress={ () => console.log('List item pressed')}
-                                    hideChevron
-                                />
-                                <ListItem
-                                    title='Berthed'    
-                                    titleStyle= {{color: colorScheme.tertiaryColor}}
-                                    onPress={ () => console.log('List item pressed')}
-                                    rightIcon={
-                                        <Icon
-                                            name='check'
-                                            color={colorScheme.tertiaryColor}
-                                            containerStyle={{paddingRight: 10}}/>}
-                                />
-                                <ListItem
-                                    title='Departed'    
-                                    titleStyle= {{color: colorScheme.tertiaryColor}}
-                                    onPress={ () => console.log('List item pressed')}
-                                    rightIcon={
-                                        <Icon
-                                            name='check'
-                                            color={colorScheme.tertiaryColor}
-                                            containerStyle={{paddingRight: 10}}/>}
-                                />
-                                <ListItem
-                                    title='Sailed'    
-                                    titleStyle= {{color: colorScheme.tertiaryColor}}
-                                    onPress={ () => console.log('List item pressed')}
-                                    rightIcon={
-                                        <Icon
-                                            name='check'
-                                            color={colorScheme.tertiaryColor}
-                                            containerStyle={{paddingRight: 10}}/>}
-                                />
-                            </List>
+                {/*Testing Modal                       TESTING TESTING                TESTING MODAL #1*/}
+                <Modal
+                    animationType={"slide"}
+                    transparent={false}
+                    visible={this.state.modalStagesVisible}
+                >
+                    {/*Modal View*/}
+                    <View style={styles.modalContainerStyle}>
+                        
+                        {/*Modal Header with close, title and reset button*/}
+                        <View style={styles.modalHeaderStyle}> 
+                            <Icon 
+                                name= "close"
+                                onPress={() => {
+                                this.setModalStagesVisible.bind(this)(!this.state.modalStagesVisible)
+                                }}>
+                            </Icon>
+                        <Text style={styles.modalHeaderTextStyle}>Stages</Text> 
+                        <Text style={{color: colorScheme.primaryColor}}> Reset </Text> 
+                        </View>
+                        
+                        {/*Modal Sub Container with filter options*/}
+                        <View style={styles.modalSubContainer}>
+                            <View>
+                                <List>
+                                    <ListItem
+                                        title='Planned'    
+                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                                        onPress={ () => console.log('List item pressed at MODAL 1')}
+                                        hideChevron
+                                    />
+                                    <ListItem
+                                        title='Arrived'    
+                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                                        onPress={ () => console.log('List item pressed')}
+                                        hideChevron
+                                    />
+                                    <ListItem
+                                        title='To Be Nominated'    
+                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                                        onPress={ () => console.log('List item pressed')}
+                                        hideChevron
+                                    />
+                                    <ListItem
+                                        title='Anchored'    
+                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                                        onPress={ () => console.log('List item pressed')}
+                                        hideChevron
+                                    />
+                                    <ListItem
+                                        title='Berthed'    
+                                        titleStyle= {{color: colorScheme.tertiaryColor}}
+                                        onPress={ () => console.log('List item pressed')}
+                                        rightIcon={
+                                            <Icon
+                                                name='check'
+                                                color={colorScheme.tertiaryColor}
+                                                containerStyle={{paddingRight: 10}}/>}
+                                    />
+                                    <ListItem
+                                        title='Departed'    
+                                        titleStyle= {{color: colorScheme.tertiaryColor}}
+                                        onPress={ () => console.log('List item pressed')}
+                                        rightIcon={
+                                            <Icon
+                                                name='check'
+                                                color={colorScheme.tertiaryColor}
+                                                containerStyle={{paddingRight: 10}}/>}
+                                    />
+                                    <ListItem
+                                        title='Sailed'    
+                                        titleStyle= {{color: colorScheme.tertiaryColor}}
+                                        onPress={ () => console.log('List item pressed')}
+                                        rightIcon={
+                                            <Icon
+                                                name='check'
+                                                color={colorScheme.tertiaryColor}
+                                                containerStyle={{paddingRight: 10}}/>}
+                                    />
+                                </List>
+                            </View>
                         </View>
                     </View>
+                </Modal>
+                </View> 
+                {/*Slut på MODAL  BIG VIEW #1*/}
+
+                <View style={styles.smallContainer}> 
+                    <Text style={styles.textTitle}> Mixed filters </Text>
+                    <List>
+                        <ListItem
+                            title='Stages'    
+                            titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                            badge={{
+                                value: 'Berthed, Departed, Sailed', 
+                                textStyle: { color: colorScheme.secondaryColor },
+                                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},          
+                                }}
+                            onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
+                        />
+                        <ListItem
+                            title='Status'    
+                            titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                            badge={{
+                                value: 'OK', 
+                                textStyle: { color: colorScheme.secondaryColor },
+                                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},      
+                                }}
+                        />
+                        <ListItem
+                            title='Vessel Type'    
+                            titleStyle= {{color: colorScheme.quaternaryTextColor}}
+                            badge={{
+                                value: 'Tanker Oil, Cargo',
+                                textStyle: { color: colorScheme.secondaryColor },
+                                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
+                                }}
+                        />
+                    </List>
                 </View>
-            </Modal>
-            </View> 
-            {/*Slut på MODAL  BIG VIEW #1*/}
 
-            <View style={styles.smallContainer}> 
-                <Text style={styles.textTitle}> Mixed filters </Text>
-                <List>
-                    <ListItem
-                        title='Stages'    
-                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                        badge={{
-                            value: 'Berthed, Departed, Sailed', 
-                            textStyle: { color: colorScheme.secondaryColor },
-                            containerStyle: {backgroundColor: colorScheme.primaryContainerColor},          
-                            }}
-                        onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
+                {/*Limit View with title and slider*/}
+                <View style={styles.smallTimeContainer}> 
+                    <Text style={styles.textTitle}> Limit </Text>
+                    {/* List first then sliding bar */}
+                    <Slider
+                        value={this.state.value}
+                        onValueChange={(value) => this.setState({value})}  
+                        thumbTintColor={colorScheme.primaryColor}
                     />
-                    <ListItem
-                        title='Status'    
-                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                        badge={{
-                            value: 'OK', 
-                            textStyle: { color: colorScheme.secondaryColor },
-                            containerStyle: {backgroundColor: colorScheme.primaryContainerColor},      
-                            }}
+                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.value} </Text>
+                </View>
+            
+                {/*Button - SHOW RESULTS*/}
+                <View style={{backgroundColor: colorScheme.primaryColor, marginTop: 10, paddingVertical: 5,}}>
+                    <Button 
+                        title="Show Results"
+                        textStyle={{color: colorScheme.primaryTextColor}}
+                        buttonStyle={{backgroundColor: colorScheme.primaryColor}}
+                        onPress={ () => console.log('Show Results button were pressed')}
                     />
-                    <ListItem
-                        title='Vessel Type'    
-                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                        badge={{
-                            value: 'Tanker Oil, Cargo',
-                            textStyle: { color: colorScheme.secondaryColor },
-                            containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
-                            }}
-                    />
-                </List>
-            </View>
+                </View>
 
-            {/*Limit View with title and slider*/}
-            <View style={styles.smallTimeContainer}> 
-                <Text style={styles.textTitle}> Limit </Text>
-                {/* List first then sliding bar */}
-                <Slider
-                    value={this.state.value}
-                    onValueChange={(value) => this.setState({value})}  
-                    thumbTintColor={colorScheme.primaryColor}
-                />
-                <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.value} </Text>
-            </View>
-        
-            {/*Button - SHOW RESULTS*/}
-            <View style={{backgroundColor: colorScheme.primaryColor, marginTop: 10, paddingVertical: 5,}}>
-                <Button 
-                    title="Show Results"
-                    textStyle={{color: colorScheme.primaryTextColor}}
-                    buttonStyle={{backgroundColor: colorScheme.primaryColor}}
-                    onPress={ () => console.log('Show Results button were pressed')}
-                />
-            </View>
-
-        </ScrollView>
+            </ScrollView>
+        </View>
     ); //Return
 } //Render
 }; //Class FilterMenu 
