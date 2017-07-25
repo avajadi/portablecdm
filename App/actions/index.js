@@ -69,6 +69,7 @@ async function fetchReliability(operations) {
                             for(let i = 0; i< resultState.messages.length; i++) {
                                 if(ourStatement.messageId == resultState.messages[i].messageId) {
                                     ourStatement.reliability = Math.floor(resultState.messages[i].reliability * 100);
+                                    ourStatement.reliabilityChanges = resultState.messages[i].reliabilityChanges;
                                 }
                             }            
                         })
