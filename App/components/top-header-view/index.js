@@ -48,12 +48,20 @@ export default class TopHeader extends Component {
           >
             {title}
           </Text>
-          <Icon
-            name='add-circle'
-            size = {50}
-            color= {colorScheme.primaryContainerColor}
-            onPress={() => rightIconFunction()}
-          />
+          {/* Only render the + icon if we have functionality for it on this view  */}
+          {!!rightIconFunction &&
+            <Icon
+              name='add-circle'
+              size = {50}
+              color= {colorScheme.primaryContainerColor}
+              onPress={() => rightIconFunction()}
+            />
+          }
+          {/* If we dont have a function for the + button, we still want to render something of the same size
+              otherwise, the title won't be in the right posisition  */}
+          {!rightIconFunction &&
+            <View style={{width: 50}}/>
+          }
         </View>
     </View>
     );

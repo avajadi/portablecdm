@@ -16,6 +16,7 @@ import VesselInfo   from '../components/vessel-info-view';
 import PortInfo     from '../components/port-info-view';
 import Settings     from '../components/settings-view';
 import LoginView    from '../components/login-view';
+import SelectFavoriteState from '../components/select-favorite-state-view';
 import SideMenu     from '../components/side-menu-view';
 
 
@@ -34,7 +35,9 @@ import SideMenu     from '../components/side-menu-view';
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
   StateDetails: { screen: StateDetails},
-  SendPortCall: { screen: SendPortCall },    
+  StateList: { screen: StateList },
+  SelectFavoriteStates: { screen: SelectFavoriteState },
+  SendPortCall: { screen: SendPortCall },
 }, {
   headerMode: 'none',
 });
@@ -50,7 +53,6 @@ export const AppNavigator = DrawerNavigator({
   // Login : { screen: LoginView },
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
-  StateList: { screen: StateList },
   Home: { screen: Home },  
   OverView: { screen: OverView },
   VesselInfo: { screen: VesselInfo },

@@ -26,7 +26,6 @@ class StateList extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
     this.state = {
-      showAddStatesModal: false,
       stateDataSource: ds.cloneWithRows(props.stateCatalogue),
       chosenStates: []
 
@@ -40,7 +39,7 @@ class StateList extends Component {
   }
 
   onAddStatesPress() {
-    this.setState({showAddStatesModal: !this.state.showAddStatesModal});
+    this.props.navigation.navigate('SelectFavoriteStates');
   }
 
   render() {
@@ -49,7 +48,7 @@ class StateList extends Component {
 
     return(
       <View style={styles.container}>
-        <TopHeader title="Favorite States" rightIconFunction={this.onAddStatesPress.bind(this)}/>
+        <TopHeader title="Favorite States" rightIconFunction={this.onAddStatesPress.bind(this)} navigation={this.props.navigation}/>
         <List>
            {favoriteStates.map((stateId, index) => {
             const state = getState(stateId);
@@ -66,41 +65,22 @@ class StateList extends Component {
             );
           })} 
         </List>
-        <Modal
-          visible={this.state.showAddStatesModal}
-          onRequestClose={() => this.setState({showAddStatesModal: false})}
-        >
-          <List>
-            <ListView
-              dataSource={this.state.stateDataSource}
-              renderRow={(stateDefinition => {
-                return (
-                  <ListItem
-                    key={stateDefinition.stateId}
-                    title={stateDefinition.Name}
-                  />
-                );
-              })}
-            />
-
-          </List>
-        </Modal>
       </View>
     );
   }
 }
 
-class StateListItem extends Component {
-  render() {
-    const {navigate} = this.props.navigation;
+// class StateListItem extends Component {
+//   render() {
+//     const {navigate} = this.props.navigation;
 
-    return(
-      <Button 
-        title={this.props.itemState.name}
-        onPress={() => {navigate('SendPortCall', {selectedState: this.props.itemState})}} />
-    );
-  }
-}
+//     return(
+//       <Button 
+//         title={this.props.itemState.name}
+//         onPress={() => {navigate('SendPortCall', {selectedState: this.props.itemState})}} />
+//     );
+//   }
+// }
 
 const styles = StyleSheet.create({
   container: {
