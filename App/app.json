@@ -6,10 +6,10 @@
     "slug": "portcdm-app",
     "sdkVersion": "17.0.0",
     "ios": {
-      "bundleIdentifier": "com.viktoria.portCDMapp"
+      "bundleIdentifier": "com.viktoria.portcdmapp"
     },
     "android": {
-      "package": "com.viktoria.portCDMapp"
+      "package": "com.viktoria.portcdmapp"
     }
   }
 }
