@@ -54,7 +54,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(filterStatements)
       .then(addLocationsToOperations)
       .then(extractWarnings)
-    //   .then(fetchReliability)
+      .then(fetchReliability)
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
@@ -75,7 +75,9 @@ async function fetchReliability(operations) {
                         ourOperation.reportedStates[resultState.stateId].forEach(ourStatement => {
                             for(let i = 0; i< resultState.messages.length; i++) {
                                 if(ourStatement.messageId == resultState.messages[i].messageId) {
+                                    // We want the reliability for this statement
                                     ourStatement.reliability = Math.floor(resultState.messages[i].reliability * 100);
+                                    // And also all the changes for the statement. 
                                     ourStatement.reliabilityChanges = resultState.messages[i].reliabilityChanges;
                                 }
                             }            

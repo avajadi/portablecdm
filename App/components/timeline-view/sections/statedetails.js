@@ -145,13 +145,16 @@ class StateDetails extends Component {
                                 
                                 {/* Reliability for the message, and reliability changes  */}
                                 <Text style={styles.stateSubTitleTextDisabled}>RELIABILITY: {statement.reliability}%</Text>
-                                {!!statement.reliabilitChanges && statement.reliabilityChanges.map((change, i) => (
-                                    <Text 
-                                        key={i}
-                                        style={styles.reliabilityChangeText}
-                                    >
-                                        {Math.floor(change.reliability*100)}% : {change.reason}
-                                    </Text>
+                                {!!statement.reliabilityChanges && 
+                                    statement.reliabilityChanges
+                                        .sort((a, b) => a.reliability - b.reliability)
+                                        .map((change, i) => (
+                                            <Text 
+                                                key={i}
+                                                style={styles.reliabilityChangeText}
+                                            >
+                                                {Math.floor(change.reliability*100)}% : {change.reason}
+                                            </Text>
                                 ))}
                                 
                             

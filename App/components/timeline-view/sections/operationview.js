@@ -233,7 +233,7 @@ class OperationView extends Component {
                 <Text style={{fontSize: 9}}>
                   <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:legacy:user:', '')} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
-                {!!stateToDisplay.reliability && <Text style={{fontSize: 9}}>
+                {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
             </View>
         }
