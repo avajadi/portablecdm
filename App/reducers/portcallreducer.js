@@ -43,12 +43,14 @@ const INITIAL_STATE = {
   }
 */
 
-export default (state = INITIAL_STATE, action) => {
+const portCallReducer = (state = INITIAL_STATE, action) => {
 
   switch(action.type) {
     case types.SELECT_PORTCALL:
       const {vessel, ...portCall} = action.payload;
       return { ... state, vessel: vessel, selectedPortCall: portCall }
+    case types.CLEAR_PORTCALL_SELECTION:
+      return { ... state, vessel: {}, selectedPortCall: {}}
     case types.FETCH_PORTCALLS:
       return { ... state, portCallsAreLoading: true};
     case types.FETCH_PORTCALLS_SUCCESS:
@@ -61,3 +63,5 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 }
+
+export default portCallReducer;

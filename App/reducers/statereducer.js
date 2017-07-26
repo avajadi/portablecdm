@@ -1,4 +1,5 @@
 import { ADD_FAVORITE_STATE, REMOVE_FAVORITE_STATE, REPLACE_FAVORITE_STATES } from '../actions/types';
+import { REHYDRATE } from 'redux-persist/constants';
 import stateCatalogue from './state_catalogue.json';
 
 const INITIAL_STATE = { 
@@ -21,7 +22,7 @@ INITIAL_STATE.stateById = function(id) {
 
 INITIAL_STATE.stateById = INITIAL_STATE.stateById.bind(INITIAL_STATE);
 
-export default (state = INITIAL_STATE, action) => {
+const stateReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
     case ADD_FAVORITE_STATE:
       return { ...state, favoriteStates: [...state.favoriteStates, action.payload] }
@@ -33,3 +34,5 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 }
+
+export default stateReducer;

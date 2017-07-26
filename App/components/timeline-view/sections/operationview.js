@@ -233,7 +233,7 @@ class OperationView extends Component {
                 <Text style={{fontSize: 9}}>
                   <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:legacy:user:', '')} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
-                {!!stateToDisplay.reliability && <Text style={{fontSize: 9}}>
+                {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
             </View>
         }
@@ -275,8 +275,14 @@ class OperationView extends Component {
           }
       }
 
-      // if no actuals exist, take the first element
-      return statements[0];
+      let statementsCopy = [...statements]
+      // if no actuals exist, sort again, this time for reliability
+      statementsCopy.sort((a, b) => a.reliability - b.reliability);
+      for(let j = 0; j < statementsCopy.length; j++) {
+        if(statements[j].timeType !== 'ACTUALL') {
+          return statements[j];
+        }
+      }
   }
 }
 

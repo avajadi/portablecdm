@@ -57,7 +57,8 @@ class PortCallList extends Component {
                 <TopHeader title="PortCalls" navigation={this.props.navigation} firstPage/>
                 {/*Render the search/filters header*/}
                 <View style={styles.containerRow}>
-                    <SearchBar 
+                    <SearchBar
+                        autoCorrent={false} 
                         containerStyle = {styles.searchBarContainer}
                         showLoadingIcon={showLoadingIcon}
                         clearIcon
