@@ -11,17 +11,7 @@ import colorScheme from './config/colors';
 
 import {AppNavigator, StackNav} from './navigators/appnavigator';
 
-// const store = createStore(
-//   reducers,
-//   {},
-//   compose(
-//     applyMiddleware(ReduxThunk),
-//     autoRehydrate({log: true})
-//   )
-// );
-
 const store = compose(autoRehydrate(), applyMiddleware(ReduxThunk))(createStore)(reducers);
-
 
 class App extends Component {
   constructor(props) {
