@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import PortCallReducer from './portcallreducer';
-import StateReducer from './statereducer';
+import portCallReducer from './portcallreducer';
+import stateReducer from './statereducer';
 
 export default combineReducers({
-  portCalls: PortCallReducer,
-  states: StateReducer
+  portCalls: portCallReducer,
+  states: stateReducer
 })

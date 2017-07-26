@@ -275,8 +275,14 @@ class OperationView extends Component {
           }
       }
 
-      // if no actuals exist, take the first element
-      return statements[0];
+      let statementsCopy = [...statements]
+      // if no actuals exist, sort again, this time for reliability
+      statementsCopy.sort((a, b) => a.reliability - b.reliability);
+      for(let j = 0; j < statementsCopy.length; j++) {
+        if(statements[j].timeType !== 'ACTUALL') {
+          return statements[j];
+        }
+      }
   }
 }
 

@@ -22,6 +22,12 @@ export const removeFavoriteState = (stateId) => {
   }
 }
 
+export const clearPortCallSelection = () => {
+    return {
+        type: types.CLEAR_PORTCALL_SELECTION
+    }
+}
+
 export const fetchPortCalls = () => {
   return (dispatch) => {
     dispatch({type: types.FETCH_PORTCALLS});
@@ -49,6 +55,7 @@ export const fetchPortCallOperations = (portCallId) => {
   return (dispatch) => {
     dispatch({type: types.FETCH_PORTCALL_OPERATIONS})
     portCDM.getPortCallOperations(portCallId)
+      .then(handleErrors)
       .then(result => result.json())
       .then(sortOperations)
       .then(filterStatements)
@@ -58,20 +65,32 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
-      .catch(error => console.log(error));
+      .catch(error => console.log("\n-----------------\n" + error + "\n---------------------"));
   };
 }
 
 // HELPER FUNCTIONS
 
+function handleErrors(response) {
+    if(!response.ok) {
+        throw Error(reponse);
+    }
+
+    return response;
+}
+
 async function fetchReliability(operations) {
     if(operations.length <= 0) return operations;
     await reliability.getPortCallReliability(operations[0].portCallId)
                 .then(result => result.json())
+                // For every operation in the result
                 .then(result => result.operations.map(resultOperation => {
+                    // We need to find the operation in our own data structure and set it's reliability
                     let ourOperation = operations.find(operation => operation.operationId === resultOperation.operationId);
                     ourOperation.reliability = Math.floor(resultOperation.reliability * 100);
+                    // Then for each state in the operation
                     resultOperation.states.map(resultState => {
+                        // Go through all statements we have stored in our data, and add reliability and reliability changes to the structure.
                         ourOperation.reportedStates[resultState.stateId].forEach(ourStatement => {
                             for(let i = 0; i< resultState.messages.length; i++) {
                                 if(ourStatement.messageId == resultState.messages[i].messageId) {

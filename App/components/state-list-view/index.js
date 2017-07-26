@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Button,
   Modal,
-  ListView
+  ScrollView
 } from 'react-native';
 
 import {
@@ -23,13 +23,6 @@ import TopHeader from '../top-header-view';
 class StateList extends Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-    this.state = {
-      stateDataSource: ds.cloneWithRows(props.stateCatalogue),
-      chosenStates: []
-
-    }
 
     this.onDeletePress = this.onDeletePress.bind(this);
   }
@@ -49,22 +42,24 @@ class StateList extends Component {
     return(
       <View style={styles.container}>
         <TopHeader title="Favorite States" rightIconFunction={this.onAddStatesPress.bind(this)} navigation={this.props.navigation}/>
-        <List>
-           {favoriteStates.map((stateId, index) => {
-            const state = getState(stateId);
-            return (
-              <ListItem
-                key={index}
-                title={state.Name}
-                rightIcon={{
-                  name: 'delete',
-                  color: 'red'
-                }}
-                onPressRightIcon={() => this.onDeletePress(stateId)}
-              />
-            );
-          })} 
-        </List>
+        <ScrollView>
+          <List>
+              {favoriteStates.map((stateId, index) => {
+              const state = getState(stateId);
+              return (
+                <ListItem
+                  key={index}
+                  title={state.Name}
+                  rightIcon={{
+                    name: 'delete',
+                    color: 'red'
+                  }}
+                  onPressRightIcon={() => this.onDeletePress(stateId)}
+                />
+              );
+            })} 
+          </List>
+        </ScrollView>
       </View>
     );
   }
