@@ -34,7 +34,10 @@ class OverView extends Component {
               
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <View style={styles.operationContainer}>
-                  <Text style={styles.operationText}> Operation 1</Text>
+                  <Text style={styles.operationText}> Berth Visit</Text>
+                  <View style={styles.berthVisitContainer}>
+                    <Text style={styles.berthVisitText}> Cargo</Text>
+                  </View>
                 </View>
                 <View style={styles.operationContainer}>
                   <Text style={styles.operationText}> Operation 2</Text>
@@ -66,20 +69,22 @@ const styles = StyleSheet.create({
     color: colorScheme.primaryTextColor,
   },
   overviewContainer: {
-    backgroundColor: colorScheme.backgroundColor,
+    backgroundColor: colorScheme.actualColor,
+  //  flex: 1,
   },
   portCallContainer: {
-    backgroundColor: colorScheme.estimateColor,
+    backgroundColor: colorScheme.backgroundColor,
     flex: 1,
-    height: Dimensions.get('window').height/2,
+  //  flexDirection: 'row',
+  //  height: Dimensions.get('window').height/2,
     paddingBottom: 10,
   },
   portVisitContainer: {
-    backgroundColor: colorScheme.secondaryColor,
+    backgroundColor: colorScheme.primaryColor,
     flex: 1,
   },
   operationContainer: {
-    backgroundColor: colorScheme.tertiaryColor,
+    backgroundColor: colorScheme.primaryContainerColor,
     flex: 1,
     width: Dimensions.get('window').width/6,
     height: Dimensions.get('window').height/6,
@@ -88,10 +93,20 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  berthVisitContainer: {
+    backgroundColor: colorScheme.secondaryContainerColor,
+    flex: 1,
+    width: Dimensions.get('window').width/8,
+    height: Dimensions.get('window').height/8,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
   portCallText:{
     textAlign: 'left',
     fontSize: 12,
-    color: 'white'
+    color: 'black'
   },
   portVisitText: {
     textAlign: 'left',
@@ -101,7 +116,12 @@ const styles = StyleSheet.create({
   operationText: {
     textAlign: 'left',
     fontSize: 12,
-    color: 'white',
+    color: 'black',
+  },
+  berthVisitText: {
+    textAlign: 'left',
+    fontSize: 12,
+    color: 'black',
   },
 });
 
