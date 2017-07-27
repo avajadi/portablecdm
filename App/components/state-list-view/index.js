@@ -21,16 +21,6 @@ import { removeFavoriteState, addFavoriteState } from '../../actions'
 import TopHeader from '../top-header-view';
 
 class StateList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.onDeletePress = this.onDeletePress.bind(this);
-  }
-
-  onDeletePress = (stateId) => {
-    this.props.removeFavoriteState(stateId)
-  }
-
   onAddStatesPress() {
     this.props.navigation.navigate('SelectFavoriteStates');
   }
@@ -50,11 +40,6 @@ class StateList extends Component {
                 <ListItem
                   key={index}
                   title={state.Name}
-                  rightIcon={{
-                    name: 'delete',
-                    color: 'red'
-                  }}
-                  onPressRightIcon={() => this.onDeletePress(stateId)}
                 />
               );
             })} 
