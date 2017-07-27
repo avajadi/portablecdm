@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { sendPortCall } from '../../actions';
+
 import {
   View,
   TextInput,
@@ -44,15 +46,15 @@ class SendPortcall extends Component {
   _sendPortCall() {
     const { stateId, atLocation, fromLocation, toLocation} = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
-    const { vesselId, portCallId, getState } = this.props;
+    const { vesselId, portCallId, getState, sendPortCall } = this.props;
     const state = getState(stateId);
 
     const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
   
-
-    portCDM.sendPortCall(pcm, type)
-      .then(result => console.log(result))
-      .catch(error => {console.log(error)})
+    sendPortCall(pcm, type);
+    // portCDM.sendPortCall(pcm, type)
+    //   .then(result => console.log(result))
+    //   .catch(error => {console.log(error)})
   }
 
   render() {
@@ -130,4 +132,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(SendPortcall);
+export default connect(mapStateToProps, {sendPortCall})(SendPortcall);

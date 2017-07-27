@@ -28,6 +28,14 @@ export const clearPortCallSelection = () => {
     }
 }
 
+export const sendPortCall = (pcmAsObject, stateType) => {
+    return (dispatch, getState) => {
+        const {connection} = getState().settings;
+        dispatch({type: types.SEND_PORTCALL});
+        
+    }
+}
+
 export const fetchPortCalls = () => {
   return (dispatch) => {
     dispatch({type: types.FETCH_PORTCALLS});

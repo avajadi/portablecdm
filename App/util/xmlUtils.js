@@ -3,39 +3,11 @@ const uuid = require('uuid/v4');
 
 const serviceTimeSequences = ['COMMENCED', 'COMPLETED'];
 const administrationTimeSequences = ['CANCELLED', 'CONFIRMED', 'DENIED', 'REQUESTED', 'REQUEST_RECEIVED'];
+// if neither of above, assume LocationState
 
 
 export function createPortCallMessageAsObject(params, stateDefinition) {
-  // adminState
-  // {
-  //   "StateId": "Arrival_PortArea_Requested",
-  //   "ServiceType": "STATIONARY",
-  //   "ServiceObject": "ARRIVAL_PORTAREA",
-  //   "TimeSequence": "REQUESTED",
-  //   "Name": "Does not exist iether",
-  //   "Description": "I really dont know this ones description"
-  // },
-  // locationState
-  //   {
-  //   "StateId": "Departure_Agent_Berth",
-  //   "TimeSequence": "DEPARTURE_FROM",
-  //   "ReferenceObject": "AGENT",
-  //   "LocationType": "BERTH",
-  //   "Name": "Departure Agent Berth",
-  //   "Description": "Agent left berth"
-  // },
-  // serviceState
-  //   {
-  //   "StateId": "Anchoring_Commenced",
-  //   "ServiceType": "STATIONARY",
-  //   "ServiceObject": "ANCHORING_OPERATION",
-  //   "TimeSequence": "COMMENCED",
-  //   "Name": "Anchoring Commenced",
-  //   "Description": "Anchoring Operation Started"
-  // },
-
   const { vesselId, portCallId, atLocation, fromLocation, toLocation, selectedDate, selectedTimeType } = params;
-
 
   let pcm = {
     vesselId: vesselId,

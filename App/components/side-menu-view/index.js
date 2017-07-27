@@ -81,7 +81,7 @@ class SideMenu extends Component {
                         hideChevron
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={textStyle}>Report Portcall</Text>     
+                                <Text style={textStyle}>Report TimeStamp</Text>     
                             </View>
                         }
                         onPress={() => {
