@@ -1,6 +1,20 @@
 import * as types from './types';
 import portCDM, { reliability } from '../services/backendservices'
 
+export const changeHostSetting = (host) => {
+    return {
+        type: types.SETTINGS_CHANGE_HOST,
+        payload: host
+    };
+};
+
+export const changePortSetting = (port) => {
+    return {
+        type: types.SETTINGS_CHANGE_PORT,
+        payload: port
+    };
+};
+
 export const addFavoriteState = (stateId) => {
   return {
     type: types.ADD_FAVORITE_STATE,

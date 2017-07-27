@@ -10,3 +10,5 @@ export const FETCH_PORTCALL_OPERATIONS_SUCCESS = 'fetch_portcall_operations_succ
 export const SEND_PORTCALL = 'send_portcall';
 export const SEND_PORTCALL_SUCCESS = 'send_portcall_success';
 export const SEND_PORTCALL_FAILURE = 'send_portcall_failure';
+export const SETTINGS_CHANGE_PORT = 'settings_change_port';
+export const SETTINGS_CHANGE_HOST = 'settings_change_host';
