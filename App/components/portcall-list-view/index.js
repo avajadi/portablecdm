@@ -98,7 +98,7 @@ class PortCallList extends Component {
                                     subtitleStyle={styles.subTitleStyle}
                                     onPress={() => {
                                         selectPortCall(portCall);
-                                        navigate('TimeLineDetails')
+                                        navigate('TimeLine')
                                     }}
                                 />
                             ))
