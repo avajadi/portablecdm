@@ -54,7 +54,7 @@ class TimeLineView extends Component {
     }
 
     goToStateList = () => {
-        this.props.navigation.navigate('StateList');
+        this.props.navigation.navigate('FavoriteStates');
     }
 
     render() {

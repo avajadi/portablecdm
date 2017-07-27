@@ -8,3 +8,5 @@ export const FETCH_PORTCALLS_SUCCESS = 'fetch_portcalls_success';
 export const FETCH_PORTCALL_OPERATIONS = 'fetch_portcalls_operations';
 export const FETCH_PORTCALL_OPERATIONS_SUCCESS = 'fetch_portcall_operations_success';
 
+export const SETTINGS_CHANGE_PORT = 'settings_change_port';
+export const SETTINGS_CHANGE_HOST = 'settings_change_host';

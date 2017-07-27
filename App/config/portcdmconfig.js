@@ -3,7 +3,7 @@
  * we want to use
  */
 export const PortCDMConfig = {
-  host: `http://qa.portcdm.eu:8080`,
+  host: `http://dev.portcdm.eu:8080`,
   user : {
     name: 'viktoria',
     password: 'vik123'

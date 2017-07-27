@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    persistStore(store, {whitelist: ['states'], storage: AsyncStorage}, () => {
+    persistStore(store, {whitelist: ['states', 'settings'], storage: AsyncStorage}, () => {
       this.setState({rehydrated: true})
     });
   }
