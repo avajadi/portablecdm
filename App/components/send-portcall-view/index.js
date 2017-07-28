@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { sendPortCall } from '../../actions';
+import { sendPortCall, clearReportResult } from '../../actions';
 
 import {
   View,
   TextInput,
   StyleSheet,
   Picker,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
 
 import {
@@ -39,10 +40,6 @@ class SendPortcall extends Component {
     this._hideDateTimePicker();
   }
 
-  // Activity Indicator shows while submitting
-  _showActivityIndicator = () => this.setState({showActivityIndicator: true});
-  _hideActivityIndicator = () => this.setState({showActivityIndicator: false});
-
   _sendPortCall() {
     const { stateId, atLocation, fromLocation, toLocation} = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
@@ -52,13 +49,19 @@ class SendPortcall extends Component {
     const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
   
     sendPortCall(pcm, type);
-    // portCDM.sendPortCall(pcm, type)
-    //   .then(result => console.log(result))
-    //   .catch(error => {console.log(error)})
+  }
+
+  componentWillMount() {
+
+  }
+
+  componentWillUnmount() {
+    this.props.clearReportResult();
   }
 
   render() {
-    const {vesselId, portCallId, getState } = this.props;
+    const {vesselId, portCallId, getState, sendingState} = this.props;
+    const { navigate } = this.props.navigation;
     const {stateId, atLocation, fromLocation, toLocation} = this.props.navigation.state.params;
     const state = getState(stateId);
  
@@ -71,36 +74,89 @@ class SendPortcall extends Component {
             style={styles.headerText}
             h4>
               {state.Name} 
-              {atLocation && <Text> at {atLocation.name}</Text>}
-              {fromLocation && <Text> from {fromLocation.name}</Text>}    
-              {toLocation && <Text> to {toLocation.name}</Text>}          
+              {!!atLocation && <Text> at {atLocation.name}</Text>}
+              {!!fromLocation && <Text> from {fromLocation.name}</Text>}    
+              {!!toLocation && <Text> to {toLocation.name}</Text>}          
           </Text>
         </View>
+        <ScrollView>
+          {/* Data that must be picked! */}
+          <Picker
+            selectedValue={this.state.selectedTimeType}
+            onValueChange={(itemValue, itemIndex) => this.setState({selectedTimeType: itemValue})}
+          >
+            <Picker.Item label="Actual" value="ACTUAL" />
+            <Picker.Item label="Estimated" value="ESTIMATED" />
+          </Picker>
+          <Text style={styles.selectedDateText}>{getDateTimeString(this.state.selectedDate)}</Text>
+          <Button 
+            title="Choose time" 
+            onPress={this._showDateTimePicker}/>
 
-        {/* Data that must be picked! */}
-        <Picker
-          selectedValue={this.state.selectedTimeType}
-          onValueChange={(itemValue, itemIndex) => this.setState({selectedTimeType: itemValue})}
-        >
-          <Picker.Item label="Actual" value="ACTUAL" />
-          <Picker.Item label="Estimated" value="ESTIMATED" />
-        </Picker>
-        <Text>{getDateTimeString(this.state.selectedDate)}</Text>
-        <Button 
-          title="Choose time" 
-          onPress={this._showDateTimePicker}/>
-        <Button 
-          title="Send TimeStamp" 
-          buttonStyle={{backgroundColor: colorScheme.primaryColor}}
-          onPress={this._sendPortCall.bind(this)}
-        />
+          {/* Location selections! */}
+          {/* if ServiceType of this state is nautical, we need "from" and "to" locations  */}
+          { (state.ServiceType === 'NAUTICAL') &&
+            <View>
+              <View style={styles.locationSelectionContainer}>
+                {fromLocation && <Text>{fromLocation.name}</Text>}
+                <Button
+                  title="Change"
+                  backgroundColor={colorScheme.primaryColor}
+                  onPress={() => navigate('SelectLocation', {selectFor: 'fromLocation', locationType: state.LocationType})}
+                />
+              </View>
+              <View style={styles.locationSelectionContainer}>
+                {toLocation &&   <Text>{toLocation.name}</Text>}
+                <Button
+                  title="Change"
+                  backgroundColor={colorScheme.primaryColor}
+                  onPress={() => navigate('SelectLocation', {selectFor: 'toLocation', locationType: state.LocationType})}
+                />
+              </View>
+            </View>
+          }
+          {/* if servicetype isnt nautical, then we know we need an "at" location  */}
+          { !(state.ServiceType === 'NAUTICAL') &&
+            <View style={styles.locationSelectionContainer}>
+              {atLocation && <Text>{atLocation.name}</Text>}
+              <Button
+                backgroundColor={colorScheme.primaryColor}
+                title="Change"
+                onPress={() => navigate('SelectLocation', {selectFor: 'atLocation', locationType: state.LocationType})}
+              />
+            </View>
+          }
 
-        <DateTimePicker
-          isVisible={this.state.showDateTimePicker}
-          onConfirm={this._handleDateTimePicked}
-          onCancel={this._hideDateTimePicker}
-          mode="datetime"
-        />
+
+          <Button 
+            title="Send TimeStamp" 
+            buttonStyle={{backgroundColor: colorScheme.primaryColor}}
+            onPress={this._sendPortCall.bind(this)}
+          />
+
+          <DateTimePicker
+            isVisible={this.state.showDateTimePicker}
+            onConfirm={this._handleDateTimePicked}
+            onCancel={this._hideDateTimePicker}
+            mode="datetime"
+          />
+
+          <ActivityIndicator 
+            animating={sendingState.sending} 
+            size='large' 
+            color={colorScheme.primaryColor} 
+            style={{alignSelf: 'center'}} 
+          />
+          { (sendingState.successCode === 200) && 
+            <Text h4 style={{alignSelf: 'center', color: 'green'}}>Timestamp sent successfully</Text>
+          }
+          { (sendingState.successCode === 202) &&
+            <Text h4 style={{alignSelf: 'center', color: 'green'}}>Timestamp sent successfully, but couldn't be matched to an existing Port Call</Text>
+          }
+          { (!!sendingState.error) &&
+            <Text h4 style={{alignSelf: 'center', color: 'red', fontSize: 12}}>{sendingState.error}</Text>
+          }
+        </ScrollView>
       </View>
     );
   }
@@ -120,16 +176,26 @@ const styles = StyleSheet.create({
        // fontWeight: 'bold',
         textAlign: 'center',
         color: colorScheme.primaryTextColor,
+        fontSize: 12
         
     },
+    selectedDateText: {
+      alignSelf: 'center',
+    },
+    locationSelectionContainer: {
+      flex: 1,
+      flexDirection: 'row',
+
+    }
 });
 
 function mapStateToProps(state) {
   return {
     vesselId: state.portCalls.vessel.imo,
     portCallId: state.portCalls.selectedPortCall.portCallId,
-    getState: state.states.stateById
+    getState: state.states.stateById,
+    sendingState: state.sending,
   }
 }
 
-export default connect(mapStateToProps, {sendPortCall})(SendPortcall);
+export default connect(mapStateToProps, {sendPortCall, clearReportResult})(SendPortcall);

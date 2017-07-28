@@ -17,6 +17,7 @@ import PortInfo     from '../components/port-info-view';
 import Settings     from '../components/settings-view';
 import LoginView    from '../components/login-view';
 import SelectFavoriteState from '../components/select-favorite-state-view';
+import LocationSelection from '../components/location-selection-view';
 import SideMenu     from '../components/side-menu-view';
 
 
@@ -32,6 +33,7 @@ const TimeLineNavigator = StackNavigator({
   StateDetails: { screen: StateDetails},
   FavoriteStates: { screen: FavoriteStatesNavigator },
   SendPortCall: { screen: SendPortCall },
+  SelectLocation: { screen: LocationSelection }
 }, {
   headerMode: 'none',
 });

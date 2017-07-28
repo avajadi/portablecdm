@@ -1,6 +1,17 @@
 import * as types from './types';
 import portCDM, { reliability } from '../services/backendservices'
 
+function handleErrors(response) {
+    console.log("in handle error");
+    if(!response.ok) {
+        console.log("found an error!");
+        throw Error(response);
+    }
+
+    console.log("------------response from handleErrors-----------")
+    return response;
+}
+
 export const changeHostSetting = (host) => {
     return {
         type: types.SETTINGS_CHANGE_HOST,
@@ -42,10 +53,29 @@ export const clearPortCallSelection = () => {
     }
 }
 
+export const clearReportResult = () => {
+    return {
+        type: types.SEND_PORTCALL_CLEAR_RESULT
+    }
+}
+
 export const sendPortCall = (pcmAsObject, stateType) => {
     return (dispatch, getState) => {
-        const {connection} = getState().settings;
+        const { connection } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
+        portCDM.sendPortCall(pcmAsObject, stateType)
+            .then(result => {
+                if(result.ok) return result;
+
+                let error = result._bodyText;              
+                throw new Error(error);
+            })
+            .then(result => {
+                dispatch({type: types.SEND_PORTCALL_SUCCESS, payload: result})
+            })
+            .catch(error => {
+                dispatch({type: types.SEND_PORTCALL_FAILURE, payload: error.message})
+            })
         
     }
 }
@@ -93,13 +123,7 @@ export const fetchPortCallOperations = (portCallId) => {
 
 // HELPER FUNCTIONS
 
-function handleErrors(response) {
-    if(!response.ok) {
-        throw Error(reponse);
-    }
 
-    return response;
-}
 
 async function fetchReliability(operations) {
     if(operations.length <= 0) return operations;
