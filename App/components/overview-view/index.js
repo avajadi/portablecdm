@@ -32,12 +32,19 @@ class OverView extends Component {
             <View style={styles.portVisitContainer}>
               <Text style={styles.portVisitText}> Port Visit </Text>
               
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
                 <View style={styles.operationContainer}>
                   <Text style={styles.operationText}> Berth Visit</Text>
+
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                   <View style={styles.berthVisitContainer}>
-                    <Text style={styles.berthVisitText}> Cargo</Text>
+                    <Text style={styles.berthVisitText}> Cargo1</Text>
                   </View>
+                  <View style={styles.berthVisitContainer}>
+                    <Text style={styles.berthVisitText}> Mooring2</Text>
+                  </View>
+                  </View>
+
                 </View>
                 <View style={styles.operationContainer}>
                   <Text style={styles.operationText}> Operation 2</Text>
@@ -69,19 +76,19 @@ const styles = StyleSheet.create({
     color: colorScheme.primaryTextColor,
   },
   overviewContainer: {
-    backgroundColor: colorScheme.actualColor,
+    backgroundColor: colorScheme.backgroundColor,
   //  flex: 1,
   },
   portCallContainer: {
-    backgroundColor: colorScheme.backgroundColor,
-    flex: 1,
+    backgroundColor: colorScheme.estimateColor,
+    flex: 3,
   //  flexDirection: 'row',
   //  height: Dimensions.get('window').height/2,
     paddingBottom: 10,
   },
   portVisitContainer: {
     backgroundColor: colorScheme.primaryColor,
-    flex: 1,
+    flex: 2,
   },
   operationContainer: {
     backgroundColor: colorScheme.primaryContainerColor,

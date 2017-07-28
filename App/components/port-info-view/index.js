@@ -20,7 +20,6 @@ class PortInfo extends Component {
       <View style={styles.container}>
         <TopHeader title = 'Port Info' firstPage navigation={this.props.navigation} rightIconFunction={this.goToStateList}/>
 
-
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Port Location</Text>
         </View>
@@ -29,11 +28,16 @@ class PortInfo extends Component {
           <Text style={styles.headerText}>Port Name</Text>
         </View>
 
+        <View style={styles.infoContainer}>
+          <Text style={{fontWeight: 'bold', fontSize: 16}}>TRAFFIC AREA: </Text>
+          <Text>Port of Gothenburg's traffic area</Text> 
+        </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Port Specifics: </Text> Port Specifics</Text> 
-          <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Port Specifics: </Text> Port Specifics</Text> 
-          <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Port Specifics: </Text> Port Specifics</Text> 
+          <Text style={{fontWeight: 'bold', fontSize: 16}}>BERTHS: </Text>
+          <Text style={styles.infoText}> Masthuggskajen</Text> 
+          <Text style={styles.infoText}> Skarvik 502</Text> 
+          <Text style={styles.infoText}> Skarvik 509</Text> 
         </View>
 
       </View>
@@ -64,8 +68,8 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     backgroundColor: colorScheme.primaryContainerColor,
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 0,
     marginLeft: 10,
     marginRight: 10,
     paddingTop: 10,
@@ -83,3 +87,13 @@ const styles = StyleSheet.create({
 });
 
 export default connect(null)(PortInfo);
+
+
+
+
+
+        // <View style={styles.infoContainer}>
+        //   <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>TRAFFIC AREA: </Text> Gothenburg Port</Text> 
+        //   <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Port Specifics: </Text> Port Specifics</Text> 
+        //   <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Port Specifics: </Text> Port Specifics</Text> 
+        // </View>

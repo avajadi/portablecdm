@@ -144,7 +144,10 @@ class StateDetails extends Component {
                                 </View>
                                 
                                 {/* Reliability for the message, and reliability changes  */}
-                                <Text style={styles.stateSubTitleTextDisabled}>RELIABILITY: {statement.reliability}%</Text>
+                                <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>RELIABILITY: </Text>  
+                                    <Text style={styles.detailText}>{statement.reliability}%</Text>        
+                                </View>
                                 {!!statement.reliabilityChanges && 
                                     statement.reliabilityChanges
                                         .sort((a, b) => a.reliability - b.reliability)
@@ -157,8 +160,6 @@ class StateDetails extends Component {
                                             </Text>
                                 ))}
                                 
-                            
-
                             </View>     
                         </View>
                     )
@@ -312,14 +313,3 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps)(StateDetails);
-
-
-
-
-
-
-
-                // <Button
-                //     title='See more'
-                //     onPress={() => this.props.navigation.navigate('DrawerOpen')}  
-                // />

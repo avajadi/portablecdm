@@ -6,6 +6,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Dimensions,
+  Platform,
 } from 'react-native';
 
 import {
@@ -57,6 +58,10 @@ class OperationView extends Component {
     }
     else if (operation.startTimeType === 'ESTIMATED'){
       startTimeDisplayStyle = styles.timeDisplayEstimate;
+    }
+    // This is not working as it should... Can make 13.00 become orange
+    else if (!operation.startTimeType) {
+      startTimeDisplayStyle = styles.timeDisplayWarning;
     }
     else {
       startTimeDisplayStyle = styles.timeDisplay;
@@ -115,12 +120,13 @@ class OperationView extends Component {
             onPress={this._toggleCollapsed}>
             <View>
               <View style={{flexDirection: 'row'}}>
-                <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')} - {operation.reliability}%</Text>
+                <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')}</Text>
                 {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
               </View>
-              {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM</Text> {operation.fromLocation.name}</Text>}
-              {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO</Text> {operation.toLocation.name}</Text>}
-              {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT</Text> {operation.atLocation.name}</Text>}
+              {operation.reliability && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>RELIABILITY </Text>{operation.reliability}%</Text>}
+              {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM </Text>{operation.fromLocation.name}</Text>}
+              {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO </Text>{operation.toLocation.name}</Text>}
+              {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT </Text>{operation.atLocation.name}</Text>}
             </View>
           </TouchableWithoutFeedback>
 
@@ -231,7 +237,8 @@ class OperationView extends Component {
                 {operation.toLocation && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:legacy:user:', '')} 
+                  {/*Doesnt work!*/}
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy::', '')} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
@@ -332,7 +339,6 @@ const styles = StyleSheet.create({
 
 
 
-
   timeline: {
     position: 'absolute',
     top: 0,
@@ -385,7 +391,7 @@ const styles = StyleSheet.create({
     backgroundColor: colorScheme.primaryContainerColor,
   },
   dateDisplay: {
-    fontSize: 9,
+    fontSize: Platform.OS === 'ios' ? 8 : 9,
     color: colorScheme.quaternaryTextColor
   },
   timeDisplay: {
@@ -404,14 +410,11 @@ const styles = StyleSheet.create({
     color: colorScheme.warningColor,
     fontSize: 9,
   },
-
-
   actualText: {
     color: colorScheme.primaryTextColor,
     textAlign: 'center',
     fontWeight: 'bold',
   },
-
     actualContainer: {
     backgroundColor: colorScheme.actualColor,
     borderRadius: 10,
@@ -421,13 +424,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
   },
-
   estimateText: {
     color: colorScheme.primaryTextColor,
     textAlign: 'center',
     fontWeight: 'bold',
   },
-
   estimateContainer: {
     backgroundColor: colorScheme.estimateColor,
     borderRadius: 10,
@@ -437,7 +438,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
   },  
-
 });
 
 
