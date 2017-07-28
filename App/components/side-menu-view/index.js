@@ -42,8 +42,7 @@ class SideMenu extends Component {
                         borderRadius: 5,
                         }}
           
-                source={{uri:vessel.photoURL }}   //"http://cdn.channelblade.com/boat_graphics/electronic_brochure/company78478/354570_p_t_640x480_image01.jpg"
-              //  containerStyle={{borderRadius: 300}}
+                source={{uri:vessel.photoURL }} 
                 />}
                 {!!vessel && 
                     <Text style={styles.headerText}>{vessel.name}</Text>}
@@ -64,6 +63,7 @@ class SideMenu extends Component {
                           color: 'white',
                           }}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={styles.menuText}>Select PortCall</Text>     
@@ -79,6 +79,7 @@ class SideMenu extends Component {
                           color: 'white'
                         }}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={textStyle}>Report Portcall</Text>     
@@ -96,6 +97,7 @@ class SideMenu extends Component {
                         color: 'white'
                         }}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={textStyle}>PortCall Overview</Text>     
@@ -113,6 +115,7 @@ class SideMenu extends Component {
                           name:'timeline',
                           color: 'white'}}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={textStyle}>PortCall Timeline</Text>     
@@ -129,6 +132,7 @@ class SideMenu extends Component {
                           name:'directions-boat',
                           color: 'white'}}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={textStyle}>Vessel Info</Text>     
@@ -146,6 +150,7 @@ class SideMenu extends Component {
                           name:'business',
                           color: 'white'}}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={styles.menuText} >Port Info</Text>     
@@ -164,6 +169,7 @@ class SideMenu extends Component {
                           color: 'white'
                           }}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={textStyle}>PortCall Multiple View</Text>     
@@ -177,6 +183,7 @@ class SideMenu extends Component {
                           color: 'white',
                         }}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={styles.menuText} >Settings</Text>     
@@ -195,6 +202,7 @@ class SideMenu extends Component {
                           color: 'white'
                           }}
                         hideChevron
+                        underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
                                 <Text style={styles.menuText} >Logout</Text>     
@@ -251,6 +259,10 @@ const styles = StyleSheet.create({
   },
   unavailableContainer: {
     backgroundColor: colorScheme.sidebarColor,
+  },
+  // Not being used at the moment...It is now hard coded.
+  underlayColorStyle: {
+      color: colorScheme.tertiaryTextColor
   },
 
 })
