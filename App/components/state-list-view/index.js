@@ -29,6 +29,7 @@ class StateList extends Component {
 
   render() {
     const { params } = this.props.navigation.state;
+    const { navigate } = this.props.navigation;
     const { favoriteStates, getState, stateCatalogue } = this.props;
 
     return(
@@ -45,6 +46,7 @@ class StateList extends Component {
                 <ListItem
                   key={index}
                   title={state.Name}
+                  onPress={() => navigate('SendPortCall', {stateId: state.StateId})}
                 />
               );
             })} 

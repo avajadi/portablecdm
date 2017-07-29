@@ -92,7 +92,7 @@ class SendPortcall extends Component {
   render() {
     const { vesselId, portCallId, getState, sendingState, navigation } = this.props;
     const { atLocation, fromLocation, toLocation } = sendingState;
-    const { stateId } = this.props.navigation.state.params;
+    const { stateId, mostRelevantStatement } = this.props.navigation.state.params;
     const state = getState(stateId);
  
     return(
@@ -128,6 +128,7 @@ class SendPortcall extends Component {
           { (state.ServiceType === 'NAUTICAL') &&
             <View>
               <View style={styles.locationSelectionContainer}>
+                <Text style={{fontWeight: 'bold'}}>From: </Text>
                 {fromLocation && <Text>{fromLocation.name}</Text>}
                 <Button
                   title="Change"
@@ -136,6 +137,7 @@ class SendPortcall extends Component {
                 />
               </View>
               <View style={styles.locationSelectionContainer}>
+                <Text style={{fontWeight: 'bold'}}>To: </Text>
                 {toLocation &&   <Text>{toLocation.name}</Text>}
                 <Button
                   title="Change"
@@ -148,6 +150,7 @@ class SendPortcall extends Component {
           {/* if servicetype isnt nautical, then we know we need an "at" location  */}
           { !(state.ServiceType === 'NAUTICAL') &&
             <View style={styles.locationSelectionContainer}>
+              <Text style={{fontWeight: 'bold'}}>At: </Text>
               {atLocation && <Text>{atLocation.name}</Text>}
               <Button
                 backgroundColor={colorScheme.primaryColor}
@@ -199,6 +202,19 @@ class SendPortcall extends Component {
             <Text h4 style={{alignSelf: 'center', color: 'red', fontSize: 12}}>{sendingState.error}</Text>
           }
         </ScrollView>
+
+        {mostRelevantStatement && 
+          <View style={styles.bottomInfo}>
+            <Text style={styles.bottomInfoText}>
+              {state.Name}{' '}  
+              {mostRelevantStatement.timeType}  {' '}
+              {getDateTimeString(new Date(mostRelevantStatement.time))}  {' '}
+              <Text style={{fontWeight: 'bold'}}>reported by </Text>{mostRelevantStatement.reportedBy}  {' '}
+              <Text style={{fontWeight: 'bold'}}>at </Text>{getDateTimeString(new Date(mostRelevantStatement.reportedAt))}  
+            </Text>
+          </View>
+        }
+
       </View>
     );
   }
@@ -228,6 +244,13 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'row',
 
+    },
+    bottomInfo: {
+      backgroundColor: colorScheme.primaryColor,
+    },
+    bottomInfoText: {
+      fontSize: 12,
+      color: colorScheme.primaryTextColor,
     }
 });
 
