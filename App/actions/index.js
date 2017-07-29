@@ -96,11 +96,48 @@ export const fetchPortCalls = () => {
   };
 }
 
+export const fetchLocations = (locationType) => {
+    return (dispatch, getState) => {
+        dispatch({type: types.FETCH_LOCATIONS});
+        const connection = getState().settings.connection;
+        fetch(`${connection.host}:${connection.port}/location-registry/locations`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-PortCDM-UserId': connection.username,
+                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-APIKey': 'eeee'
+                }
+            })
+            .then(result => result.json())
+            .then(locations => {
+                dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
+            })
+    }
+}
+
 export const selectPortCall = (portCall) => {
     return {
         type: types.SELECT_PORTCALL,
         payload: portCall        
     };
+}
+/** Selects location to be either atLocation, fromLocation or toLocation
+ *  when sending in a portcall message
+ * 
+ * @param {string} locationSort 
+ *  "atLocation" | "fromLocation" | "toLocation"
+ * @param {location data structure} location 
+ *  the Location data structure retreived from /location-registry
+ */
+export const selectLocation = (locationSort, location) => {
+    return {
+        type: types.SEND_PORTCALL_SELECT_LOCATION,
+        payload: {
+            locationType: locationSort,
+            location: location,
+        }
+    }
 }
 
 export const fetchPortCallOperations = (portCallId) => {
@@ -113,7 +150,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(filterStatements)
       .then(addLocationsToOperations)
       .then(extractWarnings)
-      .then(fetchReliability)
+    //   .then(fetchReliability)
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      

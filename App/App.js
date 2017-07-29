@@ -5,6 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { persistStore, autoRehydrate } from 'redux-persist';
 
+import {fetchLocations} from './actions';
 
 import reducers from './reducers';
 import colorScheme from './config/colors';
@@ -27,6 +28,9 @@ class App extends Component {
     persistStore(store, {whitelist: ['states', 'settings'], storage: AsyncStorage}, () => {
       this.setState({rehydrated: true})
     });
+
+    store.dispatch(fetchLocations())
+
   }
 
 

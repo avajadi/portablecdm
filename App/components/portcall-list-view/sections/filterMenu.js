@@ -35,6 +35,8 @@ constructor(){
         checked: false,
     }
   //  this.updateIndex = this.updateIndex.bind(this)
+  this.onBackIconPressed = this.onBackIconPressed.bind(this);
+  this.onDoneIconPressed = this.onDoneIconPressed.bind(this);
 }
 
 static navigationOptions = {
@@ -50,6 +52,14 @@ setModalStagesVisible(visible){
     this.setState({modalStagesVisible: visible});
 }
 
+onBackIconPressed() {
+    this.props.navigation.goBack();
+}
+
+onDoneIconPressed() {
+    console.log("pressed ok filter menu");
+}
+
 render() {
 const buttonsSortBy = ['Arrival Date', 'Last Update', 'Vessel Name']
 const buttonsOrderBy = ['Decending', 'Ascending']
@@ -58,7 +68,11 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
 
     return(
         <View style={{flex: 1}}>
-            <MiniHeader navigation={this.props.navigation} title="Filter"/>
+            <MiniHeader 
+                navigation={this.props.navigation} title="Filter"
+                leftIconFunction={this.onBackIconPressed}
+                rightIconFunction={this.onDoneIconPressed}
+            />
             <ScrollView style= {styles.container} >
 
                 <View style={styles.smallContainer}> 

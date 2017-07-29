@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { sendPortCall, clearReportResult } from '../../actions';
+import { 
+  sendPortCall, 
+  clearReportResult,
+  selectLocation,
+
+} from '../../actions';
 
 import {
   View,
@@ -8,7 +13,8 @@ import {
   StyleSheet,
   Picker,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  Modal
 } from 'react-native';
 
 import {
@@ -18,19 +24,25 @@ import {
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
+import TopHeader from '../top-header-view';
+import LocationSelection from './sections/locationselection';
+
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
 import { getDateTimeString } from '../../util/timeservices';
 import portCDM from '../../services/backendservices';
-import TopHeader from '../top-header-view';
 
 class SendPortcall extends Component {
-  state = {
-    selectedTimeType: 'ACTUAL',
-    selectedDate: new Date(),
-    showDateTimePicker: false,
-    showActivityIndicator: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTimeType: 'ACTUAL',
+      selectedDate: new Date(),
+      showDateTimePicker: false,
+      showLocationSelectionModal: false,
+      selectLocationFor: '',
+    };
+  }
 
   // These handle the DateTime picker
   _showDateTimePicker = () => this.setState({showDateTimePicker: true});
@@ -40,18 +52,36 @@ class SendPortcall extends Component {
     this._hideDateTimePicker();
   }
 
+  // Handle modal for selection locations
+  _showLocationSelectionModal = (selectLocationFor) => this.setState({showLocationSelectionModal: true, selectLocationFor: selectLocationFor});
+  _hideLocationSelectionModal = () => this.setState({showLocationSelectionModal: false})
+   
+
+
   _sendPortCall() {
-    const { stateId, atLocation, fromLocation, toLocation} = this.props.navigation.state.params;
+    const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
-    const { vesselId, portCallId, getState, sendPortCall } = this.props;
+    const { vesselId, portCallId, getState, sendPortCall, sendingState } = this.props;
+    const { atLocation, fromLocation, toLocation } = sendingState;
     const state = getState(stateId);
 
     const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
-  
+
     sendPortCall(pcm, type);
   }
 
   componentWillMount() {
+    const { atLocation, fromLocation, toLocation } = this.props.navigation.state.params;
+    const { selectLocation } = this.props;
+    if(atLocation) {
+      selectLocation('atLocation', atLocation);
+    }
+    if(fromLocation) {
+      selectLocation('fromLocation', fromLocation);
+    }
+    if(toLocation) {
+      selectLocation('toLocation', toLocation);
+    }
 
   }
 
@@ -60,9 +90,9 @@ class SendPortcall extends Component {
   }
 
   render() {
-    const {vesselId, portCallId, getState, sendingState} = this.props;
-    const { navigate } = this.props.navigation;
-    const {stateId, atLocation, fromLocation, toLocation} = this.props.navigation.state.params;
+    const { vesselId, portCallId, getState, sendingState, navigation } = this.props;
+    const { atLocation, fromLocation, toLocation } = sendingState;
+    const { stateId } = this.props.navigation.state.params;
     const state = getState(stateId);
  
     return(
@@ -102,7 +132,7 @@ class SendPortcall extends Component {
                 <Button
                   title="Change"
                   backgroundColor={colorScheme.primaryColor}
-                  onPress={() => navigate('SelectLocation', {selectFor: 'fromLocation', locationType: state.LocationType})}
+                  onPress={() => this._showLocationSelectionModal('fromLocation')}
                 />
               </View>
               <View style={styles.locationSelectionContainer}>
@@ -110,7 +140,7 @@ class SendPortcall extends Component {
                 <Button
                   title="Change"
                   backgroundColor={colorScheme.primaryColor}
-                  onPress={() => navigate('SelectLocation', {selectFor: 'toLocation', locationType: state.LocationType})}
+                  onPress={() => this._showLocationSelectionModal('toLocation')}
                 />
               </View>
             </View>
@@ -122,10 +152,22 @@ class SendPortcall extends Component {
               <Button
                 backgroundColor={colorScheme.primaryColor}
                 title="Change"
-                onPress={() => navigate('SelectLocation', {selectFor: 'atLocation', locationType: state.LocationType})}
+                onPress={() => this._showLocationSelectionModal('atLocation')}
               />
             </View>
           }
+
+          <Modal
+            visible={this.state.showLocationSelectionModal}
+            onRequestClose={this._hideLocationSelectionModal}
+          >
+            <LocationSelection
+              selectLocationFor={this.state.selectLocationFor}
+              locationType={state.LocationType}
+              navigation={navigation}
+              onBackPress={this._hideLocationSelectionModal.bind(this)}
+            />
+          </Modal>
 
 
           <Button 
@@ -198,4 +240,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {sendPortCall, clearReportResult})(SendPortcall);
+export default connect(mapStateToProps, {sendPortCall, clearReportResult, selectLocation})(SendPortcall);

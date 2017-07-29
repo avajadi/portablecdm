@@ -38,6 +38,11 @@ class SelectFavoriteState extends Component {
     this.props.replaceFavoriteStates(this.state.chosenStates);
   }
 
+  onBackIconPressed () {
+    console.log("onbackiconpressed");
+    this.props.navigation.goBack();
+  }
+
   search(states, searchTerm) {
     return states.filter(state => state.Name.toUpperCase().startsWith(searchTerm.toUpperCase()));        
   }
@@ -50,7 +55,8 @@ class SelectFavoriteState extends Component {
       <View style={styles.container}>
         <MiniHeader 
           navigation={this.props.navigation} title='Favorite states'
-          rightIconFunction={this.replaceFavoriteStates}
+          rightIconFunction={this.replaceFavoriteStates.bind(this)}
+          leftIconFunctioN={this.onBackIconPressed.bind(this)}
         />
         <SearchBar 
           containerStyle = {styles.searchBarContainer}

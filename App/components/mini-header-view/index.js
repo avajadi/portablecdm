@@ -14,7 +14,7 @@ import colorScheme from '../../config/colors';
 
 export default class MiniHeader extends Component {
   render() {
-    const {navigation, title, rightIconFunction} = this.props;
+    const {navigation, title, rightIconFunction, leftIconFunction} = this.props;
 
     return(
       <View style={styles.container}>
@@ -22,18 +22,14 @@ export default class MiniHeader extends Component {
           name= 'arrow-back'
           color= {colorScheme.primaryContainerColor}
           size= {30}
-          onPress={() => navigation.goBack()}
+          onPress={leftIconFunction}
         />
         <Text h4 style={styles.headerText}>{title}</Text>
         <Icon
           name="check-circle"
           color='green'
           size={40}
-          onPress={() => {
-              rightIconFunction();
-              navigation.goBack();
-            }
-          }
+          onPress={rightIconFunction}
         />
       </View>
     );

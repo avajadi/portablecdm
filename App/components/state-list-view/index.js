@@ -25,13 +25,18 @@ class StateList extends Component {
     this.props.navigation.navigate('SelectFavoriteStates');
   }
 
+
+
   render() {
     const { params } = this.props.navigation.state;
     const { favoriteStates, getState, stateCatalogue } = this.props;
 
     return(
       <View style={styles.container}>
-        <TopHeader title="Favorite States" rightIconFunction={this.onAddStatesPress.bind(this)} navigation={this.props.navigation}/>
+        <TopHeader title="Favorite States" 
+          navigation={this.props.navigation}
+          rightIconFunction={this.onAddStatesPress.bind(this)} 
+        />
         <ScrollView>
           <List>
               {favoriteStates.map((stateId, index) => {
