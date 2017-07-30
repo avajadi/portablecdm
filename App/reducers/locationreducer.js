@@ -6,6 +6,12 @@ import {
 
 const INITIAL_STATE = {
   locations: [],
+  locationsByType: function(locationType) {
+    return this.locations.filter(location => location.locationType === locationType)
+  },
+  locationByUrn: function(urn) {
+    return this.locations.find(location => location.URN === urn);
+  },
   loading: false,
 }
 

@@ -33,7 +33,7 @@ class LocationSelection extends Component {
   render() {
     const { selectLocationFor, selectLocation, navigation, onBackPress, locationType } = this.props;
     const locations = locationType ? 
-                      this.props.locations.filter(location => location.locationType === locationType) : 
+                      this.props.locationsByType(locationType) : 
                       this.props.locations;
     return(
       <View style={styles.container}>
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     locations: state.location.locations,
+    locationsByType: state.location.locationsByType,
     loading: state.location.loading,
   }
 }

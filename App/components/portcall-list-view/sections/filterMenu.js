@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import {
     View,
     Text,
@@ -22,7 +23,7 @@ import {
 
 import MiniHeader from '../../mini-header-view';
 
-export default class FilterMenu extends Component {
+class FilterMenu extends Component {
 
 constructor(){
     super()
@@ -33,6 +34,7 @@ constructor(){
       //  modalVisible: false,
         modalStagesVisible: false,
         checked: false,
+        limitValue: 0,
     }
   //  this.updateIndex = this.updateIndex.bind(this)
   this.onBackIconPressed = this.onBackIconPressed.bind(this);
@@ -253,11 +255,14 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                     <Text style={styles.textTitle}> Limit </Text>
                     {/* List first then sliding bar */}
                     <Slider
-                        value={this.state.value}
-                        onValueChange={(value) => this.setState({value})}  
+                        minimumValue={29}
+                        maximumValue={this.props.maxPortLimitPortCalls}
+                        step={10}
+                        value={this.state.limitValue}
+                        onValueChange={(value) => this.setState({limitValue: value})}  
                         thumbTintColor={colorScheme.primaryColor}
                     />
-                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.value} </Text>
+                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.limitValue} portcalls retrieved </Text>
                 </View>
             
                 {/*Button - SHOW RESULTS*/}
@@ -349,3 +354,11 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,        
     },
 }); //styles
+
+function mapStateToProps(state) {
+    return {
+        maxPortLimitPortCalls: state.settings.maxPortCallsFetched,
+    };
+}
+
+export default connect(mapStateToProps, {})(FilterMenu);

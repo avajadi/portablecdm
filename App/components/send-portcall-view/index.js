@@ -206,7 +206,7 @@ class SendPortcall extends Component {
         {mostRelevantStatement && 
           <View style={styles.bottomInfo}>
             <Text style={styles.bottomInfoText}>
-              {state.Name}{' '}  
+              <Text style={{fontWeight: 'bold', fontSize: 15}}>Most relevant statement: </Text> {' '}
               {mostRelevantStatement.timeType}  {' '}
               {getDateTimeString(new Date(mostRelevantStatement.time))}  {' '}
               <Text style={{fontWeight: 'bold'}}>reported by </Text>{mostRelevantStatement.reportedBy}  {' '}

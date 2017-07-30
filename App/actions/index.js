@@ -81,18 +81,36 @@ export const sendPortCall = (pcmAsObject, stateType) => {
 }
 
 export const fetchPortCalls = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({type: types.FETCH_PORTCALLS});
-    portCDM.getPortCalls()
-            .then(result => result.json())
-            .then(portCalls => Promise.all(portCalls.map(portCall => {
-                 return portCDM.getVessel(portCall.vesselId)
-                    .then(result => result.json())
-                    .then(vessel => {portCall.vessel = vessel; return portCall})
-            })))
-            .then(portCalls => {
-              dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
+
+    const connection = getState().settings.connection;
+    return fetch(`${connection.host}:${connection.port}/pcb/port_call`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PortCDM-UserId': connection.username,
+          'X-PortCDM-Password': connection.password,
+          'X-PortCDM-APIKey': 'eeee'
+        }
+      })
+        .then(result => result.json())
+        .then(portCalls => Promise.all(portCalls.map(portCall => {
+            return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-PortCDM-UserId': connection.username,
+                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-APIKey': 'eeee'
+                }
             })
+            .then(result => result.json())
+            .then(vessel => {portCall.vessel = vessel; return portCall})
+        })))
+        .then(portCalls => {
+            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
+        })
   };
 }
 

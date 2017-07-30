@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     port: "8080",
     username: 'viktoria',
     password: 'vik123'
-  }
+  },
+  maxPortCallsFetched: 1000
 }
 
 
