@@ -19,15 +19,17 @@ export default class MiniHeader extends Component {
     return(
       <View style={styles.container}>
         <Icon
-          name= 'arrow-back'
+          name= 'close'
           color= {colorScheme.primaryContainerColor}
           size= {30}
           onPress={leftIconFunction}
+          size= {40}
+          onPress={() => navigation.goBack()}
         />
         <Text h4 style={styles.headerText}>{title}</Text>
         <Icon
           name="check-circle"
-          color='green'
+          color='white'
           size={40}
           onPress={rightIconFunction}
         />

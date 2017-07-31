@@ -9,10 +9,13 @@ import userConfig, { timeDisplayModes } from '../config/userconfig';
  *  Date object, representing the DateTime in UTC
  */
 export function getDateString(date) {
+  if(date.getTime() === new Date(null).getTime()) return '';
   if(userConfig.timeDisplayMode === timeDisplayModes.local) {
-    return date.getTime() === new Date(null).getTime() ? '' : `${date.toLocaleDateString()}`;
-    // return `${date.toLocaleDateString()}`;
-  }
+    let onlyYear = date.getFullYear();
+    let onlyDay = date.getDate();
+    let onlyMonth = date.getMonth() +1 ; 
+    return `${('0' + onlyMonth).slice(-2)}/${('0' + onlyDay).slice(-2)}/${onlyYear}`;
+  } 
 }
 
 /**
