@@ -23,33 +23,29 @@ import {
 
 import MiniHeader from '../../mini-header-view';
 
+import {
+    fetchPortCalls,
+    filterChangeLimit,
+    filterChangeSortBy,  
+    filterChangeOrder  
+} from '../../../actions';
+
 class FilterMenu extends Component {
 
-constructor(){
-    super()
+constructor(props){
+    super(props)
     this.state = {
-        selectedSortByIndex: 0,
-        selectedOrderByIndex: 0,
+        selectedSortByIndex: props.filters.sort_by === 'ARRIVAL_DATE' ? 0 : 1,
+        selectedOrderByIndex: props.filters.order === 'DESCENDING' ? 0 : 1,
         selectedTimeIndex: 0,
-      //  modalVisible: false,
         modalStagesVisible: false,
         checked: false,
-        limitValue: 0,
+        limitFilter: props.filters.limit,
     }
-  //  this.updateIndex = this.updateIndex.bind(this)
+
   this.onBackIconPressed = this.onBackIconPressed.bind(this);
   this.onDoneIconPressed = this.onDoneIconPressed.bind(this);
 }
-
-static navigationOptions = {
-    title: 'Filter',
-    headerRight: <Button 
-                    title="Reset" 
-                    backgroundColor={colorScheme.primaryColor}
-                    />,
-   // headerMode: 'float',
-}
-
 setModalStagesVisible(visible){
     this.setState({modalStagesVisible: visible});
 }
@@ -59,12 +55,34 @@ onBackIconPressed() {
 }
 
 onDoneIconPressed() {
-    console.log("pressed ok filter menu");
+    const { limitFilter, selectedSortByIndex, selectedOrderByIndex } = this.state;
+    const { 
+        filters, 
+        fetchPortCalls, 
+        filterChangeLimit, 
+        filterChangeSortBy, 
+        filterChangeOrder 
+    } = this.props;
+
+    // Limit
+    filterChangeLimit(limitFilter);
+
+    // Sort By (ARRIVAL_DATE | LAST_UPDATE)
+    if(selectedSortByIndex == 0) filterChangeSortBy('ARRIVAL_DATE');   
+    if(selectedSortByIndex == 1) filterChangeSortBy('LAST_UPDATE');
+
+    // Order
+    if(selectedOrderByIndex === 0) filterChangeOrder('DESCENDING');
+    if(selectedOrderByIndex === 1) filterChangeOrder('ASCENDING');
+    
+
+    fetchPortCalls();
+    this.props.navigation.goBack();
 }
 
 render() {
-const buttonsSortBy = ['Arrival Date', 'Last Update', 'Vessel Name']
-const buttonsOrderBy = ['Decending', 'Ascending']
+const buttonsSortBy = ['Arrival Date', 'Last Update']
+const buttonsOrderBy = ['Descending', 'Ascending']
 const buttonsTime = ['Arrival Time', 'Departure Time']
 const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
 
@@ -255,14 +273,14 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                     <Text style={styles.textTitle}> Limit </Text>
                     {/* List first then sliding bar */}
                     <Slider
-                        minimumValue={29}
+                        minimumValue={30}
                         maximumValue={this.props.maxPortLimitPortCalls}
                         step={10}
-                        value={this.state.limitValue}
-                        onValueChange={(value) => this.setState({limitValue: value})}  
+                        value={this.state.limitFilter}
+                        onValueChange={(value) => this.setState({limitFilter: value})}  
                         thumbTintColor={colorScheme.primaryColor}
                     />
-                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.limitValue} portcalls retrieved </Text>
+                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.limitFilter} portcalls retrieved </Text>
                 </View>
             
                 {/*Button - SHOW RESULTS*/}
@@ -271,7 +289,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                         title="Show Results"
                         textStyle={{color: colorScheme.primaryTextColor}}
                         buttonStyle={{backgroundColor: colorScheme.primaryColor}}
-                        onPress={ () => console.log('Show Results button were pressed')}
+                        onPress={this.onDoneIconPressed}
                     />
                 </View>
 
@@ -358,7 +376,15 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         maxPortLimitPortCalls: state.settings.maxPortCallsFetched,
+        maxHoursTimeDifference: state.settings.maxHoursTimeDifference,
+        filters: state.filters,
     };
 }
 
-export default connect(mapStateToProps, {})(FilterMenu);
+export default connect(mapStateToProps, {
+    fetchPortCalls,
+    filterChangeLimit,
+    filterChangeSortBy,
+    filterChangeOrder,
+
+})(FilterMenu);

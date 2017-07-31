@@ -12,10 +12,66 @@ function handleErrors(response) {
     return response;
 }
 
+export const filterChangeLimit = (limit) => {
+    return {
+        type: types.FILTER_CHANGE_LIMIT,
+        payload: limit
+    };
+};
+
+export const filterChangeSortBy = (sortBy) => {
+    return {
+        type: types.FILTER_CHANGE_SORTBY,
+        payload: sortBy
+    };
+};
+
+export const filterChangeOrder = (order) => {
+    return {
+        type: types.FILTER_CHANGE_ORDER,
+        payload: order
+    }
+}
+
 export const changeHostSetting = (host) => {
     return {
         type: types.SETTINGS_CHANGE_HOST,
         payload: host
+    };
+};
+
+export const createVesselList = (vesselListName) => {
+    console.log("in create vesselList: " + vesselListName)
+    return {
+        type: types.SETTINGS_ADD_VESSEL_LIST,
+        payload: vesselListName
+    }
+}
+
+export const deleteVesselList = (vesselListName) => {
+    return {
+        type: types.SETTINGS_REMOVE_VESSEL_LIST,
+        payload: vesselListName
+    }
+}
+
+export const addVesselToList = (vessel, listName) => {
+    return {
+        type: types.SETTINGS_ADD_VESSEL_TO_LIST,
+        payload: {
+            vessel: vessel,
+            listName: listName
+        }
+    };
+};
+
+export const removeVesselFromList = (vessel, listName) => {
+    return {
+        type: types.SETTINGS_REMOVE_VESSEL_FROM_LIST,
+        payload: {
+            vessel: vessel,
+            listName: listName
+        }
     };
 };
 
@@ -80,12 +136,52 @@ export const sendPortCall = (pcmAsObject, stateType) => {
     }
 }
 
+function createFilterString(filters) {
+    let filterString = '';
+    let count = 0;
+    for(filter in filters) {
+        if(!filters.hasOwnProperty(filter)) continue;
+        if(count > 0) {
+            filterString += `&${filter}=${filters[filter]}`
+            count++;
+        } else {
+            filterString += `?${filter}=${filters[filter]}`
+            count++;
+        }
+    }
+
+    return filterString;
+}
+
+export const fetchVessel = (vesselUrn) => {
+    return (dispatch, getState) => {
+    
+        const connection = getState().settings.connection;
+        
+        return fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
+        {
+            headers: {
+            'Content-Type': 'application/json',
+            'X-PortCDM-UserId': connection.username,
+            'X-PortCDM-Password': connection.password,
+            'X-PortCDM-APIKey': 'eeee'
+            }
+        })
+        .then(result => result.json())
+        .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel}))
+    }
+};
+
 export const fetchPortCalls = () => {
   return (dispatch, getState) => {
     dispatch({type: types.FETCH_PORTCALLS});
 
     const connection = getState().settings.connection;
-    return fetch(`${connection.host}:${connection.port}/pcb/port_call`,
+    const filters = getState().filters;
+
+    const filterString = createFilterString(filters);
+    console.log(filterString);
+    return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
         headers: {
           'Content-Type': 'application/json',

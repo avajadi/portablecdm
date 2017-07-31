@@ -52,7 +52,7 @@ const portCallReducer = (state = INITIAL_STATE, action) => {
     case types.CLEAR_PORTCALL_SELECTION:
       return { ... state, vessel: {}, selectedPortCall: {}}
     case types.FETCH_PORTCALLS:
-      return { ... state, portCallsAreLoading: true};
+      return { ... state, portCallsAreLoading: true, foundPortCalls: []};
     case types.FETCH_PORTCALLS_SUCCESS:
       return { ...state, foundPortCalls: action.payload, portCallsAreLoading: false };
     case types.FETCH_PORTCALL_OPERATIONS:

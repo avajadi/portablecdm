@@ -30,93 +30,33 @@ class Settings extends Component {
 
     return(
       <View style={styles.container}>
-        <TopHeader title = 'Settings' firstPage navigation={this.props.navigation} rightIconFunction={this.goToStateList}/>
+        <TopHeader title = 'Settings' firstPage navigation={this.props.navigation}/>
         <ScrollView style={styles.scrollContainer}>
-            <Text h4>Connection:</Text>
-            <FormLabel>Host: </FormLabel>
-            <FormInput 
-              value={connection.host} 
-              onChangeText={(text) => changeHostSetting(text)}
-            />
+          <Text h4>Connection:</Text>
+          <FormLabel>Host: </FormLabel>
+          <FormInput 
+            value={connection.host} 
+            onChangeText={(text) => changeHostSetting(text)}
+          />
 
-            <FormLabel>Port: </FormLabel>
-            <FormInput 
-              value={connection.port}
-              onChangeText={(text) => changePortSetting(text)}
-            />
+          <FormLabel>Port: </FormLabel>
+          <FormInput 
+            value={connection.port}
+            onChangeText={(text) => changePortSetting(text)}
+          />
           <Button
             backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
             title="Manage favorite states"
             onPress={() => navigate('FavoriteStates')}
           />
-          {/* <List>
-            <ListItem
-              title='Profile'    
-              titleStyle={styles.titleStyle}
-              badge={{
-                value: '', 
-                textStyle: styles.badgeText,
-                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},          
-                wrapperStyle: {justifyContent: 'center'},
-                }}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-            <ListItem
-              title='Change Actor'    
-              titleStyle={styles.titleStyle}
-              badge={{
-                value: 'Port Authority', 
-                textStyle: styles.badgeText,
-                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},          
-                wrapperStyle: {justifyContent: 'center'},
-                }}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-          </List>
-          <List>
-            <ListItem
-              title='App Language'    
-              titleStyle={styles.titleStyle}
-              badge={{
-                value: 'English', 
-                textStyle: styles.badgeText,
-                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},          
-                wrapperStyle: {justifyContent: 'center'},
-                }}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-            <ListItem
-              title='Region'    
-              titleStyle={styles.titleStyle}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-          </List>
-          <List>
-            
-            <ListItem
-              title='Push Notifications'    
-              titleStyle={styles.titleStyle}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-            <ListItem
-              title='Sound'    
-              titleStyle={styles.titleStyle}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-          </List>
-          <List>
-            <ListItem
-              title='About'    
-              titleStyle={styles.titleStyle}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-            <ListItem
-              title='Updates'    
-              titleStyle= {styles.titleStyle}
-                //onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-            />
-          </List> */}
+          <Button
+            backgroundColor={colorScheme.primaryColor}
+            color={colorScheme.primaryTextColor}
+            title="Manage Vessel Lists"
+            onPress={() => navigate('VesselLists')}
+          />
+          
         </ScrollView>
       </View>
     );
