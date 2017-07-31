@@ -21,10 +21,8 @@ export default class MiniHeader extends Component {
         <Icon
           name= 'close'
           color= {colorScheme.primaryContainerColor}
-          size= {30}
-          onPress={leftIconFunction}
           size= {40}
-          onPress={() => navigation.goBack()}
+          onPress={leftIconFunction}
         />
         <Text h4 style={styles.headerText}>{title}</Text>
         <Icon

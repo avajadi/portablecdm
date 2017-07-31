@@ -55,8 +55,7 @@ class Settings extends Component {
             color={colorScheme.primaryTextColor}
             title="Manage Vessel Lists"
             onPress={() => navigate('VesselLists')}
-          />
-          
+          />         
         </ScrollView>
       </View>
     );
