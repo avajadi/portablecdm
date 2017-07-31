@@ -29,10 +29,7 @@ class App extends Component {
       this.setState({rehydrated: true})
     });
 
-    persistore.purge();
-
     store.dispatch(fetchLocations())
-
   }
 
 

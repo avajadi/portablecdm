@@ -82,6 +82,7 @@ class VesselList extends Component {
           <MiniHeader
             navigation={this.props.navigation}
             title={`Vessels in ${this.state.selectedList}`}
+            leftIconFunction={() => this.setState({listDetailModalVisible: false})}
           />
           <View style={styles.rowContainer}>
             <TextInput style={{flex: 5}}
