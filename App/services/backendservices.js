@@ -38,31 +38,31 @@ const portCDM = {
   /**
    * Fetches all Port Calls matching the filters
    */
-  getPortCalls: function () {
-    return fetch(PortCDMConfig.endpoints.PCBS.port_call.list(),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-PortCDM-UserId': PortCDMConfig.user.name,
-          'X-PortCDM-Password': PortCDMConfig.user.password,
-          'X-PortCDM-APIKey': 'eeee'
-        }
-      });
-  },
+  // getPortCalls: function () {
+  //   return fetch(PortCDMConfig.endpoints.PCBS.port_call.list(),
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'X-PortCDM-UserId': PortCDMConfig.user.name,
+  //         'X-PortCDM-Password': PortCDMConfig.user.password,
+  //         'X-PortCDM-APIKey': 'eeee'
+  //       }
+  //     });
+  // },
   /**
    * Fetches the vessel info for vesselId
    */
-  getVessel: function (vesselId) {
-    return fetch(PortCDMConfig.endpoints.VR.vessel(vesselId),
-      {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-PortCDM-UserId': PortCDMConfig.user.name,
-            'X-PortCDM-Password': PortCDMConfig.user.password,
-            'X-PortCDM-APIKey': 'eeee'
-          }
-        });
-  },
+  // getVessel: function (vesselId) {
+  //   return fetch(PortCDMConfig.endpoints.VR.vessel(vesselId),
+  //     {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'X-PortCDM-UserId': PortCDMConfig.user.name,
+  //           'X-PortCDM-Password': PortCDMConfig.user.password,
+  //           'X-PortCDM-APIKey': 'eeee'
+  //         }
+  //       });
+  // },
   
 }; // END portCDM
 

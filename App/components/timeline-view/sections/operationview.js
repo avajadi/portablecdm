@@ -200,7 +200,14 @@ class OperationView extends Component {
                         color = {colorScheme.primaryColor}
                         name='add-circle'
                         size={35}
-                        onPress={() => navigate('SendPortCall', {stateId: stateToDisplay.stateDefinition, fromLocation: operation.fromLocation, toLocation: operation.toLocation, atLocation: operation.atLocation})} />
+                        onPress={() => navigate('SendPortCall', {
+                            stateId: stateToDisplay.stateDefinition, 
+                            fromLocation: operation.fromLocation, 
+                            toLocation: operation.toLocation, 
+                            atLocation: operation.atLocation,
+                            mostRelevantStatement: stateToDisplay
+                          })
+                        } />
         }
         title = {
             <TouchableWithoutFeedback 

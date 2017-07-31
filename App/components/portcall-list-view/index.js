@@ -21,24 +21,7 @@ import colorScheme from '../../config/colors';
 import TopHeader from '../top-header-view';
 import { getDateTimeString } from '../../util/timeservices';
 
-class PortCallList extends Component {
-    static navigationOptions = {
-        title: 'Select PortCall',
-        drawerIcon: <Icon name='home' color='white' />
-    }
-    
-    // static navigationOptions = {
-    //     tabBarLabel: 'PortCall',
-    //     tabBarIcon: () => (
-    //         <Icon
-    //             name='home'
-    //             size = {20}
-    //             color= {colorScheme.primaryColor}
-    //             onPress={ () => this.props.navigation.navigate('Home') }
-    //         />
-    //     ),
-    // }
-    
+class PortCallList extends Component {   
     state = {
         searchTerm: '',
     }
@@ -155,7 +138,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         portCalls: state.portCalls.foundPortCalls,
-        showLoadingIcon: state.portCalls.portCallsAreLoading
+        showLoadingIcon: state.portCalls.portCallsAreLoading,
     }
 }
 

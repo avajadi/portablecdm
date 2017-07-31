@@ -1,6 +1,87 @@
 import * as types from './types';
 import portCDM, { reliability } from '../services/backendservices'
 
+function handleErrors(response) {
+    console.log("in handle error");
+    if(!response.ok) {
+        console.log("found an error!");
+        throw Error(response);
+    }
+
+    console.log("------------response from handleErrors-----------")
+    return response;
+}
+
+export const filterChangeLimit = (limit) => {
+    return {
+        type: types.FILTER_CHANGE_LIMIT,
+        payload: limit
+    };
+};
+
+export const filterChangeSortBy = (sortBy) => {
+    return {
+        type: types.FILTER_CHANGE_SORTBY,
+        payload: sortBy
+    };
+};
+
+export const filterChangeOrder = (order) => {
+    return {
+        type: types.FILTER_CHANGE_ORDER,
+        payload: order
+    }
+}
+
+export const changeHostSetting = (host) => {
+    return {
+        type: types.SETTINGS_CHANGE_HOST,
+        payload: host
+    };
+};
+
+export const createVesselList = (vesselListName) => {
+    console.log("in create vesselList: " + vesselListName)
+    return {
+        type: types.SETTINGS_ADD_VESSEL_LIST,
+        payload: vesselListName
+    }
+}
+
+export const deleteVesselList = (vesselListName) => {
+    return {
+        type: types.SETTINGS_REMOVE_VESSEL_LIST,
+        payload: vesselListName
+    }
+}
+
+export const addVesselToList = (vessel, listName) => {
+    return {
+        type: types.SETTINGS_ADD_VESSEL_TO_LIST,
+        payload: {
+            vessel: vessel,
+            listName: listName
+        }
+    };
+};
+
+export const removeVesselFromList = (vessel, listName) => {
+    return {
+        type: types.SETTINGS_REMOVE_VESSEL_FROM_LIST,
+        payload: {
+            vessel: vessel,
+            listName: listName
+        }
+    };
+};
+
+export const changePortSetting = (port) => {
+    return {
+        type: types.SETTINGS_CHANGE_PORT,
+        payload: port
+    };
+};
+
 export const addFavoriteState = (stateId) => {
   return {
     type: types.ADD_FAVORITE_STATE,
@@ -28,20 +109,125 @@ export const clearPortCallSelection = () => {
     }
 }
 
-export const fetchPortCalls = () => {
-  return (dispatch) => {
-    dispatch({type: types.FETCH_PORTCALLS});
-    portCDM.getPortCalls()
-            .then(result => result.json())
-            .then(portCalls => Promise.all(portCalls.map(portCall => {
-                 return portCDM.getVessel(portCall.vesselId)
-                    .then(result => result.json())
-                    .then(vessel => {portCall.vessel = vessel; return portCall})
-            })))
-            .then(portCalls => {
-              dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
+export const clearReportResult = () => {
+    return {
+        type: types.SEND_PORTCALL_CLEAR_RESULT
+    }
+}
+
+export const sendPortCall = (pcmAsObject, stateType) => {
+    return (dispatch, getState) => {
+        const { connection } = getState().settings;
+        dispatch({type: types.SEND_PORTCALL});
+        portCDM.sendPortCall(pcmAsObject, stateType)
+            .then(result => {
+                if(result.ok) return result;
+
+                let error = result._bodyText;              
+                throw new Error(error);
             })
+            .then(result => {
+                dispatch({type: types.SEND_PORTCALL_SUCCESS, payload: result})
+            })
+            .catch(error => {
+                dispatch({type: types.SEND_PORTCALL_FAILURE, payload: error.message})
+            })
+        
+    }
+}
+
+function createFilterString(filters) {
+    let filterString = '';
+    let count = 0;
+    for(filter in filters) {
+        if(!filters.hasOwnProperty(filter)) continue;
+        if(count > 0) {
+            filterString += `&${filter}=${filters[filter]}`
+            count++;
+        } else {
+            filterString += `?${filter}=${filters[filter]}`
+            count++;
+        }
+    }
+
+    return filterString;
+}
+
+export const fetchVessel = (vesselUrn) => {
+    return (dispatch, getState) => {
+    
+        const connection = getState().settings.connection;
+        
+        return fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
+        {
+            headers: {
+            'Content-Type': 'application/json',
+            'X-PortCDM-UserId': connection.username,
+            'X-PortCDM-Password': connection.password,
+            'X-PortCDM-APIKey': 'eeee'
+            }
+        })
+        .then(result => result.json())
+        .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel}))
+    }
+};
+
+export const fetchPortCalls = () => {
+  return (dispatch, getState) => {
+    dispatch({type: types.FETCH_PORTCALLS});
+
+    const connection = getState().settings.connection;
+    const filters = getState().filters;
+
+    const filterString = createFilterString(filters);
+    console.log(filterString);
+    return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PortCDM-UserId': connection.username,
+          'X-PortCDM-Password': connection.password,
+          'X-PortCDM-APIKey': 'eeee'
+        }
+      })
+        .then(result => result.json())
+        .then(portCalls => Promise.all(portCalls.map(portCall => {
+            return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-PortCDM-UserId': connection.username,
+                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-APIKey': 'eeee'
+                }
+            })
+            .then(result => result.json())
+            .then(vessel => {portCall.vessel = vessel; return portCall})
+        })))
+        .then(portCalls => {
+            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
+        })
   };
+}
+
+export const fetchLocations = (locationType) => {
+    return (dispatch, getState) => {
+        dispatch({type: types.FETCH_LOCATIONS});
+        const connection = getState().settings.connection;
+        fetch(`${connection.host}:${connection.port}/location-registry/locations`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-PortCDM-UserId': connection.username,
+                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-APIKey': 'eeee'
+                }
+            })
+            .then(result => result.json())
+            .then(locations => {
+                dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
+            })
+    }
 }
 
 export const selectPortCall = (portCall) => {
@@ -49,6 +235,23 @@ export const selectPortCall = (portCall) => {
         type: types.SELECT_PORTCALL,
         payload: portCall        
     };
+}
+/** Selects location to be either atLocation, fromLocation or toLocation
+ *  when sending in a portcall message
+ * 
+ * @param {string} locationSort 
+ *  "atLocation" | "fromLocation" | "toLocation"
+ * @param {location data structure} location 
+ *  the Location data structure retreived from /location-registry
+ */
+export const selectLocation = (locationSort, location) => {
+    return {
+        type: types.SEND_PORTCALL_SELECT_LOCATION,
+        payload: {
+            locationType: locationSort,
+            location: location,
+        }
+    }
 }
 
 export const fetchPortCallOperations = (portCallId) => {
@@ -61,7 +264,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(filterStatements)
       .then(addLocationsToOperations)
       .then(extractWarnings)
-      .then(fetchReliability)
+    //   .then(fetchReliability)
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
@@ -71,13 +274,7 @@ export const fetchPortCallOperations = (portCallId) => {
 
 // HELPER FUNCTIONS
 
-function handleErrors(response) {
-    if(!response.ok) {
-        throw Error(reponse);
-    }
 
-    return response;
-}
 
 async function fetchReliability(operations) {
     if(operations.length <= 0) return operations;
