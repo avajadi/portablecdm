@@ -12,6 +12,13 @@ function handleErrors(response) {
     return response;
 }
 
+export const filterChangeVesselList = (vesselList) => {
+    return {
+        type: types.FILTER_CHANGE_VESSEL_LIST,
+        payload: vesselList
+    };
+};
+
 export const filterChangeLimit = (limit) => {
     return {
         type: types.FILTER_CHANGE_LIMIT,
@@ -141,23 +148,6 @@ export const sendPortCall = (pcmAsObject, stateType) => {
     }
 }
 
-function createFilterString(filters) {
-    let filterString = '';
-    let count = 0;
-    for(filter in filters) {
-        if(!filters.hasOwnProperty(filter)) continue;
-        if(count > 0) {
-            filterString += `&${filter}=${filters[filter]}`
-            count++;
-        } else {
-            filterString += `?${filter}=${filters[filter]}`
-            count++;
-        }
-    }
-
-    return filterString;
-}
-
 export const fetchVessel = (vesselUrn) => {
     return (dispatch, getState) => {
     
@@ -177,14 +167,45 @@ export const fetchVessel = (vesselUrn) => {
     }
 };
 
+function createFilterString(filters, getState) {
+    let filterString = '';
+    let count = 0;
+    for(filter in filters) {
+        if(!filters.hasOwnProperty(filter)) continue;
+        if(filter === 'vesselList') {
+            const vesselListStr = filters[filter];
+            if(vesselListStr === 'all') {
+                continue;
+            }
+            let vesselList = getState().settings.vesselLists[vesselListStr];
+            for(vessel of vesselList) {
+                console.log(vessel);
+                filterString += count <= 0 ? `?vessel=${vesselList.imo}` : `&vessel=${vessel.imo}`;
+                count++;
+            }
+            console.log(getState().settings.vesselLists);
+            console.log(vesselListStr);
+            continue;
+        }
+        if(count > 0) {
+            filterString += `&${filter}=${filters[filter]}`
+            count++;
+        } else {
+            filterString += `?${filter}=${filters[filter]}`
+            count++;
+        }
+    }
+
+    return filterString;
+}
+
 export const fetchPortCalls = () => {
   return (dispatch, getState) => {
     dispatch({type: types.FETCH_PORTCALLS});
 
     const connection = getState().settings.connection;
     const filters = getState().filters;
-
-    const filterString = createFilterString(filters);
+    const filterString = createFilterString(filters, getState);
     console.log(filterString);
     return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {

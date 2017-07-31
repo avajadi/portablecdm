@@ -28,7 +28,7 @@ class App extends Component {
     let persistore = persistStore(store, {whitelist: ['states', 'settings', 'filters'], storage: AsyncStorage}, () => {
       this.setState({rehydrated: true})
     });
-
+    // persistore.purge();
     store.dispatch(fetchLocations())
   }
 

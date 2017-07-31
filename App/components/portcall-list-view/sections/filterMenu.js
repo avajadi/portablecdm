@@ -8,6 +8,7 @@ import {
     Dimensions,
     Modal,
     TouchableHighlight,
+    Picker
 } from 'react-native';
 import colorScheme from '../../../config/colors';
 import {
@@ -27,7 +28,8 @@ import {
     fetchPortCalls,
     filterChangeLimit,
     filterChangeSortBy,  
-    filterChangeOrder  
+    filterChangeOrder,
+    filterChangeVesselList,
 } from '../../../actions';
 
 class FilterMenu extends Component {
@@ -41,6 +43,7 @@ constructor(props){
         modalStagesVisible: false,
         checked: false,
         limitFilter: props.filters.limit,
+        vesselListFilter: props.filters.vesselList
     }
 
   this.onBackIconPressed = this.onBackIconPressed.bind(this);
@@ -61,7 +64,8 @@ onDoneIconPressed() {
         fetchPortCalls, 
         filterChangeLimit, 
         filterChangeSortBy, 
-        filterChangeOrder 
+        filterChangeOrder,
+        filterChangeVesselList 
     } = this.props;
 
     // Limit
@@ -75,6 +79,8 @@ onDoneIconPressed() {
     if(selectedOrderByIndex === 0) filterChangeOrder('DESCENDING');
     if(selectedOrderByIndex === 1) filterChangeOrder('ASCENDING');
     
+    // Vessel List
+    filterChangeVesselList(this.state.vesselListFilter);
 
     fetchPortCalls();
     this.props.navigation.goBack();
@@ -144,6 +150,20 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                     <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.value} </Text>
                 </View>
 
+                {/* Picker for Vessel List */}
+                <View style={styles.smallContainer}>
+                    <Text style={styles.textTitle}>Vessel list</Text>
+                    <Picker style={{marginTop: 20, backgroundColor: colorScheme.primaryTextColor}}
+                        selectedValue={this.state.vesselListFilter}
+                        onValueChange={(itemValue, itemIndex) => this.setState({vesselListFilter: itemValue})}
+                    >
+                        <Picker.Item label="All vessels" value='all' />
+                        {Object.keys(this.props.vesselLists).map(vesselListName => (
+                            <Picker.Item key={vesselListName} label={vesselListName} value={vesselListName} />
+                        ))}
+                    </Picker>
+                </View>
+                
                 {/*MODAL BIG VIEW #1*/}
                 <View style={styles.smallContainer}> 
 
@@ -378,6 +398,8 @@ function mapStateToProps(state) {
         maxPortLimitPortCalls: state.settings.maxPortCallsFetched,
         maxHoursTimeDifference: state.settings.maxHoursTimeDifference,
         filters: state.filters,
+        vesselLists: state.settings.vesselLists,
+
     };
 }
 
@@ -386,5 +408,5 @@ export default connect(mapStateToProps, {
     filterChangeLimit,
     filterChangeSortBy,
     filterChangeOrder,
-
+    filterChangeVesselList,
 })(FilterMenu);

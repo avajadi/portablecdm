@@ -71,17 +71,28 @@ class VesselList extends Component {
 
         </View>
         <List>
+          {/* Render all vessel lists, together with the vessels in those lists */}
           {Object.keys(vesselLists).map(listName => {
             return (
               <ListItem
                 key={listName}
                 title={listName}
+                rightIcon={{
+                  name: 'delete',
+                  color: 'red',
+                }}
+                onPressRightIcon={() => this.props.deleteVesselList(listName)}
                 subtitle={
                   <List>
                     {vesselLists[listName].map(vessel => {
                       return(
                         <ListItem
-                          hideChevron
+                          key={vessel.imo}
+                          rightIcon={{
+                            name: 'delete',
+                            color: 'red',
+                          }}
+                          onPressRightIcon={() => this.props.removeVesselFromList(vessel, listName)}
                           title={vessel.name}
                         />
                       );
