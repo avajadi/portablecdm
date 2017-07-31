@@ -41,7 +41,6 @@ export const changeHostSetting = (host) => {
 };
 
 export const createVesselList = (vesselListName) => {
-    console.log("in create vesselList: " + vesselListName)
     return {
         type: types.SETTINGS_ADD_VESSEL_LIST,
         payload: vesselListName
@@ -52,6 +51,12 @@ export const deleteVesselList = (vesselListName) => {
     return {
         type: types.SETTINGS_REMOVE_VESSEL_LIST,
         payload: vesselListName
+    }
+}
+
+export const clearVesselResult = () => {
+    return {
+        type: types.FETCH_VESSEL_CLEAR
     }
 }
 

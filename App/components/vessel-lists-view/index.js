@@ -26,6 +26,7 @@ import {
   addVesselToList, 
   removeVesselFromList, 
   fetchVessel,
+  clearVesselResult
 } from '../../actions';
 
 class VesselList extends Component {
@@ -38,8 +39,14 @@ class VesselList extends Component {
       listDetailModalVisible: false,
       selectedList: null
     }
+
+    this.closeModal = this.closeModal.bind(this);
   }
 
+  closeModal() {
+    this.props.clearVesselResult();
+    this.setState({listDetailModalVisible: false})
+  }
 
 
   render() {
@@ -69,6 +76,18 @@ class VesselList extends Component {
               <ListItem
                 key={listName}
                 title={listName}
+                subtitle={
+                  <List>
+                    {vesselLists[listName].map(vessel => {
+                      return(
+                        <ListItem
+                          hideChevron
+                          title={vessel.name}
+                        />
+                      );
+                    })}
+                  </List>
+                }
                 onPress={() => this.setState({listDetailModalVisible: true, selectedList: listName})}
               />
             );
@@ -77,12 +96,12 @@ class VesselList extends Component {
 
         <Modal
           visible={this.state.listDetailModalVisible}
-          onRequestClose={() => this.setState({listDetailModalVisible: false, selectedList: null})}
+          onRequestClose={this.closeModal}
         >
           <MiniHeader
             navigation={this.props.navigation}
             title={`Vessels in ${this.state.selectedList}`}
-            leftIconFunction={() => this.setState({listDetailModalVisible: false})}
+            leftIconFunction={this.closeModal}
           />
           <View style={styles.rowContainer}>
             <TextInput style={{flex: 5}}
@@ -102,8 +121,9 @@ class VesselList extends Component {
                 onPress={() => this.props.addVesselToList(this.props.foundVessel, this.state.selectedList)}
             >
               <View>
-                <Text>{this.props.foundVessel.name}</Text>
-                <Text>{this.props.foundVessel.vesselType}</Text>
+                <Text>Name: {this.props.foundVessel.name}</Text>
+                <Text>Type: {this.props.foundVessel.vesselType}</Text>
+                <Text>Call sign: {this.props.foundVessel.callSign}</Text>
               </View>
 
             </TouchableWithoutFeedback>  
@@ -128,6 +148,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state.settings.vesselLists)
   return {
     vesselLists: state.settings.vesselLists,
     foundVessel: state.vessel.vessel
@@ -140,5 +161,6 @@ export default connect(mapStateToProps, {
   deleteVesselList,
   removeVesselFromList,
   fetchVessel,
-  addVesselToList
+  addVesselToList,
+  clearVesselResult
 })(VesselList);

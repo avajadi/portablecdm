@@ -33,15 +33,11 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
       delete vesselListsCopy[action.payload];
       return { ...state, vesselLists: vesselListsCopy };
     case SETTINGS_ADD_VESSEL_TO_LIST:
-      console.log(action.payload.vessel);
-      console.log(action.payload.listName);
-      // BÖRJA HÄR, FÅ DETTA ATT FUNGERA!!!
-      return state;
-      // const oldListCopy = {... state.vesselLists[action.payload.listName]}
-      // oldListCopy.push(action.payload.vesselUrn);
-      // return { ...state, vesselLists: { ...state.vesselLists, [action.payload.listName]: state.vesselLists[action.payload.listName].push(action.payload.vesselUrn)} }
+      const newVesselList = [...state.vesselLists[action.payload.listName]];
+      newVesselList.push(action.payload.vessel);
+      return { ...state, vesselLists: { ...state.vesselLists, [action.payload.listName]: newVesselList} }
     case SETTINGS_REMOVE_VESSEL_FROM_LIST:
-      // return { ...state, vesselLists: state.vesselLists[action.payload.listName].filter(vesselUrn => vesselUrn !== action.payload.vesselUrn)}
+      return { ...state, vesselLists: state.vesselLists[action.payload.listName].filter(vesselUrn => vesselUrn !== action.payload.vesselUrn)}
     default:
       return state;
   }
