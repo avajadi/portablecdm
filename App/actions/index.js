@@ -179,12 +179,9 @@ function createFilterString(filters, getState) {
             }
             let vesselList = getState().settings.vesselLists[vesselListStr];
             for(vessel of vesselList) {
-                console.log(vessel);
                 filterString += count <= 0 ? `?vessel=${vesselList.imo}` : `&vessel=${vessel.imo}`;
                 count++;
             }
-            console.log(getState().settings.vesselLists);
-            console.log(vesselListStr);
             continue;
         }
         if(count > 0) {
@@ -197,6 +194,25 @@ function createFilterString(filters, getState) {
     }
 
     return filterString;
+}
+
+export const fetchPortCallStructure = (portCallId) => {
+    return (dispatch, getState) => {
+        dispatch({type: types.FETCH_PORTCALL_STRUCTURE});
+
+        const connection = getState().settings.connection;
+        return fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/structure`, 
+          {
+              headers: {
+                'X-PortCDM-UserId': connection.username,
+                'X-PortCDM-Password': connection.password,
+                'X-PortCDM-APIKey': 'eeee'        
+              }
+          }
+        )
+        .then(result => result.json())
+        .then(structure => dispatch({type: types.FETCH_PORTCALL_STRUCTURE_SUCCESS, payload: structure}))
+    }
 }
 
 export const fetchPortCalls = () => {
@@ -290,7 +306,7 @@ export const fetchPortCallOperations = (portCallId) => {
       .then(filterStatements)
       .then(addLocationsToOperations)
       .then(extractWarnings)
-    //   .then(fetchReliability)
+      .then(fetchReliability)
       .then(operations => {
         dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
       })      
@@ -313,6 +329,13 @@ async function fetchReliability(operations) {
                     ourOperation.reliability = Math.floor(resultOperation.reliability * 100);
                     // Then for each state in the operation
                     resultOperation.states.map(resultState => {
+                        // We want the onProbability data
+                        ourOperation.reportedStates[resultState.stateId].onTimeProbability = {
+                            probability: Math.floor(resultState.onTimeProbability.probability * 100),
+                            reason: resultState.onTimeProbability.reason,
+                            accuracy: Math.floor(resultState.onTimeProbability.accuracy * 100)
+                        }
+
                         // Go through all statements we have stored in our data, and add reliability and reliability changes to the structure.
                         ourOperation.reportedStates[resultState.stateId].forEach(ourStatement => {
                             for(let i = 0; i< resultState.messages.length; i++) {

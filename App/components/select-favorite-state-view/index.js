@@ -32,6 +32,7 @@ class SelectFavoriteState extends Component {
     }
     this.state.stateDataSource = ds.cloneWithRows(props.stateCatalogue);
     this.replaceFavoriteStates = this.replaceFavoriteStates.bind(this);
+    this.onBackIconPressed =  this.onBackIconPressed.bind(this);
   }
 
   replaceFavoriteStates () {
@@ -39,7 +40,6 @@ class SelectFavoriteState extends Component {
   }
 
   onBackIconPressed () {
-    console.log("onbackiconpressed");
     this.props.navigation.goBack();
   }
 
@@ -55,8 +55,8 @@ class SelectFavoriteState extends Component {
       <View style={styles.container}>
         <MiniHeader 
           navigation={this.props.navigation} title='Favorite states'
-          rightIconFunction={this.replaceFavoriteStates.bind(this)}
-          leftIconFunctioN={this.onBackIconPressed.bind(this)}
+          rightIconFunction={this.replaceFavoriteStates}
+          leftIconFunctioN={this.onBackIconPressed}
         />
         <SearchBar 
           containerStyle = {styles.searchBarContainer}
