@@ -73,7 +73,7 @@ class SideMenu extends Component {
                     />
      
                     <ListItem
-                        containerStyle={activeItemKey === 'StateList' ? [containerStyle, styles.selectedContainer] : containerStyle}
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
                           leftIcon={{
                           name: 'access-time',
                           color: 'white'
@@ -87,7 +87,7 @@ class SideMenu extends Component {
                         }
                         onPress={() => {
                             if (haveSelectedPortCall && activeItemKey !== 'StateList')
-                                navigate('StateList');
+                                navigate('FavoriteStatesSideMenu');
                         }}
                     />
     
@@ -100,7 +100,7 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={textStyle}>PortCall Overview</Text>     
+                                <Text style={textStyle}>Port Call Overview</Text>     
                             </View>
                         }
                         onPress={() => {
@@ -118,7 +118,7 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={textStyle}>PortCall Timeline</Text>     
+                                <Text style={textStyle}>Port Call Timeline</Text>     
                             </View>
                         }
                         onPress={() => {
@@ -162,7 +162,7 @@ class SideMenu extends Component {
                         }}
                     />
 
-                    <ListItem
+                    {/*<ListItem
                         containerStyle={activeItemKey === 'MultiView' ? [containerStyle, styles.selectedContainer] : containerStyle}
                         leftIcon={{
                           name:'dashboard', 
@@ -175,7 +175,7 @@ class SideMenu extends Component {
                                 <Text style={textStyle}>PortCall Multiple View</Text>     
                             </View>
                         }
-                    />
+                    />*/}
                     <ListItem
                         containerStyle={activeItemKey === 'Settings' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{

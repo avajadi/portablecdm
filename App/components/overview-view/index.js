@@ -74,6 +74,8 @@ class OverView extends Component {
       <View style={styles.container}>
         <TopHeader
           title="Overview"
+          firstPage
+          navigation = {this.props.navigation}
         />
         <ScrollView>
           {/* assuming a portvisit  */}

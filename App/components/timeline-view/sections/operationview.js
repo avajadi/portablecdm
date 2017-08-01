@@ -255,11 +255,11 @@ class OperationView extends Component {
                       <Text style={{fontSize: 9}}>
                         <Text style = {styles.stateDisplaySubTitle}>ON TIME PROBABILITY: </Text>{allOfTheseStatements.onTimeProbability.probability}%
                       </Text>
-                      <Text style={{fontSize: 9, marginLeft: 4}}>
-                        <Text style={styles.stateDisplaySubTitle}>Reason: </Text>{allOfTheseStatements.onTimeProbability.reason}
+                      <Text style={{fontSize: 9, marginLeft: 10}}>
+                        <Text style={styles.stateDisplaySubTitle}>REASON: </Text>{allOfTheseStatements.onTimeProbability.reason}
                       </Text>
-                      <Text style={{fontSize: 9, marginLeft: 4}}>
-                        <Text style={styles.stateDisplaySubTitle}>Accuracy: </Text>{allOfTheseStatements.onTimeProbability.accuracy}%
+                      <Text style={{fontSize: 9, marginLeft: 10}}>
+                        <Text style={styles.stateDisplaySubTitle}>ACCURACY: </Text>{allOfTheseStatements.onTimeProbability.accuracy}%
                       </Text>
                     </View>
                   }

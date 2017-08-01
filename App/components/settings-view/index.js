@@ -32,28 +32,30 @@ class Settings extends Component {
       <View style={styles.container}>
         <TopHeader title = 'Settings' firstPage navigation={this.props.navigation}/>
         <ScrollView style={styles.scrollContainer}>
-          <Text h4>Connection:</Text>
+          <View style={styles.formContainerStyle}>
+          <Text style={styles.titleStyle}>Connection:</Text>
           <FormLabel>Host: </FormLabel>
           <FormInput 
             value={connection.host} 
             onChangeText={(text) => changeHostSetting(text)}
           />
-
           <FormLabel>Port: </FormLabel>
           <FormInput 
             value={connection.port}
             onChangeText={(text) => changePortSetting(text)}
           />
+          </View>
           <Button
-            backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
-            title="Manage favorite states"
+            title="Edit Favorite States"
+            buttonStyle={styles.buttonStyle}
             onPress={() => navigate('FavoriteStateSetting')}
           />
           <Button
             backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
-            title="Manage Vessel Lists"
+            title="Edit Vessel Lists"
+            buttonStyle={styles.buttonStyle}
             onPress={() => navigate('VesselLists')}
           />         
         </ScrollView>
@@ -69,10 +71,33 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     backgroundColor: colorScheme.backgroundColor,
-    paddingTop: 20,
+ //   paddingTop: 20,
+  },
+  formContainerStyle: {
+    backgroundColor: colorScheme.primaryContainerColor,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    paddingBottom: 10,
+    paddingTop: 10,
+    borderColor: colorScheme.tertiaryTextColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+  },
+  buttonStyle: {
+    backgroundColor: colorScheme.primaryColor,
+    marginBottom: 10,
+    marginTop: 10,
+    borderColor: colorScheme.primaryColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
   },
   titleStyle: {
     color: colorScheme.quaternaryTextColor,
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingLeft: 10,
   },
   badgeText: {
     color: colorScheme.secondaryColor,

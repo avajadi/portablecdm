@@ -41,7 +41,6 @@ class SelectFavoriteState extends Component {
   }
 
   onBackIconPressed () {
-    console.log(this.props.navigation)
     this.props.navigation.goBack();
   }
 
@@ -56,7 +55,8 @@ class SelectFavoriteState extends Component {
     return(
       <View style={styles.container}>
         <MiniHeader 
-          navigation={this.props.navigation} title='Favorite states'
+          navigation={this.props.navigation} 
+          title='Favorite states'
           rightIconFunction={this.replaceFavoriteStates}
           leftIconFunction={this.onBackIconPressed}
         />

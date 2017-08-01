@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TextInput,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native';
 
 import {  
@@ -15,7 +16,8 @@ import {
   ListItem,
   FormInput,
   Button,
-  SearchBar
+  SearchBar,
+  Divider,
 } from 'react-native-elements';
 
 import TopHeader from '../top-header-view';
@@ -52,17 +54,19 @@ class VesselList extends Component {
 
   render() {
     const { vesselLists } = this.props;
+
     return(
       <View style={styles.container}>
         <TopHeader
-          title="Vessel lists"  
+          title="Vessel Lists"  
+          navigation = {this.props.navigation}
         />
         <View style={styles.rowContainer}>
           <SearchBar
             autoCorrent={false} 
             containerStyle = {styles.searchBarContainer}
             clearIcon
-            inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+            inputStyle = {{backgroundColor: colorScheme.primaryContainerColor, fontSize: 15}}
             lightTheme  
             placeholder='Type list name and press Add'
             placeholderTextColor = {colorScheme.tertiaryTextColor}
@@ -104,6 +108,7 @@ class VesselList extends Component {
           visible={this.state.listDetailModalVisible}
           onRequestClose={this.closeModal}
         >
+          <View style={styles.modalContainer}>
           <MiniHeader
             navigation={this.props.navigation}
             title={`Vessels`}
@@ -138,7 +143,7 @@ class VesselList extends Component {
           </View>
           {!!this.props.foundVessel && 
             <View
-                style={{alignSelf: 'center', flexDirection: 'row'}}
+                style={styles.addToListContainer}
             >
               <View>
                 <Text>Name: {this.props.foundVessel.name}</Text>
@@ -149,7 +154,10 @@ class VesselList extends Component {
                 style={{alignSelf: 'center'}}
               >
                 <Button
-                  title="Add to list"
+                  title="Add to List"
+                  textStyle={{color: colorScheme.primaryTextColor, fontSize: 9}}
+                  buttonStyle={styles.buttonStyle}
+
                   onPress={() => this.props.addVesselToList(this.props.foundVessel, this.state.selectedList)}                
                 />
               </View>
@@ -157,8 +165,9 @@ class VesselList extends Component {
             </View>
           }
           {this.state.selectedList &&
-            <View>
-              <Text h4>Vessels in {this.state.selectedList}</Text>
+            <ScrollView style={styles.vesselListStyle}>
+              <Text style={styles.titleText}>Vessels in {this.state.selectedList}</Text>
+              <Divider style={{backgroundColor: colorScheme.tertiaryTextColor}}/>
               <List style={{borderTopWidth: 0, borderBottomWidth: 0}}>
                 {vesselLists[this.state.selectedList].map((vessel, vesselIndex) => {
                   return(
@@ -174,9 +183,9 @@ class VesselList extends Component {
                   );
                 })}
               </List>
-            </View>
+            </ScrollView>
           }
-
+          </View>
         </Modal>
       </View>
     );
@@ -185,12 +194,17 @@ class VesselList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: colorScheme.backgroundColor ,
+  },
+  modalContainer: {
+    backgroundColor: colorScheme.backgroundColor,
+    flex: 1,
   },
   rowContainer: {
     flexDirection: 'row',
     backgroundColor: colorScheme.primaryColor,
-    marginBottom: 5,
+  //  marginBottom: 5,
   },
   searchBarContainer: {
     backgroundColor: colorScheme.primaryColor,
@@ -204,6 +218,49 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: 0,
     alignSelf: 'center',
+  },
+  addToListContainer: {
+    backgroundColor: colorScheme.primaryContainerColor,
+    alignSelf: 'center', 
+    flexDirection: 'row',
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    borderColor: colorScheme.tertiaryTextColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+  },
+  vesselListStyle: {
+    backgroundColor: colorScheme.primaryContainerColor,
+    marginTop: 10,
+    marginBottom: 10,
+    flex: 1,
+    paddingBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    borderColor: colorScheme.tertiaryTextColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+  },
+  buttonStyle: {
+    backgroundColor: colorScheme.primaryColor,
+    borderColor: colorScheme.primaryColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+  },
+  titleText: {
+    color: colorScheme.quaternaryTextColor,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingLeft: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingRight: 20,
+
   },
 });
 

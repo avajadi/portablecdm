@@ -15,13 +15,13 @@ import colorScheme from '../../config/colors';
 export default class MiniHeader extends Component {
   render() {
     const {navigation, title, rightIconFunction, leftIconFunction} = this.props;
-
     return(
       <View style={styles.container}>
         <Icon
           name= 'close'
           color= {colorScheme.primaryContainerColor}
           size= {40}
+          underlayColor='transparent'
           onPress={leftIconFunction}
         />
         <Text h4 style={styles.headerText}>{title}</Text>
@@ -29,6 +29,7 @@ export default class MiniHeader extends Component {
           name="check-circle"
           color='white'
           size={40}
+          underlayColor='transparent'
           onPress={rightIconFunction}
         />
       </View>

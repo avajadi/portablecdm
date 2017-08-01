@@ -216,11 +216,11 @@ class SendPortcall extends Component {
         {mostRelevantStatement && 
           <View style={styles.bottomInfo}>
             <Text style={styles.bottomInfoText}>
-              <Text style={{fontWeight: 'bold', fontSize: 15}}>Most relevant statement: </Text> {' '}
-              {mostRelevantStatement.timeType}  {' '}
-              {getDateTimeString(new Date(mostRelevantStatement.time))}  {' '}
-              <Text style={{fontWeight: 'bold'}}>reported by </Text>{mostRelevantStatement.reportedBy}  {' '}
-              <Text style={{fontWeight: 'bold'}}>at </Text>{getDateTimeString(new Date(mostRelevantStatement.reportedAt))}  
+              <Text style={styles.bottomInfoTitleText}>Most Relevant Statement: </Text>{'\n'}
+            <Text>{mostRelevantStatement.timeType}{' '}
+              {getDateTimeString(new Date(mostRelevantStatement.time))}{'\n'}</Text>
+              <Text style={{fontWeight: 'bold'}}>Reported by: </Text>{mostRelevantStatement.reportedBy}{'\n'}
+              <Text style={{fontWeight: 'bold'}}>At: </Text>{getDateTimeString(new Date(mostRelevantStatement.reportedAt))}  
             </Text>
           </View>
         }
@@ -254,7 +254,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colorScheme.primaryTextColor,
     fontSize: 18,
-  //  paddingBottom: 10,
     fontWeight: 'bold',
  },
   headerSubInfoText: {
@@ -343,7 +342,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: 10,
     paddingTop: 10,
-  //  textAlign: 'center',
     borderRadius: 5, 
     overflow: 'hidden', 
   },
@@ -355,10 +353,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
-    },
+  },
+  bottomInfoTitleText: {
+    fontWeight: 'bold', 
+    fontSize: 14, 
+  },
   bottomInfoText: {
-    fontSize: 12,
+    fontSize: 10,
     color: colorScheme.sidebarColor,
+    paddingLeft: 10,
+    paddingTop:10,
+    paddingBottom:10,
     }
 });
 

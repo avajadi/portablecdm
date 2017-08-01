@@ -20,18 +20,19 @@ import SelectFavoriteState from '../components/select-favorite-state-view';
 import VesselLists from '../components/vessel-lists-view';
 import SideMenu     from '../components/side-menu-view';
 
-
+/*
 const FavoriteStatesNavigator = StackNavigator({
   StateList: { screen: StateList },
   SelectFavoriteStates: { screen: SelectFavoriteState },
 }, {
   headerMode: 'none'
 })
-
+*/
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
   StateDetails: { screen: StateDetails},
-  FavoriteStates: { screen: FavoriteStatesNavigator },
+  FavoriteStates: { screen: StateList },
+  SelectFavoriteStatesTimeLine: { screen: SelectFavoriteState },
   SendPortCall: { screen: SendPortCall },
 }, {
   headerMode: 'none',
@@ -58,7 +59,8 @@ export const AppNavigator = DrawerNavigator({
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   Home: { screen: Home },
-  FavoriteStates: { screen: FavoriteStatesNavigator },
+  FavoriteStatesSideMenu: { screen: StateList },
+  //FavoriteStates: { screen: FavoriteStatesNavigator },
   OverView: { screen: OverView },
   VesselInfo: { screen: VesselInfo },
   PortInfo: { screen: PortInfo },

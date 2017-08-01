@@ -37,7 +37,7 @@ class PortCallList extends Component {
 
         return(
             <View style={styles.container}>
-                <TopHeader title="PortCalls" navigation={this.props.navigation} firstPage/>
+                <TopHeader title="Port Calls" navigation={this.props.navigation} firstPage/>
                 {/*Render the search/filters header*/}
                 <View style={styles.containerRow}>
                     <SearchBar

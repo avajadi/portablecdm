@@ -30,6 +30,7 @@ export default class TopHeader extends Component {
             name= 'menu'
             color= {colorScheme.primaryContainerColor}
             size= {50}
+            underlayColor='transparent'
             onPress={() => this.props.navigation.navigate('DrawerOpen')}
           /> 
           }
@@ -39,7 +40,8 @@ export default class TopHeader extends Component {
             name= 'arrow-back'
             color= {colorScheme.primaryContainerColor}
             size= {50}
-            onPress={() => this.props.navigation.goBack()}
+            underlayColor='transparent'
+            onPress={() => { console.log("I am here"); this.props.navigation.goBack()}}
           /> 
           }
           <Text 
@@ -53,6 +55,7 @@ export default class TopHeader extends Component {
             <Icon
               name='add-circle'
               size = {50}
+              underlayColor='transparent'
               color= {colorScheme.primaryContainerColor}
               onPress={() => rightIconFunction()}
             />
