@@ -37,6 +37,7 @@ class SelectFavoriteState extends Component {
 
   replaceFavoriteStates () {
     this.props.replaceFavoriteStates(this.state.chosenStates);
+    this.props.navigation.goBack();
   }
 
   onBackIconPressed () {
