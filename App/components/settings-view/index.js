@@ -48,7 +48,7 @@ class Settings extends Component {
             backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
             title="Manage favorite states"
-            onPress={() => navigate('FavoriteStates')}
+            onPress={() => navigate('FavoriteStateSetting')}
           />
           <Button
             backgroundColor={colorScheme.primaryColor}

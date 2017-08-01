@@ -7,6 +7,8 @@ const INITIAL_STATE = {
   selectedPortCallOperations: [],
   portCallsAreLoading: false,
   selectedPortCallIsLoading: false,
+  portCallStructureIsLoading: false,
+  portCallStructure: null,
 }
 
 /*
@@ -59,6 +61,10 @@ const portCallReducer = (state = INITIAL_STATE, action) => {
       return { ...state, selectedPortCallIsLoading: true};
     case types.FETCH_PORTCALL_OPERATIONS_SUCCESS:
       return { ...state, selectedPortCallOperations: action.payload, selectedPortCallIsLoading: false};
+    case types.FETCH_PORTCALL_STRUCTURE:
+      return { ...state, portCallStructureIsLoading: true}
+    case types.FETCH_PORTCALL_STRUCTURE_SUCCESS:
+      return { ...state, portCallStructureIsLoading: false, portCallStructure: action.payload }
     default:
       return state;
   }

@@ -249,6 +249,21 @@ class OperationView extends Component {
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
+                  
+                  {(!!allOfTheseStatements.onTimeProbability) && 
+                    <View>
+                      <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle}>ON TIME PROBABILITY: </Text>{allOfTheseStatements.onTimeProbability.probability}%
+                      </Text>
+                      <Text style={{fontSize: 9, marginLeft: 4}}>
+                        <Text style={styles.stateDisplaySubTitle}>Reason: </Text>{allOfTheseStatements.onTimeProbability.reason}
+                      </Text>
+                      <Text style={{fontSize: 9, marginLeft: 4}}>
+                        <Text style={styles.stateDisplaySubTitle}>Accuracy: </Text>{allOfTheseStatements.onTimeProbability.accuracy}%
+                      </Text>
+                    </View>
+                  }
+                    
             </View>
         }
         badge = {

@@ -46,12 +46,14 @@ const PortCallListNavigator = StackNavigator({
 
 const SettingsNavigator = StackNavigator({
   SettingsStart: { screen: Settings },  
-  VesselLists: { screen: VesselLists}
+  VesselLists: { screen: VesselLists},
+  FavoriteStateSetting: { screen: SelectFavoriteState },  
 }, {
   headerMode: 'none'
 })
 
 export const AppNavigator = DrawerNavigator({  
+  // OverView: { screen: OverView },
   // Login : { screen: LoginView },  
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
