@@ -14,7 +14,8 @@ import {
   List,
   ListItem,
   FormInput,
-  Button
+  Button,
+  SearchBar
 } from 'react-native-elements';
 
 import TopHeader from '../top-header-view';
@@ -57,18 +58,29 @@ class VesselList extends Component {
           title="Vessel lists"  
         />
         <View style={styles.rowContainer}>
-          <TextInput style={{flex: 5}}
-            placeholder="Type list name and press Add"
-            value={this.state.newListName}
+          <SearchBar
+            autoCorrent={false} 
+            containerStyle = {styles.searchBarContainer}
+            clearIcon
+            inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+            lightTheme  
+            placeholder='Type list name and press Add'
+            placeholderTextColor = {colorScheme.tertiaryTextColor}
             onChangeText={text => this.setState({newListName: text})}
+            textInputRef='textInput'
           />
-          <Button style={{flex: 2}}
+          <Button
+            containerViewStyle={styles.buttonContainer}
+            small
             title="Add"
+            backgroundColor = {colorScheme.primaryColor} 
             disabled={this.state.newListName.length <= 0}
+            disabledStyle={{
+              backgroundColor: colorScheme.primaryColor
+            }}
+            color={this.state.newListName <= 0 ? colorScheme.tertiaryTextColor : colorScheme.primaryTextColor}
             onPress={() => this.props.createVesselList(this.state.newListName)}
-          />
-
-
+            /> 
         </View>
         <List>
           {/* Render all vessel lists, together with the vessels in those lists */}
@@ -82,23 +94,6 @@ class VesselList extends Component {
                   color: 'red',
                 }}
                 onPressRightIcon={() => this.props.deleteVesselList(listName)}
-                subtitle={
-                  <List>
-                    {vesselLists[listName].map(vessel => {
-                      return(
-                        <ListItem
-                          key={vessel.imo}
-                          rightIcon={{
-                            name: 'delete',
-                            color: 'red',
-                          }}
-                          onPressRightIcon={() => this.props.removeVesselFromList(vessel, listName)}
-                          title={vessel.name}
-                        />
-                      );
-                    })}
-                  </List>
-                }
                 onPress={() => this.setState({listDetailModalVisible: true, selectedList: listName})}
               />
             );
@@ -111,33 +106,75 @@ class VesselList extends Component {
         >
           <MiniHeader
             navigation={this.props.navigation}
-            title={`Vessels in ${this.state.selectedList}`}
+            title={`Vessels`}
             leftIconFunction={this.closeModal}
           />
           <View style={styles.rowContainer}>
-            <TextInput style={{flex: 5}}
-              placeholder="Search by IMO number"
-              value={this.state.newVesselImo}
+            <SearchBar
+              autoCorrent={false} 
+              containerStyle = {styles.searchBarContainer}
+              clearIcon
+              inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+              lightTheme  
+              placeholder='Search by IMO number'
+              placeholderTextColor = {colorScheme.tertiaryTextColor}
               onChangeText={text => this.setState({newVesselImo: text})}
               keyboardType="numeric"
+              textInputRef='textInput'
             />
-            <Button style={{flex: 2}}
+            <Button
+              containerViewStyle={styles.buttonContainer}
+              small
               title="Search"
               disabled={this.state.newVesselImo <= 0}
+              color={this.state.newVesselImo <= 0 ? colorScheme.tertiaryTextColor : colorScheme.primaryTextColor}
+              disabledStyle={{
+                backgroundColor: colorScheme.primaryColor
+              }}
+              backgroundColor = {colorScheme.primaryColor}
               onPress={() => this.props.fetchVessel("urn:mrn:stm:vessel:IMO:" + this.state.newVesselImo)}
-            />
+            /> 
+            
           </View>
           {!!this.props.foundVessel && 
-            <TouchableWithoutFeedback
-                onPress={() => this.props.addVesselToList(this.props.foundVessel, this.state.selectedList)}
+            <View
+                style={{alignSelf: 'center', flexDirection: 'row'}}
             >
               <View>
                 <Text>Name: {this.props.foundVessel.name}</Text>
                 <Text>Type: {this.props.foundVessel.vesselType}</Text>
                 <Text>Call sign: {this.props.foundVessel.callSign}</Text>
               </View>
+              <View
+                style={{alignSelf: 'center'}}
+              >
+                <Button
+                  title="Add to list"
+                  onPress={() => this.props.addVesselToList(this.props.foundVessel, this.state.selectedList)}                
+                />
+              </View>
 
-            </TouchableWithoutFeedback>  
+            </View>
+          }
+          {this.state.selectedList &&
+            <View>
+              <Text h4>Vessels in {this.state.selectedList}</Text>
+              <List style={{borderTopWidth: 0, borderBottomWidth: 0}}>
+                {vesselLists[this.state.selectedList].map((vessel, vesselIndex) => {
+                  return(
+                    <ListItem
+                      key={vesselIndex}
+                      title={vessel.name}
+                      rightIcon={{
+                        name: 'delete',
+                        color: 'red',
+                      }}
+                      onPressRightIcon={() => this.props.removeVesselFromList(vessel, this.state.selectedList)}
+                    />
+                  );
+                })}
+              </List>
+            </View>
           }
 
         </Modal>
@@ -151,11 +188,23 @@ const styles = StyleSheet.create({
     flex: 1
   },
   rowContainer: {
-    flex: 1,
     flexDirection: 'row',
-    maxHeight: 50,
-    backgroundColor: colorScheme.primaryColor
-  }
+    backgroundColor: colorScheme.primaryColor,
+    marginBottom: 5,
+  },
+  searchBarContainer: {
+    backgroundColor: colorScheme.primaryColor,
+    flex: 3,
+    marginRight: 0,
+    borderBottomWidth: 0,
+    borderTopWidth: 0,      
+  },
+  buttonContainer: {
+    flex: 1,
+    marginRight: 0,
+    marginLeft: 0,
+    alignSelf: 'center',
+  },
 });
 
 function mapStateToProps(state) {
