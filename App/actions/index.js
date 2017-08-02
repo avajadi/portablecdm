@@ -40,6 +40,26 @@ export const filterChangeOrder = (order) => {
     }
 }
 
+export const filterChangeArrivingWithin = (arrivingWithinHours) => {
+    return {
+        type: types.FILTER_CHANGE_ARRIVING_WITHIN,
+        payload: arrivingWithinHours
+    };
+};
+
+export const filterChangeDepartingWithin = (departingWithinHours) => {
+    return {
+        type: types.FILTER_CHANGE_DEPARTING_WITHIN,
+        payload: departingWithinHours
+    }
+}
+
+export const filterClearArrivingDepartureTime = () => {
+    return {
+        type: types.FILTER_CLEAR_TIME
+    };
+};
+
 export const changeHostSetting = (host) => {
     return {
         type: types.SETTINGS_CHANGE_HOST,

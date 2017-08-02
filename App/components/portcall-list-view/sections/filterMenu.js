@@ -30,20 +30,41 @@ import {
     filterChangeSortBy,  
     filterChangeOrder,
     filterChangeVesselList,
+    filterChangeArrivingWithin,
+    filterChangeDepartingWithin,
+    filterClearArrivingDepartureTime,
 } from '../../../actions';
 
 class FilterMenu extends Component {
 
 constructor(props){
     super(props)
+
+    let timeFilterIndex = 2;
+    if(props.filters.arrivingWithin === 0 && props.filters.departingWithin === 0) {
+        timeFilterIndex = 2;
+    } else if(props.filters.arrivingWithin > 0) {
+        timeFilterIndex = 0;
+    } else if(props.filters.departingWithin > 0) {
+        timeFilterIndex = 1;
+    }
+
+    let withinValue = 0;
+    if(timeFilterIndex === 0) {
+        withinValue = props.filters.arrivingWithin;
+    } else if(timeFilterIndex === 1) {
+        withinValue = props.filters.departingWithin;
+    }
+
     this.state = {
         selectedSortByIndex: props.filters.sort_by === 'ARRIVAL_DATE' ? 0 : 1,
         selectedOrderByIndex: props.filters.order === 'DESCENDING' ? 0 : 1,
-        selectedTimeIndex: 0,
+        selectedTimeIndex: timeFilterIndex,
         modalStagesVisible: false,
         checked: false,
         limitFilter: props.filters.limit,
-        vesselListFilter: props.filters.vesselList
+        vesselListFilter: props.filters.vesselList,
+        withinValue: withinValue,
     }
 
   this.onBackIconPressed = this.onBackIconPressed.bind(this);
@@ -58,14 +79,17 @@ onBackIconPressed() {
 }
 
 onDoneIconPressed() {
-    const { limitFilter, selectedSortByIndex, selectedOrderByIndex } = this.state;
+    const { limitFilter, selectedSortByIndex, selectedOrderByIndex, withinValue, selectedTimeIndex } = this.state;
     const { 
         filters, 
         fetchPortCalls, 
         filterChangeLimit, 
         filterChangeSortBy, 
         filterChangeOrder,
-        filterChangeVesselList 
+        filterChangeVesselList,
+        filterChangeArrivingWithin,
+        filterChangeDepartingWithin,
+        filterClearArrivingDepartureTime,
     } = this.props;
 
     // Limit
@@ -78,6 +102,15 @@ onDoneIconPressed() {
     // Order
     if(selectedOrderByIndex === 0) filterChangeOrder('DESCENDING');
     if(selectedOrderByIndex === 1) filterChangeOrder('ASCENDING');
+
+    // Arrival time/Departure time
+    if(selectedTimeIndex === 2 || withinValue === 0) { // Don't filter in departure/arrival time
+        filterClearArrivingDepartureTime();
+    } else if(selectedTimeIndex === 1) { // departing from
+        filterChangeDepartingWithin(withinValue);
+    } else if(selectedTimeIndex === 0) { // arriving within
+        filterChangeArrivingWithin(withinValue);
+    }
     
     // Vessel List
     filterChangeVesselList(this.state.vesselListFilter);
@@ -89,7 +122,7 @@ onDoneIconPressed() {
 render() {
 const buttonsSortBy = ['Arrival Date', 'Last Update']
 const buttonsOrderBy = ['Descending', 'Ascending']
-const buttonsTime = ['Arrival Time', 'Departure Time']
+const buttonsTime = ['Arrival Time', 'Departure Time', 'All']
 const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
 
     return(
@@ -143,11 +176,14 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                             onPress={(index) => this.setState({selectedTimeIndex: index})}
                         />
                     <Slider
-                        value={this.state.value}
-                        onValueChange={(value) => this.setState({value})}  
+                        value={this.state.withinValue}
+                        minimumValue={0}
+                        maximumValue={72}
+                        step={1}
+                        onValueChange={(value) => this.setState({withinValue: value})}  
                         thumbTintColor={colorScheme.primaryColor}
                     />
-                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.value} </Text>
+                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.withinValue} hours</Text>
                 </View>
 
                 {/* Picker for Vessel List */}
@@ -394,6 +430,9 @@ const styles = StyleSheet.create({
 }); //styles
 
 function mapStateToProps(state) {
+    console.log("arriving within: " + state.filters.arrivingWithin);
+    console.log("departure from" + state.filters.departingWithin);
+
     return {
         maxPortLimitPortCalls: state.settings.maxPortCallsFetched,
         maxHoursTimeDifference: state.settings.maxHoursTimeDifference,
@@ -409,4 +448,7 @@ export default connect(mapStateToProps, {
     filterChangeSortBy,
     filterChangeOrder,
     filterChangeVesselList,
+    filterChangeArrivingWithin,
+    filterChangeDepartingWithin,
+    filterClearArrivingDepartureTime,
 })(FilterMenu);
