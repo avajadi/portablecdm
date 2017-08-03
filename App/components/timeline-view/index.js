@@ -25,18 +25,6 @@ import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
 class TimeLineView extends Component {
-
-    // static navigationOptions = {
-    //     tabBarLabel: 'Timeline',
-    //     tabBarIcon: () => (
-    //         <Icon
-    //             name='timeline'
-    //             size = {20}
-    //             color= {colorScheme.primaryColor}
-    //             onPress={ () => this.props.navigation.navigate('Home') }
-    //         />
-    //     ),
-    // }
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -68,10 +56,10 @@ class TimeLineView extends Component {
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
                 <TopHeader title = 'Timeline' firstPage navigation={this.props.navigation} rightIconFunction={this.goToStateList}/>
 
-                <View style={styles.headerContainer} >
-                    <Text 
-                        style={styles.headerText}
-                        >{vesselName}</Text>
+                <View 
+                    style={styles.headerContainer}
+                >
+                    <Text style={styles.headerText}>{vesselName}</Text>
                 </View>
 
                 {loading && <ActivityIndicator 
@@ -109,6 +97,11 @@ const styles = StyleSheet.create ({
         fontSize: 20,
         color: colorScheme.primaryTextColor,
     },
+    headerTitleText: {
+        textAlign: 'center',
+        color: colorScheme.secondaryContainerColor,
+        fontSize: 12,
+   },
 });
 
 

@@ -22,7 +22,7 @@ import TopHeader from '../top-header-view';
 
 class StateList extends Component {
   onAddStatesPress() {
-    this.props.navigation.navigate('SelectFavoriteStates');
+    this.props.navigation.navigate('SelectFavoriteStatesTimeLine');
   }
 
 

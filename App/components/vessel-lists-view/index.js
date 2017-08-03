@@ -29,7 +29,8 @@ import {
   addVesselToList, 
   removeVesselFromList, 
   fetchVessel,
-  clearVesselResult
+  clearVesselResult,
+  filterChangeVesselList,
 } from '../../actions';
 
 class VesselList extends Component {
@@ -97,7 +98,12 @@ class VesselList extends Component {
                   name: 'delete',
                   color: 'red',
                 }}
-                onPressRightIcon={() => this.props.deleteVesselList(listName)}
+                onPressRightIcon={() => {
+                  if(this.props.chosenVesselListForFiltering === listName) {
+                    this.props.filterChangeVesselList('all')
+                  }
+                  this.props.deleteVesselList(listName)}
+                }
                 onPress={() => this.setState({listDetailModalVisible: true, selectedList: listName})}
               />
             );
@@ -113,6 +119,7 @@ class VesselList extends Component {
             navigation={this.props.navigation}
             title={`Vessels`}
             leftIconFunction={this.closeModal}
+            hideRightIcon
           />
           <View style={styles.rowContainer}>
             <SearchBar
@@ -268,7 +275,8 @@ function mapStateToProps(state) {
   console.log(state.settings.vesselLists)
   return {
     vesselLists: state.settings.vesselLists,
-    foundVessel: state.vessel.vessel
+    foundVessel: state.vessel.vessel,
+    chosenVesselListForFiltering: state.filters.vesselList
   };
 }
 
@@ -279,5 +287,6 @@ export default connect(mapStateToProps, {
   removeVesselFromList,
   fetchVessel,
   addVesselToList,
-  clearVesselResult
+  clearVesselResult,
+  filterChangeVesselList,
 })(VesselList);
