@@ -187,6 +187,10 @@ export const fetchVessel = (vesselUrn) => {
     }
 };
 
+function getFilterString(filter, value, count) {
+    return count <= 0 ? `?${filter}=${value}` : `&${filter}=${value}`
+}
+
 function createFilterString(filters, getState) {
     let filterString = '';
     let count = 0;
@@ -199,21 +203,121 @@ function createFilterString(filters, getState) {
             }
             let vesselList = getState().settings.vesselLists[vesselListStr];
             for(vessel of vesselList) {
-                filterString += count <= 0 ? `?vessel=${vesselList.imo}` : `&vessel=${vessel.imo}`;
+                filterString += getFilterString('vessel', vessel.imo);
                 count++;
             }
             continue;
         }
-        if(count > 0) {
-            filterString += `&${filter}=${filters[filter]}`
+        if(filter === 'arrivingWithin') {
+            let arrivingFilter = filters[filter];
+            if(arrivingFilter === 0) continue;
+
+            let after = new Date(); // from now
+            let before = new Date();
+            before.setHours(after.getHours() + arrivingFilter); // until arrivingFilter's hours from now
+            filterString += getFilterString('after', after.toISOString(), count);
+            filterString += getFilterString('before', before.toISOString(), count);
+
             count++;
-        } else {
-            filterString += `?${filter}=${filters[filter]}`
-            count++;
+            continue;
         }
+
+        if(filter === 'departingWithin') {
+            let departingFilter = filters[filter];
+            if(departingFilter === 0) continue;
+
+            const nowDate = new Date();
+
+            let after = new Date();
+            after.setMonth(nowDate.getMonth() - 1); // Assume portcalls dont last more than a month
+            let before = new Date();
+            before.setHours(nowDate.getHours() + departingFilter);
+            
+            count++;
+            continue;
+        }
+
+        filterString += getFilterString(filter, filters[filter], count);
+        count++;
     }
 
     return filterString;
+}
+
+export const fetchPortCalls = () => {
+  return (dispatch, getState) => {
+    dispatch({type: types.FETCH_PORTCALLS});
+
+    const connection = getState().settings.connection;
+    const filters = getState().filters;
+    const filterString = createFilterString(filters, getState);
+    return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PortCDM-UserId': connection.username,
+          'X-PortCDM-Password': connection.password,
+          'X-PortCDM-APIKey': 'eeee'
+        }
+      })
+        .then(result => result.json())
+        .then(portCalls => applyFilters(portCalls, filters))
+        .then(portCalls => Promise.all(portCalls.map(portCall => {
+            return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-PortCDM-UserId': connection.username,
+                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-APIKey': 'eeee'
+                }
+            })
+            .then(result => result.json())
+            .then(vessel => {portCall.vessel = vessel; return portCall})
+        })))
+        .then(portCalls => {
+            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
+        })
+  };
+}
+
+function applyFilters(portCalls, filters) {
+    if(filters.arrivingWithin === 0 && filters.departingWithin === 0) return portCalls; // no need to filter
+
+    const nowDate = new Date();
+
+    if(filters.arrivingWithin > 0) {    
+        const arrivingWithinDate = new Date();
+        arrivingWithinDate.setHours(nowDate.getHours() + filters.arrivingWithin);
+        portCalls = portCalls.filter(portCall => {
+            const startDate = new Date(portCall.startTime);
+            if(arrivingWithinDate - startDate >= 0 && startDate - nowDate >= 0 ) {
+                return true;
+            } else {
+                return false
+            }
+        })
+
+        return portCalls;
+    }
+
+    if(filters.departingWithin > 0) {
+        const departingWithinDate = new Date();
+        departingWithinDate.setHours(nowDate.getHours() + filters.departingWithin);
+        let count = 0;
+        portCalls = portCalls.filter(portCall => {
+            count++;
+            const endDate = new Date(portCall.endTime);
+            if(endDate - nowDate >= 0 && departingWithinDate - endDate >= 0) {
+                return true;
+            } else {
+                return false
+            }
+        });
+        return portCalls;
+    }
+
+    return portCalls;
 }
 
 export const fetchPortCallStructure = (portCallId) => {
@@ -233,43 +337,6 @@ export const fetchPortCallStructure = (portCallId) => {
         .then(result => result.json())
         .then(structure => dispatch({type: types.FETCH_PORTCALL_STRUCTURE_SUCCESS, payload: structure}))
     }
-}
-
-export const fetchPortCalls = () => {
-  return (dispatch, getState) => {
-    dispatch({type: types.FETCH_PORTCALLS});
-
-    const connection = getState().settings.connection;
-    const filters = getState().filters;
-    const filterString = createFilterString(filters, getState);
-    console.log(filterString);
-    return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-PortCDM-UserId': connection.username,
-          'X-PortCDM-Password': connection.password,
-          'X-PortCDM-APIKey': 'eeee'
-        }
-      })
-        .then(result => result.json())
-        .then(portCalls => Promise.all(portCalls.map(portCall => {
-            return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-PortCDM-UserId': connection.username,
-                    'X-PortCDM-Password': connection.password,
-                    'X-PortCDM-APIKey': 'eeee'
-                }
-            })
-            .then(result => result.json())
-            .then(vessel => {portCall.vessel = vessel; return portCall})
-        })))
-        .then(portCalls => {
-            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
-        })
-  };
 }
 
 export const fetchLocations = (locationType) => {

@@ -25,18 +25,6 @@ import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
 class TimeLineView extends Component {
-
-    // static navigationOptions = {
-    //     tabBarLabel: 'Timeline',
-    //     tabBarIcon: () => (
-    //         <Icon
-    //             name='timeline'
-    //             size = {20}
-    //             color= {colorScheme.primaryColor}
-    //             onPress={ () => this.props.navigation.navigate('Home') }
-    //         />
-    //     ),
-    // }
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
