@@ -14,7 +14,7 @@ const INITIAL_STATE = {
     username: 'viktoria',
     password: 'vik123'
   },
-  maxPortCallsFetched: 1000,
+  maxPortCallsFetched: 5000,
   maxHoursTimeDifference: 72,
   vesselLists: {}
 }

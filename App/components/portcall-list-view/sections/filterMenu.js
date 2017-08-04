@@ -30,20 +30,43 @@ import {
     filterChangeSortBy,  
     filterChangeOrder,
     filterChangeVesselList,
+    filterChangeArrivingWithin,
+    filterChangeDepartingWithin,
+    filterClearArrivingDepartureTime,
+    filterChangeOnlyFuturePortCalls,
 } from '../../../actions';
 
 class FilterMenu extends Component {
 
 constructor(props){
     super(props)
+
+    let timeFilterIndex = 2;
+    if(props.filters.arrivingWithin === 0 && props.filters.departingWithin === 0) {
+        timeFilterIndex = 2;
+    } else if(props.filters.arrivingWithin > 0) {
+        timeFilterIndex = 0;
+    } else if(props.filters.departingWithin > 0) {
+        timeFilterIndex = 1;
+    }
+
+    let withinValue = 0;
+    if(timeFilterIndex === 0) {
+        withinValue = props.filters.arrivingWithin;
+    } else if(timeFilterIndex === 1) {
+        withinValue = props.filters.departingWithin;
+    }
+
     this.state = {
         selectedSortByIndex: props.filters.sort_by === 'ARRIVAL_DATE' ? 0 : 1,
         selectedOrderByIndex: props.filters.order === 'DESCENDING' ? 0 : 1,
-        selectedTimeIndex: 0,
+        selectedTimeIndex: timeFilterIndex,
         modalStagesVisible: false,
         checked: false,
         limitFilter: props.filters.limit,
-        vesselListFilter: props.filters.vesselList
+        vesselListFilter: props.filters.vesselList,
+        withinValue: withinValue,
+        onlyFetchActivePortCalls: props.filters.onlyFetchActivePortCalls,
     }
 
   this.onBackIconPressed = this.onBackIconPressed.bind(this);
@@ -58,14 +81,25 @@ onBackIconPressed() {
 }
 
 onDoneIconPressed() {
-    const { limitFilter, selectedSortByIndex, selectedOrderByIndex } = this.state;
+    const { 
+        limitFilter, 
+        selectedSortByIndex, 
+        selectedOrderByIndex, 
+        withinValue, 
+        selectedTimeIndex,
+        onlyFetchActivePortCalls
+    } = this.state;
     const { 
         filters, 
         fetchPortCalls, 
         filterChangeLimit, 
         filterChangeSortBy, 
         filterChangeOrder,
-        filterChangeVesselList 
+        filterChangeVesselList,
+        filterChangeArrivingWithin,
+        filterChangeDepartingWithin,
+        filterClearArrivingDepartureTime,
+        filterChangeOnlyFuturePortCalls
     } = this.props;
 
     // Limit
@@ -78,7 +112,21 @@ onDoneIconPressed() {
     // Order
     if(selectedOrderByIndex === 0) filterChangeOrder('DESCENDING');
     if(selectedOrderByIndex === 1) filterChangeOrder('ASCENDING');
+
+    // Arrival time/Departure time
+    if(selectedTimeIndex === 2 || withinValue === 0) { // Don't filter in departure/arrival time
+        filterClearArrivingDepartureTime();
+    } else if(selectedTimeIndex === 1) { // departing from
+        filterChangeDepartingWithin(withinValue);
+    } else if(selectedTimeIndex === 0) { // arriving within
+        filterChangeArrivingWithin(withinValue);
+    } else {
+        // Filter for not showing old PortCalls
+        filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
+    }
     
+
+
     // Vessel List
     filterChangeVesselList(this.state.vesselListFilter);
 
@@ -89,7 +137,7 @@ onDoneIconPressed() {
 render() {
 const buttonsSortBy = ['Arrival Date', 'Last Update']
 const buttonsOrderBy = ['Descending', 'Ascending']
-const buttonsTime = ['Arrival Time', 'Departure Time']
+const buttonsTime = ['Arrival Time', 'Departure Time', 'All']
 const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
 
     return(
@@ -130,6 +178,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                         />
                 </View>
 
+                {/* Button group for arriving/departing within filter  */}
                 <View style={styles.smallTimeContainer}> 
                     <Text style={styles.textTitle}> Time </Text>
                         <ButtonGroup
@@ -143,11 +192,21 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                             onPress={(index) => this.setState({selectedTimeIndex: index})}
                         />
                     <Slider
-                        value={this.state.value}
-                        onValueChange={(value) => this.setState({value})}  
+                        value={this.state.withinValue}
+                        minimumValue={0}
+                        maximumValue={72}
+                        step={1}
+                        onValueChange={(value) => this.setState({withinValue: value})}  
                         thumbTintColor={colorScheme.primaryColor}
                     />
-                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.value} </Text>
+                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.withinValue} hours</Text>
+                    <CheckBox
+                        title="Don't display departed Port Calls"
+                        iconRight
+                        right
+                        checked={this.state.onlyFetchActivePortCalls}
+                        onPress={() => this.setState({onlyFetchActivePortCalls: !this.state.onlyFetchActivePortCalls})}
+                    />
                 </View>
 
                 {/* Picker for Vessel List */}
@@ -163,130 +222,6 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                         ))}
                     </Picker>
                 </View>
-                
-                {/*MODAL BIG VIEW #1*/}
-                <View style={styles.smallContainer}> 
-
-                {/*Testing Modal                       TESTING TESTING                TESTING MODAL #1*/}
-                <Modal
-                    animationType={"slide"}
-                    transparent={false}
-                    visible={this.state.modalStagesVisible}
-                >
-                    {/*Modal View*/}
-                    <View style={styles.modalContainerStyle}>
-                        
-                        {/*Modal Header with close, title and reset button*/}
-                        <View style={styles.modalHeaderStyle}> 
-                            <Icon 
-                                name= "close"
-                                onPress={() => {
-                                this.setModalStagesVisible.bind(this)(!this.state.modalStagesVisible)
-                                }}>
-                            </Icon>
-                        <Text style={styles.modalHeaderTextStyle}>Stages</Text> 
-                        <Text style={{color: colorScheme.primaryColor}}> Reset </Text> 
-                        </View>
-                        
-                        {/*Modal Sub Container with filter options*/}
-                        <View style={styles.modalSubContainer}>
-                            <View>
-                                <List>
-                                    <ListItem
-                                        title='Planned'    
-                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                        onPress={ () => console.log('List item pressed at MODAL 1')}
-                                        hideChevron
-                                    />
-                                    <ListItem
-                                        title='Arrived'    
-                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                        onPress={ () => console.log('List item pressed')}
-                                        hideChevron
-                                    />
-                                    <ListItem
-                                        title='To Be Nominated'    
-                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                        onPress={ () => console.log('List item pressed')}
-                                        hideChevron
-                                    />
-                                    <ListItem
-                                        title='Anchored'    
-                                        titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                                        onPress={ () => console.log('List item pressed')}
-                                        hideChevron
-                                    />
-                                    <ListItem
-                                        title='Berthed'    
-                                        titleStyle= {{color: colorScheme.tertiaryColor}}
-                                        onPress={ () => console.log('List item pressed')}
-                                        rightIcon={
-                                            <Icon
-                                                name='check'
-                                                color={colorScheme.tertiaryColor}
-                                                containerStyle={{paddingRight: 10}}/>}
-                                    />
-                                    <ListItem
-                                        title='Departed'    
-                                        titleStyle= {{color: colorScheme.tertiaryColor}}
-                                        onPress={ () => console.log('List item pressed')}
-                                        rightIcon={
-                                            <Icon
-                                                name='check'
-                                                color={colorScheme.tertiaryColor}
-                                                containerStyle={{paddingRight: 10}}/>}
-                                    />
-                                    <ListItem
-                                        title='Sailed'    
-                                        titleStyle= {{color: colorScheme.tertiaryColor}}
-                                        onPress={ () => console.log('List item pressed')}
-                                        rightIcon={
-                                            <Icon
-                                                name='check'
-                                                color={colorScheme.tertiaryColor}
-                                                containerStyle={{paddingRight: 10}}/>}
-                                    />
-                                </List>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
-                </View> 
-                {/*Slut på MODAL  BIG VIEW #1*/}
-
-                <View style={styles.smallContainer}> 
-                    <Text style={styles.textTitle}> Mixed filters </Text>
-                    <List>
-                        <ListItem
-                            title='Stages'    
-                            titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                            badge={{
-                                value: 'Berthed, Departed, Sailed', 
-                                textStyle: { color: colorScheme.secondaryColor },
-                                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},          
-                                }}
-                            onPress={ () => {this.setModalStagesVisible.bind(this)(true)}}
-                        />
-                        <ListItem
-                            title='Status'    
-                            titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                            badge={{
-                                value: 'OK', 
-                                textStyle: { color: colorScheme.secondaryColor },
-                                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},      
-                                }}
-                        />
-                        <ListItem
-                            title='Vessel Type'    
-                            titleStyle= {{color: colorScheme.quaternaryTextColor}}
-                            badge={{
-                                value: 'Tanker Oil, Cargo',
-                                textStyle: { color: colorScheme.secondaryColor },
-                                containerStyle: {backgroundColor: colorScheme.primaryContainerColor},
-                                }}
-                        />
-                    </List>
-                </View>
 
                 {/*Limit View with title and slider*/}
                 <View style={styles.smallTimeContainer}> 
@@ -295,7 +230,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                     <Slider
                         minimumValue={30}
                         maximumValue={this.props.maxPortLimitPortCalls}
-                        step={10}
+                        step={50}
                         value={this.state.limitFilter}
                         onValueChange={(value) => this.setState({limitFilter: value})}  
                         thumbTintColor={colorScheme.primaryColor}
@@ -409,4 +344,8 @@ export default connect(mapStateToProps, {
     filterChangeSortBy,
     filterChangeOrder,
     filterChangeVesselList,
+    filterChangeArrivingWithin,
+    filterChangeDepartingWithin,
+    filterClearArrivingDepartureTime,
+    filterChangeOnlyFuturePortCalls,
 })(FilterMenu);

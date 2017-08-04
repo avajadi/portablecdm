@@ -123,7 +123,7 @@ class OperationView extends Component {
                 <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')}</Text>
                 {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
               </View>
-              {operation.reliability && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>RELIABILITY </Text>{operation.reliability}%</Text>}
+              {operation.reliability >= 0 && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>RELIABILITY </Text>{operation.reliability}%</Text>}
               {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM </Text>{operation.fromLocation.name}</Text>}
               {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO </Text>{operation.toLocation.name}</Text>}
               {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT </Text>{operation.atLocation.name}</Text>}
@@ -358,9 +358,6 @@ const styles = StyleSheet.create({
     color: colorScheme.quaternaryTextColor,
     fontSize: 9,
   },
-
-
-
   timeline: {
     position: 'absolute',
     top: 0,
