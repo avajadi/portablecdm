@@ -424,6 +424,12 @@ async function fetchReliability(operations) {
     if(operations.length <= 0) return operations;
     await reliability.getPortCallReliability(operations[0].portCallId)
                 .then(result => result.json())
+                // Add the reliability for the entire portcall as 
+                .then(result => {
+                    operations.reliability = Math.floor(result.reliability * 100);
+
+                    return result;
+                })
                 // For every operation in the result
                 .then(result => result.operations.map(resultOperation => {
                     // We need to find the operation in our own data structure and set it's reliability

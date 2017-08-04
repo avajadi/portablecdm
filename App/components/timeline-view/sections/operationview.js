@@ -81,8 +81,6 @@ class OperationView extends Component {
       endTimeDisplayStyle = styles.timeDisplay;
     }
 
-
-
     return (
       <View style={styles.container}>
         
@@ -246,7 +244,7 @@ class OperationView extends Component {
                   <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy::', '')} 
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy:', '')} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }

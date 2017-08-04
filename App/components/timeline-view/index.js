@@ -60,6 +60,9 @@ class TimeLineView extends Component {
                     style={styles.headerContainer}
                 >
                     <Text style={styles.headerText}>{vesselName}</Text>
+                    {operations.reliability >= 0 && 
+                        <Text style={styles.headerTitleText}><Text style={{fontWeight: 'bold'}}>Reliability: </Text>{operations.reliability}%</Text>
+                    }
                 </View>
 
                 {loading && <ActivityIndicator 
@@ -70,13 +73,17 @@ class TimeLineView extends Component {
                 {!loading && <ListView
                                 enableEmptySections
                                 dataSource={dataSource} 
-                                renderRow={(data, sectionId, rowId) => <OperationView 
-                                                                            operation={data} 
-                                                                            rowNumber={rowId}
-                                                                            navigation={this.props.navigation}
-                                                                            vesselName={vesselName}
-                                                                            />}                
-                              />
+                                renderRow={(data, sectionId, rowId) => {
+                                    if(typeof data == 'number') return null; // disgusting way to not handle operations.reliability as a member of the dataset for operations
+                                    return <OperationView 
+                                        operation={data} 
+                                        rowNumber={rowId}
+                                        navigation={this.props.navigation}
+                                        vesselName={vesselName}
+                                        />
+                                    }                
+                                }
+                            />
                 }
             </View>
         );
