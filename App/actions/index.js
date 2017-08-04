@@ -60,6 +60,13 @@ export const filterClearArrivingDepartureTime = () => {
     };
 };
 
+export const filterChangeOnlyFuturePortCalls = (show) => {
+    return {
+        type: types.FILTER_ONLY_FUTURE_PORTCALLS,
+        payload: show
+    };
+};
+
 export const changeHostSetting = (host) => {
     return {
         type: types.SETTINGS_CHANGE_HOST,
@@ -221,7 +228,6 @@ function createFilterString(filters, getState) {
             count++;
             continue;
         }
-
         if(filter === 'departingWithin') {
             let departingFilter = filters[filter];
             if(departingFilter === 0) continue;
@@ -236,11 +242,20 @@ function createFilterString(filters, getState) {
             count++;
             continue;
         }
+        if(filter === 'onlyFetchActivePortCalls') {
+            if(filters.onlyFetchActivePortCalls) {
+                let now = new Date();
+                filterString += getFilterString('after', now.toISOString(), count);
+            }
+            
+            count++;
+            continue;
+        }
 
         filterString += getFilterString(filter, filters[filter], count);
         count++;
     }
-
+    console.log(filterString);
     return filterString;
 }
 

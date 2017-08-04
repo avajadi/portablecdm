@@ -33,6 +33,7 @@ import {
     filterChangeArrivingWithin,
     filterChangeDepartingWithin,
     filterClearArrivingDepartureTime,
+    filterChangeOnlyFuturePortCalls,
 } from '../../../actions';
 
 class FilterMenu extends Component {
@@ -65,6 +66,7 @@ constructor(props){
         limitFilter: props.filters.limit,
         vesselListFilter: props.filters.vesselList,
         withinValue: withinValue,
+        onlyFetchActivePortCalls: props.filters.onlyFetchActivePortCalls,
     }
 
   this.onBackIconPressed = this.onBackIconPressed.bind(this);
@@ -84,7 +86,8 @@ onDoneIconPressed() {
         selectedSortByIndex, 
         selectedOrderByIndex, 
         withinValue, 
-        selectedTimeIndex 
+        selectedTimeIndex,
+        onlyFetchActivePortCalls
     } = this.state;
     const { 
         filters, 
@@ -96,6 +99,7 @@ onDoneIconPressed() {
         filterChangeArrivingWithin,
         filterChangeDepartingWithin,
         filterClearArrivingDepartureTime,
+        filterChangeOnlyFuturePortCalls
     } = this.props;
 
     // Limit
@@ -116,8 +120,13 @@ onDoneIconPressed() {
         filterChangeDepartingWithin(withinValue);
     } else if(selectedTimeIndex === 0) { // arriving within
         filterChangeArrivingWithin(withinValue);
+    } else {
+        // Filter for not showing old PortCalls
+        filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
     }
     
+
+
     // Vessel List
     filterChangeVesselList(this.state.vesselListFilter);
 
@@ -191,6 +200,13 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                         thumbTintColor={colorScheme.primaryColor}
                     />
                     <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.withinValue} hours</Text>
+                    <CheckBox
+                        title="Don't display departed Port Calls"
+                        iconRight
+                        right
+                        checked={this.state.onlyFetchActivePortCalls}
+                        onPress={() => this.setState({onlyFetchActivePortCalls: !this.state.onlyFetchActivePortCalls})}
+                    />
                 </View>
 
                 {/* Picker for Vessel List */}
@@ -313,9 +329,6 @@ const styles = StyleSheet.create({
 }); //styles
 
 function mapStateToProps(state) {
-    console.log("arriving within: " + state.filters.arrivingWithin);
-    console.log("departure from" + state.filters.departingWithin);
-
     return {
         maxPortLimitPortCalls: state.settings.maxPortCallsFetched,
         maxHoursTimeDifference: state.settings.maxHoursTimeDifference,
@@ -334,4 +347,5 @@ export default connect(mapStateToProps, {
     filterChangeArrivingWithin,
     filterChangeDepartingWithin,
     filterClearArrivingDepartureTime,
+    filterChangeOnlyFuturePortCalls,
 })(FilterMenu);

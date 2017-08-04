@@ -5,7 +5,8 @@ import {
   FILTER_CHANGE_VESSEL_LIST,
   FILTER_CHANGE_ARRIVING_WITHIN,
   FILTER_CHANGE_DEPARTING_WITHIN,
-  FILTER_CLEAR_TIME
+  FILTER_CLEAR_TIME,
+  FILTER_ONLY_FUTURE_PORTCALLS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -15,6 +16,7 @@ const INITIAL_STATE = {
   vesselList: 'all',             // name of a vessel list in settingsreducer, or "all" to not use filter
   arrivingWithin: 0,
   departingWithin: 0,
+  onlyFetchActivePortCalls: true,
 };
 
 const filterReducer = (state=INITIAL_STATE, action) => {
@@ -33,6 +35,8 @@ const filterReducer = (state=INITIAL_STATE, action) => {
       return { ...state, departingWithin: action.payload, arrivingWithin: 0 }
     case FILTER_CLEAR_TIME:
       return { ...state, departingWithin: 0, arrivingWithin: 0}
+    case FILTER_ONLY_FUTURE_PORTCALLS:
+      return { ...state, onlyFetchActivePortCalls: action.payload }
     default:
       return state;
   }
