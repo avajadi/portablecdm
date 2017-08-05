@@ -212,7 +212,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                 {/* Picker for Vessel List */}
                 <View style={styles.smallContainer}>
                     <Text style={styles.textTitle}>Vessel list</Text>
-                    <Picker style={{marginTop: 20, backgroundColor: colorScheme.primaryTextColor}}
+                    <Picker style={{marginTop: 20, marginLeft: 10, marginRight: 10, borderRadius: 20,backgroundColor: colorScheme.primaryTextColor}}
                         selectedValue={this.state.vesselListFilter}
                         onValueChange={(itemValue, itemIndex) => this.setState({vesselListFilter: itemValue})}
                     >

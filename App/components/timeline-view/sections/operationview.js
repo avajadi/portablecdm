@@ -37,7 +37,7 @@ class OperationView extends Component {
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this);
-
+    this.renderStateRow = this.renderStateRow.bind(this);
   }
   
   _toggleCollapsed() {
@@ -80,8 +80,6 @@ class OperationView extends Component {
     else {
       endTimeDisplayStyle = styles.timeDisplay;
     }
-
-
 
     return (
       <View style={styles.container}>
@@ -176,6 +174,7 @@ class OperationView extends Component {
     const { warnings } = allOfTheseStatements;
     const stateToDisplay = mostRelevantStatement;
     const reportedTimeAgo = getTimeDifferenceString(new Date(stateToDisplay.reportedAt));
+    const { displayOnTimeProbabilityTreshold } = this.props;
    // const stateCount = allOfTheseStatements.length;
     let stateCount = 0;
     if (stateToDisplay.timeType === 'ACTUAL') {
@@ -245,12 +244,12 @@ class OperationView extends Component {
                   <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy::', '')} 
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy:', '')} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
                   
-                  {(!!allOfTheseStatements.onTimeProbability) && 
+                  {(!!allOfTheseStatements.onTimeProbability && allOfTheseStatements.onTimeProbability.accuracy > displayOnTimeProbabilityTreshold) && 
                     <View>
                       <Text style={{fontSize: 9}}>
                         <Text style = {styles.stateDisplaySubTitle}>ON TIME PROBABILITY: </Text>{allOfTheseStatements.onTimeProbability.probability}%
@@ -317,7 +316,8 @@ class OperationView extends Component {
 
 function mapStateToProps(state) {
   return {
-    getStateDefinition: state.states.stateById
+    getStateDefinition: state.states.stateById,
+    displayOnTimeProbabilityTreshold: state.settings.displayOnTimeProbabilityTreshold
   }
 }
 

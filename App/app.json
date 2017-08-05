@@ -10,6 +10,10 @@
     },
     "android": {
       "package": "com.viktoria.portcdmapp"
+    },
+    "loading": { 
+      "hideExponentText": true,
+      "backgroundImage": "./assets/splash-screen.png"
     }
   }
 }
