@@ -1,6 +1,3 @@
-
-
-
 export function removeStringReportedBy(string) {
     return string.replace('urn:mrn:legacy:user:', '')
 }

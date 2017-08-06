@@ -1,4 +1,3 @@
-import {json2xml} from './json2xml';
 const uuid = require('uuid/v4');
 
 const serviceTimeSequences = ['COMMENCED', 'COMPLETED'];

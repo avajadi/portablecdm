@@ -144,24 +144,6 @@ class SideMenu extends Component {
                         }}
                     />
 
-                    <ListItem
-                        containerStyle={activeItemKey === 'PortInfo' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
-                        leftIcon={{
-                          name:'business',
-                          color: 'white'}}
-                        hideChevron
-                        underlayColor={colorScheme.secondaryColor}
-                        title={
-                            <View style={styles.textContainer}>
-                                <Text style={styles.menuText} >Port Info</Text>     
-                            </View>
-                        }
-                        onPress={() => {
-                            if (activeItemKey !== 'PortInfo')
-                                navigate('PortInfo');
-                        }}
-                    />
-
                     {/*<ListItem
                         containerStyle={activeItemKey === 'MultiView' ? [containerStyle, styles.selectedContainer] : containerStyle}
                         leftIcon={{

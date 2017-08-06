@@ -13,7 +13,6 @@ import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 import StateDetails from '../components/timeline-view/sections/statedetails';
 import OverView     from '../components/overview-view';
 import VesselInfo   from '../components/vessel-info-view';
-import PortInfo     from '../components/port-info-view';
 import Settings     from '../components/settings-view';
 import LoginView    from '../components/login-view';
 import SelectFavoriteState from '../components/select-favorite-state-view';
@@ -54,16 +53,15 @@ const SettingsNavigator = StackNavigator({
 })
 
 export const AppNavigator = DrawerNavigator({  
-  // OverView: { screen: OverView },
+  OverView: { screen: OverView },
   // Login : { screen: LoginView },  
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   Home: { screen: Home },
   FavoriteStatesSideMenu: { screen: StateList },
   //FavoriteStates: { screen: FavoriteStatesNavigator },
-  OverView: { screen: OverView },
+  // OverView: { screen: OverView },
   VesselInfo: { screen: VesselInfo },
-  PortInfo: { screen: PortInfo },
   Settings: { screen: SettingsNavigator },
 }, {
   headerMode: 'none',
