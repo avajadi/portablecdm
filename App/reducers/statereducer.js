@@ -4,7 +4,7 @@ import stateCatalogue from './state_catalogue.json';
 
 const INITIAL_STATE = { 
   stateCatalogue: stateCatalogue,
-  favoriteStates: ['CargoOp_Commenced', 'Bunkering_Commenced', 'Arrival_PortArea_Confirmed', 'AnchoringOp_Confirmed'],
+  favoriteStates: [],
   // lookup: {},
   stateById: function(id) {
     return this.stateCatalogue.find(stateDef => stateDef.StateId === id);

@@ -27,6 +27,7 @@ const FavoriteStatesNavigator = StackNavigator({
   headerMode: 'none'
 })
 */
+
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
   StateDetails: { screen: StateDetails},
@@ -53,45 +54,27 @@ const SettingsNavigator = StackNavigator({
 })
 
 export const AppNavigator = DrawerNavigator({  
-  OverView: { screen: OverView },
+  // OverView: { screen: OverView },
   // Login : { screen: LoginView },  
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   Home: { screen: Home },
   FavoriteStatesSideMenu: { screen: StateList },
   //FavoriteStates: { screen: FavoriteStatesNavigator },
-  // OverView: { screen: OverView },
+  OverView: { screen: OverView },
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
 }, {
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 
   contentComponent: SideMenu,
-  // contentOptions: {
-  //   items: ['PortCalls', 'TimeLine', 'Home', 'SendPortCall'],
-  // }
 });
 
-// export const TabBarNavigator = TabNavigator({
-//   TimeLineDetails: {screen: TimeLineView},
-//   Home: { screen: Home },  
-//   ActorSelection: { screen: ActorList },  
-  
-// }, {   
-//   tabBarOptions: {
-//     activeTintColor: '#e91e63',
-//   }, 
-//   tabBarComponent: TabBarBottom,
-//   tabBarPosition: 'bottom',
-// },
-// );
-
-// }, 
-// // {
-// // navigationOptions: {
-// //   gesturesEnabled: true
-// // },
-// // }
-// );
+export const LoginNavigator = StackNavigator({
+  Login: { screen: LoginView},
+  App: { screen: AppNavigator }
+}, {
+  headerMode: 'none',
+});
 
 

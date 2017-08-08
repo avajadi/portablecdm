@@ -21,12 +21,12 @@ import {
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 
-import { changeHostSetting, changePortSetting } from '../../actions';
+import { changeHostSetting, changePortSetting, changePortUnlocode } from '../../actions';
 
 class Settings extends Component {
   render() {
     const { navigate, state } = this.props.navigation;
-    const { connection, changeHostSetting, changePortSetting } = this.props;
+    const { connection, changeHostSetting, changePortSetting, changePortUnlocode } = this.props;
 
     return(
       <View style={styles.container}>
@@ -34,6 +34,11 @@ class Settings extends Component {
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.formContainerStyle}>
           <Text style={styles.titleStyle}>Connection:</Text>
+          <FormLabel>UNLOCODE: </FormLabel>
+          <FormInput
+            value={connection.unlocode}
+            onChangeText={text => changePortUnlocode(text)}
+          />
           <FormLabel>Host: </FormLabel>
           <FormInput 
             value={connection.host} 
@@ -110,4 +115,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {changeHostSetting, changePortSetting})(Settings);
+export default connect(mapStateToProps, {changeHostSetting, changePortSetting, changePortUnlocode})(Settings);

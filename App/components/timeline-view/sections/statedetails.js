@@ -25,7 +25,10 @@ import Collapsible from 'react-native-collapsible';
 import colorScheme from '../../../config/colors';
 import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
-import {removeStringReportedBy, removeStringAtLocation} from '../../../util/stringutils';
+
+function removeStringReportedBy(string) {
+    return string.replace('urn:mrn:legacy:user:', '')
+}
 
 class StateDetails extends Component {
     constructor(props) {
@@ -38,6 +41,8 @@ class StateDetails extends Component {
         }
         this.gotoReportPortCall = this.gotoReportPortCall.bind(this);
     }
+
+    
 
     gotoReportPortCall = (operation, statements) => {
         this.props.navigation.navigate('SendPortCall', {

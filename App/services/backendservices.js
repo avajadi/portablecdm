@@ -13,40 +13,18 @@ const portCDM = {
       return sendThroughAmss(pcm, type);
     }
   },
-  getPortCallOperations: function (portCallId) {
-  return fetch(PortCDMConfig.endpoints.PCBS.port_call.operations(portCallId),
-        {
-          headers: {
-            'Content-Type': 'application/xml',
-            'X-PortCDM-UserId': PortCDMConfig.user.name,
-            'X-PortCDM-Password': PortCDMConfig.user.password,
-            'X-PortCDM-APIKey': 'eeee'
-          },
-        });
-  },
-  getLocation: function (locationId) {
-    return fetch(PortCDMConfig.endpoints.LR.location(locationId),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-PortCDM-UserId': PortCDMConfig.user.name,
-          'X-PortCDM-Password': PortCDMConfig.user.password,
-          'X-PortCDM-APIKey': 'eeee'
-        }
-      });
-  },  
 }; // END portCDM
 
-export const reliability = {
-  getPortCallReliability: function (portCallId) {
-    return fetch(ReliabilityConfig.endpoints.PORT_CALL(portCallId),
-    {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-  }
-}
+// export const reliability = {
+//   getPortCallReliability: function (portCallId) {
+//     return fetch(ReliabilityConfig.endpoints.PORT_CALL(portCallId),
+//     {
+//       headers: {
+//         'Content-Type': 'application/json'
+//       }
+//     });
+//   }
+// }
 
 // Helper functions
 function sendThroughAmss(pcm, type) {

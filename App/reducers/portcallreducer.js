@@ -40,9 +40,17 @@ const INITIAL_STATE = {
     status: (WARNING | CRITICAL | OK) ...tror jag, inte säker på vilka alternativ som finns
     warnings: [string] (array with warnings that isn't tied to a specific state)
     reportedStates: {
-      Arrival_Vessel_Berth: [all reported statements of this state]. also has a member .warnings, that is an array of warnings, as above but they are tied to this state (ex: op.reportedStates.Arrival_Vessel_Berth.warnings)
+      Arrival_Vessel_Berth: [all reported statements of this state]. also has a member .warnings, that is an array of warnings, as above but they are tied to this state (ex: op.reportedStates.Arrival_Vessel_Berth.warnings) Each statement also have a "reliability" (number 0-100) property, as well as "reliabilityChanges" ([string]) and "onTimeProbability": {
+        probability: number (0-100),
+        reason: string,
+        accuracy: number (0-100)
+      }
     }
+    reliability: number ((0-100)) as received from the reliability end point
+
   }
+
+  operations also have a property, operations.reliability, if reliabilities have been fetched
 */
 
 const portCallReducer = (state = INITIAL_STATE, action) => {

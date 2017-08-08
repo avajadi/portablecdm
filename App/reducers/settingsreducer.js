@@ -4,25 +4,38 @@ import {
   SETTINGS_ADD_VESSEL_LIST,
   SETTINGS_ADD_VESSEL_TO_LIST,
   SETTINGS_REMOVE_VESSEL_FROM_LIST,
-  SETTINGS_REMOVE_VESSEL_LIST
+  SETTINGS_REMOVE_VESSEL_LIST,
+  SETTINGS_CHANGE_USER,
+  SETTINGS_CHANGE_FETCH_RELIABILITY,
+  SETTINGS_CHANGE_PORT_UNLOCODE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
   connection: {
     host: 'http://dev.portcdm.eu',
-    port: "8080",
-    username: 'viktoria',
-    password: 'vik123'
+    port: '8080',
+    username: '',
+    password: '',
+    unlocode: ''
   },
   maxPortCallsFetched: 5000,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
-  vesselLists: {}
+  vesselLists: {},
+  fetchReliability: false,
 }
 
 
 const settingsReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
+    case SETTINGS_CHANGE_PORT_UNLOCODE: {
+      return { ...state, connection: { ...state.connection, unlocode: action.payload}}
+    }
+    case SETTINGS_CHANGE_FETCH_RELIABILITY:
+      return { ...state, fetchReliability: action.payload }
+    case SETTINGS_CHANGE_USER: {
+      return { ...state, connection: { ...state.connection, username: action.payload.username, password: action.payload.password } }
+    }
     case SETTINGS_CHANGE_HOST:
       return { ...state, connection: { ...state.connection, host: action.payload} }
     case SETTINGS_CHANGE_PORT:

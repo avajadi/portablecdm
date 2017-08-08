@@ -27,14 +27,12 @@ class LocationSelection extends Component {
   }
 
   search(locations, searchTerm) {
-    return locations.filter(location => location.name.toUpperCase().startsWith(searchTerm.toUpperCase()));        
+    return locations.filter(location => location.name.toUpperCase().includes(searchTerm.toUpperCase()));        
   }
 
   render() {
-    const { selectLocationFor, selectLocation, navigation, onBackPress, locationType } = this.props;
-    const locations = locationType ? 
-                      this.props.locationsByType(locationType) : 
-                      this.props.locations;
+    const { selectLocationFor, selectLocation, navigation, onBackPress, locationType, locations } = this.props;
+    
     return(
       <View style={styles.container}>
         <MiniHeader 

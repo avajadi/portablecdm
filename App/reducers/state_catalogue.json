@@ -1,1986 +1,2146 @@
 [
   {
-    "StateId": "Arrival_PortArea_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ARRIVAL_PORTAREA",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Arrival Port Area Confirmed",
-    "Description": "I really dont know this ones description"
-  },
-  {
-    "StateId": "Arrival_PortArea_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ARRIVAL_PORTAREA",
-    "TimeSequence": "REQUESTED",
-    "Name": "Arrival Port Area Requested",
-    "Description": "I really dont know this ones description"
-  },
-  {
-    "StateId": "AnchoringOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ANCHORING_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Anchoring Operation Requested",
-    "Description": "Anchoring Operation Requested"
-  },
-  {
-    "StateId": "AnchoringOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ANCHORING_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Anchoring Operation Request Received",
-    "Description": "Anchoring Operation Request Received"
-  },
-  {
-    "StateId": "AnchoringOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ANCHORING_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Anchoring Operation Confirmed",
-    "Description": "Anchoring Operation Confirmed"
-  },
-  {
-    "StateId": "AnchoringOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ANCHORING_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Anchoring Operation Denied",
-    "Description": "Anchoring Operation Denied"
-  },
-  {
-    "StateId": "AnchoringOp_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ANCHORING_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Anchoring Operation Cancelled",
-    "Description": "Anchoring Operation Cancelled"
-  },
-  {
-    "StateId": "MooringOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "MOORING_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Moorers Requested",
-    "Description": "Mooring Requested"
-  },
-  {
-    "StateId": "MooringOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "MOORING_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Moorers Request Received",
-    "Description": "Mooring Request Received"
-  },
-  {
-    "StateId": "MooringOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "MOORING_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Moorers Confirmed",
-    "Description": "Mooring confirmed"
-  },
-  {
-    "StateId": "MooringOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "MOORING_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Mooring Op Denied",
-    "Description": "Mooring Denied"
-  },
-  {
-    "StateId": "MooringOp_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "MOORING_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Mooring Op Cancelled",
-    "Description": "Mooring Denied"
-  },
-  {
-    "StateId": "UnMooringOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "UNMOORING_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Unmooring Requested",
-    "Description": "Departure Moorers Requested"
-  },
-  {
-    "StateId": "UnMooringOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "UNMOORING_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Unmoorers Request Received",
-    "Description": "Departure Moorers Request Received"
-  },
-  {
-    "StateId": "UnMooringOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "UNMOORING_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Unmoorers Confirmed",
-    "Description": "Departure Moorers Confirmed"
-  },
-  {
-    "StateId": "UnMooringOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "UNMOORING_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Unmoorers Denied",
-    "Description": "Departure Moorers Denied"
-  },
-  {
-    "StateId": "UnMooringOp_Canncelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "UNMOORING_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Unmoorers Denied",
-    "Description": "Departure Moorers Denied"
-  },
-  {
-    "StateId": "BerthShifting_Requested",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "BERTH_SHIFTING",
-    "TimeSequence": "REQUESTED",
-    "Name": "Berth Shifting Requested",
-    "Description": "Berth Shifting Requested"
-  },
-  {
-    "StateId": "BerthShifting_ReqReceived",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "BERTH_SHIFTING",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Berth Shifting Request Received",
-    "Description": "Berth Shifting Request Received"
-  },
-  {
-    "StateId": "BerthShifting_Confirmed",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "BERTH_SHIFTING",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Besth Shifting Confirmed",
-    "Description": "Besth Shifting Confirmed"
-  },
-  {
-    "StateId": "BerthShifting_Denied",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "BERTH_SHIFTING",
-    "TimeSequence": "DENIED",
-    "Name": "Berth Shifting Denied",
-    "Description": "Berth Shifting Denied"
-  },
-  {
-    "StateId": "BerthShifting_Cancelled",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "BERTH_SHIFTING",
-    "TimeSequence": "CANCELLED",
-    "Name": "Berth Shifting Cancelled",
-    "Description": "Berth Shifting Cancelled"
-  },
-  {
-    "StateId": "Bunkering_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "BUNKERING_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Bunkering Operation Requested",
-    "Description": "Bunkering Operation Requested"
-  },
-  {
-    "StateId": "Bunkering_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "BUNKERING_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Bunkering Operation Request Received",
-    "Description": "Bunkering Operation Request Received"
-  },
-  {
-    "StateId": "Bunkering_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "BUNKERING_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Bunkering Operation Confirmed",
-    "Description": "Bunkering Operation Confirmed"
-  },
-  {
-    "StateId": "Bunkering_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "BUNKERING_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Bunkering Operation Request Denied",
-    "Description": "Bunkering Operation Request Denied"
-  },
-  {
-    "StateId": "Bunkering_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "BUNKERING_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Bunkering Operation Cancelled",
-    "Description": "Bunkering Operation Cancelled"
-  },
-  {
-    "StateId": "CargoOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Cargo Operations Requested",
-    "Description": "Cargo operations requested"
-  },
-  {
-    "StateId": "CargoOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Cargo Operations Request Received",
-    "Description": "Cargo Operations Request Received"
-  },
-  {
-    "StateId": "CargoOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Cargo Operations Confirmed",
-    "Description": "Cargo operations confirmed"
-  },
-  {
-    "StateId": "CargoOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Cargo Operations Request Denied",
-    "Description": "Cargo Operations Request Denied"
-  },
-  {
-    "StateId": "CargoOp_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Cargo Operations Cancelled",
-    "Description": "Cargo Operations Cancelled"
-  },
-  {
-    "StateId": "EscortTowage_Requested",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ESCORT_TOWAGE",
-    "TimeSequence": "REQUESTED",
-    "Name": "Escort Towage Requested",
-    "Description": "A request for Escort towage has been made"
-  },
-  {
-    "StateId": "EscortTowage_ReqReceived",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ESCORT_TOWAGE",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Escort Towage Request Received",
-    "Description": "A request for Escort towage has been received"
-  },
-  {
-    "StateId": "EscortTowage_Confirmed",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ESCORT_TOWAGE",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Escort Towage Confirmed",
-    "Description": "Booking of Escort towage confirmed"
-  },
-  {
-    "StateId": "EscortTowage_Denied",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ESCORT_TOWAGE",
-    "TimeSequence": "DENIED",
-    "Name": "Escort Towage Request Denied",
-    "Description": "A request for Escort towage has been denied"
-  },
-  {
-    "StateId": "EscortTowage_Cancelled",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ESCORT_TOWAGE",
-    "TimeSequence": "CANCELLED",
-    "Name": "Escort Towage Cancelled",
-    "Description": "Escort Towage has been cancelled"
-  },
-  {
-    "StateId": "Forklift_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "FORKLIFT",
-    "TimeSequence": "REQUESTED",
-    "Name": "Forklft Requested",
-    "Description": "Forklft Requested"
-  },
-  {
-    "StateId": "Forklift_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "FORKLIFT",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Forklift Request Received",
-    "Description": "Forklift Request Received"
-  },
-  {
-    "StateId": "Forklift_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "FORKLIFT",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Forklift Confirmed",
-    "Description": "Forklift Confirmed"
-  },
-  {
-    "StateId": "Forklift_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "FORKLIFT",
-    "TimeSequence": "DENIED",
-    "Name": "Forklift Denied",
-    "Description": "Forklift Denied"
-  },
-  {
-    "StateId": "Forklift_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "FORKLIFT",
-    "TimeSequence": "CANCELLED",
-    "Name": "Forklift Cancelled",
-    "Description": "Forklift Cancelled"
-  },
-  {
-    "StateId": "Gangway_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GANGWAY",
-    "TimeSequence": "REQUESTED",
-    "Name": "Gangway Requested",
-    "Description": "Gangway Requested"
-  },
-  {
-    "StateId": "Gangway_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GANGWAY",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Gangway Request Received",
-    "Description": "Gangway Request Received"
-  },
-  {
-    "StateId": "Gangway_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GANGWAY",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Gangway Confirmed",
-    "Description": "Gangway Confirmed"
-  },
-  {
-    "StateId": "Gangway_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GANGWAY",
-    "TimeSequence": "DENIED",
-    "Name": "Gangway Denied",
-    "Description": "Gangway Denied"
-  },
-  {
-    "StateId": "Gangway_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GANGWAY",
-    "TimeSequence": "CANCELLED",
-    "Name": "Ganway Cancelled",
-    "Description": "Gangway Cancelled"
-  },
-  {
-    "StateId": "GarbageOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GARBAGE_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Garbage Operation Requested",
-    "Description": "Garbage Disposal Requested"
-  },
-  {
-    "StateId": "GarbageOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GARBAGE_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Garbage Operation Request Received",
-    "Description": "Garbage Operation Request Received"
-  },
-  {
-    "StateId": "GarbageOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GARBAGE_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Garbage Operation Confirmed",
-    "Description": "Garbage Disposal Confirmed"
-  },
-  {
-    "StateId": "GarbageOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GARBAGE_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Garbage Operation Request Denied",
-    "Description": "Garbage Operation Request Denied"
-  },
-  {
-    "StateId": "GarbageOp_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "GARBAGE_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Garbage Operation Cancelled",
-    "Description": "Garbage Operation Cancelled"
-  },
-  {
-    "StateId": "IceBreaking_Requested",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ICEBREAKING_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "IceBreaking Operation Requested",
-    "Description": "A request for IceBreaking Operation has been made"
-  },
-  {
-    "StateId": "IceBreaking_ReqReceived",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ICEBREAKING_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "IceBreaking Operation Request Received",
-    "Description": "A request for IceBreaking Operation has been received"
-  },
-  {
-    "StateId": "IceBreaking_Confirmed",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ICEBREAKING_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "IceBreaking Operation Confirmed",
-    "Description": "IceBreaking Operation Confirmed"
-  },
-  {
-    "StateId": "IceBreaking_Denied",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ICEBREAKING_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "IceBreaking Operation Request Denied",
-    "Description": "A request for IceBreaking Operation has been denied"
-  },
-  {
-    "StateId": "IceBreaking_Cancelled",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "ICEBREAKING_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "IceBreaking Operation Cancelled",
-    "Description": "IceBreaking Operation Cancelled"
-  },
-  {
-    "StateId": "LubeOil_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "LUBEOIL_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Lube Oil Operation Requested",
-    "Description": "Lube Oil Operation Requested"
-  },
-  {
-    "StateId": "LubeOil_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "LUBEOIL_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Lube Oil Operation Request Received",
-    "Description": "Lube Oil Operation Request Received"
-  },
-  {
-    "StateId": "LubeOil_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "LUBEOIL_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Lube Oil Operation Confirmed",
-    "Description": "Lube Oil Operation Confirmed"
-  },
-  {
-    "StateId": "LubeOil_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "LUBEOIL_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Lube Oil Operation Request Denied",
-    "Description": "Lube Oil Operation Request Denied"
-  },
-  {
-    "StateId": "LubeOil_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "LUBEOIL_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Lube Oil Operation Cancelled",
-    "Description": "Lube Oil Operation Cancelled"
-  },
-  {
-    "StateId": "Pilotage_Requested",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "PILOTAGE",
-    "TimeSequence": "REQUESTED",
-    "Name": "Pilotage Requested",
-    "Description": "Pilot service has been requested"
-  },
-  {
-    "StateId": "Pilotage_ReqReceived",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "PILOTAGE",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Pilotage Request Recieved",
-    "Description": "Pilot service request has been received"
-  },
-  {
-    "StateId": "Pilotage_Confirmed",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "PILOTAGE",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Pilotage Confirmed",
-    "Description": "Pilot service booked"
-  },
-  {
-    "StateId": "Pilotage_Denied",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "PILOTAGE",
-    "TimeSequence": "DENIED",
-    "Name": "Pilotage Request Denied",
-    "Description": "Pilot service request has been denied"
-  },
-  {
-    "StateId": "Pilotage_Cancelled",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "PILOTAGE",
-    "TimeSequence": "CANCELLED",
-    "Name": "Pilotage Cancelled",
-    "Description": "Pilot service Cancelled"
-  },
-  {
-    "StateId": "PostCargoSurvey_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "POSTCARGOSURVEY",
-    "TimeSequence": "REQUESTED",
-    "Name": "Post Cargo Survey Requested",
-    "Description": "Post cargo survey requested"
-  },
-  {
-    "StateId": "PostCargoSurvey_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "POSTCARGOSURVEY",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Post Cargo Survey Request Received",
-    "Description": "Post Cargo Survey Request Received"
-  },
-  {
-    "StateId": "PostCargoSurvey_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "POSTCARGOSURVEY",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Post cargo survey confirmed",
-    "Description": "Post cargo survey confirmed"
-  },
-  {
-    "StateId": "PostCargoSurvey_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "POSTCARGOSURVEY",
-    "TimeSequence": "DENIED",
-    "Name": "Post Cargo Survey Request Denied",
-    "Description": "Post Cargo Survey Request Denied"
-  },
-  {
-    "StateId": "PostCargoSurvey_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "POSTCARGOSURVEY",
-    "TimeSequence": "CANCELLED",
-    "Name": "Post Cargo Survey Request Cancelled",
-    "Description": "Post Cargo Survey Request Cancelled"
-  },
-  {
-    "StateId": "PreCargoSurvey_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PRECARGOSURVEY",
-    "TimeSequence": "REQUESTED",
-    "Name": "Pre Cargo Survey Requested",
-    "Description": "Pre cargo survey requested"
-  },
-  {
-    "StateId": "PreCargoSurvey_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PRECARGOSURVEY",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Pre Cargo Survey Request Received",
-    "Description": "Pre cargo survey request received"
-  },
-  {
-    "StateId": "PreCargoSurvey_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PRECARGOSURVEY",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Pre Cargo Survey Confirmed",
-    "Description": "Pre cargo survey confirmed"
-  },
-  {
-    "StateId": "PreCargoSurvey_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PRECARGOSURVEY",
-    "TimeSequence": "DENIED",
-    "Name": "Pre Cargo Survey Request Denied",
-    "Description": "Pre cargo survey request denied"
-  },
-  {
-    "StateId": "PreCargoSurvey_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PRECARGOSURVEY",
-    "TimeSequence": "CANCELLED",
-    "Name": "Pre Cargo Survey Request Cancelled",
-    "Description": "Pre cargo survey request cancelled"
-  },
-  {
-    "StateId": "Provision_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PROVISION_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Provision Operation Requested",
-    "Description": "Provision Operation Requested"
-  },
-  {
-    "StateId": "Provision_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PROVISION_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Provision Operation Request Received",
-    "Description": "Provision Operation Request Received"
-  },
-  {
-    "StateId": "Provision_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PROVISION_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Provision Operation Confirmed",
-    "Description": "Provision Operation Confirmed"
-  },
-  {
-    "StateId": "Provision_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PROVISION_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Provision Operation Request Denied",
-    "Description": "Provision Operation Request Denied"
-  },
-  {
-    "StateId": "Provision_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "PROVISION_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Provision Operation Request Cancelled",
-    "Description": "Provision Operation Request Cancelled"
-  },
-  {
-    "StateId": "Security_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SECURITY",
-    "TimeSequence": "REQUESTED",
-    "Name": "Security Requested",
-    "Description": "Security Requested"
-  },
-  {
-    "StateId": "Security_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SECURITY",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Security Request Received",
-    "Description": "Security Request Received"
-  },
-  {
-    "StateId": "Security_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SECURITY",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Security Confirmed",
-    "Description": "Security Confirmed"
-  },
-  {
-    "StateId": "Security_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SECURITY",
-    "TimeSequence": "DENIED",
-    "Name": "Security Denied",
-    "Description": "Security Denied"
-  },
-  {
-    "StateId": "Security_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SECURITY",
-    "TimeSequence": "CANCELLED",
-    "Name": "Security Cancelled",
-    "Description": "Security Cancelled"
-  },
-  {
-    "StateId": "SlopOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLOP_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Slop Operation Requested",
-    "Description": "Slop Operation requested"
-  },
-  {
-    "StateId": "SlopOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLOP_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Slop Operation Request Received",
-    "Description": "Slop Operation Request Received"
-  },
-  {
-    "StateId": "SlopOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLOP_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Slop Operation Confirmed",
-    "Description": "Slop Operation confirmed"
-  },
-  {
-    "StateId": "SlopOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLOP_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Slop Operation Request Denied",
-    "Description": "Slop Operation Request Denied"
-  },
-  {
-    "StateId": "SlopOp_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLOP_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Slop Operation Cancelled",
-    "Description": "Slop Operation cancelled"
-  },
-  {
-    "StateId": "SludgeOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLUDGE_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Sludge Operation Requested",
-    "Description": "Sludge Operation requested"
-  },
-  {
-    "StateId": "SludgeOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLUDGE_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Sludge Operation Request Received",
-    "Description": "Sludge Operation Request Received"
-  },
-  {
-    "StateId": "SludgeOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLUDGE_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Sludge Operation Confirmed",
-    "Description": "Sludge Operation confirmed"
-  },
-  {
-    "StateId": "SludgeOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLUDGE_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Sludge Operation Request Denied",
-    "Description": "Sludge Operation Request Denied"
-  },
-  {
-    "StateId": "SludgeOp_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "SLUDGE_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Sludge Operation Cancelled",
-    "Description": "Sludge Operation Cancelled"
-  },
-  {
-    "StateId": "Tours_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "TOURS",
-    "TimeSequence": "REQUESTED",
-    "Name": "Tours Requested",
-    "Description": "Tours Requested"
-  },
-  {
-    "StateId": "Tours_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "TOURS",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Tours Request Received",
-    "Description": "Tours Request Received"
-  },
-  {
-    "StateId": "Tours_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "TOURS",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Tours Confirmed",
-    "Description": "Tours Confirmed"
-  },
-  {
-    "StateId": "Tours_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "TOURS",
-    "TimeSequence": "DENIED",
-    "Name": "Tours Denied",
-    "Description": "Tours Denied"
-  },
-  {
-    "StateId": "Tours_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "TOURS",
-    "TimeSequence": "CANCELLED",
-    "Name": "Tours Cancelled",
-    "Description": "Tours Cancelled"
-  },
-  {
-    "StateId": "Towage_Requested",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "TOWAGE",
-    "TimeSequence": "REQUESTED",
-    "Name": "Towage Requested",
-    "Description": "Harbour/assistance towage service has been requested"
-  },
-  {
-    "StateId": "Towage_ReqReceived",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "TOWAGE",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Towage Request Received",
-    "Description": "Harbour/assistance towage service request received"
-  },
-  {
-    "StateId": "Towage_Confirmed",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "TOWAGE",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Towage Confirmed",
-    "Description": "Harbour/assistance towage service booked"
-  },
-  {
-    "StateId": "Towage_Denied",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "TOWAGE",
-    "TimeSequence": "DENIED",
-    "Name": "Towage Request Denied",
-    "Description": "Harbour/assistance towage service request denied"
-  },
-  {
-    "StateId": "Towage_Cancelled",
-    "ServiceType": "NAUTICAL",
-    "ServiceObject": "TOWAGE",
-    "TimeSequence": "CANCELLED",
-    "Name": "Towage Cancelled",
-    "Description": "Harbour/assistance towage service has been cancelled"
-  },
-  {
-    "StateId": "WaterOp_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "WATER_OPERATION",
-    "TimeSequence": "REQUESTED",
-    "Name": "Water Operation Requested",
-    "Description": "Fresh Water Operation Requested"
-  },
-  {
-    "StateId": "WaterOp_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "WATER_OPERATION",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "Water Operation Request Received",
-    "Description": "Fresh Water Operation Request Received"
-  },
-  {
-    "StateId": "WaterOp_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "WATER_OPERATION",
-    "TimeSequence": "CONFIRMED",
-    "Name": "Water Operation Confirmed",
-    "Description": "Fresh Water Operation Confirmed"
-  },
-  {
-    "StateId": "WaterOp_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "WATER_OPERATION",
-    "TimeSequence": "DENIED",
-    "Name": "Water Operation Request Denied",
-    "Description": "Fresh Water Operation Denied"
-  },
-  {
-    "StateId": "WaterOp_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "WATER_OPERATION",
-    "TimeSequence": "CANCELLED",
-    "Name": "Water Operation Cancelled",
-    "Description": "Fresh Water Operation Cancelled"
-  },
-  {
-    "StateId": "VTSAreaDepart_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "DEPARTURE_VTSAREA",
-    "TimeSequence": "CONFIRMED",
-    "Name": "VTS TrafficArea Departure Confirmed",
-    "Description": "VTS confirms that vessel can departure from Traffic area"
-  },
-  {
-    "StateId": "VTSAreaDepart_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "DEPARTURE_VTSAREA",
-    "TimeSequence": "DENIED",
-    "Name": "VTS TrafficArea Departure Denied",
-    "Description": "VTS TrafficArea Departure Denied"
-  },
-  {
-    "StateId": "VTSAreaDepart_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "DEPARTURE_VTSAREA",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "VTS TrafficArea Departure Request Received",
-    "Description": "VTS TrafficArea Departure Request Received"
-  },
-  {
-    "StateId": "VTSAreaDepart_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "DEPARTURE_VTSAREA",
-    "TimeSequence": "REQUESTED",
-    "Name": "VTS TrafficArea Departure Requested",
-    "Description": "VTS TrafficArea Departure Requested"
-  },
-  {
-    "StateId": "VTSAreaDepart_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "DEPARTURE_VTSAREA",
-    "TimeSequence": "CANCELLED",
-    "Name": "VTS TrafficArea Departure Cancelled",
-    "Description": "VTS TrafficArea Departure Cancelled"
-  },
-  {
-    "StateId": "VTSAreaEntry_Confirmed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ARRIVAL_VTSAREA",
-    "TimeSequence": "CONFIRMED",
-    "Name": "VTS TrafficArea Entry Confirmed",
-    "Description": "VTS confirms that vessel can enter Traffic area"
-  },
-  {
-    "StateId": "VTSAreaEntry_Denied",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ARRIVAL_VTSAREA",
-    "TimeSequence": "DENIED",
-    "Name": "VTS TrafficArea Entry Denied",
-    "Description": "VTS TrafficArea Entry Denied"
-  },
-  {
-    "StateId": "VTSAreaEntry_ReqReceived",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ARRIVAL_VTSAREA",
-    "TimeSequence": "REQUEST_RECEIVED",
-    "Name": "VTS TrafficArea Entry Request Received",
-    "Description": "VTS TrafficArea Entry Request Received"
-  },
-  {
-    "StateId": "VTSAreaEntry_Requested",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ARRIVAL_VTSAREA",
-    "TimeSequence": "REQUESTED",
-    "Name": "VTS TrafficArea Entry Requected",
-    "Description": "VTS TrafficArea Entry Requected"
-  },
-  {
-    "StateId": "VTSAreaEntry_Cancelled",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ARRIVAL_VTSAREA",
-    "TimeSequence": "CANCELLED",
-    "Name": "VTS TrafficArea Entry Cancelled",
-    "Description": "VTS TrafficArea Entry Cancelled"
-  },
-  {
-    "StateId": "Arrival_Agent_Berth",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "AGENT",
-    "LocationType": "BERTH",
-    "Name": "Arrival Agent Berth",
-    "Description": "Agent arrived to berth"
-  },
-  {
-    "StateId": "Departure_Agent_Berth",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "AGENT",
-    "LocationType": "BERTH",
-    "Name": "Departure Agent Berth",
-    "Description": "Agent left berth"
-  },
-  {
-    "StateId": "Arrival_Moorers_Berth",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "MOORER",
-    "LocationType": "BERTH",
-    "Name": "Arrival Moorer Berth",
-    "Description": "Moorers arrived to Berth"
-  },
-  {
-    "StateId": "Departure_Moorers_Berth",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "MOORER",
-    "LocationType": "BERTH",
-    "Name": "Departure Moorers Berth",
-    "Description": "Moorers has departed from berth"
-  },
-  {
-    "StateId": "Arrival_Pilot_Berth",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PILOT",
-    "LocationType": "BERTH",
-    "Name": "Arrival Pilot Berth",
-    "Description": "Pilot arrived to berth"
-  },
-  {
-    "StateId": "Departure_Pilot_Berth",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PILOT",
-    "LocationType": "BERTH",
-    "Name": "Departure Pilot Berth",
-    "Description": "Pilot departed from berth"
-  },
-  {
-    "StateId": "Arrival_Pontoons_and_Fenders_Berth",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PONTOONS_AND_FENDERS",
-    "LocationType": "BERTH",
-    "Name": "Arrival Pontoons&Fenders Berth",
-    "Description": "Pontoons & Fenders at berth"
-  },
-  {
-    "StateId": "Departure_Pontoons_and_Fenders_Berth",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PONTOONS_AND_FENDERS",
-    "LocationType": "BERTH",
-    "Name": "Departure Pontoons&Fenders Berth",
-    "Description": "Pontoons & Fenders removed from berth"
-  },
-  {
-    "StateId": "Arrival_Security_Berth",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "SECURITY",
-    "LocationType": "BERTH",
-    "Name": "Arrival Security Berth",
-    "Description": "Security arrived to berth"
-  },
-  {
-    "StateId": "Departure_Security_Berth",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "SECURITY",
-    "LocationType": "BERTH",
-    "Name": "Departure Security Berth",
-    "Description": "Security departed from berth"
-  },
-  {
-    "StateId": "Arrival_Tug_Berth",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "TUG",
-    "LocationType": "BERTH",
-    "Name": "Arrival Tug Berth",
-    "Description": "Tug arrived to vessel at berth"
-  },
-  {
-    "StateId": "Departure_Tug_Berth",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "TUG",
-    "LocationType": "BERTH",
-    "Name": "Departure Tug Berth",
-    "Description": "Tug departed from vessel at berth"
-  },
-  {
-    "StateId": "Arrival_Vessel_Berth",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "BERTH",
-    "Name": "Arrival Vessel Berth",
-    "Description": "Vessels arrived to assigned berth (could also capture anchoring area if no distinction is made between berth and anchorage area in sending system)"
-  },
-  {
-    "StateId": "Departure_Vessel_Berth",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "BERTH",
-    "Name": "Departure Vessel Berth",
-    "Description": "Vessels departed from berth (could also capture anchoring area if no distinction is made between berth and anchorage area)"
-  },
-  {
-    "StateId": "Arrival_Vessel_AnchorageArea",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "ANCHORING_AREA",
-    "Name": "Arrival Vessel Anchoring Area",
-    "Description": "Vessel arrived anchoring area"
-  },
-  {
-    "StateId": "Departure_Vessel_AnchorageArea",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "ANCHORING_AREA",
-    "Name": "Departure Vessel Anchoring Area",
-    "Description": "Vessel departed anchoring area"
-  },
-  {
-    "StateId": "Arrival_Tug_TugZone",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "TUG",
-    "LocationType": "TUG_ZONE",
-    "Name": "Arrival Tug TugZone",
-    "Description": "Tug arrived to tug zone (during departure) / Tug arrivals to tug zone"
-  },
-  {
-    "StateId": "Departure_Tug_TugZone",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "TUG",
-    "LocationType": "TUG_ZONE",
-    "Name": "Departure Tug TugZone",
-    "Description": "Tug departed from tug zone"
-  },
-  {
-    "StateId": "Arrival_Vessel_TugZone",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "TUG_ZONE",
-    "Name": "Arrival Vessel TugZone",
-    "Description": "Vessel arrived to tug zone (during departure) / Vessel arrives to tug zone"
-  },
-  {
-    "StateId": "Departure_Vessel_TugZone",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "TUG_ZONE",
-    "Name": "Departure Vessel TugZone",
-    "Description": "Vessel departed from tug zone (with or without towage)"
-  },
-  {
-    "StateId": "Arrival_EscortTug_TugZone",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "TUG_ZONE",
-    "Name": "Arrival EscortTug Tug zone",
-    "Description": "Escort tug arrived to vessel in tug zone"
-  },
-  {
-    "StateId": "Departure_EscortTug_TugZone",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "TUG_ZONE",
-    "Name": "Departure EscortTug Tug Zone",
-    "Description": "Escort tug departed from vessel in tug zone"
-  },
-  {
-    "StateId": "Arrival_EscortTug_ETugZone",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "ETUG_ZONE",
-    "Name": "Arrival EscortTug EscortTugZone",
-    "Description": "Escort tug arrived to vessel at escort tug zone"
-  },
-  {
-    "StateId": "Departure_EscortTug_ETugZone",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "ETUG_ZONE",
-    "Name": "Departure EscortTug EscortTugZone",
-    "Description": "Escort tug departed from vessel at escort tug zone"
-  },
-  {
-    "StateId": "Arrival_Vessel_ETugZone",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "ETUG_ZONE",
-    "Name": "Arrival Vessel EscortTugZone",
-    "Description": "Vessel arrived at Escort tug zone"
-  },
-  {
-    "StateId": "Departure_Vessel_ETugZone",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "ETUG_ZONE",
-    "Name": "Departure Vessel Escort Tug zone",
-    "Description": "Vessel departed from escort tug zone (with or without escort)"
-  },
-  {
-    "StateId": "Arrival_Pilot_PilotBA",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PILOT",
-    "LocationType": "PILOT_BOARDING_AREA",
-    "Name": "Arrival Pilot PilotBoardingArea",
-    "Description": "Pilot arrived to PilotBoardingArea"
-  },
-  {
-    "StateId": "Departure_Pilot_PilotBA",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PILOT",
-    "LocationType": "PILOT_BOARDING_AREA",
-    "Name": "Departure Pilot PilotBoardingArea",
-    "Description": "Pilot departed from PilotBoardingArea"
-  },
-  {
-    "StateId": "Arrival_PilotBoat_PilotBA",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "PILOT_BOARDING_AREA",
-    "Name": "Arrival Pilotboat PilotBoardingArea",
-    "Description": "Pilotboat arrived to PilotBoardingArea"
-  },
-  {
-    "StateId": "Departure_PilotBoat_PilotBA",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "PILOT_BOARDING_AREA",
-    "Name": "Pilotboat Departure from Pilot Boarding Area",
-    "Description": "Pilotboat departed from PilotBoardingArea"
-  },
-  {
-    "StateId": "Arrival_Vessel_PilotBA",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "PILOT_BOARDING_AREA",
-    "Name": "Arrival Vessel PilotBoardingArea",
-    "Description": "Vessel arrived to PBA during arrival/departure"
-  },
-  {
-    "StateId": "Departure_Vessel_PilotBA",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "PILOT_BOARDING_AREA",
-    "Name": "Departure Vessel PilotBoardingArea",
-    "Description": "Vessel departed from PBA during arrival/departure"
-  },
-  {
-    "StateId": "Arrival_Passenger_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PASSENGER",
-    "LocationType": "VESSEL",
-    "Name": "Arrival Passenger Vessel",
-    "Description": "All Passengers Onboard"
-  },
-  {
-    "StateId": "Departure_Passenger_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PASSENGER",
-    "LocationType": "VESSEL",
-    "Name": "Departure Passenger Vessel",
-    "Description": "All Passengers dissembarked"
-  },
-  {
-    "StateId": "Arrival_Pilot_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PILOT",
-    "LocationType": "VESSEL",
-    "Name": "Arrival Pilot Vessel",
-    "Description": "Pilot Onboard (POB)"
-  },
-  {
-    "StateId": "Departure_Pilot_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PILOT",
-    "LocationType": "VESSEL",
-    "Name": "Pilot Vessel Departed",
-    "Description": "Pilot disembark the vessel"
-  },
-  {
-    "StateId": "Arrival_EscortTug_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "VESSEL",
-    "Name": "Arrival Escort Tug Vessel",
-    "Description": "EscortTug has arrived to the vessel"
-  },
-  {
-    "StateId": "Departure_EscortTug_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "VESSEL",
-    "Name": "Departure Escort Tug Vessel",
-    "Description": "EscortTug has left vessel"
-  },
-  {
-    "StateId": "Arrival_IceBreaker_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ICEBREAKER",
-    "LocationType": "VESSEL",
-    "Name": "Arrival IceBreaker Vessel",
-    "Description": "IceBreaker has arrived to the vessel"
-  },
-  {
-    "StateId": "Departure_IceBreaker_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ICEBREAKER",
-    "LocationType": "VESSEL",
-    "Name": "Departure IceBreaker Vessel",
-    "Description": "IceBreaker departed from Vessel, mission completed, aborted"
-  },
-  {
-    "StateId": "Arrival_Tug_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "TUG",
-    "LocationType": "VESSEL",
-    "Name": "Arrival Tug Vessel",
-    "Description": "The tugboat has arrived to the vessel"
-  },
-  {
-    "StateId": "Departure_Tug_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "TUG",
-    "LocationType": "VESSEL",
-    "Name": "Departure Tug Vessel",
-    "Description": "Tug and vessel has been disconnected"
-  },
-  {
-    "StateId": "Arrival_BunkerVessel_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "BUNKER_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Bunker Vessel Alongside Vessel",
-    "Description": "Bunker vessel is alongside the vessel"
-  },
-  {
-    "StateId": "Departure_BunkerVessel_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "BUNKER_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Bunker Vessel Departed Vessel",
-    "Description": "Bunker vessel has departed the Vessel"
-  },
-  {
-    "StateId": "Arrival_SludgeVessel_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "SLUDGE_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Sludge Vessel Alongside Vessel",
-    "Description": "Sludge vessel is alongside vessel"
-  },
-  {
-    "StateId": "Departure_SludgeVessel_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "SLUDGE_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Sludge Vessel Departed Vessel",
-    "Description": "Sludge vessel has departed the vessel"
-  },
-  {
-    "StateId": "Arrival_SlopVessel_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "SLOP_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Slop Vessel Alongside Vessel",
-    "Description": "Slop vessel is alongside vessel"
-  },
-  {
-    "StateId": "Departure_SlopVessel_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "SLOP_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Slop Vessel Departed Vessel",
-    "Description": "Slop vessel has departed the vessel"
-  },
-  {
-    "StateId": "Arrival_FreshWaterVessel_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "FRESH_WATER_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Water Vessel Alongside Vessel",
-    "Description": "Water vessel is alongside vessel"
-  },
-  {
-    "StateId": "Departure_FreshWaterVessel_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "FRESH_WATER_VESSEL",
-    "LocationType": "VESSEL",
-    "Name": "Water Vessel Departed Vessel",
-    "Description": "Water vessel has departed the vessel"
-  },
-  {
-    "StateId": "Arrival_PilotBoat_Vessel",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "VESSEL",
-    "Name": "Pilot Boat Alongside Vessel",
-    "Description": "Pilot boat is alongside vessel"
-  },
-  {
-    "StateId": "Departure_PilotBoat_Vessel",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "VESSEL",
-    "Name": "Pilot Boat Departed Vessel",
-    "Description": "Pilot boat has departed the vessel"
-  },
-  {
-    "StateId": "Arrival_Vessel_TrafficArea",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "TRAFFIC_AREA",
-    "Name": "Arrival Vessel Traffic Area",
-    "Description": "The vessel entered the VTS Traffic area of the port"
-  },
-  {
-    "StateId": "Departure_Vessel_TrafficArea",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "TRAFFIC_AREA",
-    "Name": "Departure Vessel TrafficArea",
-    "Description": "Vessel departed from VTS traffic area"
-  },
-  {
-    "StateId": "Arrival_Vessel_PortArea",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "PORT_AREA",
-    "Name": "Arrival Vessel Port Area",
-    "Description": "The vessel entered the Port Area (inner line)"
-  },
-  {
-    "StateId": "Departure_Vessel_PortArea",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "PORT_AREA",
-    "Name": "Departure Vessel Port Area",
-    "Description": "The vessel departs from the Port Area (inner line)"
-  },
-  {
-    "StateId": "Arrival_Tug_HomeBase",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "TUG",
-    "LocationType": "HOME_BASE",
-    "Name": "Arrival Tug HomeBase",
-    "Description": "Tug has arrived to Home base"
-  },
-  {
-    "StateId": "Departure_Tug_HomeBase",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "TUG",
-    "LocationType": "HOME_BASE",
-    "Name": "Departure Tug HomeBase",
-    "Description": "Tug has departed from Home base"
-  },
-  {
-    "StateId": "Arrival_PilotBoat_HomeBase",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "HOME_BASE",
-    "Name": "Arrival PilotBoat HomeBase",
-    "Description": "Pilot boat has arrived to Home base"
-  },
-  {
-    "StateId": "Departure_PilotBoat_HomeBase",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "HOME_BASE",
-    "Name": "Departure PilotBoat HomeBase",
-    "Description": "Pilot boat has departed to Home base"
-  },
-  {
-    "StateId": "Arrival_EscortTug_HomeBase",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "HOME_BASE",
-    "Name": "Arrival PilotBoat HomeBase",
-    "Description": "Pilot has arrived to Home Base"
-  },
-  {
-    "StateId": "Departure_EscortTug_HomeBase",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "HOME_BASE",
-    "Name": "Departure PilotBoat HomeBase",
-    "Description": "Pilot has departed from Home Base"
-  },
-  {
-    "StateId": "Arrival_IceBreaker_RendezvArea",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ICEBREAKER",
-    "LocationType": "RENDEZV_AREA",
-    "Name": "Arrival IceBreaker Rendezvous Area",
-    "Description": "IceBreaker arrived at rendezvous area"
-  },
-  {
-    "StateId": "Departure_IceBreaker_RendezvArea",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ICEBREAKER",
-    "LocationType": "RENDEZV_AREA",
-    "Name": "Departure Rendezvous Area",
-    "Description": "IceBreaker departed rendezvous area, with or without vessels connected."
-  },
-  {
-    "StateId": "Arrival_Vessel_RendezvArea",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "RENDEZV_AREA",
-    "Name": "Arrival Vessel Rendezvous Area",
-    "Description": "Vessel Arrived at rendezvous area"
-  },
-  {
-    "StateId": "Departure_Vessel_RendezvArea",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "RENDEZV_AREA",
-    "Name": "Departure Rendezvous Area",
-    "Description": "Vessel departed rendezvous area, following alone/convoy or connected to IceBreaker"
-  },
-  {
-    "StateId": "Arrival_IceBreaker_LOC",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ICEBREAKER",
-    "LocationType": "LOC",
-    "Name": "Arrival IceBreaker LOC",
-    "Description": "Icebreaker arrived to an unspecified location"
-  },
-  {
-    "StateId": "Departure_IceBreaker_LOC",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ICEBREAKER",
-    "LocationType": "LOC",
-    "Name": "Departure IceBreaker LOC",
-    "Description": "IceBreaker departed from current LOC (unspecified) to transit to Vessel"
-  },
-  {
-    "StateId": "Arrival_Vessel_LOC",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "LOC",
-    "Name": "Arrival Vessel LOC",
-    "Description": "Vessel arrived to an unspecified location"
-  },
-  {
-    "StateId": "Departure_Vessel_LOC",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "VESSEL",
-    "LocationType": "LOC",
-    "Name": "Departure Vessel LOC",
-    "Description": "Vessel departed from a particular (unspecified) location"
-  },
-  {
-    "StateId": "Arrival_PilotBoat_LOC",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "LOC",
-    "Name": "Arrival Pilotboat LOC",
-    "Description": "Pilotboat arrived to an unspecified location"
-  },
-  {
-    "StateId": "Departure_PilotBoat_LOC",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "PILOT_BOAT",
-    "LocationType": "LOC",
-    "Name": "Departure PilotBoat LOC",
-    "Description": "PilotBoath departed from current LOC (unspecified)"
-  },
-  {
-    "StateId": "Arrival_EscortTug_LOC",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "LOC",
-    "Name": "Arrival Escort Tug LOC",
-    "Description": "Escort tug arrived to an unspecified location"
-  },
-  {
-    "StateId": "Departure_EscortTug_LOC",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "ESCORT_TUG",
-    "LocationType": "LOC",
-    "Name": "Departure Escort Tug LOC",
-    "Description": "Escort tug transited from previous (unspecified) location to its next towage operation"
-  },
-  {
-    "StateId": "Arrival_Tug_LOC",
-    "TimeSequence": "ARRIVAL_TO",
-    "ReferenceObject": "TUG",
-    "LocationType": "LOC",
-    "Name": "Arrival Tug LOC",
-    "Description": "Tug arrived to an unspecified location"
-  },
-  {
-    "StateId": "Departure_Tug_LOC",
-    "TimeSequence": "DEPARTURE_FROM",
-    "ReferenceObject": "TUG",
-    "LocationType": "LOC",
-    "Name": "Departure Tug LOC",
-    "Description": "Tug transited from previous (unspecified) location to its next towage operation"
-  },
-  {
     "StateId": "Anchoring_Commenced",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ANCHORING_OPERATION",
-    "TimeSequence": "COMMENCED",
     "Name": "Anchoring Commenced",
-    "Description": "Anchoring Operation Started"
+    "Description": "Anchoring Operation Started",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ANCHORING",
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Anchoring_Completed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "ANCHORING_OPERATION",
-    "TimeSequence": "COMPLETED",
     "Name": "Anchoring Completed",
-    "Description": "Anchoring Operation Completed"
+    "Description": "Anchoring Operation Completed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ANCHORING",
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "MooringOp_Commenced",
+    "Name": "Mooring Operation Commenced",
+    "Description": "Mooring Operation Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "MOORING_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Mooring Operation Commenced",
-    "Description": "Mooring Operation Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "MooringOp_Completed",
+    "Name": "Mooring Operation Completed",
+    "Description": "Mooring Operation Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "MOORING_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Mooring Operation Completed",
-    "Description": "Mooring Operation Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "UnMooringOp_Commenced",
+    "Name": "Unmooring Operation Commenced",
+    "Description": "Departure Mooring Operation Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "UNMOORING_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Unmooring Operation Commenced",
-    "Description": "Departure Mooring Operation Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "UnMooringOp_Completed",
+    "Name": "Unmooring Operation Completed",
+    "Description": "Departure Mooring Operation Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "UNMOORING_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Unmooring Operation Completed",
-    "Description": "Departure Mooring Operation Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "BerthShifting_Commenced",
+    "Name": "Besth Shifting Commenced",
+    "Description": "Besth Shifting Commenced",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "BERTH_SHIFTING",
-    "TimeSequence": "COMMENCED",
-    "Name": "Besth Shifting Commenced",
-    "Description": "Besth Shifting Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "BerthShifting_Completed",
+    "Name": "Besth Shifting Completed",
+    "Description": "Besth Shifting Completed",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "BERTH_SHIFTING",
-    "TimeSequence": "COMPLETED",
-    "Name": "Besth Shifting Completed",
-    "Description": "Besth Shifting Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Bunkering_Commenced",
+    "Name": "Bunkering Operation Commenced",
+    "Description": "Bunkering Operation Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "BUNKERING_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Bunkering Operation Commenced",
-    "Description": "Bunkering Operation Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Bunkering_Completed",
+    "Name": "Bunkering Operation Completed",
+    "Description": "Bunkering Operation Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "BUNKERING_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Bunkering Operation Completed",
-    "Description": "Bunkering Operation Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "CargoOp_Commenced",
+    "Name": "Cargo Operations Commenced",
+    "Description": "Cargo operation commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Cargo Operations Commenced",
-    "Description": "Cargo operation commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "CargoOp_Completed",
+    "Name": "Cargo Operations Completed",
+    "Description": "Cargo operations completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Cargo Operations Completed",
-    "Description": "Cargo operations completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "LoadingOp_Commenced",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "COMMENCED",
     "Name": "Loading Operations Commenced",
-    "Description": "Loading Operations Started"
+    "Description": "Loading Operations Started ",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LOADING_OPERATION",
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "LoadingOp_Completed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "COMPLETED",
     "Name": "Loading Operations Completed",
-    "Description": "Loading Operations Finished"
+    "Description": "Loading Operations Finished",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LOADING_OPERATION",
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "UnloadingOp_Commenced",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "COMMENCED",
     "Name": "Unloading Operations Commenced",
-    "Description": "Unloading Operations Started"
+    "Description": "Unloading Operations Started",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNLOADING_OPERATION",
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "UnloadingOp_Completed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "CARGO_OPERATION",
-    "TimeSequence": "COMPLETED",
     "Name": "Unloading Operations Completed",
-    "Description": "Unloading Operations Finished"
+    "Description": "Unloading Operations Finished",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNLOADING_OPERATION",
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "EscortTowage_Commenced",
+    "Name": "Escort Towage Commenced",
+    "Description": "Escort tug connected to vessel or Escort towage operation commence",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "ESCORT_TOWAGE",
-    "TimeSequence": "COMMENCED",
-    "Name": "Escort Towage Commenced",
-    "Description": "Escort tug connected to vessel or Escort towage operation commence"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "EscortTowage_Completed",
+    "Name": "Escort Towage Completed",
+    "Description": "Escort tug disconnected to vessel or Escort towage operation completed",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "ESCORT_TOWAGE",
-    "TimeSequence": "COMPLETED",
-    "Name": "Escort Towage Completed",
-    "Description": "Escort tug disconnected to vessel or Escort towage operation completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Forklift_Commenced",
+    "Name": "Forklift Commenced",
+    "Description": "Forklift Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "FORKLIFT",
-    "TimeSequence": "COMMENCED",
-    "Name": "Forklift Commenced",
-    "Description": "Forklift Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Forklift_Completed",
+    "Name": "Forklift Completed",
+    "Description": "Forklift Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "FORKLIFT",
-    "TimeSequence": "COMPLETED",
-    "Name": "Forklift Completed",
-    "Description": "Forklift Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Gangway_Commenced",
+    "Name": "Gangway Commenced",
+    "Description": "Gangway Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "GANGWAY",
-    "TimeSequence": "COMMENCED",
-    "Name": "Gangway Commenced",
-    "Description": "Gangway Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Gangway_Completed",
+    "Name": "Gangway Completed",
+    "Description": "Gangway Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "GANGWAY",
-    "TimeSequence": "COMPLETED",
-    "Name": "Gangway Completed",
-    "Description": "Gangway Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "GarbageOp_Commenced",
+    "Name": "Garbage Operation Commenced",
+    "Description": "Garbage Disposal Operation Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "GARBAGE_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Garbage Operation Commenced",
-    "Description": "Garbage Disposal Operation Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "GarbageOp_Completed",
+    "Name": "Garbage Operation Completed",
+    "Description": "Garbage Disposal Operation Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "GARBAGE_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Garbage Operation Completed",
-    "Description": "Garbage Disposal Operation Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "IceBreaking_Commenced",
+    "Name": "IceBreaking Operation Commenced",
+    "Description": "IceBreaking Operation Commenced",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "ICEBREAKING_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "IceBreaking Operation Commenced",
-    "Description": "IceBreaking Operation Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "IceBreaking_Completed",
+    "Name": "IceBreaking Operation Completed",
+    "Description": "IceBreaking Operation Completed",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "ICEBREAKING_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "IceBreaking Operation Completed",
-    "Description": "IceBreaking Operation Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "LubeOil_Commenced",
+    "Name": "Lube Oil Operation Commenced",
+    "Description": "Lube Oil Operation Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "LUBEOIL_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Lube Oil Operation Commenced",
-    "Description": "Lube Oil Operation Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "LubeOil_Completed",
+    "Name": "Lube Oil Operation Completed",
+    "Description": "Lube Oil Operation Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "LUBEOIL_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Lube Oil Operation Completed",
-    "Description": "Lube Oil Operation Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Pilotage_Commenced",
+    "Name": "Pilotage Commenced",
+    "Description": "Pilotage Commenced",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "PILOTAGE",
-    "TimeSequence": "COMMENCED",
-    "Name": "Pilotage Commenced",
-    "Description": "Pilotage Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Pilotage_Completed",
+    "Name": "Pilotage Completed",
+    "Description": "Pilotage Completed ",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "PILOTAGE",
-    "TimeSequence": "COMPLETED",
-    "Name": "Pilotage Completed",
-    "Description": "Pilotage Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "PostCargoSurvey_Commenced",
+    "Name": "Post cargo survey commenced",
+    "Description": "Post cargo survey commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "POSTCARGOSURVEY",
-    "TimeSequence": "COMMENCED",
-    "Name": "Post cargo survey commenced",
-    "Description": "Post cargo survey commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "PostCargoSurvey_Completed",
+    "Name": "Post cargo survey completed",
+    "Description": "Post cargo survey completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "POSTCARGOSURVEY",
-    "TimeSequence": "COMPLETED",
-    "Name": "Post cargo survey completed",
-    "Description": "Post cargo survey completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "PreCargoSurvey_Commenced",
+    "Name": "Pre Cargo Survey Commenced",
+    "Description": "Pre cargo survey commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "PRECARGOSURVEY",
-    "TimeSequence": "COMMENCED",
-    "Name": "Pre Cargo Survey Commenced",
-    "Description": "Pre cargo survey commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "PreCargoSurvey_Completed",
+    "Name": "Pre Cargo Survey Completed",
+    "Description": "Pre cargo survey completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "PRECARGOSURVEY",
-    "TimeSequence": "COMPLETED",
-    "Name": "Pre Cargo Survey Completed",
-    "Description": "Pre cargo survey completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Provision_Commenced",
+    "Name": "Provision Operation Commenced",
+    "Description": "Provision Operation started",
     "ServiceType": "STATIONARY",
     "ServiceObject": "PROVISION_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Provision Operation Commenced",
-    "Description": "Provision Operation started"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Provision_Completed",
+    "Name": "Provision Operation Completed",
+    "Description": "Provision Operation finnished",
     "ServiceType": "STATIONARY",
     "ServiceObject": "PROVISION_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Provision Operation Completed",
-    "Description": "Provision Operation finnished"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "ReadyToSailOp_Commenced",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "READYTOSAIL_OP",
-    "TimeSequence": "COMMENCED",
     "Name": "Ready-to-Sail Operations Commenced",
-    "Description": "Ready-to-Sail Operations initiated"
+    "Description": "Ready-to-Sail Operations initiated",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "READYTOSAIL_OPERATION",
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "ReadyToSailOp_Completed",
-    "ServiceType": "STATIONARY",
-    "ServiceObject": "READYTOSAIL_OP",
-    "TimeSequence": "COMPLETED",
     "Name": "Ready-to-Sail Operations Completed",
-    "Description": "Ready-to-Sail Operations Completed"
+    "Description": "Ready-to-Sail Operations Completed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "READYTOSAIL_OPERATION",
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Security_Commenced",
+    "Name": "Security Commenced",
+    "Description": "Security Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "SECURITY",
-    "TimeSequence": "COMMENCED",
-    "Name": "Security Commenced",
-    "Description": "Security Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Security_Completed",
+    "Name": "Security Completed",
+    "Description": "Security Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "SECURITY",
-    "TimeSequence": "COMPLETED",
-    "Name": "Security Completed",
-    "Description": "Security Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "SlopOp_Commenced",
+    "Name": "Slop Operation Commenced",
+    "Description": "Slop Operation starts",
     "ServiceType": "STATIONARY",
     "ServiceObject": "SLOP_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Slop Operation Commenced",
-    "Description": "Slop Operation starts"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "SlopOp_Completed",
+    "Name": "Slop Operation Completed",
+    "Description": "Slop Operation stops",
     "ServiceType": "STATIONARY",
     "ServiceObject": "SLOP_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Slop Operation Completed",
-    "Description": "Slop Operation stops"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "SludgeOp_Commenced",
+    "Name": "Sludge Operation Commenced",
+    "Description": "Sludge Operation starts",
     "ServiceType": "STATIONARY",
     "ServiceObject": "SLUDGE_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Sludge Operation Commenced",
-    "Description": "Sludge Operation starts"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "SludgeOp_Completed",
+    "Name": "Sludge Operation Completed",
+    "Description": "Sludge Operation stops",
     "ServiceType": "STATIONARY",
     "ServiceObject": "SLUDGE_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Sludge Operation Completed",
-    "Description": "Sludge Operation stops"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Tours_Commenced",
+    "Name": "Tours Commenced",
+    "Description": "Tours Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "TOURS",
-    "TimeSequence": "COMMENCED",
-    "Name": "Tours Commenced",
-    "Description": "Tours Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Tours_Completed",
+    "Name": "Tours Completed",
+    "Description": "Tours Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "TOURS",
-    "TimeSequence": "COMPLETED",
-    "Name": "Tours Completed",
-    "Description": "Tours Completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "Towage_Commenced",
+    "Name": "Towage Commenced",
+    "Description": "Harbour/assistance towage commenced",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "TOWAGE",
-    "TimeSequence": "COMMENCED",
-    "Name": "Towage Commenced",
-    "Description": "Harbour/assistance towage commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "Towage_Completed",
+    "Name": "Towage Completed",
+    "Description": "Harbour/assistance towage completed",
     "ServiceType": "NAUTICAL",
     "ServiceObject": "TOWAGE",
-    "TimeSequence": "COMPLETED",
-    "Name": "Towage Completed",
-    "Description": "Harbour/assistance towage completed"
+    "TimeSequence": "COMPLETED"
   },
   {
     "StateId": "WaterOp_Commenced",
+    "Name": "Water Operation Commenced",
+    "Description": "Fresh Water Operation Commenced",
     "ServiceType": "STATIONARY",
     "ServiceObject": "WATER_OPERATION",
-    "TimeSequence": "COMMENCED",
-    "Name": "Water Operation Commenced",
-    "Description": "Fresh Water Operation Commenced"
+    "TimeSequence": "COMMENCED"
   },
   {
     "StateId": "WaterOp_Completed",
+    "Name": "Water Operation Completed",
+    "Description": "Fresh Water Operation Completed",
     "ServiceType": "STATIONARY",
     "ServiceObject": "WATER_OPERATION",
-    "TimeSequence": "COMPLETED",
-    "Name": "Water Operation Completed",
-    "Description": "Fresh Water Operation Completed"
-  }
+    "TimeSequence": "COMPLETED"
+  },
+  {
+    "StateId": "DepartureAnchoringOp_Commenced",
+    "Name": "Departure Anchoring Operation Commenced",
+    "Description": "Start heaving up anchor  (an anchoring spot is a berth and req/conf departure as such)",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_ANCHORING_OPERATION",
+    "TimeSequence": "COMMENCED"
+  },
+  {
+    "StateId": "DepartureAnchoringOp_Completed",
+    "Name": "Departure Anchoring Operation Completed",
+    "Description": "Vessel Anchor Aweigh",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_ANCHORING_OPERATION",
+    "TimeSequence": "COMPLETED"
+  },
+  {
+    "StateId": "Arrival_Agent_Berth",
+    "Name": "Arrival Agent Berth",
+    "Description": "Agent arrived to berth",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "AGENT",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Departure_Agent_Berth",
+    "Name": "Departure Agent Berth",
+    "Description": "Agent left berth",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "AGENT",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Arrival_Moorers_Berth",
+    "Name": "Arrival Moorer Berth",
+    "Description": "Moorers arrived to Berth ",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "MOORER",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Departure_Moorers_Berth",
+    "Name": "Departure Moorers Berth",
+    "Description": "Moorers has departed from berth",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "MOORER",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Arrival_Pilot_Berth",
+    "Name": "Arrival Pilot Berth",
+    "Description": "Pilot arrived to berth",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PILOT",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Departure_Pilot_Berth",
+    "Name": "Departure Pilot Berth",
+    "Description": "Pilot departed from berth",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PILOT",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Arrival_Pontoons_and_Fenders_Berth",
+    "Name": "Arrival Pontoons&Fenders Berth",
+    "Description": "Pontoons & Fenders at berth",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PONTOONS_AND_FENDERS",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Departure_Pontoons_and_Fenders_Berth",
+    "Name": "Departure Pontoons&Fenders Berth",
+    "Description": "Pontoons & Fenders removed from berth",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PONTOONS_AND_FENDERS",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Arrival_Security_Berth",
+    "Name": "Arrival Security Berth",
+    "Description": "Security arrived to berth",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "SECURITY",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Departure_Security_Berth",
+    "Name": "Departure Security Berth",
+    "Description": "Security departed from berth",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "SECURITY",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Arrival_Tug_Berth",
+    "Name": "Arrival Tug Berth",
+    "Description": "Tug arrived at berth",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "TUG",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Departure_Tug_Berth",
+    "Name": "Departure Tug Berth",
+    "Description": "Tug departed from berth",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "TUG",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Arrival_Vessel_Berth",
+    "Name": "Arrival Vessel Berth",
+    "Description": "Vessels arrived to assigned berth (could also capture anchoring area if no distinction is made between berth and anchorage area in sending system)",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Departure_Vessel_Berth",
+    "Name": "Departure Vessel Berth",
+    "Description": "Vessels departed from berth (could also capture anchoring area if no distinction is made between berth and anchorage area)",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "BERTH"
+  },
+  {
+    "StateId": "Arrival_Vessel_AnchorageArea",
+    "Name": "Arrival Vessel Anchoring Area",
+    "Description": "Vessel arrived anchoring area",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "ANCHORING_AREA"
+  },
+  {
+    "StateId": "Departure_Vessel_AnchorageArea",
+    "Name": "Departure Vessel Anchoring Area",
+    "Description": "Vessel departed anchoring area",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "ANCHORING_AREA"
+  },
+  {
+    "StateId": "Arrival_Tug_TugZone",
+    "Name": "Arrival Tug TugZone",
+    "Description": "Tug arrived to tug zone (during departure) / Tug arrivals to tug zone",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "TUG",
+    "LocationType": "TUG_ZONE"
+  },
+  {
+    "StateId": "Departure_Tug_TugZone",
+    "Name": "Departure Tug TugZone",
+    "Description": "Tug departed from tug zone",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "TUG",
+    "LocationType": "TUG_ZONE"
+  },
+  {
+    "StateId": "Arrival_Vessel_TugZone",
+    "Name": "Arrival Vessel TugZone",
+    "Description": "Vessel arrived to tug zone (during departure) / Vessel arrives to tug zone ",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "TUG_ZONE"
+  },
+  {
+    "StateId": "Departure_Vessel_TugZone",
+    "Name": "Departure Vessel TugZone",
+    "Description": "Vessel departed from tug zone (with or without towage)",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "TUG_ZONE"
+  },
+  {
+    "StateId": "Arrival_EscortTug_TugZone",
+    "Name": "Arrival EscortTug Tug zone",
+    "Description": "Escort tug arrived to vessel in tug zone",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "TUG_ZONE"
+  },
+  {
+    "StateId": "Departure_EscortTug_TugZone",
+    "Name": "Departure EscortTug Tug Zone",
+    "Description": "Escort tug departed from vessel in tug zone",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "TUG_ZONE"
+  },
+  {
+    "StateId": "Arrival_EscortTug_ETugZone",
+    "Name": "Arrival EscortTug EscortTugZone",
+    "Description": "Escort tug arrived to vessel at escort tug zone",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "ETUG_ZONE"
+  },
+  {
+    "StateId": "Departure_EscortTug_ETugZone",
+    "Name": "Departure EscortTug EscortTugZone",
+    "Description": "Escort tug departed from vessel at escort tug zone",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "ETUG_ZONE"
+  },
+  {
+    "StateId": "Arrival_Vessel_ETugZone",
+    "Name": "Arrival Vessel EscortTugZone",
+    "Description": "Vessel arrived at Escort tug zone",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "ETUG_ZONE"
+  },
+  {
+    "StateId": "Departure_Vessel_ETugZone",
+    "Name": "Departure Vessel Escort Tug zone",
+    "Description": "Vessel departed from escort tug zone (with or without escort)",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "ETUG_ZONE"
+  },
+  {
+    "StateId": "Arrival_Pilot_PilotBA",
+    "Name": "Arrival Pilot PilotBoardingArea",
+    "Description": "Pilot arrived to PilotBoardingArea ",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PILOT",
+    "LocationType": "PILOT_BOARDING_AREA"
+  },
+  {
+    "StateId": "Departure_Pilot_PilotBA",
+    "Name": "Departure Pilot PilotBoardingArea",
+    "Description": "Pilot departed from PilotBoardingArea",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PILOT",
+    "LocationType": "PILOT_BOARDING_AREA"
+  },
+  {
+    "StateId": "Arrival_PilotBoat_PilotBA",
+    "Name": "Arrival Pilotboat PilotBoardingArea",
+    "Description": "Pilotboat arrived to PilotBoardingArea",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "PILOT_BOARDING_AREA"
+  },
+  {
+    "StateId": "Departure_PilotBoat_PilotBA",
+    "Name": "Pilotboat Departure from Pilot Boarding Area",
+    "Description": " Pilotboat departed from PilotBoardingArea",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "PILOT_BOARDING_AREA"
+  },
+  {
+    "StateId": "Arrival_Vessel_PilotBA",
+    "Name": "Arrival Vessel PilotBoardingArea",
+    "Description": "Vessel arrived to PBA during arrival/departure",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "PILOT_BOARDING_AREA"
+  },
+  {
+    "StateId": "Departure_Vessel_PilotBA",
+    "Name": "Departure Vessel PilotBoardingArea",
+    "Description": "Vessel departed from PBA during arrival/departure",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "PILOT_BOARDING_AREA"
+  },
+  {
+    "StateId": "Arrival_Passenger_Vessel",
+    "Name": "Arrival Passenger Vessel",
+    "Description": "All Passengers Onboard",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PASSENGER",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_Passenger_Vessel",
+    "Name": "Departure Passenger Vessel",
+    "Description": "All Passengers dissembarked",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PASSENGER",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_Pilot_Vessel",
+    "Name": "Arrival Pilot Vessel",
+    "Description": "Pilot Onboard (POB)",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PILOT",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_Pilot_Vessel",
+    "Name": "Pilot Vessel Departed",
+    "Description": "Pilot disembark the vessel",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PILOT",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_EscortTug_Vessel",
+    "Name": "Arrival Escort Tug Vessel",
+    "Description": "EscortTug has arrived to the vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_EscortTug_Vessel",
+    "Name": "Departure Escort Tug Vessel",
+    "Description": "EscortTug has left vessel ",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_IceBreaker_Vessel",
+    "Name": "Arrival IceBreaker Vessel",
+    "Description": "IceBreaker has arrived to the vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ICEBREAKER",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_IceBreaker_Vessel",
+    "Name": "Departure IceBreaker Vessel ",
+    "Description": "IceBreaker departed from Vessel, mission completed, aborted",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ICEBREAKER",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_Tug_Vessel",
+    "Name": "Arrival Tug Vessel",
+    "Description": "The tugboat has arrived to the vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "TUG",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_Tug_Vessel",
+    "Name": "Departure Tug Vessel",
+    "Description": "Tug and vessel has been disconnected",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "TUG",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_BunkerVessel_Vessel",
+    "Name": "Bunker Vessel Alongside Vessel",
+    "Description": "Bunker vessel is alongside the vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "BUNKER_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_BunkerVessel_Vessel",
+    "Name": "Bunker Vessel Departed Vessel",
+    "Description": "Bunker vessel has departed the Vessel",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "BUNKER_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_SludgeVessel_Vessel",
+    "Name": "Sludge Vessel Alongside Vessel",
+    "Description": "Sludge vessel is alongside vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "SLUDGE_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_SludgeVessel_Vessel",
+    "Name": "Sludge Vessel Departed Vessel",
+    "Description": "Sludge vessel has departed the vessel",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "SLUDGE_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_SlopVessel_Vessel",
+    "Name": "Slop Vessel Alongside Vessel",
+    "Description": "Slop vessel is alongside vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "SLOP_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_SlopVessel_Vessel",
+    "Name": "Slop Vessel Departed Vessel",
+    "Description": "Slop vessel has departed the vessel",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "SLOP_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_FreshWaterVessel_Vessel",
+    "Name": "Water Vessel Alongside Vessel",
+    "Description": "Water vessel is alongside vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "FRESH_WATER_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_FreshWaterVessel_Vessel",
+    "Name": "Water Vessel Departed Vessel",
+    "Description": "Water vessel has departed the vessel",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "FRESH_WATER_VESSEL",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_PilotBoat_Vessel",
+    "Name": "Pilot Boat Alongside Vessel",
+    "Description": "Pilot boat is alongside vessel",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Departure_PilotBoat_Vessel",
+    "Name": "Pilot Boat Departed Vessel",
+    "Description": "Pilot boat has departed the vessel",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "VESSEL"
+  },
+  {
+    "StateId": "Arrival_Vessel_TrafficArea",
+    "Name": "Arrival Vessel Traffic Area",
+    "Description": "The vessel entered the VTS Traffic area of the port",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "TRAFFIC_AREA"
+  },
+  {
+    "StateId": "Departure_Vessel_TrafficArea",
+    "Name": "Departure Vessel TrafficArea",
+    "Description": "Vessel departed from VTS traffic area",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "TRAFFIC_AREA"
+  },
+  {
+    "StateId": "Arrival_Vessel_PortArea",
+    "Name": "Arrival Vessel Port Area",
+    "Description": "The vessel entered the Port Area (inner line)",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "PORT_AREA"
+  },
+  {
+    "StateId": "Departure_Vessel_PortArea",
+    "Name": "Departure Vessel Port Area",
+    "Description": "The vessel departs from the Port Area (inner line)",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "PORT_AREA"
+  },
+  {
+    "StateId": "Arrival_Tug_HomeBase",
+    "Name": "Arrival Tug HomeBase",
+    "Description": "Tug has arrived to Home base",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "TUG",
+    "LocationType": "HOME_BASE"
+  },
+  {
+    "StateId": "Departure_Tug_HomeBase",
+    "Name": "Departure Tug HomeBase",
+    "Description": "Tug has departed from Home base",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "TUG",
+    "LocationType": "HOME_BASE"
+  },
+  {
+    "StateId": "Arrival_PilotBoat_HomeBase",
+    "Name": "Arrival PilotBoat HomeBase",
+    "Description": "Pilot boat has arrived to Home base",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "HOME_BASE"
+  },
+  {
+    "StateId": "Departure_PilotBoat_HomeBase",
+    "Name": "Departure PilotBoat HomeBase",
+    "Description": "Pilot boat has departed to Home base",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "HOME_BASE"
+  },
+  {
+    "StateId": "Arrival_EscortTug_HomeBase",
+    "Name": "Arrival PilotBoat HomeBase",
+    "Description": "Pilot has arrived to Home Base",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "HOME_BASE"
+  },
+  {
+    "StateId": "Departure_EscortTug_HomeBase",
+    "Name": "Departure PilotBoat HomeBase",
+    "Description": "Pilot has departed from Home Base",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "HOME_BASE"
+  },
+  {
+    "StateId": "Arrival_IceBreaker_RendezvArea",
+    "Name": "Arrival IceBreaker Rendezvous Area",
+    "Description": "IceBreaker arrived at rendezvous area",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ICEBREAKER",
+    "LocationType": "RENDEZV_AREA"
+  },
+  {
+    "StateId": "Departure_IceBreaker_RendezvArea",
+    "Name": "Departure Rendezvous Area",
+    "Description": "IceBreaker departed rendezvous area, with or without vessels connected.",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ICEBREAKER",
+    "LocationType": "RENDEZV_AREA"
+  },
+  {
+    "StateId": "Arrival_Vessel_RendezvArea",
+    "Name": "Arrival Vessel Rendezvous Area",
+    "Description": "Vessel Arrived at rendezvous area",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "RENDEZV_AREA"
+  },
+  {
+    "StateId": "Departure_Vessel_RendezvArea",
+    "Name": "Departure Rendezvous Area",
+    "Description": "Vessel departed rendezvous area, following alone/convoy or connected to IceBreaker",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "RENDEZV_AREA"
+  },
+  {
+    "StateId": "Arrival_IceBreaker_LOC",
+    "Name": "Arrival IceBreaker LOC",
+    "Description": "Icebreaker arrived to an unspecified location",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ICEBREAKER",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Departure_IceBreaker_LOC",
+    "Name": "Departure IceBreaker LOC",
+    "Description": "IceBreaker departed from current LOC (unspecified) to transit to Vessel",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ICEBREAKER",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Arrival_Vessel_LOC",
+    "Name": "Arrival Vessel LOC",
+    "Description": "Vessel arrived to an unspecified location",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Departure_Vessel_LOC",
+    "Name": "Departure Vessel LOC",
+    "Description": "Vessel departed from a particular (unspecified) location",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "VESSEL",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Arrival_PilotBoat_LOC",
+    "Name": "Arrival Pilotboat LOC",
+    "Description": "Pilotboat arrived to an unspecified location",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Departure_PilotBoat_LOC",
+    "Name": "Departure PilotBoat LOC",
+    "Description": "PilotBoath departed from current LOC (unspecified)",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "PILOT_BOAT",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Arrival_EscortTug_LOC",
+    "Name": "Arrival Escort Tug LOC",
+    "Description": "Escort tug arrived to an unspecified location",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Departure_EscortTug_LOC",
+    "Name": "Departure Escort Tug LOC",
+    "Description": "Escort tug transited from previous (unspecified) location to its next towage operation ",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "ESCORT_TUG",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Arrival_Tug_LOC",
+    "Name": "Arrival Tug LOC",
+    "Description": "Tug arrived to an unspecified location",
+    "TimeSequence": "ARRIVAL_TO",
+    "ReferenceObject": "TUG",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "Departure_Tug_LOC",
+    "Name": "Departure Tug LOC",
+    "Description": "Tug transited from previous (unspecified) location to its next towage operation",
+    "TimeSequence": "DEPARTURE_FROM",
+    "ReferenceObject": "TUG",
+    "LocationType": "LOC"
+  },
+  {
+    "StateId": "AnchoringOp_Requested",
+    "Name": "Anchoring Operation Requested",
+    "Description": "Anchoring Operation Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ANCHORING",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "AnchoringOp_ReqReceived",
+    "Name": "Anchoring Operation Request Received",
+    "Description": "Anchoring Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ANCHORING",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "AnchoringOp_Confirmed",
+    "Name": "Anchoring Operation Confirmed",
+    "Description": "Anchoring Operation Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ANCHORING",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "AnchoringOp_Denied",
+    "Name": "Anchoring Operation Denied",
+    "Description": "Anchoring Operation Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ANCHORING",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "AnchoringOp_Cancelled",
+    "Name": "Anchoring Operation Cancelled",
+    "Description": "Anchoring Operation Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ANCHORING",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "MooringOp_Requested",
+    "Name": "Moorers Requested",
+    "Description": "Mooring Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "MOORING_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "MooringOp_ReqReceived",
+    "Name": "Moorers Request Received",
+    "Description": "Mooring Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "MOORING_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "MooringOp_Confirmed",
+    "Name": "Moorers Confirmed",
+    "Description": "Mooring confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "MOORING_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "MooringOp_Denied",
+    "Name": "Mooring Op Denied",
+    "Description": "Mooring Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "MOORING_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "MooringOp_Cancelled",
+    "Name": "Mooring Op Cancelled",
+    "Description": "Mooring Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "MOORING_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "UnMooringOp_Requested",
+    "Name": "Unmooring Requested",
+    "Description": "Departure Moorers Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNMOORING_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "UnMooringOp_ReqReceived",
+    "Name": "Unmoorers Request Received",
+    "Description": "Departure Moorers Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNMOORING_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "UnMooringOp_Confirmed",
+    "Name": "Unmoorers Confirmed",
+    "Description": "Departure Moorers Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNMOORING_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "UnMooringOp_Denied",
+    "Name": "Unmoorers Denied",
+    "Description": "Departure Moorers Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNMOORING_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "UnMooringOp_Cancelled",
+    "Name": "Unmoorers Denied",
+    "Description": "Departure Moorers Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNMOORING_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "BerthShifting_Requested",
+    "Name": "Berth Shifting Requested",
+    "Description": "Berth Shifting Requested",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "BERTH_SHIFTING",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "BerthShifting_ReqReceived",
+    "Name": "Berth Shifting Request Received",
+    "Description": "Berth Shifting Request Received",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "BERTH_SHIFTING",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "BerthShifting_Confirmed",
+    "Name": "Berth Shifting Confirmed",
+    "Description": "Berth Shifting Confirmed",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "BERTH_SHIFTING",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "BerthShifting_Denied",
+    "Name": "Berth Shifting Denied",
+    "Description": "Berth Shifting Denied",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "BERTH_SHIFTING",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "BerthShifting_Cancelled",
+    "Name": "Berth Shifting Cancelled",
+    "Description": "Berth Shifting Cancelled",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "BERTH_SHIFTING",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Bunkering_Requested",
+    "Name": "Bunkering Operation Requested",
+    "Description": "Bunkering Operation Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "BUNKERING_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Bunkering_ReqReceived",
+    "Name": "Bunkering Operation Request Received",
+    "Description": "Bunkering Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "BUNKERING_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Bunkering_Confirmed",
+    "Name": "Bunkering Operation Confirmed",
+    "Description": "Bunkering Operation Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "BUNKERING_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Bunkering_Denied",
+    "Name": "Bunkering Operation Request Denied",
+    "Description": "Bunkering Operation Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "BUNKERING_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Bunkering_Cancelled",
+    "Name": "Bunkering Operation Cancelled",
+    "Description": "Bunkering Operation Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "BUNKERING_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "CargoOp_Requested",
+    "Name": "Cargo Operations Requested",
+    "Description": "Cargo operations requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "CARGO_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "CargoOp_ReqReceived",
+    "Name": "Cargo Operations Request Received",
+    "Description": "Cargo Operations Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "CARGO_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "CargoOp_Confirmed",
+    "Name": "Cargo Operations Confirmed",
+    "Description": "Cargo operations confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "CARGO_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "CargoOp_Denied",
+    "Name": "Cargo Operations Request Denied",
+    "Description": "Cargo Operations Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "CARGO_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "CargoOp_Cancelled",
+    "Name": "Cargo Operations Cancelled",
+    "Description": "Cargo Operations Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "CARGO_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "LoadingOp_Requested",
+    "Name": "Loading Operations Requested",
+    "Description": "Loading Operations Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LOADING_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "LoadingOp_ReqReceived",
+    "Name": "Loading Operations Request Received",
+    "Description": "Loading Operations Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LOADING_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "LoadingOp_Confirmed",
+    "Name": "Loading Operations Confirmed",
+    "Description": "Loading Operations Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LOADING_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "LoadingOp_Denied",
+    "Name": "Loading Operations Request Denied",
+    "Description": "Loading Operations Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LOADING_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "LoadingOp_Cancelled",
+    "Name": "Loading Operations Cancelled",
+    "Description": "Loading Operations Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LOADING_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "UnloadingOp_Requested",
+    "Name": "Unloading Operations Requested",
+    "Description": "Unloading Operations Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNLOADING_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "UnloadingOp_ReqReceived",
+    "Name": "Unloading Operations Request Received",
+    "Description": "Unloading Operations Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNLOADING_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "UnloadingOp_Confirmed",
+    "Name": "Unloading Operations Confirmed",
+    "Description": "Unloading Operations Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNLOADING_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "UnloadingOp_Denied",
+    "Name": "Unloading Operations Request Denied",
+    "Description": "Unloading Operations Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNLOADING_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "UnloadingOp_Cancelled",
+    "Name": "Unloading Operations Cancelled",
+    "Description": "Unloading Operations Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "UNLOADING_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "EscortTowage_Requested",
+    "Name": "Escort Towage Requested",
+    "Description": "A request for Escort towage has been made",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ESCORT_TOWAGE",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "EscortTowage_ReqReceived",
+    "Name": "Escort Towage Request Received",
+    "Description": "A request for Escort towage has been received",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ESCORT_TOWAGE",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "EscortTowage_Confirmed",
+    "Name": "Escort Towage Confirmed",
+    "Description": "Booking of Escort towage confirmed",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ESCORT_TOWAGE",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "EscortTowage_Denied",
+    "Name": "Escort Towage Request Denied",
+    "Description": "A request for Escort towage has been denied",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ESCORT_TOWAGE",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "EscortTowage_Cancelled",
+    "Name": "Escort Towage Cancelled",
+    "Description": "Escort Towage has been cancelled",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ESCORT_TOWAGE",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Forklift_Requested",
+    "Name": "Forklift Requested",
+    "Description": "Forklift Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "FORKLIFT",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Forklift_ReqReceived",
+    "Name": "Forklift Request Received",
+    "Description": "Forklift Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "FORKLIFT",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Forklift_Confirmed",
+    "Name": "Forklift Confirmed",
+    "Description": "Forklift Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "FORKLIFT",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Forklift_Denied",
+    "Name": "Forklift Denied",
+    "Description": "Forklift Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "FORKLIFT",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Forklift_Cancelled",
+    "Name": "Forklift Cancelled",
+    "Description": "Forklift Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "FORKLIFT",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Gangway_Requested",
+    "Name": "Gangway Requested",
+    "Description": "Gangway Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GANGWAY",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Gangway_ReqReceived",
+    "Name": "Gangway Request Received",
+    "Description": "Gangway Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GANGWAY",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Gangway_Confirmed",
+    "Name": "Gangway Confirmed",
+    "Description": "Gangway Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GANGWAY",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Gangway_Denied",
+    "Name": "Gangway Denied",
+    "Description": "Gangway Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GANGWAY",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Gangway_Cancelled",
+    "Name": "Ganway Cancelled",
+    "Description": "Gangway Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GANGWAY",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "GarbageOp_Requested",
+    "Name": "Garbage Operation Requested",
+    "Description": "Garbage Disposal Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GARBAGE_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "GarbageOp_ReqReceived",
+    "Name": "Garbage Operation Request Received",
+    "Description": "Garbage Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GARBAGE_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "GarbageOp_Confirmed",
+    "Name": "Garbage Operation Confirmed",
+    "Description": "Garbage Disposal Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GARBAGE_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "GarbageOp_Denied",
+    "Name": "Garbage Operation Request Denied",
+    "Description": "Garbage Operation Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GARBAGE_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "GarbageOp_Cancelled",
+    "Name": "Garbage Operation Cancelled",
+    "Description": "Garbage Operation Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "GARBAGE_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "IceBreaking_Requested",
+    "Name": "IceBreaking Operation Requested",
+    "Description": "A request for IceBreaking Operation has been made",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ICEBREAKING_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "IceBreaking_ReqReceived",
+    "Name": "IceBreaking Operation Request Received",
+    "Description": "A request for IceBreaking Operation has been received",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ICEBREAKING_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "IceBreaking_Confirmed",
+    "Name": "IceBreaking Operation Confirmed",
+    "Description": "IceBreaking Operation Confirmed",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ICEBREAKING_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "IceBreaking_Denied",
+    "Name": "IceBreaking Operation Request Denied",
+    "Description": "A request for IceBreaking Operation has been denied",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ICEBREAKING_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "IceBreaking_Cancelled",
+    "Name": "IceBreaking Operation Cancelled ",
+    "Description": "IceBreaking Operation Cancelled ",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "ICEBREAKING_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "LubeOil_Requested",
+    "Name": "Lube Oil Operation Requested",
+    "Description": "Lube Oil Operation Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LUBEOIL_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "LubeOil_ReqReceived",
+    "Name": "Lube Oil Operation Request Received",
+    "Description": "Lube Oil Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LUBEOIL_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "LubeOil_Confirmed",
+    "Name": "Lube Oil Operation Confirmed",
+    "Description": "Lube Oil Operation Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LUBEOIL_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "LubeOil_Denied",
+    "Name": "Lube Oil Operation Request Denied",
+    "Description": "Lube Oil Operation Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LUBEOIL_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "LubeOil_Cancelled",
+    "Name": "Lube Oil Operation Cancelled",
+    "Description": "Lube Oil Operation Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "LUBEOIL_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Pilotage_Requested",
+    "Name": "Pilotage Requested",
+    "Description": "Pilot service has been requested",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "PILOTAGE",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Pilotage_ReqReceived",
+    "Name": "Pilotage Request Recieved",
+    "Description": "Pilot service request has been received",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "PILOTAGE",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Pilotage_Confirmed",
+    "Name": "Pilotage Confirmed",
+    "Description": "Pilot service booked",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "PILOTAGE",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Pilotage_Denied",
+    "Name": "Pilotage Request Denied",
+    "Description": "Pilot service request has been denied",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "PILOTAGE",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Pilotage_Cancelled",
+    "Name": "Pilotage Cancelled",
+    "Description": "Pilot service Cancelled",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "PILOTAGE",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "PostCargoSurvey_Requested",
+    "Name": "Post Cargo Survey Requested",
+    "Description": "Post cargo survey requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "POSTCARGOSURVEY",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "PostCargoSurvey_ReqReceived",
+    "Name": "Post Cargo Survey Request Received",
+    "Description": "Post Cargo Survey Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "POSTCARGOSURVEY",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "PostCargoSurvey_Confirmed",
+    "Name": "Post cargo survey confirmed",
+    "Description": "Post cargo survey confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "POSTCARGOSURVEY",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "PostCargoSurvey_Denied",
+    "Name": "Post Cargo Survey Request Denied",
+    "Description": "Post Cargo Survey Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "POSTCARGOSURVEY",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "PostCargoSurvey_Cancelled",
+    "Name": "Post Cargo Survey Request Cancelled",
+    "Description": "Post Cargo Survey Request Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "POSTCARGOSURVEY",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "PreCargoSurvey_Requested",
+    "Name": "Pre Cargo Survey Requested",
+    "Description": "Pre cargo survey requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PRECARGOSURVEY",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "PreCargoSurvey_ReqReceived",
+    "Name": "Pre Cargo Survey Request Received",
+    "Description": "Pre cargo survey request received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PRECARGOSURVEY",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "PreCargoSurvey_Confirmed",
+    "Name": "Pre Cargo Survey Confirmed",
+    "Description": "Pre cargo survey confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PRECARGOSURVEY",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "PreCargoSurvey_Denied",
+    "Name": "Pre Cargo Survey Request Denied",
+    "Description": "Pre cargo survey request denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PRECARGOSURVEY",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "PreCargoSurvey_Cancelled",
+    "Name": "Pre Cargo Survey Request Cancelled",
+    "Description": "Pre cargo survey request cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PRECARGOSURVEY",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Provision_Requested",
+    "Name": "Provision Operation Requested",
+    "Description": "Provision Operation Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PROVISION_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Provision_ReqReceived",
+    "Name": "Provision Operation Request Received",
+    "Description": "Provision Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PROVISION_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Provision_Confirmed",
+    "Name": "Provision Operation Confirmed",
+    "Description": "Provision Operation Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PROVISION_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Provision_Denied",
+    "Name": "Provision Operation Request Denied",
+    "Description": "Provision Operation Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PROVISION_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Provision_Cancelled",
+    "Name": "Provision Operation Request Cancelled",
+    "Description": "Provision Operation Request Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "PROVISION_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Security_Requested",
+    "Name": "Security Requested",
+    "Description": "Security Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SECURITY",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Security_ReqReceived",
+    "Name": "Security Request Received",
+    "Description": "Security Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SECURITY",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Security_Confirmed",
+    "Name": "Security Confirmed",
+    "Description": "Security Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SECURITY",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Security_Denied",
+    "Name": "Security Denied",
+    "Description": "Security Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SECURITY",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Security_Cancelled",
+    "Name": "Security Cancelled",
+    "Description": "Security Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SECURITY",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "SlopOp_Requested",
+    "Name": "Slop Operation Requested",
+    "Description": "Slop Operation requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLOP_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "SlopOp_ReqReceived",
+    "Name": "Slop Operation Request Received",
+    "Description": "Slop Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLOP_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "SlopOp_Confirmed",
+    "Name": "Slop Operation Confirmed",
+    "Description": "Slop Operation confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLOP_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "SlopOp_Denied",
+    "Name": "Slop Operation Request Denied",
+    "Description": "Slop Operation Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLOP_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "SlopOp_Cancelled",
+    "Name": "Slop Operation Cancelled",
+    "Description": "Slop Operation cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLOP_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "SludgeOp_Requested",
+    "Name": "Sludge Operation Requested",
+    "Description": "Sludge Operation requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLUDGE_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "SludgeOp_ReqReceived",
+    "Name": "Sludge Operation Request Received",
+    "Description": "Sludge Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLUDGE_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "SludgeOp_Confirmed",
+    "Name": "Sludge Operation Confirmed",
+    "Description": "Sludge Operation confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLUDGE_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "SludgeOp_Denied",
+    "Name": "Sludge Operation Request Denied",
+    "Description": "Sludge Operation Request Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLUDGE_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "SludgeOp_Cancelled",
+    "Name": "Sludge Operation Cancelled",
+    "Description": "Sludge Operation Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "SLUDGE_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Tours_Requested",
+    "Name": "Tours Requested",
+    "Description": "Tours Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "TOURS",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Tours_ReqReceived",
+    "Name": "Tours Request Received",
+    "Description": "Tours Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "TOURS",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Tours_Confirmed",
+    "Name": "Tours Confirmed",
+    "Description": "Tours Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "TOURS",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Tours_Denied",
+    "Name": "Tours Denied",
+    "Description": "Tours Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "TOURS",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Tours_Cancelled",
+    "Name": "Tours Cancelled",
+    "Description": "Tours Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "TOURS",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "Towage_Requested",
+    "Name": "Towage Requested",
+    "Description": "Harbour/assistance towage service has been requested",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "TOWAGE",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "Towage_ReqReceived",
+    "Name": "Towage Request Received",
+    "Description": "Harbour/assistance towage service request received",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "TOWAGE",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "Towage_Confirmed",
+    "Name": "Towage Confirmed",
+    "Description": "Harbour/assistance towage service booked",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "TOWAGE",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "Towage_Denied",
+    "Name": "Towage Request Denied",
+    "Description": "Harbour/assistance towage service request denied",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "TOWAGE",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "Towage_Cancelled",
+    "Name": "Towage Cancelled",
+    "Description": "Harbour/assistance towage service has been cancelled",
+    "ServiceType": "NAUTICAL",
+    "ServiceObject": "TOWAGE",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "WaterOp_Requested",
+    "Name": "Water Operation Requested",
+    "Description": "Fresh Water Operation Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "WATER_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "WaterOp_ReqReceived",
+    "Name": "Water Operation Request Received",
+    "Description": "Fresh Water Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "WATER_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "WaterOp_Confirmed",
+    "Name": "Water Operation Confirmed",
+    "Description": "Fresh Water Operation Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "WATER_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "WaterOp_Denied",
+    "Name": "Water Operation Request Denied",
+    "Description": "Fresh Water Operation Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "WATER_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "WaterOp_Cancelled",
+    "Name": "Water Operation Cancelled",
+    "Description": "Fresh Water Operation Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "WATER_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "VTSAreaDepart_Confirmed",
+    "Name": "VTS TrafficArea Departure Confirmed",
+    "Description": "VTS confirms that vessel can departure from Traffic area",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_VTSAREA",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "VTSAreaDepart_Denied",
+    "Name": "VTS TrafficArea Departure Denied",
+    "Description": "VTS TrafficArea Departure Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_VTSAREA",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "VTSAreaDepart_ReqReceived",
+    "Name": "VTS TrafficArea Departure Request Received",
+    "Description": "VTS TrafficArea Departure Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_VTSAREA",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "VTSAreaDepart_Requested",
+    "Name": "VTS TrafficArea Departure Requested",
+    "Description": "VTS TrafficArea Departure Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_VTSAREA",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "VTSAreaDepart_Cancelled",
+    "Name": "VTS TrafficArea Departure Cancelled",
+    "Description": "VTS TrafficArea Departure Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_VTSAREA",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "VTSAreaEntry_Confirmed",
+    "Name": "VTS TrafficArea Entry Confirmed",
+    "Description": "VTS confirms that vessel can enter Traffic area",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_VTSAREA",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "VTSAreaEntry_Denied",
+    "Name": "VTS TrafficArea Entry Denied",
+    "Description": "VTS TrafficArea Entry Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_VTSAREA",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "VTSAreaEntry_ReqReceived",
+    "Name": "VTS TrafficArea Entry Request Received",
+    "Description": "VTS TrafficArea Entry Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_VTSAREA",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "VTSAreaEntry_Requested",
+    "Name": "VTS TrafficArea Entry Requested",
+    "Description": "VTS TrafficArea Entry Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_VTSAREA",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "VTSAreaEntry_Cancelled",
+    "Name": "VTS TrafficArea Entry Cancelled",
+    "Description": "VTS TrafficArea Entry Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_VTSAREA",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "DepartureAnchoringOp_Confirmed",
+    "Name": "Departure Anchoring Operation Confirmed",
+    "Description": "Departure Anchoring Operation Confirmed",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_ANCHORING_OPERATION",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "DepartureAnchoringOp_Denied",
+    "Name": "Departure Anchoring Operation Denied",
+    "Description": "Departure Anchoring Operation Denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_ANCHORING_OPERATION",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "DepartureAnchoringOp_ReqReceived",
+    "Name": "Departure Anchoring Operation Request Received",
+    "Description": "Departure Anchoring Operation Request Received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_ANCHORING_OPERATION",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "DepartureAnchoringOp_Requested",
+    "Name": "Departure Anchoring Operation Requested",
+    "Description": "Departure Anchoring Operation Requested",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_ANCHORING_OPERATION",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "DepartureAnchoringOp_Cancelled",
+    "Name": "Departure Anchoring Operation Cancelled",
+    "Description": "Departure Anchoring Operation Cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "DEPARTURE_ANCHORING_OPERATION",
+    "TimeSequence": "CANCELLED"
+  },
+  {
+    "StateId": "PortVisit_Confirmed",
+    "Name": "Arrival Vessel Port Confirmed",
+    "Description": "A port call has been approved for the vessel ",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_PORTAREA",
+    "TimeSequence": "CONFIRMED"
+  },
+  {
+    "StateId": "PortVisit_Denied",
+    "Name": "Arrival Vessel Port Request Denied",
+    "Description": "A port call has been denied",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_PORTAREA",
+    "TimeSequence": "DENIED"
+  },
+  {
+    "StateId": "PortVisit_ReqReceived",
+    "Name": "Arrival Vessel Port Request Received",
+    "Description": "A port call has been received",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_PORTAREA",
+    "TimeSequence": "REQUEST_RECEIVED"
+  },
+  {
+    "StateId": "PortVisit_Requested",
+    "Name": "Arrival Vessel Port Requested",
+    "Description": "A port call has been submitted for a vessel ",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_PORTAREA",
+    "TimeSequence": "REQUESTED"
+  },
+  {
+    "StateId": "PortVisit_Cancelled",
+    "Name": "Arrival Vessel Port Cancelled",
+    "Description": "A port call has been cancelled",
+    "ServiceType": "STATIONARY",
+    "ServiceObject": "ARRIVAL_PORTAREA",
+    "TimeSequence": "CANCELLED"
+  }	
 ]
