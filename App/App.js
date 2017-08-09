@@ -12,7 +12,7 @@ import colorScheme from './config/colors';
 
 import { MenuContext } from 'react-native-popup-menu';
 
-import {LoginNavigator} from './navigators/appnavigator';
+import {LoginNavigator, AppNavigator} from './navigators/appnavigator';
 
 const store = compose(autoRehydrate(), applyMiddleware(ReduxThunk))(createStore)(reducers);
 
@@ -41,7 +41,7 @@ class App extends Component {
         return (
           <Provider store={store}>
             <MenuContext>
-              <LoginNavigator />
+              <AppNavigator />
             </MenuContext>
          </Provider>
         );

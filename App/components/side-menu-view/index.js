@@ -178,7 +178,7 @@ class SideMenu extends Component {
                                 <Text style={styles.menuText} >Logout</Text>     
                             </View>
                         }
-                        onPress={() => navigate()}
+                        onPress={() => navigate('LoginView')}
                     />
                 </List>
             </View>

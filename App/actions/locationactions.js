@@ -42,7 +42,6 @@ export const fetchLocations = (locationType) => {
 }
 
 function createLocation(unlocode, locationType, name, shortName) {
-    console.log(unlocode);
     return {
         name: name,
         shortName: name,

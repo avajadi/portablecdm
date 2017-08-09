@@ -52,7 +52,7 @@ class LoginView extends Component {
     this.props.changeUser(this.state.username, this.state.password);
     this.props.changeFetchReliability(this.state.fetchReliability);
     this.props.fetchLocations()
-    navigate('App');
+    navigate('PortCalls');
   }
 
 

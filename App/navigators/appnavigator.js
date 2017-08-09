@@ -45,7 +45,8 @@ const SettingsNavigator = StackNavigator({
   headerMode: 'none'
 })
 
-export const AppNavigator = DrawerNavigator({  
+export const AppNavigator = DrawerNavigator({
+  Login: { screen: LoginView },  
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   Home: { screen: Home },
@@ -54,15 +55,9 @@ export const AppNavigator = DrawerNavigator({
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
   About: { screen: AboutView },
+  LoginView: { screen: LoginView }
 }, {
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 
   contentComponent: SideMenu,
-});
-
-export const LoginNavigator = StackNavigator({
-  Login: { screen: LoginView},
-  App: { screen: AppNavigator }
-}, {
-  headerMode: 'none',
 });
