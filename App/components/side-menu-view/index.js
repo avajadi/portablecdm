@@ -91,23 +91,7 @@ class SideMenu extends Component {
                         }}
                     />
     
-                    <ListItem
-                        containerStyle={activeItemKey === 'OverView' ? [containerStyle, styles.selectedContainer] : containerStyle}
-                        leftIcon={{name:'remove-red-eye',
-                        color: 'white'
-                        }}
-                        hideChevron
-                        underlayColor={colorScheme.secondaryColor}
-                        title={
-                            <View style={styles.textContainer}>
-                                <Text style={textStyle}>Port Call Overview</Text>     
-                            </View>
-                        }
-                        onPress={() => {
-                            if (haveSelectedPortCall && activeItemKey !== 'OverView')
-                                navigate('OverView');
-                        }}
-                    />
+                    
 
                     <ListItem
                         containerStyle={activeItemKey === 'TimeLine' ? [containerStyle, styles.selectedContainer] : containerStyle}
@@ -144,20 +128,6 @@ class SideMenu extends Component {
                         }}
                     />
 
-                    {/*<ListItem
-                        containerStyle={activeItemKey === 'MultiView' ? [containerStyle, styles.selectedContainer] : containerStyle}
-                        leftIcon={{
-                          name:'dashboard', 
-                          color: 'white'
-                          }}
-                        hideChevron
-                        underlayColor={colorScheme.secondaryColor}
-                        title={
-                            <View style={styles.textContainer}>
-                                <Text style={textStyle}>PortCall Multiple View</Text>     
-                            </View>
-                        }
-                    />*/}
                     <ListItem
                         containerStyle={activeItemKey === 'Settings' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
                         leftIcon={{
@@ -178,6 +148,24 @@ class SideMenu extends Component {
                     />
 
                     <ListItem
+                        containerStyle={activeItemKey === 'About' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
+                        leftIcon={{name:'info',
+                        color: 'white'
+                        }}
+                        hideChevron
+                        underlayColor={colorScheme.secondaryColor}
+                        title={
+                            <View style={styles.textContainer}>
+                                <Text style={styles.menuText}>About</Text>     
+                            </View>
+                        }
+                        onPress={() => {
+                            if (activeItemKey !== 'About')
+                                navigate('About');
+                        }}
+                    />
+
+                    <ListItem
                         containerStyle={styles.menuContainer}
                         leftIcon={{
                           name:'exit-to-app',
@@ -190,6 +178,7 @@ class SideMenu extends Component {
                                 <Text style={styles.menuText} >Logout</Text>     
                             </View>
                         }
+                        onPress={() => navigate()}
                     />
                 </List>
             </View>

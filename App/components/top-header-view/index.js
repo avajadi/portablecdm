@@ -41,7 +41,7 @@ export default class TopHeader extends Component {
             color= {colorScheme.primaryContainerColor}
             size= {50}
             underlayColor='transparent'
-            onPress={() => { console.log("I am here"); this.props.navigation.goBack()}}
+            onPress={() => { this.props.navigation.goBack()}}
           /> 
           }
           <Text 

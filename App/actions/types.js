@@ -35,6 +35,7 @@ export const SETTINGS_ADD_VESSEL_TO_LIST = 'settings_add_vessel_to_list';
 export const SETTINGS_REMOVE_VESSEL_FROM_LIST = 'settings_remove_vessel_from_list';
 export const SETTINGS_CHANGE_USER = 'settings_change_user';
 export const SETTINGS_CHANGE_FETCH_RELIABILITY = 'settings_change_fetch_reliability';
+export const SETTINGS_CHANGE_FAVORITE_STATE_LIST = 'settings_change_favorite_state_list';
 export const FETCH_VESSEL = 'fetch_vessel';
 export const FETCH_VESSEL_SUCCESS = 'fetch_vessel_success';
 export const FETCH_VESSEL_CLEAR = 'fetch_vessel_clear';

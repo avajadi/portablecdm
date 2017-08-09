@@ -32,24 +32,6 @@ class Settings extends Component {
       <View style={styles.container}>
         <TopHeader title = 'Settings' firstPage navigation={this.props.navigation}/>
         <ScrollView style={styles.scrollContainer}>
-          <View style={styles.formContainerStyle}>
-          <Text style={styles.titleStyle}>Connection:</Text>
-          <FormLabel>UNLOCODE: </FormLabel>
-          <FormInput
-            value={connection.unlocode}
-            onChangeText={text => changePortUnlocode(text)}
-          />
-          <FormLabel>Host: </FormLabel>
-          <FormInput 
-            value={connection.host} 
-            onChangeText={(text) => changeHostSetting(text)}
-          />
-          <FormLabel>Port: </FormLabel>
-          <FormInput 
-            value={connection.port}
-            onChangeText={(text) => changePortSetting(text)}
-          />
-          </View>
           <Button
             color={colorScheme.primaryTextColor}
             title="Edit Favorite States"

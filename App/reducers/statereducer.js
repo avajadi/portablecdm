@@ -5,7 +5,6 @@ import stateCatalogue from './state_catalogue.json';
 const INITIAL_STATE = { 
   stateCatalogue: stateCatalogue,
   favoriteStates: [],
-  // lookup: {},
   stateById: function(id) {
     return this.stateCatalogue.find(stateDef => stateDef.StateId === id);
   },
@@ -14,17 +13,7 @@ const INITIAL_STATE = {
   }
 };
 
-// let lookup = {};
-// for(let i=0; i<INITIAL_STATE.stateCatalogue.length; i++) {
-//   lookup[INITIAL_STATE.stateCatalogue[i].StateId] = INITIAL_STATE.stateCatalogue[i];
-// }
-
-// INITIAL_STATE.lookup = lookup;
-// INITIAL_STATE.stateById = function(id) {
-//   return this.lookup[id];
-// }
-
-
+// This only works because
 INITIAL_STATE.stateById = INITIAL_STATE.stateById.bind(INITIAL_STATE);
 
 const stateReducer = (state = INITIAL_STATE, action) => {

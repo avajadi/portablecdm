@@ -18,15 +18,7 @@ import LoginView    from '../components/login-view';
 import SelectFavoriteState from '../components/select-favorite-state-view';
 import VesselLists from '../components/vessel-lists-view';
 import SideMenu     from '../components/side-menu-view';
-
-/*
-const FavoriteStatesNavigator = StackNavigator({
-  StateList: { screen: StateList },
-  SelectFavoriteStates: { screen: SelectFavoriteState },
-}, {
-  headerMode: 'none'
-})
-*/
+import AboutView    from '../components/about-view';
 
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
@@ -54,16 +46,15 @@ const SettingsNavigator = StackNavigator({
 })
 
 export const AppNavigator = DrawerNavigator({  
-  // OverView: { screen: OverView },
-  // Login : { screen: LoginView },  
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   Home: { screen: Home },
   FavoriteStatesSideMenu: { screen: StateList },
-  //FavoriteStates: { screen: FavoriteStatesNavigator },
   OverView: { screen: OverView },
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
+  About: { screen: AboutView },
+  Login: { screen: LogoutNavigator}
 }, {
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 
@@ -76,5 +67,3 @@ export const LoginNavigator = StackNavigator({
 }, {
   headerMode: 'none',
 });
-
-

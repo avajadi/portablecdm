@@ -12,8 +12,8 @@ import {
 
 const INITIAL_STATE = {
   connection: {
-    host: 'http://dev.portcdm.eu',
-    port: '8080',
+    host: '',
+    port: '',
     username: '',
     password: '',
     unlocode: ''

@@ -5,11 +5,16 @@ import {
   changeUser,
   fetchLocations,
   changeFetchReliability,
+  changePortUnlocode,
+  changeHostSetting,
+  changePortSetting
 } from '../../actions';
 
 import {
   View,
   StyleSheet,
+  ScrollView,
+  Image
 } from 'react-native';
 
 import {
@@ -52,30 +57,57 @@ class LoginView extends Component {
 
 
   render() {
-  
+    const { connection } = this.props;
 
     return(
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text h3><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
 
-        <FormLabel>Username</FormLabel>
-        <FormInput 
-          value={this.state.username}
-          onChangeText={text => this.setState({username: text})
-        }/>
-        <FormLabel style={{marginTop: 10}}>Password</FormLabel>
-        <FormInput
-          secureTextEntry
-          value={this.state.password}
-          onChangeText={text => this.setState({password: text})}
-        />
+        <View
+          style={styles.partContainer}
+        >
+          <FormLabel>Username</FormLabel>
+          <FormInput
+            autoCorrent={false}
+            placeholder="Type in your username" 
+            value={this.state.username}
+            onChangeText={text => this.setState({username: text})
+          }/>
+          <FormLabel>Password</FormLabel>
+          <FormInput
+            autoCorrent={false}
+            secureTextEntry
+            placeholder="Type in your password" 
+            value={this.state.password}
+            onChangeText={text => this.setState({password: text})}
+          />
+        </View>
 
-        <Menu style={{marginTop: 30}}>
-          <MenuTrigger text="Select portCDM instance" />
-          <MenuOptions>
-            <MenuOption value={10} text="test1" />
-            <MenuOption value={10} text="test2" />
-          </MenuOptions>
-        </Menu>
+        <View
+          style={styles.partContainer}
+        >
+          <FormLabel>UN/LOCODE: </FormLabel>
+            <FormInput
+              autoCorrent={false}
+              placeholder="UN/Locode for the portCDM instace" 
+              value={connection.unlocode}
+              onChangeText={text => this.props.changePortUnlocode(text)}
+            />
+            <FormLabel>Host: </FormLabel>
+            <FormInput 
+              autoCorrent={false}
+              placeholder="Host adress for the portCDM instance"
+              value={connection.host} 
+              onChangeText={(text) => this.props.changeHostSetting(text)}
+            />
+            <FormLabel>Port: </FormLabel>
+            <FormInput 
+              autoCorrent={false}
+              placeholder="Port for the portCDM instance"
+              value={connection.port}
+              onChangeText={(text) => this.props.changePortSetting(text)}
+            />
+          </View>
 
         <CheckBox
           containerStyle={{
@@ -94,8 +126,8 @@ class LoginView extends Component {
           title="Continue" 
           disabled={this.state.username.length === 0 || this.state.password.length === 0}
           onPress={this.onContinuePress}
-        />      
-      </View>
+        />
+      </ScrollView>
     );
   }
 }
@@ -107,14 +139,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  partContainer: {
+    borderWidth: 1,
+    borderColor: colorScheme.primaryColor,
+    borderRadius: 30
+  }
 });
 
 function mapStateToProps(state) {
   return {
     storeUserName: state.settings.connection.username,
     storePassword: state.settings.connection.password,
-    fetchReliability: state.settings.fetchReliability
+    fetchReliability: state.settings.fetchReliability,
+    connection: state.settings.connection,
   }
 }
 
-export default connect(mapStateToProps, {changeUser, fetchLocations, changeFetchReliability})(LoginView);
+export default connect(mapStateToProps, {changeUser, fetchLocations, changeFetchReliability, changeHostSetting, changePortSetting, changePortUnlocode})(LoginView);
