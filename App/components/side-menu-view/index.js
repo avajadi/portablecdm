@@ -29,8 +29,8 @@ class SideMenu extends Component {
 
     const haveSelectedPortCall = !!selectedPortCall;
     const containerStyle = haveSelectedPortCall ? styles.menuContainer : [styles.menuContainer, styles.unavailableContainer];
-    const textStyle = haveSelectedPortCall ? styles.menuText : [styles.menuText, styles.unavailableMenuText];
-    
+    const textStyle = haveSelectedPortCall && activeItemKey !== 'Login' ? styles.menuText : [styles.menuText, styles.unavailableMenuText];
+    const canBeAccessedEverywhereExceptOnLogin = activeItemKey === 'Login' ? [styles.menuText, styles.unavailableMenuText] : styles.menuText;
     return(
         <ScrollView style={styles.container}>    
             <View style={styles.headerContainer}>
@@ -66,10 +66,12 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText}>Select PortCall</Text>     
+                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Select PortCall</Text>     
                             </View>
                         }
-                        onPress={() => navigate('PortCalls')}
+                        onPress={() => {
+                            if(activeItemKey !== 'Login') navigate('PortCalls')}
+                        }
                     />
      
                     <ListItem
@@ -138,11 +140,11 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} >Settings</Text>     
+                                <Text style={canBeAccessedEverywhereExceptOnLogin} >Settings</Text>     
                             </View>
                         }
                         onPress={() => {
-                            if(activeItemKey !== 'Settings')
+                            if(activeItemKey !== 'Settings' && activeItemKey != 'Login')
                                 navigate('Settings');
                         }}
                     />
@@ -156,11 +158,11 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText}>About</Text>     
+                                <Text style={canBeAccessedEverywhereExceptOnLogin}>About</Text>     
                             </View>
                         }
                         onPress={() => {
-                            if (activeItemKey !== 'About')
+                            if (activeItemKey !== 'About' && activeItemKey != 'Login')
                                 navigate('About');
                         }}
                     />
@@ -175,10 +177,13 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={styles.menuText} >Logout</Text>     
+                                <Text style={canBeAccessedEverywhereExceptOnLogin} >Change user/portCDM instance</Text>     
                             </View>
                         }
-                        onPress={() => navigate('LoginView')}
+                        onPress={() => {
+                                if(activeItemKey !== 'Login') navigate('Login')
+                            }
+                        }
                     />
                 </List>
             </View>

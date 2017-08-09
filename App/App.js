@@ -10,8 +10,6 @@ import {fetchLocations} from './actions';
 import reducers from './reducers';
 import colorScheme from './config/colors';
 
-import { MenuContext } from 'react-native-popup-menu';
-
 import {LoginNavigator, AppNavigator} from './navigators/appnavigator';
 
 const store = compose(autoRehydrate(), applyMiddleware(ReduxThunk))(createStore)(reducers);
@@ -40,9 +38,7 @@ class App extends Component {
     } else {
         return (
           <Provider store={store}>
-            <MenuContext>
-              <AppNavigator />
-            </MenuContext>
+            <AppNavigator />
          </Provider>
         );
     }

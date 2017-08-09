@@ -55,7 +55,6 @@ export const AppNavigator = DrawerNavigator({
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
   About: { screen: AboutView },
-  LoginView: { screen: LoginView }
 }, {
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 

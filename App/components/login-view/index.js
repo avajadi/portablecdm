@@ -25,13 +25,6 @@ import {
   CheckBox
 } from 'react-native-elements';
 
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger
-} from 'react-native-popup-menu';
-
 import colorScheme from '../../config/colors';
 
 class LoginView extends Component {

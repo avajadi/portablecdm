@@ -25,7 +25,6 @@
     "react-native-collapsible": "^0.8.0",
     "react-native-elements": "^0.13.0",
     "react-native-modal-datetime-picker": "^4.7.0",
-    "react-native-popup-menu": "^0.8.0",
     "react-native-vector-icons": "*",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.5",

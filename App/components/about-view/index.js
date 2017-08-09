@@ -30,6 +30,10 @@ export default class AboutView extends Component {
               source={require('../../assets/stmLogo.jpg')} 
               style={{height: 50, width: 92}}
             /> 
+            <View style={{flexDirection: 'column'}}>
+              <Text h4><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
+              <Text style={{fontSize: 9}}>Version 1.0</Text>
+            </View>
             <Image
               source={require('../../assets/riseLogo.png')}
               style={{height: 50, width: 50}}
