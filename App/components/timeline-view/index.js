@@ -17,12 +17,12 @@ import {
     Text
 } from 'react-native-elements';
 
-import portCDM from '../../services/backendservices';
+import TopHeader from '../top-header-view';
+import OperationView from './sections/operationview';
+
 import { fetchPortCallOperations } from '../../actions';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
-import TopHeader from '../top-header-view';
-import OperationView from './sections/operationview';
 
 class TimeLineView extends Component {
     constructor(props) {
@@ -99,7 +99,6 @@ const styles = StyleSheet.create ({
 
     },
     headerText: {
-       // fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 20,
         color: colorScheme.primaryTextColor,

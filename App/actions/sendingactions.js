@@ -1,6 +1,5 @@
 import * as types from './types';
 
-// import portCDM, { reliability } from '../services/backendservices'
 import {objectToXml} from '../util/xmlUtils';
 
 

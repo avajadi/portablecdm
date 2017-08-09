@@ -1,6 +1,4 @@
 import * as types from './types';
-import portCDM, { reliability } from '../services/backendservices'
-
 
 export * from './filteractions';
 export * from './settingsactions';

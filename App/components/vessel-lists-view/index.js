@@ -110,6 +110,7 @@ class VesselList extends Component {
           })}
         </List>
 
+        {/* Modal to display information about the chosen list, and add vessels to it */}
         <Modal
           visible={this.state.listDetailModalVisible}
           onRequestClose={this.closeModal}
@@ -164,7 +165,6 @@ class VesselList extends Component {
                   title="Add to List"
                   textStyle={{color: colorScheme.primaryTextColor, fontSize: 9}}
                   buttonStyle={styles.buttonStyle}
-
                   onPress={() => this.props.addVesselToList(this.props.foundVessel, this.state.selectedList)}                
                 />
               </View>

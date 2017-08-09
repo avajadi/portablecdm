@@ -1,5 +1,4 @@
 import * as types from './types';
-import portCDM, { reliability } from '../services/backendservices'
 
 export const clearPortCallSelection = () => {
     return {
@@ -14,6 +13,10 @@ export const selectPortCall = (portCall) => {
     };
 }
 
+/**Given a URN for a vessel, fetches the vessel information from the backend
+ * 
+ * @param {string} vesselUrn 
+ */
 export const fetchVessel = (vesselUrn) => {
     return (dispatch, getState) => {
     
@@ -33,15 +36,64 @@ export const fetchVessel = (vesselUrn) => {
     }
 };
 
+/**
+ * fetches all portcalls matching the filter criteries defined in the filterReducer
+ */
+export const fetchPortCalls = () => {
+  return (dispatch, getState) => {
+    dispatch({type: types.FETCH_PORTCALLS});
+    
+    const connection = getState().settings.connection;
+    const filters = getState().filters;
+    const filterString = createFilterString(filters, getState);
+    return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PortCDM-UserId': connection.username,
+          'X-PortCDM-Password': connection.password,
+          'X-PortCDM-APIKey': 'eeee'
+        }
+      })
+        .then(result => result.json())
+        .then(portCalls => applyFilters(portCalls, filters))
+        .then(portCalls => Promise.all(portCalls.map(portCall => {
+            return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-PortCDM-UserId': connection.username,
+                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-APIKey': 'eeee'
+                }
+            })
+            .then(result => result.json())
+            .then(vessel => {portCall.vessel = vessel; return portCall})
+        })))
+        .then(portCalls => {
+            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
+        })
+  };
+}
+
+// Helper functions for fetchPortCalls
 function getFilterString(filter, value, count) {
     return count <= 0 ? `?${filter}=${value}` : `&${filter}=${value}`
 }
 
+/**
+ * Given the filters object from the Redux Store and the getState function, converts all the filters
+ * to a actual query string
+ * 
+ * @param {object} filters 
+ * @param {function} getState 
+ */
 function createFilterString(filters, getState) {
     let filterString = '';
     let count = 0;
     for(filter in filters) {
         if(!filters.hasOwnProperty(filter)) continue;
+        // Vessel lists filter are a bunch of &vessel=XX&vessel=XX
         if(filter === 'vesselList') {
             const vesselListStr = filters[filter];
             if(vesselListStr === 'all') {
@@ -97,43 +149,12 @@ function createFilterString(filters, getState) {
     return filterString;
 }
 
-export const fetchPortCalls = () => {
-  return (dispatch, getState) => {
-    dispatch({type: types.FETCH_PORTCALLS});
-    
-    const connection = getState().settings.connection;
-    const filters = getState().filters;
-    const filterString = createFilterString(filters, getState);
-    return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-PortCDM-UserId': connection.username,
-          'X-PortCDM-Password': connection.password,
-          'X-PortCDM-APIKey': 'eeee'
-        }
-      })
-        .then(result => result.json())
-        .then(portCalls => applyFilters(portCalls, filters))
-        .then(portCalls => Promise.all(portCalls.map(portCall => {
-            return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-PortCDM-UserId': connection.username,
-                    'X-PortCDM-Password': connection.password,
-                    'X-PortCDM-APIKey': 'eeee'
-                }
-            })
-            .then(result => result.json())
-            .then(vessel => {portCall.vessel = vessel; return portCall})
-        })))
-        .then(portCalls => {
-            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
-        })
-  };
-}
-
+/**
+ * 
+ * 
+ * @param {[object]} portCalls 
+ * @param {object} filters 
+ */
 function applyFilters(portCalls, filters) {
     if(filters.arrivingWithin === 0 && filters.departingWithin === 0) return portCalls; // no need to filter
 
@@ -172,7 +193,13 @@ function applyFilters(portCalls, filters) {
 
     return portCalls;
 }
+// end helper functions
 
+/**
+ * Fetches all operations for the port call with the specified id 
+ * 
+ * @param {string} portCallId 
+ */
 export const fetchPortCallOperations = (portCallId) => {
   return (dispatch, getState) => {
     dispatch({type: types.FETCH_PORTCALL_OPERATIONS})
@@ -188,6 +215,7 @@ export const fetchPortCallOperations = (portCallId) => {
         }
     )
     .then(result => result.json())
+    // Sort the operations, port_visits first, then in 
     .then(sortOperations)
     .then(filterStatements)
     .then(operations => {

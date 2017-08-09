@@ -1,5 +1,3 @@
-  // TODO: tiderna blir fel!, den antar UTC eller nåt!
-
 /**
  * 
  * @param {Date} date 

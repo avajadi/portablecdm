@@ -10,7 +10,6 @@ import {
     TouchableHighlight,
     Picker
 } from 'react-native';
-import colorScheme from '../../../config/colors';
 import {
     List,
     ListItem,
@@ -35,6 +34,8 @@ import {
     filterClearArrivingDepartureTime,
     filterChangeOnlyFuturePortCalls,
 } from '../../../actions';
+
+import colorScheme from '../../../config/colors';
 
 class FilterMenu extends Component {
 
