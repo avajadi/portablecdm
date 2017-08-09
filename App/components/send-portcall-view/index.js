@@ -31,7 +31,6 @@ import LocationSelection from './sections/locationselection';
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
 import { getDateTimeString } from '../../util/timeservices';
-import portCDM from '../../services/backendservices';
 
 class SendPortcall extends Component {
   constructor(props) {
@@ -54,11 +53,10 @@ class SendPortcall extends Component {
   }
 
   // Handle modal for selection locations
+  // selectionFor = atLocation, toLocation, fromLocation
   _showLocationSelectionModal = (selectLocationFor) => this.setState({showLocationSelectionModal: true, selectLocationFor: selectLocationFor});
   _hideLocationSelectionModal = () => this.setState({showLocationSelectionModal: false})
    
-
-
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
@@ -131,7 +129,7 @@ class SendPortcall extends Component {
               onPress={this._showDateTimePicker}/>
           </View>
 
-          {/* Location selections! */}
+          {/* Location display */}
           {/* if ServiceType of this state is nautical, we need "from" and "to" locations  */}
           { (state.ServiceType === 'NAUTICAL') &&
             <View>

@@ -25,8 +25,6 @@ class StateList extends Component {
     this.props.navigation.navigate('SelectFavoriteStatesTimeLine');
   }
 
-
-
   render() {
     const { params } = this.props.navigation.state;
     const { navigate } = this.props.navigation;
@@ -56,18 +54,6 @@ class StateList extends Component {
     );
   }
 }
-
-// class StateListItem extends Component {
-//   render() {
-//     const {navigate} = this.props.navigation;
-
-//     return(
-//       <Button 
-//         title={this.props.itemState.name}
-//         onPress={() => {navigate('SendPortCall', {selectedState: this.props.itemState})}} />
-//     );
-//   }
-// }
 
 const styles = StyleSheet.create({
   container: {

@@ -21,6 +21,12 @@ const INITIAL_STATE = {
   maxPortCallsFetched: 5000,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
+  /*
+    vesselLists: {
+      name_of_list: [vesselObject],
+      name_of_other_list: [vesselObject, vesselObject]
+    }
+  */
   vesselLists: {},
   fetchReliability: false,
 }
