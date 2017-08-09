@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import {Text, Dimensions} from 'react-native';
-import { StackNavigator, DrawerNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
-
-import ActorList    from '../components/actor-list-view';
-import Home         from '../components/home-view';
 import SendPortCall from '../components/send-portcall-view';
 import StateList    from '../components/state-list-view';
 import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 import StateDetails from '../components/timeline-view/sections/statedetails';
-import OverView     from '../components/overview-view';
 import VesselInfo   from '../components/vessel-info-view';
 import Settings     from '../components/settings-view';
 import LoginView    from '../components/login-view';
@@ -49,9 +45,7 @@ export const AppNavigator = DrawerNavigator({
   Login: { screen: LoginView },  
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
-  Home: { screen: Home },
   FavoriteStatesSideMenu: { screen: StateList },
-  OverView: { screen: OverView },
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
   About: { screen: AboutView },

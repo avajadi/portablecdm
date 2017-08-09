@@ -15,7 +15,6 @@ import {
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 
-
 export default class AboutView extends Component {
   render() {
     return(
@@ -25,6 +24,7 @@ export default class AboutView extends Component {
           firstPage
         />
         <ScrollView>
+          {/* Top section, with logos and app name */}
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 10, marginLeft: 10, marginTop: 15}}>
             <Image
               source={require('../../assets/stmLogo.jpg')} 
