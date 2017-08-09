@@ -25,7 +25,6 @@ const INITIAL_STATE = {
   fetchReliability: false,
 }
 
-
 const settingsReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
     case SETTINGS_CHANGE_PORT_UNLOCODE: {
