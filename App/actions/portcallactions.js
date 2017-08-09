@@ -183,9 +183,8 @@ export const fetchPortCallOperations = (portCallId) => {
             headers: {
                 'X-PortCDM-UserId': connection.username,
                 'X-PortCDM-Password': connection.password,
-                'X-PortCDM-APIKey': 'eeee'
+                'X-PortCDM-APIKey': 'PortableCDM'
             }
-            
         }
     )
     .then(result => result.json())

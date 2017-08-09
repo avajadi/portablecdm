@@ -27,7 +27,7 @@ const INITIAL_STATE = {
 
 const settingsReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
-    case SETTINGS_CHANGE_PORT_UNLOCODE: {
+    case SETTINGS_CHANGE_PORT_UNLOCODE: { //... = shallow copy, : = append/replace
       return { ...state, connection: { ...state.connection, unlocode: action.payload}}
     }
     case SETTINGS_CHANGE_FETCH_RELIABILITY:
@@ -48,7 +48,7 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, vesselLists: vesselListsCopy };
     case SETTINGS_ADD_VESSEL_TO_LIST:
       const newAddVesselList = [...state.vesselLists[action.payload.listName]];
-      // We dont want duplicate's
+      // We dont want duplicates
       if(newAddVesselList.findIndex(vessel => vessel.imo === action.payload.vessel.imo) < 0)
         newAddVesselList.push(action.payload.vessel);
       return { ...state, vesselLists: { ...state.vesselLists, [action.payload.listName]: newAddVesselList} }
