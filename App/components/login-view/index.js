@@ -32,8 +32,11 @@ class LoginView extends Component {
     super(props);
 
     this.state = {
-      username: props.storeUserName,
-      password: props.storePassword,
+      username: props.connection.username,
+      password: props.connection.password,
+      unlocode: props.connection.unlocode,
+      host: props.connection.host,
+      port: props.connection.port,
       fetchReliability: props.fetchReliability,
     }
 
@@ -43,14 +46,24 @@ class LoginView extends Component {
   onContinuePress() {
     const { navigate } = this.props.navigation;
     this.props.changeUser(this.state.username, this.state.password);
+    this.props.changePortUnlocode(this.state.unlocode);
+    this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
+    this.props.changePortSetting(this.state.port);
     this.props.changeFetchReliability(this.state.fetchReliability);
-    this.props.fetchLocations()
+    this.props.fetchLocations(); //Call last before navigate
     navigate('PortCalls');
+  }
+
+  reformatHostHttp(rawHost) {
+    if(!rawHost.startsWith("http"))
+      return "http://" + rawHost;
+    
+    return rawHost;
   }
 
 
   render() {
-    const { connection } = this.props;
+    const connection = this.props.connection;
 
     return(
       <ScrollView contentContainerStyle={styles.container}>
@@ -83,22 +96,22 @@ class LoginView extends Component {
             <FormInput
               autoCorrent={false}
               placeholder="UN/Locode for the portCDM instace" 
-              value={connection.unlocode}
-              onChangeText={text => this.props.changePortUnlocode(text)}
+              value={this.state.unlocode}
+              onChangeText={text => this.setState({unlocode: text})}
             />
             <FormLabel>Host: </FormLabel>
             <FormInput 
               autoCorrent={false}
               placeholder="Host adress for the portCDM instance"
-              value={connection.host} 
-              onChangeText={(text) => this.props.changeHostSetting(text)}
+              value={this.state.host} 
+              onChangeText={(text) => this.setState({host: text})}
             />
             <FormLabel>Port: </FormLabel>
             <FormInput 
               autoCorrent={false}
               placeholder="Port for the portCDM instance"
-              value={connection.port}
-              onChangeText={(text) => this.props.changePortSetting(text)}
+              value={this.state.port}
+              onChangeText={(text) => this.setState({port: text})}
             />
           </View>
 
@@ -141,8 +154,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    storeUserName: state.settings.connection.username,
-    storePassword: state.settings.connection.password,
     fetchReliability: state.settings.fetchReliability,
     connection: state.settings.connection,
   }
