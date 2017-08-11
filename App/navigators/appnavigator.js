@@ -11,6 +11,7 @@ import StateDetails from '../components/timeline-view/sections/statedetails';
 import VesselInfo   from '../components/vessel-info-view';
 import Settings     from '../components/settings-view';
 import LoginView    from '../components/login-view';
+import LoginKeyCloakView from '../components/loginkeycloak-view';
 import SelectFavoriteState from '../components/select-favorite-state-view';
 import VesselLists from '../components/vessel-lists-view';
 import SideMenu     from '../components/side-menu-view';
@@ -42,7 +43,8 @@ const SettingsNavigator = StackNavigator({
 })
 
 export const AppNavigator = DrawerNavigator({
-  Login: { screen: LoginView },  
+  //Login: { screen: LoginView },  
+  LoginKeyCloak: { screen: LoginKeyCloakView },
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   FavoriteStatesSideMenu: { screen: StateList },
