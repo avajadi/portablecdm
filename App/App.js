@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { persistStore, autoRehydrate } from 'redux-persist';
+import express from 'express';
 
 import {fetchLocations} from './actions';
 
@@ -44,5 +45,24 @@ class App extends Component {
     }
   }
 }
+
+// app.get('/*', (req, res) => {
+
+//   console.log('Request!');
+
+//   let qs = req._parsedUrl.query;
+//   if (process.env.NODE_ENV === 'development') {
+//     res.redirect('exp://192.168.0.80:19000/+auth/?' + qs);
+//   } else {
+//       //TODO!
+//     //res.redirect('exp://exp.host/@community/with-facebook-auth/+redirect/?' + qs);
+//   }
+// });
+
+// // app.get('/', (req, res) => {
+// //   res.sendFile('facebook.html', {root: __dirname });
+// // });
+
+// app.listen(99);
 
 export default App;

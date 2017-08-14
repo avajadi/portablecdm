@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Constants, WebBrowser} from 'expo';
 import { connect } from 'react-redux';
 
 import {
@@ -19,6 +20,12 @@ import {
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
+const RedirectURI = __DEV__
+? 'http://localhost:99/*'
+  : 'https://redirect-with-params-vwlrmrqtzt.now.sh/facebook';
+const MaritimeAuthURI = `https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=0.1-urn%3Amrn%3Astm%3Aservice%3Ainstance%3Aviktoria%3Asummer-app&redirect_uri=${RedirectURI}&response_mode=fragment&response_type=code&scope=openid`
+
+
 class LoginKeyCloakView extends Component {
     constructor(props) {
         super(props);
@@ -30,11 +37,17 @@ class LoginKeyCloakView extends Component {
         this.onLoginPress = this.onLoginPress.bind(this);
     }
 
-    onLoginPress() {
-        Linking.openURL("https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=0.1-urn%3Amrn%3Astm%3Aservice%3Ainstance%3Aviktoria%3Asummer-app&redirect_uri=localhost:8080&response_mode=fragment&response_type=code&scope=openid");
+    onLoginPress = async () => {
+        Linking.addEventListener('url', this.handleMaritimeRedirect);
+        let result = await WebBrowser.openBrowserAsync(MaritimeAuthURI);
+        console.log(`Result: ${result}`);
+        Linking.removeEventListener('url', this.handleMaritimeRedirect);
+    }
 
-        // const { navigate } = this.props.navigation;
-        // navigate('PortCalls');
+    handleMaritimeRedirect = async event => {
+        WebBrowser.dismissBrowser();
+
+        console.log(event.url);
     }
 
     render() {

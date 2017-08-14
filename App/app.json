@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "portCDM app",
+    "name": "PortableCDM",
     "icon": "./assets/portablecdm_app_icon.png",
     "version": "1.0.0",
     "slug": "portcdm-app",
     "sdkVersion": "17.0.0",
+    "scheme" : "localhost:99/*",
     "ios": {
       "bundleIdentifier": "com.viktoria.portcdmapp"
     },
