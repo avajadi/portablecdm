@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "slug": "portcdm-app",
     "sdkVersion": "17.0.0",
-    "scheme" : "localhost:99/*",
+    "scheme" : "pacdm",
     "ios": {
       "bundleIdentifier": "com.viktoria.portcdmapp"
     },

@@ -1,0 +1,11 @@
+<script>
+    if(true){
+    //if (window.location.hash) {
+      var query = window.location.hash.replace(/^#/,'');
+      var url = 'exp://192.168.0.80:19000/' + '?hello=olala';/// + query;
+      window.location = url;
+      document.write('Redirecting...');
+    } else {
+      document.write('Uh oh something went wrong');
+    }
+</script>

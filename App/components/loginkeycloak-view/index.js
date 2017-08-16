@@ -20,34 +20,41 @@ import {
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
-const RedirectURI = __DEV__
-? 'http://localhost:99/*'
-  : 'https://redirect-with-params-vwlrmrqtzt.now.sh/facebook';
-const MaritimeAuthURI = `https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=0.1-urn%3Amrn%3Astm%3Aservice%3Ainstance%3Aviktoria%3Asummer-app&redirect_uri=${RedirectURI}&response_mode=fragment&response_type=code&scope=openid`
+const AuthURI = __DEV__ ? 'http://192.168.0.80:99/auth' 
+    : 'null'; //TODO: Add link to expo redirect here
 
 
 class LoginKeyCloakView extends Component {
     constructor(props) {
         super(props);
 
-        // this.state = {
-
-        // };
+        this.state = {
+            url: '',
+            accessToken: '',
+            result: {},
+        };
 
         this.onLoginPress = this.onLoginPress.bind(this);
     }
 
+    // componentDidMount() {
+    //     Linking.addEventListener('url', this._handleMaritimeRedirect);
+    // }
+
     onLoginPress = async () => {
-        Linking.addEventListener('url', this.handleMaritimeRedirect);
-        let result = await WebBrowser.openBrowserAsync(MaritimeAuthURI);
-        console.log(`Result: ${result}`);
-        Linking.removeEventListener('url', this.handleMaritimeRedirect);
+         Linking.addEventListener('url', this.handleMaritimeRedirect);
+         let result = await WebBrowser.openBrowserAsync(AuthURI);
+         Linking.removeEventListener('url', this.handleMaritimeRedirect);
     }
 
-    handleMaritimeRedirect = async event => {
+    _handleMaritimeRedirect = async event => {
         WebBrowser.dismissBrowser();
-
+        console.log('Authenticating...');
         console.log(event.url);
+
+       // let {access_token: accessToken } = queryString.parse(queryString.extract(event.url));
+
+        
     }
 
     render() {
