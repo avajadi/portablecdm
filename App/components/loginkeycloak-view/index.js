@@ -20,7 +20,7 @@ import {
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
-const AuthURI = __DEV__ ? 'http://192.168.0.80:99/auth' 
+const AuthURI = __DEV__ ? 'http://192.168.0.76:99/auth' 
     : 'null'; //TODO: Add link to expo redirect here
 
 
@@ -37,14 +37,13 @@ class LoginKeyCloakView extends Component {
         this.onLoginPress = this.onLoginPress.bind(this);
     }
 
-    // componentDidMount() {
-    //     Linking.addEventListener('url', this._handleMaritimeRedirect);
-    // }
+    componentDidMount() {
+        Linking.addEventListener('url', this._handleMaritimeRedirect);
+    }
 
     onLoginPress = async () => {
-         Linking.addEventListener('url', this.handleMaritimeRedirect);
-         let result = await WebBrowser.openBrowserAsync(AuthURI);
-         Linking.removeEventListener('url', this.handleMaritimeRedirect);
+        let result = await WebBrowser.openBrowserAsync(AuthURI);
+        Linking.removeEventListener('url', this.handleMaritimeRedirect);
     }
 
     _handleMaritimeRedirect = async event => {
@@ -54,7 +53,8 @@ class LoginKeyCloakView extends Component {
 
        // let {access_token: accessToken } = queryString.parse(queryString.extract(event.url));
 
-        
+       const { navigate } = this.props.navigation;
+       navigate('PortCalls');
     }
 
     render() {
