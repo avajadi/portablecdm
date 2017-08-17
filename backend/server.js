@@ -25,21 +25,36 @@ app.get('/redirect', (req, res) => {
 
 });
 
-app.get('/*', (req, res) => {
+// app.get('/*', (req, res) => {
 
-  if(!req.url.includes('auth')){
-    console.log('Request to open app from ' + req.url);
-    let qs = req._parsedUrl.query;
-    if (true) {
-      //res.redirect('exp://127.0.0.1:19000/+auth/?' + qs);
-      //res.redirect('127.0.0.1:19000');
-      this.response = res;
-      //res.sendFile('authing.html', {root: __dirname});
-    } else {
-        //TODO: Add expo link here
-      //res.redirect('pacdm://exp.host/@community/with-facebook-auth/+redirect/?' + qs);
+//   if(!req.url.includes('auth')){
+//     console.log('Request to open app from ' + req.url);
+//     let qs = req._parsedUrl.query;
+//     if (true) {
+//       //res.redirect('exp://127.0.0.1:19000/+auth/?' + qs);
+//       //res.redirect('127.0.0.1:19000');
+//       this.response = res;
+//       //res.sendFile('authing.html', {root: __dirname});
+//     } else {
+//         //TODO: Add expo link here
+//       //res.redirect('pacdm://exp.host/@community/with-facebook-auth/+redirect/?' + qs);
+//     }
+//   }
+// });
+
+app.get('/redirect', (req, res) => {
+  let qs = req._parsedUrl.query;
+  //if (process.env.NODE_ENV === 'development') {
+    res.redirect('exp://10.170.20.166:19000/+?' + qs);
+  // } else {
+  //   res.redirect('exp://exp.host/@community/with-facebook-auth/+redirect/?' + qs);
+  // }
+});
+
+app.get('/*', (req, res) => {
+    if(!req.url.includes('auth') && !req.url.includes('redirect')) {
+      res.sendFile('authing.html', {root: __dirname});
     }
-  }
 });
 
 app.listen(99, function() {console.log("Server up.")});
