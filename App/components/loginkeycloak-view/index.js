@@ -35,8 +35,9 @@ import styles from '../../config/styles';
 const AuthURI = __DEV__ ? 'http://192.168.0.76:99/auth' 
     : 'null'; //TODO: Add link to expo redirect here
 
-let RedirectURI = 'http://app-login.portcdm.eu/';
-const MaritimeAuthURI = `https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=0.1-urn%3Amrn%3Astm%3Aservice%3Ainstance%3Aviktoria%3Asummer-app&redirect_uri=${RedirectURI}&response_mode=fragment&response_type=code&scope=openid`
+const RedirectURI = 'http://app-login.portcdm.eu/';
+const ClientID = '0.1-urn%3Amrn%3Astm%3Aservice%3Ainstance%3Aviktoria%3Asummer-app';
+const MaritimeAuthURI = `https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=${ClientID}&redirect_uri=${RedirectURI}&response_mode=fragment&response_type=code&scope=openid`
 const MaritimeTokenURI = 'https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/token'
 
 class LoginKeyCloakView extends Component {
@@ -77,6 +78,7 @@ class LoginKeyCloakView extends Component {
         const responseObj = queryString.split('&').reduce((map, pair) => {
             const [key, value] =pair.split('=');
             map[key] = value;
+            console.log("Value: " + value);
             return map;
         }, {});
 
@@ -85,7 +87,7 @@ class LoginKeyCloakView extends Component {
             headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `grant_type=authorization_code&code=${responseObj.code}&redirect_uri=${RedirectURI}`
+            body: `grant_type=authorization_code&client_id=0.1-urn:mrn:stm:service:instance:viktoria:summer-app&code=${responseObj.code}&redirect_uri=${RedirectURI}`
         }).catch((error) => {
            console.error(error);
         });
@@ -100,7 +102,7 @@ class LoginKeyCloakView extends Component {
                 'Unable to login',
                 result.error_description
             );
-            //return;
+            return;
         }
         
        console.log(result);
