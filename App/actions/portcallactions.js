@@ -26,8 +26,8 @@ export const fetchVessel = (vesselUrn) => {
         {
             headers: {
             'Content-Type': 'application/json',
-            'X-PortCDM-UserId': connection.username,
-            'X-PortCDM-Password': connection.password,
+            'X-PortCDM-UserId': 'viktoria',
+            'X-PortCDM-Password': 'vik123',
             'X-PortCDM-APIKey': 'eeee'
             }
         })
@@ -42,7 +42,6 @@ export const fetchVessel = (vesselUrn) => {
 export const fetchPortCalls = () => {
   return (dispatch, getState) => {
     dispatch({type: types.FETCH_PORTCALLS});
-    
     const connection = getState().settings.connection;
     const filters = getState().filters;
     const filterString = createFilterString(filters, getState);
@@ -50,8 +49,8 @@ export const fetchPortCalls = () => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'X-PortCDM-UserId': connection.username,
-          'X-PortCDM-Password': connection.password,
+          'X-PortCDM-UserId': 'viktoria',
+          'X-PortCDM-Password': 'vik123',
           'X-PortCDM-APIKey': 'eeee'
         }
       })
@@ -62,8 +61,8 @@ export const fetchPortCalls = () => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-PortCDM-UserId': connection.username,
-                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-UserId': 'viktoria',
+                    'X-PortCDM-Password': 'vik123',
                     'X-PortCDM-APIKey': 'eeee'
                 }
             })
@@ -208,8 +207,8 @@ export const fetchPortCallOperations = (portCallId) => {
     return fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
             headers: {
-                'X-PortCDM-UserId': connection.username,
-                'X-PortCDM-Password': connection.password,
+                'X-PortCDM-UserId': 'viktoria',
+                'X-PortCDM-Password': 'vik123',
                 'X-PortCDM-APIKey': 'PortableCDM'
             }
         }
@@ -255,9 +254,9 @@ async function fetchReliability(operations, connection, portCallId) {
         {
             headers: {
                 'Content-Type': 'application/json',
-                'X-PortCDM-UserId': connection.username,
-                'X-PortCDM-Password': connection.password,
-                'X-PortCDM-APIKey': 'eeee'
+                'X-PortCDM-UserId': 'viktoria',
+                'X-PortCDM-Password': 'vik123',
+                'X-PortCDM-APIKey': 'deeeev'
             }
         }
     )

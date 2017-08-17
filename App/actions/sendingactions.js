@@ -18,8 +18,8 @@ export const sendPortCall = (pcmAsObject, stateType) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/xml',
-                'X-PortCDM-UserId': connection.username,
-                'X-PortCDM-Password': connection.password,
+                'X-PortCDM-UserId': 'viktoria',
+                'X-PortCDM-Password': 'vik123',
                 'X-PortCDM-APIKey': 'eeee'
             },
             body: objectToXml(pcmAsObject, stateType)

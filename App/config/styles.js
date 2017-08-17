@@ -29,7 +29,10 @@ const styles = {
             backgroundColor: colorScheme.primaryColor,
             padding: 10,
         },
-
+        softBorder: {
+            borderWidth: 0.3,
+            borderRadius: 3,
+        },
     },
     fonts: {
         white: {

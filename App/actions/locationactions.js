@@ -1,4 +1,5 @@
 import * as types from './types';
+import {checkRole} from '../util/httpResultUtils';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
@@ -8,12 +9,17 @@ export const fetchLocations = (locationType) => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-PortCDM-UserId': connection.username,
-                    'X-PortCDM-Password': connection.password,
+                    'X-PortCDM-UserId': 'viktoria',
+                    'X-PortCDM-Password': 'vik123',
                     'X-PortCDM-APIKey': 'eeee'
                 }
             })
-            .then(result => result.json())
+            .then(result => {
+                if(checkRole(result))
+                    return result.json();
+                
+                return null;
+            })
             .then(locations => {
                 // Need to add locations for logical locations
                 ['ANCHORING_AREA', 

@@ -14,8 +14,8 @@ const INITIAL_STATE = {
   connection: {
     host: '',
     port: '',
-    username: '',
-    password: '',
+    username: 'viktoria',
+    password: 'vik123',
     unlocode: ''
   },
   maxPortCallsFetched: 5000,
