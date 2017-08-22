@@ -20,38 +20,53 @@ import {
 
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
+import styles from '../../config/styles';
 
 import { changeHostSetting, changePortSetting, changePortUnlocode } from '../../actions';
 
 class Settings extends Component {
+
+  logout() {
+    console.log('Logging out...');
+  }
+
+
   render() {
     const { navigate, state } = this.props.navigation;
     const { connection, changeHostSetting, changePortSetting, changePortUnlocode } = this.props;
 
     return(
-      <View style={styles.container}>
+      <View style={locStyles.container}>
         <TopHeader title = 'Settings' firstPage navigation={this.props.navigation}/>
-        <ScrollView style={styles.scrollContainer}>
+        <ScrollView style={locStyles.scrollContainer}>
           <Button
+            backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
             title="Edit Favorite States"
-            buttonStyle={styles.buttonStyle}
+            buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('FavoriteStateSetting')}
           />
           <Button
             backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
             title="Edit Vessel Lists"
-            buttonStyle={styles.buttonStyle}
+            buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('VesselLists')}
           />         
         </ScrollView>
+        <Button
+            backgroundColor={'red'}
+            color={colorScheme.primaryTextColor}
+            title='Logout'
+            buttonStyle={locStyles.buttonStyle}
+            onPress={this.logout}
+            />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const locStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colorScheme.backgroundColor,
@@ -62,10 +77,7 @@ const styles = StyleSheet.create({
   },
   formContainerStyle: {
     backgroundColor: colorScheme.primaryContainerColor,
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    margin: 10,
     paddingBottom: 10,
     paddingTop: 10,
     borderColor: colorScheme.tertiaryTextColor, 
@@ -73,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 5, 
   },
   buttonStyle: {
-    backgroundColor: colorScheme.primaryColor,
+    //backgroundColor: colorScheme.primaryColor,
     marginBottom: 10,
     marginTop: 10,
     borderColor: colorScheme.primaryColor, 

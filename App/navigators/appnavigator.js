@@ -43,8 +43,6 @@ const SettingsNavigator = StackNavigator({
 })
 
 const MainNavigator = DrawerNavigator({
-  //Login: { screen: LoginView },  
-  //LoginKeyCloak: { screen: LoginNavigator },
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   FavoriteStatesSideMenu: { screen: StateList },

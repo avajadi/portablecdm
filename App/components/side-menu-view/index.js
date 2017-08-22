@@ -22,6 +22,12 @@ import {
 import colorScheme from '../../config/colors';
 
 class SideMenu extends Component {
+
+  logout() {
+      console.log('Logging out...');
+  }
+
+
   render() {
 
     const { navigate, state } = this.props.navigation;
@@ -177,11 +183,11 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={canBeAccessedEverywhereExceptOnLogin} >Change user/portCDM instance</Text>     
+                                <Text style={[canBeAccessedEverywhereExceptOnLogin]} >Logout</Text>     
                             </View>
                         }
                         onPress={() => {
-                                if(activeItemKey !== 'Login') navigate('Login')
+                                if(activeItemKey !== 'Login') this.logout();
                             }
                         }
                     />
