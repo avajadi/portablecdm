@@ -1,5 +1,5 @@
 import * as types from './types';
-import {checkRole} from '../util/httpResultUtils';
+import { checkResponse } from '../util/httpResultUtils';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
@@ -15,7 +15,7 @@ export const fetchLocations = (locationType) => {
                 }
             })
             .then(result => {
-                if(checkRole(result))
+                if(checkResponse(result))
                     return result.json();
                 
                 return null;

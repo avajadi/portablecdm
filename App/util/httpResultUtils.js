@@ -1,6 +1,6 @@
 import {Alert} from 'react-native';
 
-export function checkRole(result) {
+function checkRole(result) {
     if(result.status === 403) {
         Alert.alert(
             'Error',
@@ -8,6 +8,31 @@ export function checkRole(result) {
         );
         return false;
     }
+
+    return true;
+}
+
+function checkServerLive(result) {
+    if(result.status === 500){
+        Alert.alert(
+            'Error',
+            'Something went wrong with the server. (500)'
+        );
+        return false;
+    }
+}
+
+export function checkResponse(result) {
+    if(!checkRole) {
+        return false;
+    }
+
+    if(!checkServerLive) {
+        return false;
+    }
+
+
+    
 
     return true;
 }

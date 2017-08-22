@@ -57,10 +57,10 @@ class LoginKeyCloakView extends Component {
     }
 
     onLoginPress = async () => {
-        //let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
+        console.log('Opening ' + constants.MaritimeAuthURI);
+        let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
 
-        /*DEVDEVDEV */
-        this.handleMaritimeRedirect({url: '+/redirect'});
+        //this.handleMaritimeRedirect({url: '+/redirect'});
         //Linking.removeEventListener('url', this.handleMaritimeRedirect);
     }
 
@@ -71,43 +71,43 @@ class LoginKeyCloakView extends Component {
         WebBrowser.dismissBrowser();
 
         console.log('Authenticating...');
-        // const [, queryString] = event.url.split('#');
-        // const responseObj = queryString.split('&').reduce((map, pair) => {
-        //     const [key, value] = pair.split('=');
-        //     map[key] = value;
-        //     console.log("Value: " + value);
-        //     return map;
-        // }, {});
+        const [, queryString] = event.url.split('#');
+        const responseObj = queryString.split('&').reduce((map, pair) => {
+            const [key, value] = pair.split('=');
+            map[key] = value;
+            console.log("Value: " + value);
+            return map;
+        }, {});
 
-        // let payload = `code=${responseObj.code}&grant_type=authorization_code&client_id=${encodeURIComponent(ClientID)}&redirect_uri=${encodeURIComponent(RedirectURI)}`;
+        let payload = `code=${responseObj.code}&grant_type=authorization_code&client_id=${encodeURIComponent(constants.ClientID)}&redirect_uri=${encodeURIComponent(constants.RedirectURI)}`;
 
-        // const response = await fetch(MaritimeTokenURI, {
-        //     method: 'POST',
-        //     headers: {
-        //     'Content-type': 'application/x-www-form-urlencoded',
-        //     },
-        //     body: payload,
-        //     credentials: 'include'
-        // }).catch((error) => {
-        //    console.error(error);
-        // });
+        const response = await fetch(constants.MaritimeTokenURI, {
+            method: 'POST',
+            headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+            },
+            body: payload,
+            credentials: 'include'
+        }).catch((error) => {
+           console.error(error);
+        });
 
-        // console.log(payload);
-        // console.log('Response:');
-        // console.log(response);
+        console.log(payload);
+        console.log('Response:');
+        console.log(response);
         
-        // const result = await response.json();
+        const result = await response.json();
 
-        // if(response.status !== 200) {
-        //     console.log('Unable to login: ' + result.error_description);
-        //     Alert.alert(
-        //         'Unable to login',
-        //         result.error_description
-        //     );
-        //     return;
-        // }
+        if(response.status !== 200) {
+            console.log('Unable to login: ' + result.error_description);
+            Alert.alert(
+                'Unable to login',
+                result.error_description
+            );
+            return;
+        }
         
-       //console.log(result);
+       console.log(result);
 
        this.loginConfirmed();
     }

@@ -1,4 +1,6 @@
 import * as types from './types';
+import { checkResponse } from '../util/httpResultUtils';
+import {Alert} from 'react-native';
 
 export const clearPortCallSelection = () => {
     return {
@@ -31,7 +33,11 @@ export const fetchVessel = (vesselUrn) => {
             'X-PortCDM-APIKey': 'eeee'
             }
         })
-        .then(result => result.json())
+        .then(result => {
+            if(checkResponse(result))
+             return result.json();
+            else return null;
+         })
         .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel}))
     }
 };
@@ -54,7 +60,11 @@ export const fetchPortCalls = () => {
           'X-PortCDM-APIKey': 'eeee'
         }
       })
-        .then(result => result.json())
+        .then(result => {
+           if(checkResponse(result))
+            return result.json();
+           else return null;
+        })
         .then(portCalls => applyFilters(portCalls, filters))
         .then(portCalls => Promise.all(portCalls.map(portCall => {
             return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
@@ -260,7 +270,18 @@ async function fetchReliability(operations, connection, portCallId) {
             }
         }
     )
-    .then(result => result.json())
+    .then(result => {
+        console.log('Fetching reliabilities.... ' + result);
+
+       if(result.status !== 200) {
+           Alert.alert(
+               'Error',
+               'Unable to fetch reliabilities. Please uncheck "Fetch reliabilities" in Settings.'
+           );
+           return null;
+       }
+       else return result.json();
+    })
     // Add the reliability for the entire portcall as member of the array
     .then(result => {
         operations.reliability = Math.floor(result.reliability * 100);

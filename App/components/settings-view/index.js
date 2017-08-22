@@ -15,21 +15,34 @@ import {
   ListItem,
   FormInput,
   FormLabel,
-  Button
+  Button,
+  CheckBox,
 } from 'react-native-elements';
 
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
-import { changeHostSetting, changePortSetting, changePortUnlocode } from '../../actions';
+import { changeHostSetting, changePortSetting, changePortUnlocode, changeFetchReliability } from '../../actions';
 
 class Settings extends Component {
 
-  logout() {
-    console.log('Logging out...');
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fetchReliability: props.fetchReliability,
+    }
+
+    this.updateFetchReliability = this.updateFetchReliability.bind(this);
   }
 
+  updateFetchReliability() {
+    const { navigate } = this.props.navigation;
+    this.setState({fetchReliability: !this.state.fetchReliability});
+    this.props.changeFetchReliability(this.state.fetchReliability);
+    console.log('Reliability: ' + this.state.fetchReliability);
+  }
 
   render() {
     const { navigate, state } = this.props.navigation;
@@ -53,14 +66,12 @@ class Settings extends Component {
             buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('VesselLists')}
           />         
+          <CheckBox
+            title='Fetch reliabilities'
+            checked={!this.state.fetchReliability}
+            onPress={this.updateFetchReliability}
+          />
         </ScrollView>
-        <Button
-            backgroundColor={'red'}
-            color={colorScheme.primaryTextColor}
-            title='Logout'
-            buttonStyle={locStyles.buttonStyle}
-            onPress={this.logout}
-            />
       </View>
     );
   }
@@ -106,7 +117,8 @@ const locStyles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     connection: state.settings.connection,
+    fetchReliability: state.settings.fetchReliability,
   };
 }
 
-export default connect(mapStateToProps, {changeHostSetting, changePortSetting, changePortUnlocode})(Settings);
+export default connect(mapStateToProps, {changeHostSetting, changePortSetting, changePortUnlocode, changeFetchReliability})(Settings);
