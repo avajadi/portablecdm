@@ -31,13 +31,7 @@ import {
 
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
-
-const RedirectURI = 'http://app-login.portcdm.eu/';
-//const RedirectURI = 'https://dev.portcdm.eu/start'
-//const ClientID = '0.1-urn:mrn:stm:service:instance:viktoria:administration-pact';
-const ClientID = '0.1-urn:mrn:stm:service:instance:viktoria:summer-app';
-const MaritimeAuthURI = `https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=${encodeURIComponent(ClientID)}&redirect_uri=${encodeURIComponent(RedirectURI)}&response_mode=fragment&response_type=code&scope=openid`
-const MaritimeTokenURI = 'https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/token'
+import constants from '../../config/constants';
 
 class LoginKeyCloakView extends Component {
     constructor(props) {
@@ -63,7 +57,7 @@ class LoginKeyCloakView extends Component {
     }
 
     onLoginPress = async () => {
-        //let result = await WebBrowser.openBrowserAsync(MaritimeAuthURI);
+        //let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
 
         /*DEVDEVDEV */
         this.handleMaritimeRedirect({url: '+/redirect'});

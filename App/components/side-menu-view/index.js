@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { WebBrowser } from 'expo';
 import {
   View,
   StyleSheet,
@@ -20,11 +21,16 @@ import {
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
+import constants from '../../config/constants';
 
 class SideMenu extends Component {
 
-  logout() {
+  logout = async() => {
       console.log('Logging out...');
+      //TODO
+      await WebBrowser.openBrowserAsync('exp://z2-bby.pontusstjerna.app.exp.direct:80');
+      //await WebBrowser.openBrowserAsync(constants.MaritimeLogoutURI);
+      WebBrowser.dismissBrowser();
   }
 
 
