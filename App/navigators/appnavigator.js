@@ -42,9 +42,9 @@ const SettingsNavigator = StackNavigator({
   headerMode: 'none'
 })
 
-export const AppNavigator = DrawerNavigator({
+const MainNavigator = DrawerNavigator({
   //Login: { screen: LoginView },  
-  LoginKeyCloak: { screen: LoginKeyCloakView },
+  //LoginKeyCloak: { screen: LoginNavigator },
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   FavoriteStatesSideMenu: { screen: StateList },
@@ -55,4 +55,11 @@ export const AppNavigator = DrawerNavigator({
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 
   contentComponent: SideMenu,
+});
+
+export const AppNavigator  = StackNavigator({
+  LoginKeyCloak: { screen: LoginKeyCloakView },
+  Application: { screen: MainNavigator}
+}, {
+  headerMode: 'none',
 });

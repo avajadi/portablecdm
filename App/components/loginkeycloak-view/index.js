@@ -21,7 +21,7 @@ import {
 } from 'react-native-elements';
 
 import {
-    changeUser,
+    changeToken,
     fetchLocations,
     changeFetchReliability,
     changePortUnlocode,
@@ -32,12 +32,11 @@ import {
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
-const AuthURI = __DEV__ ? 'http://192.168.0.76:99/auth' 
-    : 'null'; //TODO: Add link to expo redirect here
-
 const RedirectURI = 'http://app-login.portcdm.eu/';
-const ClientID = '0.1-urn%3Amrn%3Astm%3Aservice%3Ainstance%3Aviktoria%3Asummer-app';
-const MaritimeAuthURI = `https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=${ClientID}&redirect_uri=${RedirectURI}&response_mode=fragment&response_type=code&scope=openid`
+//const RedirectURI = 'https://dev.portcdm.eu/start'
+//const ClientID = '0.1-urn:mrn:stm:service:instance:viktoria:administration-pact';
+const ClientID = '0.1-urn:mrn:stm:service:instance:viktoria:summer-app';
+const MaritimeAuthURI = `https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=${encodeURIComponent(ClientID)}&redirect_uri=${encodeURIComponent(RedirectURI)}&response_mode=fragment&response_type=code&scope=openid`
 const MaritimeTokenURI = 'https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/token'
 
 class LoginKeyCloakView extends Component {
@@ -45,25 +44,29 @@ class LoginKeyCloakView extends Component {
         super(props);
 
         this.state = {
-            accessToken: '',
-            refreshToken: '',
-            expiresIn: 0,
-            idToken: '',
+            token: {
+                accessToken: '',
+                refreshToken: '',
+                expiresIn: 0,
+                idToken: '',
+            },
             unlocode: props.connection.unlocode,
             host: props.connection.host,
             port: props.connection.port,
         };
 
-        this.onLoginPress = this.onLoginPress.bind(this);
+        this.loginConfirmed = this.loginConfirmed.bind(this);
     }
 
     componentDidMount() {
         Linking.addEventListener('url', this.handleMaritimeRedirect);
-        console.log(Constants.linkingUrl);
     }
 
     onLoginPress = async () => {
-        let result = await WebBrowser.openBrowserAsync(MaritimeAuthURI);
+        //let result = await WebBrowser.openBrowserAsync(MaritimeAuthURI);
+
+        /*DEVDEVDEV */
+        this.handleMaritimeRedirect({url: '+/redirect'});
         //Linking.removeEventListener('url', this.handleMaritimeRedirect);
     }
 
@@ -74,50 +77,55 @@ class LoginKeyCloakView extends Component {
         WebBrowser.dismissBrowser();
 
         console.log('Authenticating...');
-        const [, queryString] = event.url.split('#');
-        const responseObj = queryString.split('&').reduce((map, pair) => {
-            const [key, value] =pair.split('=');
-            map[key] = value;
-            console.log("Value: " + value);
-            return map;
-        }, {});
+        // const [, queryString] = event.url.split('#');
+        // const responseObj = queryString.split('&').reduce((map, pair) => {
+        //     const [key, value] = pair.split('=');
+        //     map[key] = value;
+        //     console.log("Value: " + value);
+        //     return map;
+        // }, {});
 
-        const response = await fetch(MaritimeTokenURI, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `grant_type=authorization_code&client_id=0.1-urn:mrn:stm:service:instance:viktoria:summer-app&code=${responseObj.code}&redirect_uri=${RedirectURI}`
-        }).catch((error) => {
-           console.error(error);
-        });
+        // let payload = `code=${responseObj.code}&grant_type=authorization_code&client_id=${encodeURIComponent(ClientID)}&redirect_uri=${encodeURIComponent(RedirectURI)}`;
 
-        console.log('Response:');
-        console.log(response);
+        // const response = await fetch(MaritimeTokenURI, {
+        //     method: 'POST',
+        //     headers: {
+        //     'Content-type': 'application/x-www-form-urlencoded',
+        //     },
+        //     body: payload,
+        //     credentials: 'include'
+        // }).catch((error) => {
+        //    console.error(error);
+        // });
+
+        // console.log(payload);
+        // console.log('Response:');
+        // console.log(response);
         
-        const result = await response.json();
+        // const result = await response.json();
 
-        if(response.status !== 200) {
-            Alert.alert(
-                'Unable to login',
-                result.error_description
-            );
-            return;
-        }
+        // if(response.status !== 200) {
+        //     console.log('Unable to login: ' + result.error_description);
+        //     Alert.alert(
+        //         'Unable to login',
+        //         result.error_description
+        //     );
+        //     return;
+        // }
         
-       console.log(result);
+       //console.log(result);
 
        this.loginConfirmed();
     }
 
     loginConfirmed() {
         const { navigate } = this.props.navigation;
-        //this.props.changeUser(this.state.username, this.state.password);
+        this.props.changeToken(this.state.token);
         this.props.changePortUnlocode(this.state.unlocode);
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
         this.props.changePortSetting(this.state.port);
         this.props.fetchLocations(); //Call last before navigate
-        navigate('PortCalls');
+        navigate('Application');
     }
 
     reformatHostHttp(rawHost) {
@@ -195,4 +203,4 @@ function mapStateToProps(state) {
     }
   }
 
-export default connect(mapStateToProps, {changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changePortUnlocode})(LoginKeyCloakView);
+export default connect(mapStateToProps, {changeToken, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changePortUnlocode})(LoginKeyCloakView);

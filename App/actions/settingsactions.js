@@ -17,6 +17,13 @@ export const changeUser = (username, password) => {
     }
 };
 
+export const changeToken = (token) => {
+    return {
+        type: types.SETTINGS_CHANGE_TOKEN,
+        payload: token
+    }
+}
+
 export const changePortUnlocode = (unlocode) => {
     return {
         type: types.SETTINGS_CHANGE_PORT_UNLOCODE,
