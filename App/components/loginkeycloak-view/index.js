@@ -209,11 +209,11 @@ class LoginKeyCloakView extends Component {
                                 onChangeText={text => this.setState({unlocode: text})}
                             />
                             {this.renderInvalidUnlocode()}
-                            <View style={[styles.containers.flow]}>
+                            <View style={[styles.containers.flow, {justifyContent: 'center'}]}>
                                 <View>
                                     <FormLabel>Host: </FormLabel>
                                     <FormInput
-                                        inputStyle={{width: window.width * 0.5, marginRight: window.width * 0.1}} 
+                                        inputStyle={{width: window.width * 0.6, paddingRight: window.width * 0.1}} 
                                         autoCorrent={false}
                                         placeholder="http://example.com"
                                         value={this.state.host} 

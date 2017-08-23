@@ -1,5 +1,5 @@
 import * as types from './types';
-import { checkResponse } from '../util/httpResultUtils';
+import { checkResponse, catchError } from '../util/httpResultUtils';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
@@ -43,7 +43,9 @@ export const fetchLocations = (locationType) => {
             })
             .then(locations => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
-            })
+            }).catch(err => {
+                catchError(err);
+            });
     }
 }
 

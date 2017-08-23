@@ -22,6 +22,13 @@ function checkServerLive(result) {
     }
 }
 
+export function catchError(error) {
+    Alert.alert(
+        'Something went wrong',
+        'Unable to connect to the server!'
+    );
+}
+
 export function checkResponse(result) {
     if(!checkRole) {
         return false;
