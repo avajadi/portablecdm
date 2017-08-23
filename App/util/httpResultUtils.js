@@ -31,8 +31,5 @@ export function checkResponse(result) {
         return false;
     }
 
-
-    
-
     return true;
 }

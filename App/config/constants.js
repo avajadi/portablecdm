@@ -1,6 +1,6 @@
 const redirectURI = 'http://app-login.portcdm.eu/';
-//const RedirectURI = 'https://dev.portcdm.eu/start'
-//const ClientID = '0.1-urn:mrn:stm:service:instance:viktoria:administration-pact';
+//const redirectURI = 'https://dev.portcdm.eu/start'
+//const clientID = '0.1-urn:mrn:stm:service:instance:viktoria:administration-pact';
 const clientID = '0.1-urn:mrn:stm:service:instance:viktoria:summer-app';
 
 export default constants = {

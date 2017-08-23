@@ -11,6 +11,7 @@ import {
     TouchableHighlight,
     Linking,
     Alert,
+    Dimensions,
 } from 'react-native';
 
 import {
@@ -18,6 +19,7 @@ import {
     Button,
     FormLabel,
     FormInput,
+    FormValidationMessage,
 } from 'react-native-elements';
 
 import {
@@ -33,6 +35,8 @@ import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 import constants from '../../config/constants';
 
+const window = Dimensions.get('window');
+
 class LoginKeyCloakView extends Component {
     constructor(props) {
         super(props);
@@ -47,6 +51,9 @@ class LoginKeyCloakView extends Component {
             unlocode: props.connection.unlocode,
             host: props.connection.host,
             port: props.connection.port,
+            validUnlocode: true,
+            validHost: true,
+            validPort: true,
         };
 
         this.loginConfirmed = this.loginConfirmed.bind(this);
@@ -59,9 +66,7 @@ class LoginKeyCloakView extends Component {
     onLoginPress = async () => {
         console.log('Opening ' + constants.MaritimeAuthURI);
         let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
-
-        //this.handleMaritimeRedirect({url: '+/redirect'});
-        //Linking.removeEventListener('url', this.handleMaritimeRedirect);
+        Linking.removeEventListener('url', this.handleMaritimeRedirect);
     }
 
     handleMaritimeRedirect = async event => {
@@ -113,13 +118,31 @@ class LoginKeyCloakView extends Component {
     }
 
     loginConfirmed() {
+        if(__DEV__) {
+            Alert.alert(
+                'IN DEVELOPMENT',
+                'Warning! This is the unstable, insecure development version.'
+            )
+        }
+
         const { navigate } = this.props.navigation;
         this.props.changeToken(this.state.token);
         this.props.changePortUnlocode(this.state.unlocode);
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
         this.props.changePortSetting(this.state.port);
+
+        if(!this.validateForms()) return;
+
         this.props.fetchLocations(); //Call last before navigate
         navigate('Application');
+    }
+
+    validateForms() {
+        this.setState({validUnlocode: !!this.state.unlocode});
+        this.setState({validHost: !!this.state.host && this.state.host.includes('.')});
+        this.setState({validPort: !!this.state.port});
+
+        return this.state.validUnlocode && this.state.validHost && this.state.validPort;
     }
 
     reformatHostHttp(rawHost) {
@@ -128,6 +151,42 @@ class LoginKeyCloakView extends Component {
         
         return rawHost;
       }
+
+    renderInvalidUnlocode() {
+        if(!this.state.validUnlocode) {
+            return (
+                <FormValidationMessage>
+                UN/LOCODE is invalid!
+                </FormValidationMessage>
+            );
+        }
+
+        return null;
+    }
+
+    renderInvalidHost() {
+        if(!this.state.validHost) {
+            return (
+                <FormValidationMessage>
+                Invalid host!
+                </FormValidationMessage>
+            );
+        }
+
+        return null;
+    }
+
+    renderInvalidPort() {
+        if(!this.state.validPort) {
+            return (
+                <FormValidationMessage>
+                Invalid port!
+                </FormValidationMessage>
+            );
+        }
+
+        return null;
+    }
 
     render() {
         return (
@@ -144,35 +203,39 @@ class LoginKeyCloakView extends Component {
                             <FormLabel>UN/LOCODE: </FormLabel>
                             <FormInput
                                 autoCorrect={false}
+                                inputStyle={{width: window.width * 0.8}}
                                 placeHolder='UN/LOCODE for the PortCDM instance'
                                 value={this.state.unlocode}
                                 onChangeText={text => this.setState({unlocode: text})}
                             />
+                            {this.renderInvalidUnlocode()}
                             <View style={[styles.containers.flow]}>
                                 <View>
                                     <FormLabel>Host: </FormLabel>
                                     <FormInput
-                                        inputStyle={{width: 200, marginRight: 10}} 
+                                        inputStyle={{width: window.width * 0.5, marginRight: window.width * 0.1}} 
                                         autoCorrent={false}
                                         placeholder="http://example.com"
                                         value={this.state.host} 
                                         onChangeText={(text) => this.setState({host: text})}
                                         />
+                                    {this.renderInvalidHost()}
                                 </View>
                                 <View>
                                     <FormLabel>Port: </FormLabel>
                                     <FormInput 
-                                        inputStyle={{width: 75}}
+                                        inputStyle={{width: window.width * 0.2}}
                                         autoCorrent={false}
                                         keyboardType = 'numeric'
                                         value={this.state.port}
                                         onChangeText={(text) => this.setState({port: text})}
                                         />
+                                    {this.renderInvalidPort()}
                                 </View>
                             </View>
                         </View>
                         <View style={styles.containers.blank}/>
-                        <TouchableHighlight onPress={this.onLoginPress}>
+                        <TouchableHighlight onPress={this.onLoginPress} onLongPress={this.loginConfirmed}> 
                         <View style={styles.containers.subContainer}>
                             <Text h3 style={styles.fonts.white}>SEASWIN LOGIN</Text>
                         </View>
