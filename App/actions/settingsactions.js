@@ -20,7 +20,13 @@ export const changeUser = (username, password) => {
 export const changeToken = (token) => {
     return {
         type: types.SETTINGS_CHANGE_TOKEN,
-        payload: token
+        payload: {
+            accessToken: token.accessToken,
+            idToken: token.idToken,
+            refreshExpiresIn: token.refreshExpiresIn,
+            refreshToken: token.refreshToken,
+            tokenType: token.tokenType,
+        }
     }
 }
 

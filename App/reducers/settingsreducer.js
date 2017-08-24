@@ -8,17 +8,18 @@ import {
   SETTINGS_CHANGE_USER,
   SETTINGS_CHANGE_FETCH_RELIABILITY,
   SETTINGS_CHANGE_PORT_UNLOCODE,
+  SETTINGS_CHANGE_TOKEN,
 } from '../actions/types';
 
 const INITIAL_STATE = {
   connection: {
     host: '',
     port: '',
-    username: 'viktoria',
-    password: 'vik123',
+    username: '',
+    password: '',
     unlocode: ''
   },
-  maxPortCallsFetched: 5000,
+  maxPortCallsFetched: 50,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*
@@ -29,6 +30,13 @@ const INITIAL_STATE = {
   */
   vesselLists: {},
   fetchReliability: false,
+  token: {
+    accessToken: '1234',
+    idToken: '',
+    refreshExpiresIn: 0,
+    refreshToken: '',
+    tokenType: 'bearer',
+  }
 }
 
 const settingsReducer = (state = INITIAL_STATE, action) => {
@@ -45,6 +53,8 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, connection: { ...state.connection, host: action.payload} }
     case SETTINGS_CHANGE_PORT:
       return { ...state, connection: { ...state.connection, port: action.payload} }
+    case SETTINGS_CHANGE_TOKEN:
+      return {...state, token: action.payload}
     case SETTINGS_ADD_VESSEL_LIST:
       if(state.vesselLists[action.payload] !== undefined) return state;
       return { ...state, vesselLists: {...state.vesselLists, [action.payload]: [] }}

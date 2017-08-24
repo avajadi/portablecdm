@@ -20,6 +20,33 @@ function checkServerLive(result) {
         );
         return false;
     }
+
+    return true;
+}
+
+function checkBadRequest(result) {
+    if(result.status === 400) {
+        Alert.alert(
+            'Something went wrong',
+            'Bad request to the server.'
+        )
+        return false;
+    }
+
+    return true;
+}
+
+function checkAuthorized(result) {
+    if(result.status === 401) {
+        Alert.alert(
+            'Unauthorized',
+            'Access denied.'
+        );
+
+        return false;
+    }
+
+    return true;
 }
 
 export function catchError(error) {
@@ -30,13 +57,19 @@ export function catchError(error) {
 }
 
 export function checkResponse(result) {
-    if(!checkRole) {
+    if(!checkRole(result)) {
         return false;
     }
 
-    if(!checkServerLive) {
+    if(!checkServerLive(result)) {
         return false;
     }
+
+    if(!checkBadRequest(result))
+        return false;
+
+    if(!checkAuthorized(result))
+        return false;
 
     return true;
 }
