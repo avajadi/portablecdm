@@ -84,7 +84,7 @@ class LoginKeyCloakView extends Component {
             return;
         }
         WebBrowser.dismissBrowser();
-        //Linking.removeEventListener('url', this.handleMaritimeRedirect);
+        Linking.removeEventListener('url', this.handleMaritimeRedirect);
 
         console.log('Authenticating...');
         const [, queryString] = event.url.split('#');
@@ -154,11 +154,14 @@ class LoginKeyCloakView extends Component {
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
         this.props.changeUser(this.state.legacyLogin.username, this.state.legacyLogin.password);
         this.props.changePortSetting(this.state.port);
+        this.setState({host: this.reformatHostHttp(this.state.host)});
 
         if(!this.validateForms()) return;
 
-        this.props.fetchLocations(); //Call last before navigate
-        navigate('Application');
+        if(!this.props.fetchLocations())  //Call last before navigate
+            navigate('Error');
+        else
+            navigate('Application');
     }
 
     validateForms() {
@@ -171,7 +174,7 @@ class LoginKeyCloakView extends Component {
 
     reformatHostHttp(rawHost) {
         if(!rawHost.startsWith("http"))
-          return "http://" + rawHost;
+          return "https://" + rawHost;
         
         return rawHost;
       }
@@ -216,35 +219,6 @@ class LoginKeyCloakView extends Component {
         return (
             <View style={{flex: 2}}>
                 <ScrollView contentContainerStyle={styles.containers.main}>
-                    <Modal
-                        animationType={'slide'}
-                        transparent={false}
-                        visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
-                        onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
-                        >
-                            <View style={styles.containers.centralizer}>
-                            <Text h3>Legacy Login</Text>
-                            <FormLabel>Username: </FormLabel>
-                            <FormInput
-                                autoCorrect={false}
-                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
-                                value={this.state.legacyLogin.username}
-                                onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, username: text}})}
-                            />
-                            <FormLabel>Password: </FormLabel>
-                            <FormInput
-                                autoCorrect={false}
-                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
-                                secureTextEntry
-                                value={this.state.legacyLogin.password}
-                                onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, password: text}})}
-                            />
-                            <Button
-                                title='Continue'
-                                onPress={this.loginConfirmed}
-                            />
-                        </View>
-                    </Modal>
                     <View style={styles.containers.centralizer}>
                         <Text h3>
                             <Text style={{fontWeight: 'normal'}}>Welcome to </Text> 
@@ -288,13 +262,7 @@ class LoginKeyCloakView extends Component {
                             </View>
                         </View>
                         <View style={styles.containers.blank}/>
-                        <TouchableHighlight onPress={this.onLoginPress} onLongPress={() => {
-                                fetch('https://dev.portcdm.eu:8443/pcb/port_call').then(result => console.log(result))
-                                .catch(error => console.log('Error: ' + error));
-
-                                //this.validateForms();
-                                //this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, enabled: true}})
-                            }}> 
+                        <TouchableHighlight onPress={this.onLoginPress}> 
                         <View style={styles.containers.subContainer}>
                             <Text h3 style={styles.fonts.white}>SEASWIM LOGIN</Text>
                         </View>

@@ -9,11 +9,6 @@ const staging = {
     baseURI: 'https://staging-maritimeid.maritimecloud.net/auth',
 }
 
-/**PACT */
-//const baseURI = 'https://staging-maritimeid.maritimecloud.net/auth';
-//const redirectURI = 'https://dev.portcdm.eu/start'
-//const clientID = '0.1-urn:mrn:stm:service:instance:viktoria:administration-pact';
-
 export default function constants(staging) {
     return {
         RedirectURI: staging ? staging.redirectURI : redirectURI,
@@ -23,6 +18,3 @@ export default function constants(staging) {
         MaritimeLogoutURI: `${baseURI}/realms/MaritimeCloud/protocol/openid-connect/logout?redirect_uri=${encodeURIComponent(redirectURI)}`,
     }
 }
-
-//https://maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=0.1-urn:mrn:stm:service:instance:viktoria:portablecdm-app&redirect_uri=&response_mode=fragment&response_type=code&scope=openid
-//https://maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/token
