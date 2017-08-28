@@ -1,18 +1,15 @@
 import * as types from './types';
 import { checkResponse, catchError } from '../util/httpResultUtils';
+import { createTokenHeaders } from '../util/portcdmUtils';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
         dispatch({type: types.FETCH_LOCATIONS});
         const connection = getState().settings.connection;
+        const token = getState().settings.token;
         return fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-PortCDM-UserId': 'viktoria',
-                    'X-PortCDM-Password': 'vik123',
-                    'X-PortCDM-APIKey': 'eeee'
-                }
+                headers: createTokenHeaders(token)
             })
             .then(result => {
                 if(checkResponse(result))

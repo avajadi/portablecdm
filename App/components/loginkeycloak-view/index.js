@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Constants, WebBrowser} from 'expo';
+import { Constants, WebBrowser } from 'expo';
+import { checkForCertification } from '../../util/certification'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 
@@ -35,9 +36,11 @@ import {
 
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
-import constants from '../../config/constants';
+import consts from '../../config/constants';
 
 const window = Dimensions.get('window');
+
+let constants = {};
 
 class LoginKeyCloakView extends Component {
     constructor(props) {
@@ -72,6 +75,7 @@ class LoginKeyCloakView extends Component {
     }
 
     onLoginPress = async () => {
+        constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
         let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
     }
 
@@ -82,18 +86,13 @@ class LoginKeyCloakView extends Component {
         WebBrowser.dismissBrowser();
         //Linking.removeEventListener('url', this.handleMaritimeRedirect);
 
-        console.log('URL: ' + event.url);
-
         console.log('Authenticating...');
         const [, queryString] = event.url.split('#');
         const responseObj = queryString.split('&').reduce((map, pair) => {
             const [key, value] = pair.split('=');
             map[key] = value;
-            console.log("Value: " + value);
             return map;
         }, {});
-
-        return;
 
         let params = {
             code: responseObj.code,
@@ -115,6 +114,7 @@ class LoginKeyCloakView extends Component {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Authorization': 'bearer',
                 'Content-type': 'application/x-www-form-urlencoded',
             },
             body: formBody,
@@ -122,10 +122,6 @@ class LoginKeyCloakView extends Component {
         }).catch((error) => {
            console.error(error);
         });
-        
-        console.log(formBody);
-        console.log('Response:');
-        console.log(response);
         
         const result = await response.json();
 
@@ -138,7 +134,7 @@ class LoginKeyCloakView extends Component {
             return;
         }
         
-       console.log(result);
+       console.log('Authentication successful');
 
        this.setState({token: {
            accessToken: result['access_token'],
@@ -293,8 +289,11 @@ class LoginKeyCloakView extends Component {
                         </View>
                         <View style={styles.containers.blank}/>
                         <TouchableHighlight onPress={this.onLoginPress} onLongPress={() => {
-                                this.validateForms();
-                                this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, enabled: true}})
+                                fetch('https://dev.portcdm.eu:8443/pcb/port_call').then(result => console.log(result))
+                                .catch(error => console.log('Error: ' + error));
+
+                                //this.validateForms();
+                                //this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, enabled: true}})
                             }}> 
                         <View style={styles.containers.subContainer}>
                             <Text h3 style={styles.fonts.white}>SEASWIM LOGIN</Text>

@@ -1,6 +1,6 @@
 import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
-import { createLegacyHeaders, createTokenHeaders } from '../util/portcdmUtils';
+import { createTokenHeaders } from '../util/portcdmUtils';
 import {Alert} from 'react-native';
 
 export const clearPortCallSelection = () => {
@@ -24,10 +24,11 @@ export const fetchVessel = (vesselUrn) => {
     return (dispatch, getState) => {
     
         const connection = getState().settings.connection;
+        const token = getState().settings.token;
         
         return fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
-            headers: createLegacyHeaders(connection)
+            headers: createTokenHeaders(token)
         })
         .then(result => {
             if(checkResponse(result))
@@ -46,12 +47,11 @@ export const fetchPortCalls = () => {
     dispatch({type: types.FETCH_PORTCALLS});
     const connection = getState().settings.connection;
     const token = getState().settings.token;
-    console.log('TOKEN***************: ' + token.accessToken);
     const filters = getState().filters;
     const filterString = createFilterString(filters, getState);
     return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
-        headers: createLegacyHeaders(connection)
+        headers: createTokenHeaders(token)
       })
         .then(result => {
            if(checkResponse(result))
@@ -62,7 +62,7 @@ export const fetchPortCalls = () => {
         .then(portCalls => Promise.all(portCalls.map(portCall => {
             return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
-                //headers: createLegacyHeaders(connection)
+                headers: createTokenHeaders(token)
             })
             .then(result => result.json())
             .then(vessel => {portCall.vessel = vessel; return portCall})
@@ -201,10 +201,11 @@ export const fetchPortCallOperations = (portCallId) => {
   return (dispatch, getState) => {
     dispatch({type: types.FETCH_PORTCALL_OPERATIONS})
     const connection = getState().settings.connection;
+    const token = getState().settings.token;
     const getReliability = getState().settings.fetchReliability;
     return fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
-            headers: createLegacyHeaders(connection)
+            headers: createTokenHeaders(token)
         }
     )
     .then(result => result.json())
@@ -244,9 +245,10 @@ export const fetchPortCallOperations = (portCallId) => {
 // HELPER FUNCTIONS
 async function fetchReliability(operations, connection, portCallId) {
     if(operations.length <= 0) return operations;
+    const token = getState().settings.token;
     await fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
         {
-            headers: createLegacyHeaders(connection)
+            headers: createTokenHeaders(token)
         }
     )
     .then(result => {

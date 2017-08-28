@@ -16,6 +16,7 @@ import SelectFavoriteState from '../components/select-favorite-state-view';
 import VesselLists from '../components/vessel-lists-view';
 import SideMenu     from '../components/side-menu-view';
 import AboutView    from '../components/about-view';
+import ErrorView from '../components/error-view';
 
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
@@ -49,6 +50,7 @@ const MainNavigator = DrawerNavigator({
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
   About: { screen: AboutView },
+  Error: { screen: ErrorView },
 }, {
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 
