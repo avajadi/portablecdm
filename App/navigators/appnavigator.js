@@ -11,10 +11,12 @@ import StateDetails from '../components/timeline-view/sections/statedetails';
 import VesselInfo   from '../components/vessel-info-view';
 import Settings     from '../components/settings-view';
 import LoginView    from '../components/login-view';
+import LoginKeyCloakView from '../components/loginkeycloak-view';
 import SelectFavoriteState from '../components/select-favorite-state-view';
 import VesselLists from '../components/vessel-lists-view';
 import SideMenu     from '../components/side-menu-view';
 import AboutView    from '../components/about-view';
+import ErrorView from '../components/error-view';
 
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
@@ -41,16 +43,23 @@ const SettingsNavigator = StackNavigator({
   headerMode: 'none'
 })
 
-export const AppNavigator = DrawerNavigator({
-  Login: { screen: LoginView },  
+const MainNavigator = DrawerNavigator({
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   FavoriteStatesSideMenu: { screen: StateList },
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
   About: { screen: AboutView },
+  Error: { screen: ErrorView },
 }, {
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 
   contentComponent: SideMenu,
+});
+
+export const AppNavigator  = StackNavigator({
+  LoginKeyCloak: { screen: LoginKeyCloakView },
+  Application: { screen: MainNavigator}
+}, {
+  headerMode: 'none',
 });

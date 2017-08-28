@@ -1,19 +1,22 @@
 import * as types from './types';
+import { checkResponse, catchError } from '../util/httpResultUtils';
+import { createTokenHeaders } from '../util/portcdmUtils';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
         dispatch({type: types.FETCH_LOCATIONS});
         const connection = getState().settings.connection;
+        const token = getState().settings.token;
         return fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-PortCDM-UserId': connection.username,
-                    'X-PortCDM-Password': connection.password,
-                    'X-PortCDM-APIKey': 'eeee'
-                }
+                headers: createTokenHeaders(token)
             })
-            .then(result => result.json())
+            .then(result => {
+                if(checkResponse(result))
+                    return result.json();
+                
+                return null;
+            })
             .then(locations => {
                 // Need to add locations for logical locations
                 ['ANCHORING_AREA', 
@@ -37,7 +40,9 @@ export const fetchLocations = (locationType) => {
             })
             .then(locations => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
-            })
+            }).catch(err => {
+                catchError(err);
+            });
     }
 }
 

@@ -15,43 +15,69 @@ import {
   ListItem,
   FormInput,
   FormLabel,
-  Button
+  Button,
+  CheckBox,
 } from 'react-native-elements';
 
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
+import styles from '../../config/styles';
 
-import { changeHostSetting, changePortSetting, changePortUnlocode } from '../../actions';
+import { changeHostSetting, changePortSetting, changePortUnlocode, changeFetchReliability } from '../../actions';
 
 class Settings extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fetchReliability: props.fetchReliability,
+    }
+
+    this.updateFetchReliability = this.updateFetchReliability.bind(this);
+  }
+
+  updateFetchReliability() {
+    const { navigate } = this.props.navigation;
+    this.setState({fetchReliability: !this.state.fetchReliability});
+    this.props.changeFetchReliability(this.state.fetchReliability);
+    console.log('Reliability: ' + this.state.fetchReliability);
+  }
+
   render() {
     const { navigate, state } = this.props.navigation;
     const { connection, changeHostSetting, changePortSetting, changePortUnlocode } = this.props;
 
     return(
-      <View style={styles.container}>
+      <View style={locStyles.container}>
         <TopHeader title = 'Settings' firstPage navigation={this.props.navigation}/>
-        <ScrollView style={styles.scrollContainer}>
+        <ScrollView style={locStyles.scrollContainer}>
           <Button
+            backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
             title="Edit Favorite States"
-            buttonStyle={styles.buttonStyle}
+            buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('FavoriteStateSetting')}
           />
           <Button
             backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
             title="Edit Vessel Lists"
-            buttonStyle={styles.buttonStyle}
+            buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('VesselLists')}
           />         
+          <CheckBox
+            title='Fetch reliabilities'
+            checked={!this.state.fetchReliability}
+            onPress={this.updateFetchReliability}
+          />
         </ScrollView>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const locStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colorScheme.backgroundColor,
@@ -62,10 +88,7 @@ const styles = StyleSheet.create({
   },
   formContainerStyle: {
     backgroundColor: colorScheme.primaryContainerColor,
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    margin: 10,
     paddingBottom: 10,
     paddingTop: 10,
     borderColor: colorScheme.tertiaryTextColor, 
@@ -73,7 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 5, 
   },
   buttonStyle: {
-    backgroundColor: colorScheme.primaryColor,
+    //backgroundColor: colorScheme.primaryColor,
     marginBottom: 10,
     marginTop: 10,
     borderColor: colorScheme.primaryColor, 
@@ -94,7 +117,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     connection: state.settings.connection,
+    fetchReliability: state.settings.fetchReliability,
   };
 }
 
-export default connect(mapStateToProps, {changeHostSetting, changePortSetting, changePortUnlocode})(Settings);
+export default connect(mapStateToProps, {changeHostSetting, changePortSetting, changePortUnlocode, changeFetchReliability})(Settings);

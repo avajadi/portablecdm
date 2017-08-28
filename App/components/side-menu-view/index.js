@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { WebBrowser } from 'expo';
 import {
   View,
   StyleSheet,
@@ -20,8 +21,19 @@ import {
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
+import constants from '../../config/constants';
 
 class SideMenu extends Component {
+
+  logout = async() => {
+      console.log('Logging out...');
+      //TODO
+      await WebBrowser.openBrowserAsync('exp://z2-bby.pontusstjerna.app.exp.direct:80');
+      //await WebBrowser.openBrowserAsync(constants.MaritimeLogoutURI);
+      WebBrowser.dismissBrowser();
+  }
+
+
   render() {
 
     const { navigate, state } = this.props.navigation;
@@ -177,11 +189,11 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={canBeAccessedEverywhereExceptOnLogin} >Change user/portCDM instance</Text>     
+                                <Text style={[canBeAccessedEverywhereExceptOnLogin]} >Logout</Text>     
                             </View>
                         }
                         onPress={() => {
-                                if(activeItemKey !== 'Login') navigate('Login')
+                                if(activeItemKey !== 'Login') this.logout();
                             }
                         }
                     />
