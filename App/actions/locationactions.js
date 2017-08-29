@@ -1,6 +1,6 @@
 import * as types from './types';
 import { checkResponse, catchError } from '../util/httpResultUtils';
-import { createTokenHeaders } from '../util/portcdmUtils';
+import { createTokenHeaders, createLegacyHeaders } from '../util/portcdmUtils';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
@@ -9,13 +9,14 @@ export const fetchLocations = (locationType) => {
         const token = getState().settings.token;
         return fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
-                headers: createTokenHeaders(token)
+                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
             })
             .then(result => {
-                if(checkResponse(result))
+                let err = checkResponse(result);
+                if(!err)
                     return result.json();
                 
-                return null;
+                dispatch({type: types.SET_ERROR, payload: err});
             })
             .then(locations => {
                 // Need to add locations for logical locations

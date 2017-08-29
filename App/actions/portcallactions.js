@@ -1,6 +1,6 @@
 import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
-import { createTokenHeaders } from '../util/portcdmUtils';
+import { createTokenHeaders, createLegacyHeaders } from '../util/portcdmUtils';
 import {Alert} from 'react-native';
 
 export const clearPortCallSelection = () => {
@@ -28,7 +28,7 @@ export const fetchVessel = (vesselUrn) => {
         
         return fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
-            headers: createTokenHeaders(token)
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
         })
         .then(result => {
             if(checkResponse(result))
@@ -51,7 +51,7 @@ export const fetchPortCalls = () => {
     const filterString = createFilterString(filters, getState);
     return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
-        headers: createTokenHeaders(token)
+        headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
       })
         .then(result => {
            if(checkResponse(result))
@@ -62,7 +62,7 @@ export const fetchPortCalls = () => {
         .then(portCalls => Promise.all(portCalls.map(portCall => {
             return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
-                headers: createTokenHeaders(token)
+                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
             })
             .then(result => result.json())
             .then(vessel => {portCall.vessel = vessel; return portCall})
@@ -205,7 +205,7 @@ export const fetchPortCallOperations = (portCallId) => {
     const getReliability = getState().settings.fetchReliability;
     return fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
-            headers: createTokenHeaders(token)
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
         }
     )
     .then(result => result.json())
@@ -248,7 +248,7 @@ async function fetchReliability(operations, connection, portCallId) {
     const token = getState().settings.token;
     await fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
         {
-            headers: createTokenHeaders(token)
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
         }
     )
     .then(result => {
