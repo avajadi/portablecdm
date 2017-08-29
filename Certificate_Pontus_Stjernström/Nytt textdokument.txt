@@ -1,0 +1,2 @@
+openssl pkcs12 -export -in Certificate_Pontus_Stjernström.pem -inkey PrivateKey_Pontus_Stjernström.pem -out ps.p12 -n
+ame ps -certfile Certificate_Pontus_Stjernström.pem

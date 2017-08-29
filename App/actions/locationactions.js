@@ -42,7 +42,9 @@ export const fetchLocations = (locationType) => {
             .then(locations => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
-                catchError(err);
+                dispatch({type: types.SET_ERROR, payload: {
+                    title: err.message, 
+                    description: 'Unable to connect to the server!'}});
             });
     }
 }
