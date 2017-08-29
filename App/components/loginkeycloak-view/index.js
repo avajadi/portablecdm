@@ -158,8 +158,12 @@ class LoginKeyCloakView extends Component {
 
         if(!this.validateForms()) return;
 
-        this.props.fetchLocations();
-        navigate('Application');
+        this.props.fetchLocations().then(() => {
+            if(this.props.error.hasError)
+                navigate('Error');
+            else
+                navigate('Application');
+        });
     }
 
     validateForms() {
@@ -315,6 +319,7 @@ function mapStateToProps(state) {
     return {
       connection: state.settings.connection,
       token: state.settings.token,
+      error: state.error,
     }
   }
 

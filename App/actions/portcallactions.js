@@ -31,9 +31,11 @@ export const fetchVessel = (vesselUrn) => {
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
         })
         .then(result => {
-            if(checkResponse(result))
-             return result.json();
-            else return null;
+            let err = checkResponse(result);
+            if(!err)
+                return result.json();
+            
+            dispatch({type: types.SET_ERROR, payload: err});
          })
         .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel}))
     }
@@ -54,9 +56,11 @@ export const fetchPortCalls = () => {
         headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
       })
         .then(result => {
-           if(checkResponse(result))
-            return result.json();
-           else return null;
+            let err = checkResponse(result);
+            if(!err)
+                return result.json();
+            
+            dispatch({type: types.SET_ERROR, payload: err});
         })
         .then(portCalls => applyFilters(portCalls, filters))
         .then(portCalls => Promise.all(portCalls.map(portCall => {
@@ -64,7 +68,13 @@ export const fetchPortCalls = () => {
             {
                 headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
             })
-            .then(result => result.json())
+            .then(result => {
+                let err = checkResponse(result);
+                if(!err)
+                    return result.json();
+                
+                dispatch({type: types.SET_ERROR, payload: err});
+            })
             .then(vessel => {portCall.vessel = vessel; return portCall})
         })))
         .then(portCalls => {
@@ -208,7 +218,13 @@ export const fetchPortCallOperations = (portCallId) => {
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
         }
     )
-    .then(result => result.json())
+    .then(result => {
+        let err = checkResponse(result);
+        if(!err)
+            return result.json();
+
+        dispatch({type: types.SET_ERROR, payload: err});
+    })
     // Sort the operations, port_visits first, then in 
     .then(sortOperations)
     .then(filterStatements)
@@ -232,7 +248,7 @@ export const fetchPortCallOperations = (portCallId) => {
     .then((operations) => {
             if(!getReliability) return operations;
             
-            return fetchReliability(operations, connection, portCallId)
+            return fetchReliability(operations, connection, token, portCallId)
         }
     )
     .then(operations => {
@@ -243,16 +259,15 @@ export const fetchPortCallOperations = (portCallId) => {
 };
 
 // HELPER FUNCTIONS
-async function fetchReliability(operations, connection, portCallId) {
+async function fetchReliability(operations, connection, token, portCallId) {
     if(operations.length <= 0) return operations;
-    const token = getState().settings.token;
     await fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
         {
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
         }
     )
     .then(result => {
-        console.log('Fetching reliabilities.... ' + result);
+        console.log('Fetching reliabilities.... ' + result.status);
 
        if(result.status !== 200) {
            Alert.alert(

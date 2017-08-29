@@ -5,7 +5,10 @@ import {
 
 const INITIAL_STATE = {
     hasError: false,
-    errors: [],
+    error: {
+        title: 'No error',
+        description: 'Everything is fine :)'
+    },
 }
 
 const errorReducer = (state=INITIAL_STATE, action) => {
@@ -14,5 +17,9 @@ const errorReducer = (state=INITIAL_STATE, action) => {
             return {...state, hasError: true, error: action.payload}
         case REMOVE_ERROR:
             return {...state, hasError: false, error: null};
+        default:
+            return state;
     }
 }
+
+export default errorReducer;
