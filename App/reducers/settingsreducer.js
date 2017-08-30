@@ -19,7 +19,7 @@ const INITIAL_STATE = {
     password: '',
     unlocode: ''
   },
-  maxPortCallsFetched: 50,
+  maxPortCallsFetched: 10001,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*

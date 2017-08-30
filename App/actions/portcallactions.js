@@ -37,7 +37,11 @@ export const fetchVessel = (vesselUrn) => {
             
             dispatch({type: types.SET_ERROR, payload: err});
          })
-        .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel}))
+        .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel})).catch(err => {
+            dispatch({type: types.SET_ERROR, payload: {
+                title: err.message, 
+                description: 'Unable to connect to the server!'}});
+        });
     }
 };
 
@@ -79,7 +83,11 @@ export const fetchPortCalls = () => {
         })))
         .then(portCalls => {
             dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
-        })
+        }).catch(err => {
+            dispatch({type: types.SET_ERROR, payload: {
+                title: err.message, 
+                description: 'Unable to connect to the server!'}});
+        });
   };
 }
 
@@ -254,7 +262,11 @@ export const fetchPortCallOperations = (portCallId) => {
     .then(operations => {
     dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
     })      
-    .catch(error => console.log("\n-----------------\n" + error + "\n---------------------"));
+    .catch(err => {
+        dispatch({type: types.SET_ERROR, payload: {
+            title: err.message, 
+            description: 'Unable to connect to the server!'}});
+    });
   };
 };
 
@@ -310,7 +322,11 @@ async function fetchReliability(operations, connection, token, portCallId) {
                 }            
             })
         });
-        }));                
+        })).catch(err => {
+            dispatch({type: types.SET_ERROR, payload: {
+                title: err.message, 
+                description: 'Unable to connect to the server!'}});
+        });;                
     return operations;
 }
 
