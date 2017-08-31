@@ -7,7 +7,8 @@ import {
     TouchableWithoutFeedback,
     ListView,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    RefreshControl,
 } from 'react-native'
 
 import { 
@@ -33,7 +34,8 @@ class TimeLineView extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         
         this.state = {
-            dataSource: ds.cloneWithRows(['row 1, row 2'])
+            dataSource: ds.cloneWithRows(['row 1, row 2']),
+            refreshing: false,
         }
 
         this.goToStateList = this.goToStateList.bind(this);
@@ -41,17 +43,17 @@ class TimeLineView extends Component {
 
     componentWillMount() {
         portCallId = this.props.portCallId;
-        timer = setInterval(() => {
-            this.props.fetchPortCallOperations(portCallId).then(() => {
-                if(this.props.error.hasError)
-                    navigate('Error');
-            });
-        }, 60000);
+        timer = setInterval(() => this.loadOperations, 60000);
 
+        this.loadOperations = this.loadOperations.bind(this);
+        this.loadOperations();
+    }
+
+    loadOperations() {
         this.props.fetchPortCallOperations(portCallId).then(() => {
             if(this.props.error.hasError)
                 navigate('Error');
-        });
+        }); 
     }
 
     componentWillUnmount() {
@@ -90,6 +92,12 @@ class TimeLineView extends Component {
                 {!loading && <ListView
                                 enableEmptySections
                                 dataSource={dataSource} 
+                                refreshControl = {
+                                    <RefreshControl
+                                        refreshing={this.state.refreshing}
+                                        onRefresh={this.loadOperations.bind(this)}
+                                    />
+                                }
                                 renderRow={(data, sectionId, rowId) => {
                                     if(typeof data == 'number') return null; // disgusting way to not handle operations.reliability as a member of the dataset for operations
                                     return <OperationView 
