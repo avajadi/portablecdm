@@ -38,10 +38,10 @@ class Settings extends Component {
   }
 
   updateFetchReliability() {
-    const { navigate } = this.props.navigation;
     this.setState({fetchReliability: !this.state.fetchReliability});
     this.props.changeFetchReliability(this.state.fetchReliability);
     console.log('Reliability: ' + this.state.fetchReliability);
+    console.log('Reliability: ' + this.props.fetchReliability);
   }
 
   render() {
@@ -116,7 +116,6 @@ const locStyles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    connection: state.settings.connection,
     fetchReliability: state.settings.fetchReliability,
   };
 }

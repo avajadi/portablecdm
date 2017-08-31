@@ -27,7 +27,10 @@ class PortCallList extends Component {
     }
 
     componentWillMount() {
-        this.props.fetchPortCalls();
+        this.props.fetchPortCalls().then(() => {
+            if(this.props.error.hasError)
+                navigate('Error');
+        });
     }
 
     render() {
@@ -139,6 +142,7 @@ function mapStateToProps(state) {
     return {
         portCalls: state.portCalls.foundPortCalls,
         showLoadingIcon: state.portCalls.portCallsAreLoading,
+        error: state.error,
     }
 }
 

@@ -24,6 +24,9 @@ import { fetchPortCallOperations } from '../../actions';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
 
+const timer = null;
+const portCallId = null;
+
 class TimeLineView extends Component {
     constructor(props) {
         super(props);
@@ -37,8 +40,22 @@ class TimeLineView extends Component {
     }
 
     componentWillMount() {
-        const { portCallId } = this.props;
-        this.props.fetchPortCallOperations(portCallId);
+        portCallId = this.props.portCallId;
+        timer = setInterval(() => {
+            this.props.fetchPortCallOperations(portCallId).then(() => {
+                if(this.props.error.hasError)
+                    navigate('Error');
+            });
+        }, 60000);
+
+        this.props.fetchPortCallOperations(portCallId).then(() => {
+            if(this.props.error.hasError)
+                navigate('Error');
+        });
+    }
+
+    componentWillUnmount() {
+        clearInterval(timer);
     }
 
     goToStateList = () => {
@@ -117,7 +134,8 @@ function mapStateToProps(state) {
         loading: state.portCalls.selectedPortCallIsLoading,
         operations: state.portCalls.selectedPortCallOperations,
         vesselName: state.portCalls.vessel.name,
-        portCallId: state.portCalls.selectedPortCall.portCallId
+        portCallId: state.portCalls.selectedPortCall.portCallId,
+        error: state.error,
     };
 }
 

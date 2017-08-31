@@ -122,11 +122,11 @@ onDoneIconPressed() {
     } else if(selectedTimeIndex === 0) { // arriving within
         filterChangeArrivingWithin(withinValue);
     } else {
-        // Filter for not showing old PortCalls
-        filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
+        
     }
     
-
+    // Filter for not showing old PortCalls
+    filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
 
     // Vessel List
     filterChangeVesselList(this.state.vesselListFilter);

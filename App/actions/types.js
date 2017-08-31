@@ -42,3 +42,4 @@ export const FETCH_VESSEL_SUCCESS = 'fetch_vessel_success';
 export const FETCH_VESSEL_CLEAR = 'fetch_vessel_clear';
 export const SET_ERROR = 'set_error';
 export const REMOVE_ERROR = 'remove_error';
+export const UPDATE_PROGRESS = 'update_progress';
