@@ -28,7 +28,7 @@ class SideMenu extends Component {
   logout = async() => {
       console.log('Logging out...');
       //TODO
-      await WebBrowser.openBrowserAsync('exp://z2-bby.pontusstjerna.app.exp.direct:80');
+      await WebBrowser.openBrowserAsync('https://exp.host/@avajadi/portcdm-app');
       //await WebBrowser.openBrowserAsync(constants.MaritimeLogoutURI);
       WebBrowser.dismissBrowser();
   }

@@ -7,11 +7,13 @@ export const fetchLocations = (locationType) => {
         dispatch({type: types.FETCH_LOCATIONS});
         const connection = getState().settings.connection;
         const token = getState().settings.token;
+        console.log('Requesting locations....');
         return fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
                 headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
             })
             .then(result => {
+                console.log('Got locations.');
                 let err = checkResponse(result);
                 if(!err)
                     return result.json();
@@ -43,8 +45,8 @@ export const fetchLocations = (locationType) => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
                 dispatch({type: types.SET_ERROR, payload: {
-                    title: err.message, 
-                    description: 'Unable to connect to the server!'}});
+                    title: 'Unable to connect to the server!', 
+                    description: err.description}});
             });
     }
 }

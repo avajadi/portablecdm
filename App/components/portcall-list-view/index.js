@@ -6,7 +6,8 @@ import {
     View,
     Text,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    RefreshControl,
 } from 'react-native';
 
 import { 
@@ -24,10 +25,19 @@ import { getDateTimeString } from '../../util/timeservices';
 class PortCallList extends Component {   
     state = {
         searchTerm: '',
+        refreshing: false,
     }
 
     componentWillMount() {
-        this.props.fetchPortCalls();
+        this.loadPortCalls = this.loadPortCalls.bind(this);
+        this.loadPortCalls();
+    }
+
+    loadPortCalls() {
+        this.props.fetchPortCalls().then(() => {
+            if(this.props.error.hasError)
+                navigate('Error');
+        });
     }
 
     render() {
@@ -67,7 +77,13 @@ class PortCallList extends Component {
                 </View>
 
                 {/*Render the List of PortCalls*/}
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.loadPortCalls.bind(this)}
+                    />
+                    }>
                     <List>
                         {
                             this.search(portCalls, searchTerm).map( (portCall) => (
@@ -139,6 +155,7 @@ function mapStateToProps(state) {
     return {
         portCalls: state.portCalls.foundPortCalls,
         showLoadingIcon: state.portCalls.portCallsAreLoading,
+        error: state.error,
     }
 }
 

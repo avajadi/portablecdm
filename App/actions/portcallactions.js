@@ -39,8 +39,8 @@ export const fetchVessel = (vesselUrn) => {
          })
         .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel})).catch(err => {
             dispatch({type: types.SET_ERROR, payload: {
-                title: err.message, 
-                description: 'Unable to connect to the server!'}});
+                description: err.message, 
+                title: 'Unable to connect to the server!'}});
         });
     }
 };
@@ -55,11 +55,14 @@ export const fetchPortCalls = () => {
     const token = getState().settings.token;
     const filters = getState().filters;
     const filterString = createFilterString(filters, getState);
+    console.log('Fetching port calls....');
     return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
         headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
       })
         .then(result => {
+            console.log('Got response from port calls!');
+            dispatch({type: types.UPDATE_PROGRESS, payload: 0.1});
             let err = checkResponse(result);
             if(!err)
                 return result.json();
@@ -68,12 +71,14 @@ export const fetchPortCalls = () => {
         })
         .then(portCalls => applyFilters(portCalls, filters))
         .then(portCalls => Promise.all(portCalls.map(portCall => {
+            console.log('Requesting vessel info for port call ' + portCall.portCallId);
             return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
                 headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
             })
             .then(result => {
                 let err = checkResponse(result);
+                dispatch({type: types.UPDATE_PROGRESS, payload: 0.1})
                 if(!err)
                     return result.json();
                 
@@ -85,8 +90,8 @@ export const fetchPortCalls = () => {
             dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
         }).catch(err => {
             dispatch({type: types.SET_ERROR, payload: {
-                title: err.message, 
-                description: 'Unable to connect to the server!'}});
+                description: err.message, 
+                title: 'Unable to connect to the server!'}});
         });
   };
 }
@@ -148,6 +153,7 @@ function createFilterString(filters, getState) {
             count++;
             continue;
         }
+
         if(filter === 'onlyFetchActivePortCalls') {
             if(filters.onlyFetchActivePortCalls) {
                 let now = new Date();
@@ -221,12 +227,14 @@ export const fetchPortCallOperations = (portCallId) => {
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const getReliability = getState().settings.fetchReliability;
+    console.log('Fetching operations for port call ' + portCallId);
     return fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
         }
     )
     .then(result => {
+        console.log('Response for operation in port call');
         let err = checkResponse(result);
         if(!err)
             return result.json();
@@ -264,8 +272,8 @@ export const fetchPortCallOperations = (portCallId) => {
     })      
     .catch(err => {
         dispatch({type: types.SET_ERROR, payload: {
-            title: err.message, 
-            description: 'Unable to connect to the server!'}});
+            description: err.message, 
+            title: 'Unable to connect to the server!'}});
     });
   };
 };
@@ -324,8 +332,8 @@ async function fetchReliability(operations, connection, token, portCallId) {
         });
         })).catch(err => {
             dispatch({type: types.SET_ERROR, payload: {
-                title: err.message, 
-                description: 'Unable to connect to the server!'}});
+                description: err.message, 
+                title: 'Unable to connect to the server!'}});
         });;                
     return operations;
 }
