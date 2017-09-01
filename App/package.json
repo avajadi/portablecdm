@@ -19,10 +19,11 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "^17.0.0",
+    "expo": "^18.0.0",
+    "npm": "^4.6.1",
     "query-string": "^5.0.0",
     "react": "16.0.0-alpha.6",
-    "react-native": "https://github.com/exponent/react-native/archive/sdk-17.0.0.tar.gz",
+    "react-native": "https://github.com/exponent/react-native/archive/sdk-18.0.0.tar.gz",
     "react-native-collapsible": "^0.8.0",
     "react-native-elements": "^0.13.0",
     "react-native-http-server": "^0.1.2",
