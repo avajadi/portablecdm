@@ -1,22 +1,27 @@
 import * as types from './types';
 import { checkResponse, catchError } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders } from '../util/portcdmUtils';
+import pinch from 'react-native-pinch';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
         dispatch({type: types.FETCH_LOCATIONS});
         const connection = getState().settings.connection;
         const token = getState().settings.token;
-        console.log('Requesting locations....');
-        return fetch(`${connection.host}:${connection.port}/location-registry/locations`,
+        console.log('Requesting locations with pinch....');
+        return pinch.fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)
+                method: 'GET',
+                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+                sslPinning: {
+                    cert: 'staging',
+                }
             })
             .then(result => {
                 console.log('Got locations.');
                 let err = checkResponse(result);
                 if(!err)
-                    return result.json();
+                    return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
             })
@@ -44,6 +49,8 @@ export const fetchLocations = (locationType) => {
             .then(locations => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
+                console.log('*************');
+                console.log(err);
                 dispatch({type: types.SET_ERROR, payload: {
                     title: 'Unable to connect to the server!', 
                     description: err.description}});

@@ -23,6 +23,7 @@
     [_rootViewController loadReactApplication];
     [_window makeKeyAndVisible];
     
+    
     return YES;
 }
 

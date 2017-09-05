@@ -10,7 +10,6 @@ import java.util.List;
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
 import com.localz.PinchPackage;
-import com.strainy.RNHttpServer.RNHttpServerReactPackage;
 
 public class MainApplication extends MultiDexApplication {
 
@@ -22,8 +21,7 @@ public class MainApplication extends MultiDexApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
-            new PinchPackage(),
-            new RNHttpServerReactPackage()
+            new PinchPackage()
     );
   }
 }

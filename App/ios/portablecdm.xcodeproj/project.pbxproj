@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3FAB8A151B39413AA26ED522 /* libRNPinch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C80F76BB12DD4672B76CF1F5 /* libRNPinch.a */; };
+		7A2018DE9BD244898B10D14D /* libRNPinch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F943DB9820148B99F5284D7 /* libRNPinch.a */; };
+		7F7977B01F5EE1FD0063D170 /* staging.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7F7977AF1F5EE1FD0063D170 /* staging.cer */; };
 		B501732B1DC01252003445D9 /* EXShell.plist in Resources */ = {isa = PBXBuildFile; fileRef = B501732A1DC01252003445D9 /* EXShell.plist */; };
 		B56386491DB9693800A0598C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B56386481DB9693800A0598C /* AppDelegate.m */; };
 		B56386511DB9693800A0598C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56386501DB9693800A0598C /* Assets.xcassets */; };
@@ -20,9 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		7F678D331F599A9F00F6DAE2 /* PBXContainerItemProxy */ = {
+		7F7977A31F5EBED00063D170 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D01ABCC98A334EFF832F3B3F /* RNPinch.xcodeproj */;
+			containerPortal = DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = DA08C4AA1DAF39C600714E34;
 			remoteInfo = RNPinch;
@@ -30,7 +31,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F943DB9820148B99F5284D7 /* libRNPinch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPinch.a; sourceTree = "<group>"; };
 		2C1548D9E4CB1AEFA5CCAE6D /* Pods-portablecdm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-portablecdm.debug.xcconfig"; path = "Pods/Target Support Files/Pods-portablecdm/Pods-portablecdm.debug.xcconfig"; sourceTree = "<group>"; };
+		7F7977AF1F5EE1FD0063D170 /* staging.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = staging.cer; path = ../cert/staging.cer; sourceTree = "<group>"; };
 		A47FE4D7F70906B7DC8CE39B /* Pods-portablecdm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-portablecdm.release.xcconfig"; path = "Pods/Target Support Files/Pods-portablecdm/Pods-portablecdm.release.xcconfig"; sourceTree = "<group>"; };
 		B501732A1DC01252003445D9 /* EXShell.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXShell.plist; sourceTree = "<group>"; };
 		B56386411DB9693800A0598C /* portablecdm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = portablecdm.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,8 +47,7 @@
 		B56AC1071E417996005C22D6 /* kernel-manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "kernel-manifest.json"; sourceTree = "<group>"; };
 		B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXBuildConstants.plist; sourceTree = "<group>"; };
 		C4A88D15726AD99E8A257BC7 /* libPods-portablecdm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-portablecdm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C80F76BB12DD4672B76CF1F5 /* libRNPinch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPinch.a; sourceTree = "<group>"; };
-		D01ABCC98A334EFF832F3B3F /* RNPinch.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNPinch.xcodeproj; path = "../node_modules/react-native-pinch/RNPinch.xcodeproj"; sourceTree = "<group>"; };
+		DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNPinch.xcodeproj; path = "../node_modules/react-native-pinch/RNPinch.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,13 +56,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBB8117C1BFA0514F79CAF74 /* libPods-portablecdm.a in Frameworks */,
-				3FAB8A151B39413AA26ED522 /* libRNPinch.a in Frameworks */,
+				7A2018DE9BD244898B10D14D /* libRNPinch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1845BAE93516415CAC23846F /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		1A42804E64B7E9E0AB8B6799 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,10 +88,10 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		7F678D301F599A9F00F6DAE2 /* Products */ = {
+		7F7977A01F5EBED00063D170 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7F678D341F599A9F00F6DAE2 /* libRNPinch.a */,
+				7F7977A41F5EBED00063D170 /* libRNPinch.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,12 +99,12 @@
 		B56386381DB9693800A0598C = {
 			isa = PBXGroup;
 			children = (
+				7F7977AF1F5EE1FD0063D170 /* staging.cer */,
 				B56386431DB9693800A0598C /* portablecdm */,
 				B56386421DB9693800A0598C /* Products */,
 				5B29BC350A332C58878A9F13 /* Pods */,
 				1A42804E64B7E9E0AB8B6799 /* Frameworks */,
-				D38B30F5BF7B479E83548631 /* Libraries */,
-				B5AC9E7104BA46C6B83B0A43 /* Resources */,
+				1845BAE93516415CAC23846F /* Libraries */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,21 +139,6 @@
 				B563865E1DB96A5E00A0598C /* main.m */,
 			);
 			path = Supporting;
-			sourceTree = "<group>";
-		};
-		B5AC9E7104BA46C6B83B0A43 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		D38B30F5BF7B479E83548631 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				D01ABCC98A334EFF832F3B3F /* RNPinch.xcodeproj */,
-			);
-			name = Libraries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,8 +194,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 7F678D301F599A9F00F6DAE2 /* Products */;
-					ProjectRef = D01ABCC98A334EFF832F3B3F /* RNPinch.xcodeproj */;
+					ProductGroup = 7F7977A01F5EBED00063D170 /* Products */;
+					ProjectRef = DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -211,11 +206,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		7F678D341F599A9F00F6DAE2 /* libRNPinch.a */ = {
+		7F7977A41F5EBED00063D170 /* libRNPinch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNPinch.a;
-			remoteRef = 7F678D331F599A9F00F6DAE2 /* PBXContainerItemProxy */;
+			remoteRef = 7F7977A31F5EBED00063D170 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -225,6 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F7977B01F5EE1FD0063D170 /* staging.cer in Resources */,
 				B56AC1081E417996005C22D6 /* kernel-manifest.json in Resources */,
 				B501732B1DC01252003445D9 /* EXShell.plist in Resources */,
 				B5CFBF4F1EDE419400B4BE24 /* EXBuildConstants.plist in Resources */,
