@@ -1,6 +1,6 @@
 import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
-import { createTokenHeaders, createLegacyHeaders } from '../util/portcdmUtils';
+import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
 import {Alert} from 'react-native';
 import pinch from 'react-native-pinch';
 
@@ -30,9 +30,7 @@ export const fetchVessel = (vesselUrn) => {
         return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-            sslPinning: {
-                    cert: 'staging',
-                },
+            sslPinning: getCert(connection),
         })
         .then(result => {
             let err = checkResponse(result);
@@ -63,9 +61,7 @@ export const fetchPortCalls = () => {
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
         headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-        sslPinning: {
-                    cert: 'staging',
-                },
+        sslPinning: getCert(connection),
       })
         .then(result => {
             console.log('Got response from port calls!');
@@ -82,9 +78,7 @@ export const fetchPortCalls = () => {
             return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
                 headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-                sslPinning: {
-                    cert: 'staging',
-                },
+                sslPinning: getCert(connection),
             })
             .then(result => {
                 let err = checkResponse(result);
@@ -241,9 +235,7 @@ export const fetchPortCallOperations = (portCallId) => {
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-            sslPinning: {
-                    cert: 'staging',
-                },
+            sslPinning: getCert(connection),
         }
     )
     .then(result => {
@@ -294,12 +286,10 @@ export const fetchPortCallOperations = (portCallId) => {
 // HELPER FUNCTIONS
 async function fetchReliability(operations, connection, token, portCallId) {
     if(operations.length <= 0) return operations;
-    await fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
+    await pinch.fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
         {
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-            sslPinning: {
-                    cert: 'staging',
-                }
+            sslPinning: getCert(connection),
         }
     )
     .then(result => {

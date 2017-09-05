@@ -1,6 +1,6 @@
 import * as types from './types';
 import { checkResponse, catchError } from '../util/httpResultUtils';
-import { createTokenHeaders, createLegacyHeaders } from '../util/portcdmUtils';
+import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
 import pinch from 'react-native-pinch';
 
 export const fetchLocations = (locationType) => {
@@ -13,9 +13,7 @@ export const fetchLocations = (locationType) => {
             {
                 method: 'GET',
                 headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-                sslPinning: {
-                    cert: 'staging',
-                }
+                sslPinning: getCert(connection),
             })
             .then(result => {
                 console.log('Got locations.');
