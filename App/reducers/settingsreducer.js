@@ -13,8 +13,8 @@ import {
 
 const INITIAL_STATE = {
   connection: {
-    host: '',
-    port: '',
+    host: 'https://',
+    port: '8443',
     username: '',
     password: '',
     unlocode: ''

@@ -2,6 +2,7 @@ package com.viktoria.portcdmapp;
 
 import android.os.Bundle;
 
+import com.facebook.FacebookSdk;
 import com.facebook.react.ReactPackage;
 
 import java.util.ArrayList;

@@ -29,6 +29,7 @@ export const fetchVessel = (vesselUrn) => {
         
         return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
+            method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
             sslPinning: getCert(connection),
         })
@@ -60,6 +61,7 @@ export const fetchPortCalls = () => {
     console.log('Fetching port calls....');
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
+        method: 'GET',
         headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
         sslPinning: getCert(connection),
       })
@@ -77,6 +79,7 @@ export const fetchPortCalls = () => {
             console.log('Requesting vessel info for port call ' + portCall.portCallId);
             return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
+                method: 'GET',
                 headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
                 sslPinning: getCert(connection),
             })
@@ -234,6 +237,7 @@ export const fetchPortCallOperations = (portCallId) => {
     console.log('Fetching operations for port call ' + portCallId);
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
+            method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
             sslPinning: getCert(connection),
         }
@@ -288,6 +292,7 @@ async function fetchReliability(operations, connection, token, portCallId) {
     if(operations.length <= 0) return operations;
     await pinch.fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
         {
+            method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
             sslPinning: getCert(connection),
         }
