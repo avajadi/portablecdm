@@ -34,7 +34,8 @@ class ErrorView extends Component {
       <View style={styles.containers.centralizer}>
         <Text h2 style={{color: colorScheme.primaryColor}}>We're sorry :(</Text>
         <Text h3 style={{marginTop: 100, marginLeft: 20, marginRight: 20}}>{this.props.error.error.title}</Text>
-        <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20}}>{Platform.Version === 24 ? unsupportedAndroidMessage : this.props.error.error.description}</Text>
+        <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20}}>{Platform.Version === 24 && this.props.host.startsWith('https')
+          ? unsupportedAndroidMessage : this.props.error.error.description}</Text>
         <TouchableHighlight onPress={() => navigate('LoginKeyCloak')}>
         <View style={styles.containers.subContainer}>
             <Text h4 style={styles.fonts.white}>RETURN</Text>
@@ -48,6 +49,7 @@ class ErrorView extends Component {
 function mapStateToProps(state) {
     return {
         error: state.error,
+        host: state.settings.host,
     }
 }
 

@@ -27,6 +27,9 @@
         <category android:name="android.intent.category.BROWSABLE"/>
       </intent-filter>
     </activity>
+    <activity
+        android:name="host.exp.exponent.chrometabs.ChromeTabsManagerActivity">
+    </activity>
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
   </application>
 
