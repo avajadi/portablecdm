@@ -2,7 +2,6 @@ import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
 import {Alert} from 'react-native';
-import pinch from 'react-native-pinch';
 
 export const clearPortCallSelection = () => {
     return {
@@ -27,16 +26,15 @@ export const fetchVessel = (vesselUrn) => {
         const connection = getState().settings.connection;
         const token = getState().settings.token;
         
-        return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
+        return fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
             method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-            sslPinning: getCert(connection),
         })
         .then(result => {
             let err = checkResponse(result);
             if(!err)
-                return JSON.parse(result.bodyString);
+                return result.json();
             
             dispatch({type: types.SET_ERROR, payload: err});
          })
@@ -59,35 +57,33 @@ export const fetchPortCalls = () => {
     const filters = getState().filters;
     const filterString = createFilterString(filters, getState);
     console.log('Fetching port calls....');
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
+    return fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
         method: 'GET',
         headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-        sslPinning: getCert(connection),
       })
         .then(result => {
             console.log('Got response from port calls!');
             dispatch({type: types.UPDATE_PROGRESS, payload: 0.1});
             let err = checkResponse(result);
             if(!err)
-                return JSON.parse(result.bodyString);
+                return result.json();
             
             dispatch({type: types.SET_ERROR, payload: err});
         })
         .then(portCalls => applyFilters(portCalls, filters))
         .then(portCalls => Promise.all(portCalls.map(portCall => {
             console.log('Requesting vessel info for port call ' + portCall.portCallId);
-            return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+            return fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
                 method: 'GET',
                 headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-                sslPinning: getCert(connection),
             })
             .then(result => {
                 let err = checkResponse(result);
                 dispatch({type: types.UPDATE_PROGRESS, payload: 0.1})
                 if(!err)
-                    return JSON.parse(result.bodyString);
+                    return result.json();
                 
                 dispatch({type: types.SET_ERROR, payload: err});
             })
@@ -235,18 +231,17 @@ export const fetchPortCallOperations = (portCallId) => {
     const token = getState().settings.token;
     const getReliability = getState().settings.fetchReliability;
     console.log('Fetching operations for port call ' + portCallId);
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
+    return fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
             method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-            sslPinning: getCert(connection),
         }
     )
     .then(result => {
-        console.log('Response for operation in port calel');
+        console.log('Response for operation in port call');
         let err = checkResponse(result);
         if(!err)
-            return JSON.parse(result.bodyString);
+            return result.json();
 
         dispatch({type: types.SET_ERROR, payload: err});
     })
@@ -290,11 +285,10 @@ export const fetchPortCallOperations = (portCallId) => {
 // HELPER FUNCTIONS
 async function fetchReliability(operations, connection, token, portCallId) {
     if(operations.length <= 0) return operations;
-    await pinch.fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
+    await fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
         {
             method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
-            sslPinning: getCert(connection),
         }
     )
     .then(result => {
@@ -307,7 +301,7 @@ async function fetchReliability(operations, connection, token, portCallId) {
            );
            return null;
        }
-       else return JSON.parse(result.bodyString);
+       else return result.json();
     })
     // Add the reliability for the entire portcall as member of the array
     .then(result => {
