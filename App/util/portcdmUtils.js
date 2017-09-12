@@ -8,7 +8,7 @@ export function createLegacyHeaders(connection) {
     return {
         'X-PortCDM-UserId': connection.username,
         'X-PortCDM-Password': connection.password,
-        'X-PortCDM-APIKey': 'PortableCDM'
+        'X-PortCDM-APIKey': 'PortableCDM',
     }
 }
 
@@ -19,6 +19,6 @@ export function getCert(connection) {
         connection.host.includes('qa.portcdm.eu') ||
         connection.host.includes('sandbox') ?
         'staging' :
-        'prod'
+        'prod',
     };
 }

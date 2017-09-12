@@ -243,7 +243,8 @@ export const fetchPortCallOperations = (portCallId) => {
         }
     )
     .then(result => {
-        console.log('Response for operation in port call');
+        console.log('Response for operation in port calel');
+        console.log(result);
         let err = checkResponse(result);
         if(!err)
             return JSON.parse(result.bodyString);

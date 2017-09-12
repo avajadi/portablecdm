@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Platform } from 'react-native';
 
 import {
   View,
@@ -17,14 +18,25 @@ import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
 class ErrorView extends Component {
+
+  createDescription() {
+    if(Platform.Version === 24) {
+      return 
+    }
+  }
+
   render() {
     const { navigate } = this.props.navigation;
 
     return(
       <View style={styles.containers.centralizer}>
         <Text h2 style={{color: colorScheme.primaryColor}}>We're sorry :(</Text>
-        <Text h3 style={{marginTop: 100}}>{this.props.error.error.title}</Text>
-        <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20}}>{this.props.error.error.description}</Text>
+        <Text h3 style={{marginTop: 100, marginLeft: 20, marginRight: 20}}>{this.props.error.error.title}</Text>
+        <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20}}>{
+          Platform.Version === 24 ? 
+          'You are running on Android version 7.0.0 which is currently not supported. Please update to at least 7.1.1.' : 
+          this.props.error.error.description
+          }</Text>
         <TouchableHighlight onPress={() => navigate('LoginKeyCloak')}>
         <View style={styles.containers.subContainer}>
             <Text h4 style={styles.fonts.white}>RETURN</Text>
