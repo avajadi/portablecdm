@@ -122,11 +122,11 @@ onDoneIconPressed() {
     } else if(selectedTimeIndex === 0) { // arriving within
         filterChangeArrivingWithin(withinValue);
     } else {
-        // Filter for not showing old PortCalls
-        filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
+        
     }
     
-
+    // Filter for not showing old PortCalls
+    filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
 
     // Vessel List
     filterChangeVesselList(this.state.vesselListFilter);
@@ -230,7 +230,8 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                     {/* List first then sliding bar */}
                     <Slider
                         minimumValue={30}
-                        maximumValue={this.props.maxPortLimitPortCalls}
+                        /* maximumValue={this.props.maxPortLimitPortCalls}  TODO*/
+                        maximumValue={10000}
                         step={50}
                         value={this.state.limitFilter}
                         onValueChange={(value) => this.setState({limitFilter: value})}  

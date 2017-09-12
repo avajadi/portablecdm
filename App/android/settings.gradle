@@ -1,0 +1,3 @@
+include ':app'
+include ':react-native-pinch'
+project(':react-native-pinch').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-pinch/android')

@@ -2,74 +2,65 @@ import {Alert} from 'react-native';
 
 function checkRole(result) {
     if(result.status === 403) {
-        Alert.alert(
-            'Error',
-            'User does not have required role'
-        );
-        return false;
+        return {
+            error: 'Error',
+            description: 'User does not have required role'
+        };
     }
 
-    return true;
+    return null;
 }
 
 function checkServerLive(result) {
     if(result.status === 500){
-        Alert.alert(
-            'Error',
-            'Something went wrong with the server. (500)'
-        );
-        return false;
+        return {
+            title: 'Error',
+            description: 'Something went wrong with the server. (500)'
+        }
     }
 
-    return true;
+    return null;
 }
 
 function checkBadRequest(result) {
     if(result.status === 400) {
-        Alert.alert(
-            'Something went wrong',
-            'Bad request to the server.'
-        )
-        return false;
+        return {
+          title:  'Something went wrong',
+           description: 'Bad request to the server.'
+        };
     }
 
-    return true;
+    return null;
 }
 
 function checkAuthorized(result) {
     if(result.status === 401) {
-        Alert.alert(
-            'Unauthorized',
-            'Access denied.'
-        );
-
-        return false;
+        return {
+           title: 'Unauthorized',
+           description: 'Access denied.'
+        };
     }
 
-    return true;
+    return null;
 }
 
 export function catchError(error) {
-    Alert.alert(
-        'Something went wrong',
-        'Unable to connect to the server!'
-    );
+    return {
+       error: 'Something went wrong',
+       description: 'Unable to connect to the server!'
+    };
 }
 
 export function checkResponse(result) {
-    if(!checkRole(result)) {
-        return false;
-    }
+    let roleError = checkRole(result);
+    let serverLiveError = checkServerLive(result);
+    let badResultError = checkBadRequest(result);
+    let authorizedError = checkAuthorized(result);
 
-    if(!checkServerLive(result)) {
-        return false;
-    }
+    if(!!roleError) return roleError;
+    if(!!serverLiveError) return serverLiveError;
+    if(!!badResultError) return badResultError;
+    if(!!authorizedError) return authorizedError;
 
-    if(!checkBadRequest(result))
-        return false;
-
-    if(!checkAuthorized(result))
-        return false;
-
-    return true;
+    return null;
 }

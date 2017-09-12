@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   vesselList: 'all',             // name of a vessel list in settingsreducer, or "all" to not use filter
   arrivingWithin: 0,
   departingWithin: 0,
-  onlyFetchActivePortCalls: true,
+  onlyFetchActivePortCalls: false,
 };
 
 const filterReducer = (state=INITIAL_STATE, action) => {

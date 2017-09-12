@@ -1,21 +1,27 @@
 import * as types from './types';
 import { checkResponse, catchError } from '../util/httpResultUtils';
-import { createTokenHeaders } from '../util/portcdmUtils';
+import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
+import pinch from 'react-native-pinch';
 
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
         dispatch({type: types.FETCH_LOCATIONS});
         const connection = getState().settings.connection;
         const token = getState().settings.token;
-        return fetch(`${connection.host}:${connection.port}/location-registry/locations`,
+        console.log('Requesting locations with pinch....');
+        return pinch.fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
-                headers: createTokenHeaders(token)
+                method: 'GET',
+                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+                sslPinning: getCert(connection),
             })
             .then(result => {
-                if(checkResponse(result))
-                    return result.json();
+                console.log('Got locations.');
+                let err = checkResponse(result);
+                if(!err)
+                    return JSON.parse(result.bodyString);
                 
-                return null;
+                dispatch({type: types.SET_ERROR, payload: err});
             })
             .then(locations => {
                 // Need to add locations for logical locations
@@ -41,7 +47,11 @@ export const fetchLocations = (locationType) => {
             .then(locations => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
-                catchError(err);
+                console.log('*************');
+                console.log(err);
+                dispatch({type: types.SET_ERROR, payload: {
+                    title: 'Unable to connect to the server!', 
+                    description: err.description}});
             });
     }
 }

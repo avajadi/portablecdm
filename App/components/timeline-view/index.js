@@ -7,7 +7,8 @@ import {
     TouchableWithoutFeedback,
     ListView,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    RefreshControl,
 } from 'react-native'
 
 import { 
@@ -24,21 +25,39 @@ import { fetchPortCallOperations } from '../../actions';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
 
+const timer = null;
+const portCallId = null;
+
 class TimeLineView extends Component {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         
         this.state = {
-            dataSource: ds.cloneWithRows(['row 1, row 2'])
+            dataSource: ds.cloneWithRows(['row 1, row 2']),
+            refreshing: false,
         }
 
         this.goToStateList = this.goToStateList.bind(this);
     }
 
     componentWillMount() {
-        const { portCallId } = this.props;
-        this.props.fetchPortCallOperations(portCallId);
+        portCallId = this.props.portCallId;
+        timer = setInterval(() => this.loadOperations, 60000);
+
+        this.loadOperations = this.loadOperations.bind(this);
+        this.loadOperations();
+    }
+
+    loadOperations() {
+        this.props.fetchPortCallOperations(portCallId).then(() => {
+            if(this.props.error.hasError)
+                navigate('Error');
+        }); 
+    }
+
+    componentWillUnmount() {
+        clearInterval(timer);
     }
 
     goToStateList = () => {
@@ -73,6 +92,12 @@ class TimeLineView extends Component {
                 {!loading && <ListView
                                 enableEmptySections
                                 dataSource={dataSource} 
+                                refreshControl = {
+                                    <RefreshControl
+                                        refreshing={this.state.refreshing}
+                                        onRefresh={this.loadOperations.bind(this)}
+                                    />
+                                }
                                 renderRow={(data, sectionId, rowId) => {
                                     if(typeof data == 'number') return null; // disgusting way to not handle operations.reliability as a member of the dataset for operations
                                     return <OperationView 
@@ -117,7 +142,8 @@ function mapStateToProps(state) {
         loading: state.portCalls.selectedPortCallIsLoading,
         operations: state.portCalls.selectedPortCallOperations,
         vesselName: state.portCalls.vessel.name,
-        portCallId: state.portCalls.selectedPortCall.portCallId
+        portCallId: state.portCalls.selectedPortCall.portCallId,
+        error: state.error,
     };
 }
 

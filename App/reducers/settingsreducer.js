@@ -13,13 +13,13 @@ import {
 
 const INITIAL_STATE = {
   connection: {
-    host: '',
-    port: '',
+    host: 'https://',
+    port: '8443',
     username: '',
     password: '',
     unlocode: ''
   },
-  maxPortCallsFetched: 50,
+  maxPortCallsFetched: 10001,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*

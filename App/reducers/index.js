@@ -6,6 +6,7 @@ import sendingReducer from './sendingreducer';
 import locationReducer from './locationreducer';
 import filterReducer from './filterreducer';
 import vesselReducer from './vesselreducer';
+import errorReducer from './errorreducer';
 
 export default combineReducers({
   portCalls: portCallReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   location: locationReducer,
   filters: filterReducer,
   vessel: vesselReducer,  
+  error: errorReducer,
 });

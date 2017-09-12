@@ -158,10 +158,12 @@ class LoginKeyCloakView extends Component {
 
         if(!this.validateForms()) return;
 
-        if(!this.props.fetchLocations())  //Call last before navigate
-            navigate('Error');
-        else
-            navigate('Application');
+        this.props.fetchLocations().then(() => {
+            if(this.props.error.hasError)
+                navigate('Error');
+        });
+
+        navigate('Application');
     }
 
     validateForms() {
@@ -219,6 +221,35 @@ class LoginKeyCloakView extends Component {
         return (
             <View style={{flex: 2}}>
                 <ScrollView contentContainerStyle={styles.containers.main}>
+                <Modal
+                        animationType={'slide'}
+                        transparent={false}
+                        visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
+                        onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
+                        >
+                            <View style={styles.containers.centralizer}>
+                            <Text h3>Legacy Login</Text>
+                            <FormLabel>Username: </FormLabel>
+                            <FormInput
+                                autoCorrect={false}
+                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
+                                value={this.state.legacyLogin.username}
+                                onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, username: text}})}
+                            />
+                            <FormLabel>Password: </FormLabel>
+                            <FormInput
+                                autoCorrect={false}
+                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
+                                secureTextEntry
+                                value={this.state.legacyLogin.password}
+                                onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, password: text}})}
+                            />
+                            <Button
+                                title='Continue'
+                                onPress={this.loginConfirmed}
+                            />
+                        </View>
+                    </Modal>
                     <View style={styles.containers.centralizer}>
                         <Text h3>
                             <Text style={{fontWeight: 'normal'}}>Welcome to </Text> 
@@ -262,7 +293,10 @@ class LoginKeyCloakView extends Component {
                             </View>
                         </View>
                         <View style={styles.containers.blank}/>
-                        <TouchableHighlight onPress={this.onLoginPress}> 
+                        <TouchableHighlight onPress={this.onLoginPress} onLongPress={() => {
+                                this.validateForms();
+                                this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, enabled: true}});
+                            }}>
                         <View style={styles.containers.subContainer}>
                             <Text h3 style={styles.fonts.white}>SEASWIM LOGIN</Text>
                         </View>
@@ -285,6 +319,7 @@ function mapStateToProps(state) {
     return {
       connection: state.settings.connection,
       token: state.settings.token,
+      error: state.error,
     }
   }
 

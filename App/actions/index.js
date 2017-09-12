@@ -6,6 +6,7 @@ export * from './stateactions';
 export * from './portcallactions';
 export * from './locationactions';
 export * from './sendingactions';
+export * from './erroractions';
 
 
 
