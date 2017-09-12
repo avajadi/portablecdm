@@ -9,6 +9,8 @@ export function createLegacyHeaders(connection) {
         'X-PortCDM-UserId': connection.username,
         'X-PortCDM-Password': connection.password,
         'X-PortCDM-APIKey': 'PortableCDM',
+        'Content-Type': 'application/xml', //TODO: Remove in production when bug is fixed
+        //'Content-Type': 'application/json',
     }
 }
 
@@ -20,5 +22,7 @@ export function getCert(connection) {
         connection.host.includes('sandbox') ?
         'staging' :
         'prod',
+        'Content-Type': 'application/xml', //TODO: Remove in production when bug is fixed
+        //'Content-Type': 'application/json',
     };
 }

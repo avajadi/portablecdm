@@ -17,6 +17,8 @@ import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
+const unsupportedAndroidMessage = 'You are running on Android version 7.0.0 which is currently not supported. Please update to at least 7.1.1 to use https.'
+
 class ErrorView extends Component {
 
   createDescription() {
@@ -32,11 +34,7 @@ class ErrorView extends Component {
       <View style={styles.containers.centralizer}>
         <Text h2 style={{color: colorScheme.primaryColor}}>We're sorry :(</Text>
         <Text h3 style={{marginTop: 100, marginLeft: 20, marginRight: 20}}>{this.props.error.error.title}</Text>
-        <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20}}>{
-          Platform.Version === 24 ? 
-          'You are running on Android version 7.0.0 which is currently not supported. Please update to at least 7.1.1.' : 
-          this.props.error.error.description
-          }</Text>
+        <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20}}>{Platform.Version === 24 ? unsupportedAndroidMessage : this.props.error.error.description}</Text>
         <TouchableHighlight onPress={() => navigate('LoginKeyCloak')}>
         <View style={styles.containers.subContainer}>
             <Text h4 style={styles.fonts.white}>RETURN</Text>
