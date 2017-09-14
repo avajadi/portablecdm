@@ -49,6 +49,8 @@ repositories{
 }
 
 dependencies {
+    compile project(':react-native-fs')
+    compile project(':react-native-static-server')
     compile project(':react-native-pinch')
   compile fileTree(dir: 'libs', include: ['*.jar'])
   testCompile 'junit:junit:4.12'

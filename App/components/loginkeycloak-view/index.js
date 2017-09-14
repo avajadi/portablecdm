@@ -3,6 +3,8 @@ import { Constants, WebBrowser } from 'expo';
 import { checkForCertification } from '../../util/certification'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
+import StaticServer from 'react-native-static-server';
+import RNFS from 'react-native-fs';
 
 import {
     View,
@@ -72,11 +74,19 @@ class LoginKeyCloakView extends Component {
 
     componentDidMount() {
         Linking.addEventListener('url', this.handleMaritimeRedirect);
+        let server = new StaticServer(1337);
+
+        server.start().then((url) => {
+            console.log('Serving at url ' + url);
+        })
+
+        console.log('DocumentDirectory is: ' + RNFS.DocumentDirectoryPath);
     }
 
     onLoginPress = async () => {
         constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
-        let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
+        //let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
+        await WebBrowser.openBrowserAsync('http://127.0.0.1:1337/authing.html');
     }
 
     handleMaritimeRedirect = async event => {
