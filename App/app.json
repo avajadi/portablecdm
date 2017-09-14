@@ -19,11 +19,6 @@
       "hideExponentText": true,
       "backgroundImage": "./assets/splash-screen.png"
     },
-    "isDetached": false,
-    "detach": {
-      "scheme": "exp432e0186c47243658eeef37602b6c1c4",
-      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v1.17.0-sdk18.0.0-b4aff885-a9a8-4733-9fa9-ec28bef01e15.tar.gz",
-      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v1.17.0-sdk18.0.0-4680412d-04c4-47ed-9161-88e01d76be96.tar.gz"
-    }
+    "isDetached": false
   }
 }
