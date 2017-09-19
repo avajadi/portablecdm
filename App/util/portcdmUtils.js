@@ -9,7 +9,7 @@ export function createLegacyHeaders(connection) {
         'X-PortCDM-UserId': connection.username,
         'X-PortCDM-Password': connection.password,
         'X-PortCDM-APIKey': 'PortableCDM',
-        'Content-Type': 'application/json',
+        'Content-Type': connection.host.includes('dev') ? 'application/json' : 'application/xml',
     }
 }
 

@@ -77,8 +77,9 @@ class LoginKeyCloakView extends Component {
 
     onLoginPress = async () => {
         constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
-        //let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
-        let result = await WebBrowser.openBrowserAsync('http://localhost:1337/redirect/#test=notworking');
+        console.log(constants.MaritimeAuthURI);
+        let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
+        //let result = await WebBrowser.openBrowserAsync('http://localhost:1337/redirect/#test=notworking');
     }
 
     handleMaritimeRedirect = async event => {
