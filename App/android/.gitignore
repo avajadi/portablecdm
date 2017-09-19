@@ -7,3 +7,6 @@
 **/.idea/vcs.xml
 *.iml
 *.apk
+./idea
+./gradle
+/build

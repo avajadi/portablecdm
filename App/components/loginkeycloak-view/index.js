@@ -43,6 +43,7 @@ import consts from '../../config/constants';
 const window = Dimensions.get('window');
 
 let constants = {};
+let server = null;
 
 class LoginKeyCloakView extends Component {
     constructor(props) {
@@ -74,7 +75,7 @@ class LoginKeyCloakView extends Component {
 
     componentDidMount() {
         Linking.addEventListener('url', this.handleMaritimeRedirect);
-        let server = new StaticServer(8080, RNFS.DocumentDirectoryPath);
+        server = new StaticServer(1337, RNFS.DocumentDirectoryPath, {localOnly: true});
 
         server.start().then((url) => {
             console.log('Serving at url ' + url);
@@ -86,7 +87,7 @@ class LoginKeyCloakView extends Component {
     onLoginPress = async () => {
         constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
         //let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
-        await WebBrowser.openBrowserAsync('http://localhost:8080/authing.html');
+        await WebBrowser.openBrowserAsync('http://localhost:1337/authing.html#hello=ilikejuice');
     }
 
     handleMaritimeRedirect = async event => {
@@ -95,6 +96,7 @@ class LoginKeyCloakView extends Component {
         }
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
+        server.stop();
 
         console.log('Authenticating...');
         const [, queryString] = event.url.split('#');

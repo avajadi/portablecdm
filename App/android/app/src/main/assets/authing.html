@@ -1,12 +1,10 @@
 <script>
-    //if (window.location.hash) {
-      if (true) {
+    if (window.location.hash) {
       var query = window.location.hash.replace(/^#/,'');
-      //var url = 'exp432e0186c47243658eeef37602b6c1c4://5d-dxm.avajadi.app.exp.direct:80/+?' + query;
-      var url = 'http://google.se'
+      var url = 'exp432e0186c47243658eeef37602b6c1c4://5d-dxm.avajadi.app.exp.direct:80/+redirect/?' + query;
       window.location = url;
       document.write('Redirecting...');
     } else {
-      //document.write('Uh oh something went wrong');
+      document.write('Uh oh something went wrong');
     }
 </script>
