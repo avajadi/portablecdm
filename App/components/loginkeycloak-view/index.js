@@ -74,7 +74,7 @@ class LoginKeyCloakView extends Component {
 
     componentDidMount() {
         Linking.addEventListener('url', this.handleMaritimeRedirect);
-        let server = new StaticServer(1337);
+        let server = new StaticServer(8080, RNFS.DocumentDirectoryPath);
 
         server.start().then((url) => {
             console.log('Serving at url ' + url);
@@ -86,7 +86,7 @@ class LoginKeyCloakView extends Component {
     onLoginPress = async () => {
         constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
         //let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
-        await WebBrowser.openBrowserAsync('http://127.0.0.1:1337/authing.html');
+        await WebBrowser.openBrowserAsync('http://localhost:8080/authing.html');
     }
 
     handleMaritimeRedirect = async event => {
