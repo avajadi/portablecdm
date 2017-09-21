@@ -28,8 +28,6 @@ class ErrorView extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-
     return(
       <View style={styles.containers.centralizer}>
         <Text h2 style={{color: colorScheme.primaryColor}}>We're sorry :(</Text>
@@ -49,7 +47,7 @@ class ErrorView extends Component {
 function mapStateToProps(state) {
     return {
         error: state.error,
-        host: state.settings.host,
+        host: state.settings.connection.host,
     }
 }
 

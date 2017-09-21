@@ -3,6 +3,8 @@ import { Constants, WebBrowser } from 'expo';
 import { checkForCertification } from '../../util/certification'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
+import StaticServer from 'react-native-static-server';
+import RNFS from 'react-native-fs';
 
 import {
     View,
@@ -14,6 +16,7 @@ import {
     Alert,
     Dimensions,
     Modal,
+    Platform,
 } from 'react-native';
 
 import {
@@ -41,6 +44,7 @@ import consts from '../../config/constants';
 const window = Dimensions.get('window');
 
 let constants = {};
+let server = null;
 
 class LoginKeyCloakView extends Component {
     constructor(props) {
@@ -72,6 +76,23 @@ class LoginKeyCloakView extends Component {
 
     componentDidMount() {
         Linking.addEventListener('url', this.handleMaritimeRedirect);
+
+        let path = '';
+        if(Platform.OS === 'ios') {
+            path = RNFS.MainBundlePath + '/www';
+        } else {
+            path = RNFS.DocumentDirectoryPath;
+        }
+
+        server = new StaticServer(1337, path, {localOnly: true});
+
+        server.start().then((url) => {
+            console.log('Serving at url ' + url + '. Path is ' + path);
+        })
+    }
+
+    componentWillUnmount() {
+        server.stop();
     }
 
     onLoginPress = async () => {
@@ -80,7 +101,8 @@ class LoginKeyCloakView extends Component {
     }
 
     handleMaritimeRedirect = async event => {
-        if(!event.url.includes('+/redirect')){
+        console.log('OPENNNNNNA!!');
+        if(!event.url.includes('/redirect')){
             return;
         }
         WebBrowser.dismissBrowser();
@@ -147,6 +169,7 @@ class LoginKeyCloakView extends Component {
     }
 
     loginConfirmed() {
+        server.stop();
         this.setState({legacyLogin: {enabled: false}});
         const { navigate } = this.props.navigation;
         this.props.changeToken(this.state.token);

@@ -6,9 +6,7 @@
 **/.idea/modules.xml
 **/.idea/vcs.xml
 *.iml
-.gradle
-app/build
-build
-captures
-local.properties
 *.apk
+**./idea
+**./gradle
+**/build

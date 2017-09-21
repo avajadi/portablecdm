@@ -10,6 +10,9 @@
 		7A2018DE9BD244898B10D14D /* libRNPinch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F943DB9820148B99F5284D7 /* libRNPinch.a */; };
 		7F7977B01F5EE1FD0063D170 /* staging.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7F7977AF1F5EE1FD0063D170 /* staging.cer */; };
 		7F7977B21F5EE85D0063D170 /* prod.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7F7977B11F5EE85D0063D170 /* prod.cer */; };
+		7FE257F51F73E8F4007108F0 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FE257EF1F73E8CA007108F0 /* libRCTLinking.a */; };
+		7FE257F91F73EF39007108F0 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 7FE257F81F73EF39007108F0 /* www */; };
+		8A1C160493F746BABA746B03 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1FFC568FAF840E18D9AC35B /* libRNFS.a */; };
 		B501732B1DC01252003445D9 /* EXShell.plist in Resources */ = {isa = PBXBuildFile; fileRef = B501732A1DC01252003445D9 /* EXShell.plist */; };
 		B56386491DB9693800A0598C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B56386481DB9693800A0598C /* AppDelegate.m */; };
 		B56386511DB9693800A0598C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56386501DB9693800A0598C /* Assets.xcassets */; };
@@ -19,15 +22,51 @@
 		B56AC1081E417996005C22D6 /* kernel-manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = B56AC1071E417996005C22D6 /* kernel-manifest.json */; };
 		B5CFBF4F1EDE419400B4BE24 /* EXBuildConstants.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */; };
 		EBB8117C1BFA0514F79CAF74 /* libPods-portablecdm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A88D15726AD99E8A257BC7 /* libPods-portablecdm.a */; };
+		FC53877AA6EC4E798C01A9C6 /* libFPStaticServer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A12C9E0B2E394D4EB3472261 /* libFPStaticServer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		7F4C73B41F6ACE5400BEB8DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A93BD26F985347D9BC24C966 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
+			remoteInfo = RNFS;
+		};
+		7F4C73B61F6ACE5400BEB8DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A93BD26F985347D9BC24C966 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6456441F1EB8DA9100672408;
+			remoteInfo = "RNFS-tvOS";
+		};
 		7F7977A31F5EBED00063D170 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = DA08C4AA1DAF39C600714E34;
 			remoteInfo = RNPinch;
+		};
+		7F8830931F6A9DFC00A6594C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C774EFF38F314E38AC46F7CB /* FPStaticServer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = FPStaticServer;
+		};
+		7FE257EE1F73E8CA007108F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7FE257E81F73E8CA007108F0 /* RCTLinking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTLinking;
+		};
+		7FE257F01F73E8CA007108F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7FE257E81F73E8CA007108F0 /* RCTLinking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D2A28471D9B043800D4039D;
+			remoteInfo = "RCTLinking-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -36,7 +75,11 @@
 		2C1548D9E4CB1AEFA5CCAE6D /* Pods-portablecdm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-portablecdm.debug.xcconfig"; path = "Pods/Target Support Files/Pods-portablecdm/Pods-portablecdm.debug.xcconfig"; sourceTree = "<group>"; };
 		7F7977AF1F5EE1FD0063D170 /* staging.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = staging.cer; path = ../cert/staging.cer; sourceTree = "<group>"; };
 		7F7977B11F5EE85D0063D170 /* prod.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = prod.cer; path = ../cert/prod.cer; sourceTree = "<group>"; };
+		7FE257E81F73E8CA007108F0 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7FE257F81F73EF39007108F0 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		A12C9E0B2E394D4EB3472261 /* libFPStaticServer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFPStaticServer.a; sourceTree = "<group>"; };
 		A47FE4D7F70906B7DC8CE39B /* Pods-portablecdm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-portablecdm.release.xcconfig"; path = "Pods/Target Support Files/Pods-portablecdm/Pods-portablecdm.release.xcconfig"; sourceTree = "<group>"; };
+		A93BD26F985347D9BC24C966 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		B501732A1DC01252003445D9 /* EXShell.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXShell.plist; sourceTree = "<group>"; };
 		B56386411DB9693800A0598C /* portablecdm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = portablecdm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56386471DB9693800A0598C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -48,7 +91,9 @@
 		B56386661DB9994300A0598C /* EXSDKVersions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXSDKVersions.plist; sourceTree = "<group>"; };
 		B56AC1071E417996005C22D6 /* kernel-manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "kernel-manifest.json"; sourceTree = "<group>"; };
 		B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXBuildConstants.plist; sourceTree = "<group>"; };
+		C1FFC568FAF840E18D9AC35B /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		C4A88D15726AD99E8A257BC7 /* libPods-portablecdm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-portablecdm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C774EFF38F314E38AC46F7CB /* FPStaticServer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FPStaticServer.xcodeproj; path = "../node_modules/react-native-static-server/ios/FPStaticServer.xcodeproj"; sourceTree = "<group>"; };
 		DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNPinch.xcodeproj; path = "../node_modules/react-native-pinch/RNPinch.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,8 +102,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FE257F51F73E8F4007108F0 /* libRCTLinking.a in Frameworks */,
 				EBB8117C1BFA0514F79CAF74 /* libPods-portablecdm.a in Frameworks */,
 				7A2018DE9BD244898B10D14D /* libRNPinch.a in Frameworks */,
+				FC53877AA6EC4E798C01A9C6 /* libFPStaticServer.a in Frameworks */,
+				8A1C160493F746BABA746B03 /* libRNFS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +116,10 @@
 		1845BAE93516415CAC23846F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7FE257E81F73E8CA007108F0 /* RCTLinking.xcodeproj */,
 				DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */,
+				C774EFF38F314E38AC46F7CB /* FPStaticServer.xcodeproj */,
+				A93BD26F985347D9BC24C966 /* RNFS.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -90,6 +141,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7F4C73AF1F6ACE5400BEB8DF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7F4C73B51F6ACE5400BEB8DF /* libRNFS.a */,
+				7F4C73B71F6ACE5400BEB8DF /* libRNFS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		7F7977A01F5EBED00063D170 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,9 +158,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7F8830901F6A9DFC00A6594C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7F8830941F6A9DFC00A6594C /* libFPStaticServer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7FE257E91F73E8CA007108F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7FE257EF1F73E8CA007108F0 /* libRCTLinking.a */,
+				7FE257F11F73E8CA007108F0 /* libRCTLinking-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B56386381DB9693800A0598C = {
 			isa = PBXGroup;
 			children = (
+				7FE257F81F73EF39007108F0 /* www */,
 				7F7977B11F5EE85D0063D170 /* prod.cer */,
 				7F7977AF1F5EE1FD0063D170 /* staging.cer */,
 				B56386431DB9693800A0598C /* portablecdm */,
@@ -179,7 +257,7 @@
 				TargetAttributes = {
 					B56386401DB9693800A0598C = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = C8D8QTF339;
+						DevelopmentTeam = GJP23K8E43;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -197,6 +275,18 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 7F8830901F6A9DFC00A6594C /* Products */;
+					ProjectRef = C774EFF38F314E38AC46F7CB /* FPStaticServer.xcodeproj */;
+				},
+				{
+					ProductGroup = 7FE257E91F73E8CA007108F0 /* Products */;
+					ProjectRef = 7FE257E81F73E8CA007108F0 /* RCTLinking.xcodeproj */;
+				},
+				{
+					ProductGroup = 7F4C73AF1F6ACE5400BEB8DF /* Products */;
+					ProjectRef = A93BD26F985347D9BC24C966 /* RNFS.xcodeproj */;
+				},
+				{
 					ProductGroup = 7F7977A01F5EBED00063D170 /* Products */;
 					ProjectRef = DBB976FE36E24D24AB766D6F /* RNPinch.xcodeproj */;
 				},
@@ -209,11 +299,46 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		7F4C73B51F6ACE5400BEB8DF /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 7F4C73B41F6ACE5400BEB8DF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7F4C73B71F6ACE5400BEB8DF /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 7F4C73B61F6ACE5400BEB8DF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		7F7977A41F5EBED00063D170 /* libRNPinch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNPinch.a;
 			remoteRef = 7F7977A31F5EBED00063D170 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7F8830941F6A9DFC00A6594C /* libFPStaticServer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFPStaticServer.a;
+			remoteRef = 7F8830931F6A9DFC00A6594C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7FE257EF1F73E8CA007108F0 /* libRCTLinking.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTLinking.a;
+			remoteRef = 7FE257EE1F73E8CA007108F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7FE257F11F73E8CA007108F0 /* libRCTLinking-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTLinking-tvOS.a";
+			remoteRef = 7FE257F01F73E8CA007108F0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -223,6 +348,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FE257F91F73EF39007108F0 /* www in Resources */,
 				7F7977B21F5EE85D0063D170 /* prod.cer in Resources */,
 				7F7977B01F5EE1FD0063D170 /* staging.cer in Resources */,
 				B56AC1081E417996005C22D6 /* kernel-manifest.json in Resources */,
@@ -424,15 +550,49 @@
 			baseConfigurationReference = 2C1548D9E4CB1AEFA5CCAE6D /* Pods-portablecdm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = C8D8QTF339;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				DEVELOPMENT_TEAM = GJP23K8E43;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Amplitude-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/Analytics\"",
+					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/Bolts\"",
+					"\"${PODS_ROOT}/Headers/Public/Branch\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
+					"\"${PODS_ROOT}/Headers/Public/ExpoKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBAudienceNetwork\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKCoreKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKLoginKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKShareKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/GPUImage\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAppUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAuthUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleNetworkingUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/React\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-ios\"",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/portablecdm/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.viktoria.portcdmapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -441,15 +601,48 @@
 			baseConfigurationReference = A47FE4D7F70906B7DC8CE39B /* Pods-portablecdm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = C8D8QTF339;
+				DEVELOPMENT_TEAM = GJP23K8E43;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Amplitude-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/Analytics\"",
+					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/Bolts\"",
+					"\"${PODS_ROOT}/Headers/Public/Branch\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
+					"\"${PODS_ROOT}/Headers/Public/ExpoKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBAudienceNetwork\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKCoreKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKLoginKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKShareKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/GPUImage\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAppUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAuthUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleNetworkingUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/React\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-ios\"",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/portablecdm/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.viktoria.portcdmapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

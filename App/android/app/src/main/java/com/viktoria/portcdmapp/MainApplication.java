@@ -9,6 +9,8 @@ import java.util.List;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
+import com.futurepress.staticserver.FPStaticServerPackage;
 import com.localz.PinchPackage;
 
 public class MainApplication extends MultiDexApplication {
@@ -21,6 +23,8 @@ public class MainApplication extends MultiDexApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new RNFSPackage(),
+            new FPStaticServerPackage(),
             new PinchPackage()
     );
   }

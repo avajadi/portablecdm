@@ -3,6 +3,7 @@
 #import "AppDelegate.h"
 #import "ExpoKit.h"
 #import "EXViewController.h"
+#import <RCTLinkingManager.h>
 
 @interface AppDelegate ()
 
@@ -11,6 +12,7 @@
 @end
 
 @implementation AppDelegate
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -23,11 +25,11 @@
     [_rootViewController loadReactApplication];
     [_window makeKeyAndVisible];
     
-    
     return YES;
 }
 
 #pragma mark - Handling URLs
+
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation
 {
@@ -38,6 +40,7 @@
 {
     return [[ExpoKit sharedInstance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
+
 
 #pragma mark - Notifications
 
