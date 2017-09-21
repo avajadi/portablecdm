@@ -3,6 +3,8 @@ import { Constants, WebBrowser } from 'expo';
 import { checkForCertification } from '../../util/certification'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
+import StaticServer from 'react-native-static-server';
+import RNFS from 'react-native-fs';
 
 import {
     View,
@@ -73,13 +75,22 @@ class LoginKeyCloakView extends Component {
 
     componentDidMount() {
         Linking.addEventListener('url', this.handleMaritimeRedirect);
+        server = new StaticServer(1337, RNFS.DocumentDirectoryPath, {localOnly: true});
+
+        server.start().then((url) => {
+            console.log('Serving at url ' + url);
+        })
+
+        console.log('DocumentDirectory is: ' + RNFS.DocumentDirectoryPath);
+    }
+
+    componentWillUnmount() {
+        server.stop();
     }
 
     onLoginPress = async () => {
         constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
-        console.log(constants.MaritimeAuthURI);
         let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
-        //let result = await WebBrowser.openBrowserAsync('http://localhost:1337/redirect/#test=notworking');
     }
 
     handleMaritimeRedirect = async event => {
@@ -88,6 +99,8 @@ class LoginKeyCloakView extends Component {
         }
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
+
+        server.stop();
 
         console.log('Authenticating...');
         const [, queryString] = event.url.split('#');
@@ -112,6 +125,8 @@ class LoginKeyCloakView extends Component {
             formBody.push(encodedKey + '=' + encodedValue);
         }
         formBody = formBody.join('&');
+
+        console.log(formBody + '**************');
 
         const response = await fetch(constants.MaritimeTokenURI, {
             method: 'POST',
@@ -158,7 +173,7 @@ class LoginKeyCloakView extends Component {
         this.props.changeUser(this.state.legacyLogin.username, this.state.legacyLogin.password);
         this.props.changePortSetting(this.state.port);
         this.setState({host: this.reformatHostHttp(this.state.host)});
-
+        
         if(!this.validateForms()) return;
 
         this.props.fetchLocations().then(() => {

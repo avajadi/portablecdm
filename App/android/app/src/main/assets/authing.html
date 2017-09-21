@@ -1,10 +1,11 @@
 <script>
     if (true) {
-      var query = window.location.hash.replace(/^#/,'');
-      var url = 'pacdm://pacdm/app/+redirect/?' + query;
-      window.location = 'http://localhost:1337/redirect';
+      var query = window.location.hash;
+      var url = 'pacdm://pacdm/redirect/' + query;
+      window.location = url;
       document.write('Redirecting...');
     } else {
       //document.write('Uh oh something went wrong');
     }
 </script>
+
