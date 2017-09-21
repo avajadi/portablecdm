@@ -1,5 +1,8 @@
-# Frontend, multiplatform app
-by Nicole Ascard, Johan Berndtsson 
+# Frontend, multiplatform mobile application
+Contributors: 
+Johan Berndtsson
+Pontus Stjernström
+Nicole Ascard
 
 ## Current issues:
 
