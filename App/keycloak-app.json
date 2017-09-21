@@ -1,0 +1,9 @@
+{
+  "realm" : "MaritimeCloud",
+  "auth-server-url" : "https://staging-maritimeid.maritimecloud.net/auth",
+  "ssl-required" : "none",
+  "resource" : "0.1-urn:mrn:stm:service:instance:viktoria:summer-app",
+  "public-client" : true
+}
+
+//https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=0.1-urn:mrn:stm:service:instance:viktoria:summer-app&redirect_uri=https%3A%2F%2Fdev.portcdm.eu%2Fstart&state=5658cccc-f73c-4607-9593-09a1d2a03b49&nonce=373f4206-624f-496f-a704-c16f39439e00&response_mode=fragment&response_type=code&scope=openid
