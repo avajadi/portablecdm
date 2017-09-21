@@ -13,20 +13,6 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-    return [RCTLinkingManager application:application openURL:url options:options];
-}
-
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
- restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-{
-    return [RCTLinkingManager application:application
-                     continueUserActivity:userActivity
-                       restorationHandler:restorationHandler];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -39,33 +25,22 @@
     [_rootViewController loadReactApplication];
     [_window makeKeyAndVisible];
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    NSString *txtPath = [documentsDirectory stringByAppendingPathComponent:@"authing.html"];
-    
-    if ([fileManager fileExistsAtPath:txtPath] == NO) {
-        NSString *resourcePath = [[NSBundle mainBundle] pathForResource:@"authing" ofType:@"html"];
-        [fileManager copyItemAtPath:resourcePath toPath:txtPath error:&error];
-    }
-    
-    
     return YES;
 }
 
 #pragma mark - Handling URLs
+
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation
 {
     return [[ExpoKit sharedInstance] application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
 }
 
-//- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler
-//{
-//    return [[ExpoKit sharedInstance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
-//}
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler
+{
+    return [[ExpoKit sharedInstance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+}
+
 
 #pragma mark - Notifications
 

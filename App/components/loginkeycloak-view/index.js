@@ -16,6 +16,7 @@ import {
     Alert,
     Dimensions,
     Modal,
+    Platform,
 } from 'react-native';
 
 import {
@@ -75,13 +76,19 @@ class LoginKeyCloakView extends Component {
 
     componentDidMount() {
         Linking.addEventListener('url', this.handleMaritimeRedirect);
-        server = new StaticServer(1337, RNFS.DocumentDirectoryPath, {localOnly: true});
+
+        let path = '';
+        if(Platform.OS === 'ios') {
+            path = RNFS.MainBundlePath + '/www';
+        } else {
+            path = RNFS.DocumentDirectoryPath;
+        }
+
+        server = new StaticServer(1337, path, {localOnly: true});
 
         server.start().then((url) => {
-            console.log('Serving at url ' + url);
+            console.log('Serving at url ' + url + '. Path is ' + path);
         })
-
-        console.log('DocumentDirectory is: ' + RNFS.DocumentDirectoryPath);
     }
 
     componentWillUnmount() {
@@ -94,13 +101,12 @@ class LoginKeyCloakView extends Component {
     }
 
     handleMaritimeRedirect = async event => {
+        console.log('OPENNNNNNA!!');
         if(!event.url.includes('/redirect')){
             return;
         }
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
-
-        server.stop();
 
         console.log('Authenticating...');
         const [, queryString] = event.url.split('#');
@@ -125,8 +131,6 @@ class LoginKeyCloakView extends Component {
             formBody.push(encodedKey + '=' + encodedValue);
         }
         formBody = formBody.join('&');
-
-        console.log(formBody + '**************');
 
         const response = await fetch(constants.MaritimeTokenURI, {
             method: 'POST',
@@ -165,6 +169,7 @@ class LoginKeyCloakView extends Component {
     }
 
     loginConfirmed() {
+        server.stop();
         this.setState({legacyLogin: {enabled: false}});
         const { navigate } = this.props.navigation;
         this.props.changeToken(this.state.token);
@@ -173,7 +178,7 @@ class LoginKeyCloakView extends Component {
         this.props.changeUser(this.state.legacyLogin.username, this.state.legacyLogin.password);
         this.props.changePortSetting(this.state.port);
         this.setState({host: this.reformatHostHttp(this.state.host)});
-        
+
         if(!this.validateForms()) return;
 
         this.props.fetchLocations().then(() => {
