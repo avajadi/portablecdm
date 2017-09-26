@@ -19,7 +19,7 @@ const INITIAL_STATE = {
     password: '',
     unlocode: ''
   },
-  maxPortCallsFetched: 10001,
+  maxPortCallsFetched: 100,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*
@@ -31,7 +31,7 @@ const INITIAL_STATE = {
   vesselLists: {},
   fetchReliability: false,
   token: {
-    accessToken: '1234',
+    accessToken: '',
     idToken: '',
     refreshExpiresIn: 0,
     refreshToken: '',
