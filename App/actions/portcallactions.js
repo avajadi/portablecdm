@@ -273,11 +273,14 @@ export const fetchPortCallOperations = (portCallId) => {
     .then((operations) => {
             if(!getReliability) return operations;
             
-            return fetchReliability(operations, connection, token, portCallId)
+            return fetchReliability(operations, connection, token, portCallId);
         }
     )
-    .then(operations => {
-    dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: operations})
+    .then(maybeOperations => {
+        if(!!maybeOperations)
+            dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: maybeOperations})
+        else
+            dispatch({type: types.SET_ERROR, payload: { title: "RELIABILITY_FAIL"}});
     })      
     .catch(err => {
         dispatch({type: types.SET_ERROR, payload: {
@@ -301,10 +304,6 @@ async function fetchReliability(operations, connection, token, portCallId) {
         console.log('Fetching reliabilities.... ' + result.status);
 
        if(result.status !== 200) {
-           Alert.alert(
-               'Error',
-               'Unable to fetch reliabilities. Please uncheck "Fetch reliabilities" in Settings.'
-           );
            return null;
        }
        else return JSON.parse(result.bodyString);
@@ -342,9 +341,8 @@ async function fetchReliability(operations, connection, token, portCallId) {
             })
         });
         })).catch(err => {
-            dispatch({type: types.SET_ERROR, payload: {
-                description: err.message, 
-                title: 'Unable to connect to the server!'}});
+            console.log('Unable to fetch reliabilities.');
+            operations = false;
         });;                
     return operations;
 }

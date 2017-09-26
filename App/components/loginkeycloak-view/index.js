@@ -101,7 +101,6 @@ class LoginKeyCloakView extends Component {
     }
 
     handleMaritimeRedirect = async event => {
-        console.log('OPENNNNNNA!!');
         if(!event.url.includes('/redirect')){
             return;
         }
@@ -168,7 +167,7 @@ class LoginKeyCloakView extends Component {
        this.loginConfirmed();
     }
 
-    loginConfirmed() {
+    loginConfirmed() {  
         server.stop();
         this.setState({legacyLogin: {enabled: false}});
         const { navigate } = this.props.navigation;
