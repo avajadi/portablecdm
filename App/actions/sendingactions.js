@@ -1,7 +1,8 @@
 import * as types from './types';
+import pinch from 'react-native-pinch';
 
 import {objectToXml} from '../util/xmlUtils';
-import {createLegacyHeaders, createTokenHeaders} from '../util/portcdmUtils';
+import {createLegacyHeaders, createTokenHeaders, getCert} from '../util/portcdmUtils';
 
 
 export const clearReportResult = () => {
@@ -21,7 +22,8 @@ export const sendPortCall = (pcmAsObject, stateType) => {
             headers: {
               ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)), 
               'Content-Type' : 'application/xml'},
-            body: objectToXml(pcmAsObject, stateType)
+            body: objectToXml(pcmAsObject, stateType),
+            sslPinning: getCert(connection),
         })
         .then(result => {
             if(result.ok) return result;
