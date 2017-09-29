@@ -3,4 +3,5 @@ node_modules/
 npm-debug.*
 *.apk
 android/.gradle
-android./idea
+android/.idea
+ios/.DS_Store
