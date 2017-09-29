@@ -52,9 +52,7 @@ class TimeLineView extends Component {
 
     loadOperations() {
         this.props.fetchPortCallOperations(portCallId).then(() => {
-            console.log(JSON.stringify(this.props.error));
             if(this.props.error.hasError) {
-                console.log(JSON.stringify(this.props.error));
                 if(this.props.error.error.title == "RELIABILITY_FAIL") {
                     console.log('Inside if ');
                     Alert.alert(
@@ -71,7 +69,7 @@ class TimeLineView extends Component {
                         {cancelable: false},
                     );
                 } else {
-                    navigate('Error');                   
+                    this.props.navigation.navigate('Error');                   
                 }
             }
         }); 

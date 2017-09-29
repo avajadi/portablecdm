@@ -170,7 +170,7 @@ class LoginKeyCloakView extends Component {
     loginConfirmed() {  
         server.stop();
         this.setState({legacyLogin: {enabled: false}});
-        const { navigate } = this.props.navigation;
+        const { navigate, dispatch } = this.props.navigation;
         this.props.changeToken(this.state.token);
         this.props.changePortUnlocode(this.state.unlocode);
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
