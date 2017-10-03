@@ -8,12 +8,12 @@
     "orientation": "portrait",
     "scheme": "pacdm",
     "ios": {
-      "bundleIdentifier": "com.viktoria.portcdmapp",
+      "bundleIdentifier": "se.viktoria.portablecdm",
       "publishBundlePath": "ios/portablecdm/Supporting/shell-app.bundle",
       "publishManifestPath": "ios/portablecdm/Supporting/shell-app-manifest.json"
     },
     "android": {
-      "package": "com.viktoria.portcdmapp"
+      "package": "se.viktoria.portablecdm"
     },
     "loading": {
       "hideExponentText": true,

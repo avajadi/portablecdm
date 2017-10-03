@@ -4,10 +4,12 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>PortableCDM</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.viktoria.portcdmapp</string>
+	<string>se.viktoria.portablecdm</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -15,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
+	<string>1.0.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -34,7 +36,7 @@
 			<string>OAuthRedirect</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.viktoria.portcdmapp</string>
+				<string>se.viktoria.portcdmapp</string>
 			</array>
 		</dict>
 	</array>
@@ -75,5 +77,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>NSCameraUsageDescription</key>
+	<string>This app requires camera access to run the function properly</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app requires contacts access to run the function properly</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires microphone access to run the function properly</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires photo library access to run the function properly</string>
 </dict>
 </plist>

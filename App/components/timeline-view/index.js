@@ -9,6 +9,7 @@ import {
     ScrollView,
     ActivityIndicator,
     RefreshControl,
+    Alert,
 } from 'react-native'
 
 import { 
@@ -21,7 +22,7 @@ import {
 import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
-import { fetchPortCallOperations } from '../../actions';
+import { fetchPortCallOperations, changeFetchReliability, removeError, } from '../../actions';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
 
@@ -51,8 +52,26 @@ class TimeLineView extends Component {
 
     loadOperations() {
         this.props.fetchPortCallOperations(portCallId).then(() => {
-            if(this.props.error.hasError)
-                navigate('Error');
+            if(this.props.error.hasError) {
+                if(this.props.error.error.title == "RELIABILITY_FAIL") {
+                    console.log('Inside if ');
+                    Alert.alert(
+                        'Unable to fetch reliabilities!',
+                        'It can easily be turned on or off in the settings. Would you like to turn it off now?',
+                        [
+                            {text: 'No', onPress: () => this.props.navigation.navigate('PortCalls'), style: 'cancel'},
+                            {text: 'Yes', onPress: () => {
+                                this.props.changeFetchReliability(false);
+                                this.props.removeError();
+                                this.loadOperations(); //Maybe dangerous?
+                            }}
+                        ],
+                        {cancelable: false},
+                    );
+                } else {
+                    this.props.navigation.navigate('Error');                   
+                }
+            }
         }); 
     }
 
@@ -144,10 +163,11 @@ function mapStateToProps(state) {
         vesselName: state.portCalls.vessel.name,
         portCallId: state.portCalls.selectedPortCall.portCallId,
         error: state.error,
+        fetchReliability: state.settings.fetchReliability,
     };
 }
 
-export default connect(mapStateToProps, {fetchPortCallOperations})(TimeLineView);
+export default connect(mapStateToProps, {changeFetchReliability, fetchPortCallOperations, removeError})(TimeLineView);
 
 
 

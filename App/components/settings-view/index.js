@@ -38,10 +38,8 @@ class Settings extends Component {
   }
 
   updateFetchReliability() {
+    this.props.changeFetchReliability(!this.state.fetchReliability);
     this.setState({fetchReliability: !this.state.fetchReliability});
-    this.props.changeFetchReliability(this.state.fetchReliability);
-    console.log('Reliability: ' + this.state.fetchReliability);
-    console.log('Reliability: ' + this.props.fetchReliability);
   }
 
   render() {
@@ -68,7 +66,7 @@ class Settings extends Component {
           />         
           <CheckBox
             title='Fetch reliabilities'
-            checked={!this.state.fetchReliability}
+            checked={this.state.fetchReliability}
             onPress={this.updateFetchReliability}
           />
         </ScrollView>

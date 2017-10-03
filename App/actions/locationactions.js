@@ -16,7 +16,7 @@ export const fetchLocations = (locationType) => {
                 sslPinning: getCert(connection),
             })
             .then(result => {
-                console.log('Got locations.');
+            
                 let err = checkResponse(result);
                 if(!err)
                     return JSON.parse(result.bodyString);
@@ -51,7 +51,9 @@ export const fetchLocations = (locationType) => {
                 console.log(err);
                 dispatch({type: types.SET_ERROR, payload: {
                     title: 'Unable to connect to the server!', 
-                    description: err.description}});
+                    description: 
+                      !err.description ? 'Have you checked the UN/LOCODE?' 
+                                        : err.description}});
             });
     }
 }

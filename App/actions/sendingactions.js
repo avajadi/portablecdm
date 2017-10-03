@@ -1,6 +1,8 @@
 import * as types from './types';
+import pinch from 'react-native-pinch';
 
 import {objectToXml} from '../util/xmlUtils';
+import {createLegacyHeaders, createTokenHeaders, getCert} from '../util/portcdmUtils';
 
 
 export const clearReportResult = () => {
@@ -14,15 +16,14 @@ export const sendPortCall = (pcmAsObject, stateType) => {
         const { connection } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
 
+        //TODO: Enable https!
         fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/xml',
-                'X-PortCDM-UserId': 'viktoria',
-                'X-PortCDM-Password': 'vik123',
-                'X-PortCDM-APIKey': 'eeee'
-            },
-            body: objectToXml(pcmAsObject, stateType)
+              ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)), 
+              'Content-Type' : 'application/xml'},
+            body: objectToXml(pcmAsObject, stateType),
+            sslPinning: getCert(connection),
         })
         .then(result => {
             if(result.ok) return result;

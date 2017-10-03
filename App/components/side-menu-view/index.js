@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { WebBrowser } from 'expo';
+import StaticServer from 'react-native-static-server';
 import {
   View,
   StyleSheet,
@@ -21,16 +22,37 @@ import {
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
-import constants from '../../config/constants';
+import consts from '../../config/constants';
+import { changeUser } from '../../actions';
 
 class SideMenu extends Component {
 
-  logout = async() => {
+  constructor(props) {
+    super(props);
+
+    this.logout = this.logout.bind(this);
+  }
+
+  logout = async () =>{
       console.log('Logging out...');
-      //TODO
-      await WebBrowser.openBrowserAsync('https://exp.host/@avajadi/portcdm-app');
-      //await WebBrowser.openBrowserAsync(constants.MaritimeLogoutURI);
-      WebBrowser.dismissBrowser();
+      if(!!this.props.connection.host) {
+        this.props.changeUser('', '');
+      } else {
+        let constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
+
+        let server = new StaticServer(1337, path, {localOnly: true});
+        
+        server.start().then((url) => {
+          console.log('Serving at url ' + url + '. Path is ' + path);
+        });
+
+        await WebBrowser.openBrowserAsync(constants.MaritimeLogoutURI);
+        WebBrowser.dismissBrowser();
+
+        server.stop();
+      }
+
+      this.props.navigation.navigate('LoginKeyCloak');
   }
 
 
@@ -261,7 +283,8 @@ function mapStateToProps(state) {
     return {
         selectedPortCall: state.portCalls.selectedPortCall,
         vessel: state.portCalls.vessel,
+        connection: state.settings.connection,
     }
 }
 
-export default connect(mapStateToProps)(SideMenu);
+export default connect(mapStateToProps, {changeUser})(SideMenu);
