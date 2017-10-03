@@ -97,7 +97,7 @@ class TimeLineView extends Component {
                 <View 
                     style={styles.headerContainer}
                 >
-                    <Text style={styles.headerText}>{vesselName}</Text>
+                    <Text style={styles.headerText}>Name of vessel</Text>
                     {operations.reliability >= 0 && 
                         <Text style={styles.headerTitleText}><Text style={{fontWeight: 'bold'}}>Reliability: </Text>{operations.reliability}%</Text>
                     }

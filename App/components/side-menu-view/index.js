@@ -76,10 +76,10 @@ class SideMenu extends Component {
                         borderRadius: 5,
                         }}
           
-                source={{uri:vessel.photoURL }} 
+                source={{uri:'assets/stmLogo.jpg' }} 
                 />}
                 {!!vessel && 
-                    <Text style={styles.headerText}>{vessel.name}</Text>}
+                    <Text style={styles.headerText}>{'Name of vessel'}</Text>}
                 {!vessel && 
                 <Text style={styles.headerText}>Select a Portcall</Text>}
             </View>    

@@ -66,12 +66,12 @@ class StateDetails extends Component {
                 <View style={styles.headerContainer} >
                    {/* Vessel Name and avatar */}
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.headerTitleText}> {vessel.name} </Text>
+                        <Text style={styles.headerTitleText}> {'Name of vessel'} </Text>
                     </View>
                     {/* Operation subtitle */}
-                        { operation.atLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} at {operation.atLocation.name}</Text>}
-                        { operation.fromLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} from {operation.fromLocation.name}</Text>}
-                        { operation.toLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} to {operation.toLocation.name}</Text>}
+                        { operation.atLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} at {'Location'}</Text>}
+                        { operation.fromLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} from {'Location'}</Text>}
+                        { operation.toLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} to {'Location'}</Text>}
                         
                 </View>
             {/* State List of this state */}
@@ -126,32 +126,32 @@ class StateDetails extends Component {
                                 {operation.atLocation && 
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>AT: </Text>
-                                    <Text style={styles.detailText}>{operation.atLocation.name}</Text>
+                                    <Text style={styles.detailText}>{'Location'}</Text>
                                 </View>}
                                 {operation.fromLocation && 
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>FROM: </Text>
-                                    <Text style={styles.detailText}>{operation.fromLocation.name}</Text>        
+                                    <Text style={styles.detailText}>{'Location'}</Text>        
                                 </View>}
                                 {operation.toLocation && 
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>TO: </Text>
-                                    <Text style={styles.detailText}>{operation.toLocation.name}</Text>        
+                                    <Text style={styles.detailText}>{'Location'}</Text>        
                                 </View>}
                                 
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>REPORTED BY: </Text>
-                                    <Text style={styles.detailText}>{removeStringReportedBy(statement.reportedBy)} </Text>  
+                                    <Text style={styles.detailText}>{'User'} </Text>  
                                 </View>
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>REPORTED AT: </Text>  
-                                    <Text style={styles.detailText}>{getDateTimeString(new Date(statement.reportedAt))}</Text>        
+                                    <Text style={styles.detailText}>{'01/01/2018 00:00'}</Text>        
                                 </View>
                                 
                                 {/* Reliability for the message, and reliability changes  */}
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>RELIABILITY: </Text>  
-                                    <Text style={styles.detailText}>{statement.reliability}%</Text>        
+                                    <Text style={styles.detailText}>0 to 100 %</Text>        
                                 </View>
                                 {!!statement.reliabilityChanges && 
                                     statement.reliabilityChanges

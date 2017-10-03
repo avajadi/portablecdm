@@ -89,11 +89,11 @@ class PortCallList extends Component {
                             this.search(portCalls, searchTerm).map( (portCall) => (
                                 <ListItem
                                     roundAvatar
-                                    avatar={{uri: portCall.vessel.photoURL}}
+                                    avatar={{uri: '../../assets/portablecdm_app_icon.png'}}
                                     key={portCall.portCallId}
-                                    title={portCall.vessel.name}
+                                    title='Name of vessel'
                                     titleStyle={styles.titleStyle}
-                                    subtitle={getDateTimeString(new Date(portCall.startTime))}
+                                    subtitle='01/01/2018 00:00'
                                     subtitleStyle={styles.subTitleStyle}
                                     onPress={() => {
                                         selectPortCall(portCall);

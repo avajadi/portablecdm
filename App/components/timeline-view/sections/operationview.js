@@ -122,9 +122,9 @@ class OperationView extends Component {
                 {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
               </View>
               {operation.reliability >= 0 && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>RELIABILITY </Text>{operation.reliability}%</Text>}
-              {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM </Text>{operation.fromLocation.name}</Text>}
-              {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO </Text>{operation.toLocation.name}</Text>}
-              {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT </Text>{operation.atLocation.name}</Text>}
+              {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM </Text>Location</Text>}
+              {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO </Text>Location</Text>}
+              {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT </Text>Location</Text>}
             </View>
           </TouchableWithoutFeedback>
 
@@ -237,14 +237,14 @@ class OperationView extends Component {
         subtitle = {
             <View style={{flexDirection: 'column'}} >
                 {operation.atLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{operation.atLocation.name}</Text>}
+                  <Text style = {styles.stateDisplaySubTitle}>AT: Location</Text></Text>}
                 {operation.fromLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{operation.fromLocation.name}</Text>}
+                  <Text style = {styles.stateDisplaySubTitle} >FROM: Location</Text></Text>}
                 {operation.toLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
+                  <Text style = {styles.stateDisplaySubTitle}>TO: Location</Text></Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy:', '')} 
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: User</Text> 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }

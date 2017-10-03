@@ -16,8 +16,7 @@ export const sendPortCall = (pcmAsObject, stateType) => {
         const { connection } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
 
-        //TODO: Enable https!
-        fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
+        pinch.fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
             method: 'POST',
             headers: {
               ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)), 
@@ -26,8 +25,9 @@ export const sendPortCall = (pcmAsObject, stateType) => {
             sslPinning: getCert(connection),
         })
         .then(result => {
-            if(result.ok) return result;
+            if(result.status === 200) return result;
 
+            //console.log(JSON.stringify(result));
             let error = result._bodyText;              
             throw new Error(error);
         })

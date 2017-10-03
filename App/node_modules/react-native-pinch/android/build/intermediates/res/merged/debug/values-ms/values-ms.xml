@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Teruskan sebagai %1$s</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Sahkan Log Masuk</string>
     <string gender="unknown" name="com_facebook_tooltip_default">Anda berada dalam kawalan - pilih maklumat yang anda mahu berkongsi dengan aplikasi.</string>
-    <string name="messenger_send_button_text">Hantar</string>
 </resources>

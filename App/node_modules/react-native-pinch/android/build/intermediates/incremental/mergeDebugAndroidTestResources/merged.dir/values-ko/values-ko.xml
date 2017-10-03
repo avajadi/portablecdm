@@ -42,7 +42,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s님으로 계속</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">로그인 확인</string>
     <string gender="unknown" name="com_facebook_tooltip_default">앱과 공유할 정보를 자유롭게 선택할 수 있습니다.</string>
-    <string name="messenger_send_button_text">보내기</string>
     <string msgid="146198913615257606" name="search_menu_title">"검색"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

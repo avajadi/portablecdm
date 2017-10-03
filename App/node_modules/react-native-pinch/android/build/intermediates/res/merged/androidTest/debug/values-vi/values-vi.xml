@@ -42,7 +42,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Tiếp tục với tư cách %1$s</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Xác nhận đăng nhập</string>
     <string gender="unknown" name="com_facebook_tooltip_default">Bạn nắm quyền kiểm soát - chọn thông tin bạn muốn chia sẻ với ứng dụng.</string>
-    <string name="messenger_send_button_text">Gửi</string>
     <string msgid="146198913615257606" name="search_menu_title">"Tìm kiếm"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

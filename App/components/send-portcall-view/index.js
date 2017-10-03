@@ -14,7 +14,8 @@ import {
   Picker,
   ActivityIndicator,
   ScrollView,
-  Modal
+  Modal,
+  Alert,
 } from 'react-native';
 
 import {
@@ -66,7 +67,7 @@ class SendPortcall extends Component {
 
     const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
 
-    sendPortCall(pcm, type);
+    sendPortCall(pcm, type); //TODO: Show sending summary
   }
 
   componentWillMount() {
@@ -99,12 +100,12 @@ class SendPortcall extends Component {
         <TopHeader title = 'Report' navigation={this.props.navigation}/>
         {/* Information header */}
         <View style={styles.headerContainer} >
-          <Text style={styles.headerTitleText}>{vessel.name}</Text>
+          <Text style={styles.headerTitleText}>{'Name of vessel'}</Text>
           <Text style={styles.headerSubText}>{state.Name}</Text>
           <Text style={styles.headerSubInfoText}>
-            {!!atLocation && <Text>AT: {atLocation.name}</Text>}
-            {!!fromLocation && <Text>FROM: {fromLocation.name}{'\n'}</Text>}    
-            {!!toLocation && <Text>TO: {toLocation.name}</Text>}          
+            {!!atLocation && <Text>AT: {'Location'}</Text>}
+            {!!fromLocation && <Text>FROM: {'Location'}{'\n'}</Text>}    
+            {!!toLocation && <Text>TO: {'Location'}</Text>}          
           </Text>
         </View>
 
@@ -217,7 +218,7 @@ class SendPortcall extends Component {
               <Text style={styles.bottomInfoTitleText}>Most Relevant Statement: </Text>{'\n'}
             <Text>{mostRelevantStatement.timeType}{' '}
               {getDateTimeString(new Date(mostRelevantStatement.time))}{'\n'}</Text>
-              <Text style={{fontWeight: 'bold'}}>Reported by: </Text>{mostRelevantStatement.reportedBy}{'\n'}
+              <Text style={{fontWeight: 'bold'}}>Reported by: </Text>{'User'}{'\n'}
               <Text style={{fontWeight: 'bold'}}>At: </Text>{getDateTimeString(new Date(mostRelevantStatement.reportedAt))}  
             </Text>
           </View>
@@ -372,6 +373,7 @@ function mapStateToProps(state) {
     portCallId: state.portCalls.selectedPortCall.portCallId,
     getState: state.states.stateById,
     sendingState: state.sending,
+    error: state.error,
   }
 }
 
