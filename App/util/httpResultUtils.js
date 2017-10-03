@@ -44,6 +44,17 @@ function checkAuthorized(result) {
     return null;
 }
 
+function checkNotFound(result) {
+  if(result.status === 404) {
+    return {
+      title: 'Not found',
+      description: 'Have you checked UN/LOCODE and host settings?',
+    };
+  }
+
+  return null;
+}
+
 export function catchError(error) {
     return {
        error: 'Something went wrong',
@@ -56,11 +67,13 @@ export function checkResponse(result) {
     let serverLiveError = checkServerLive(result);
     let badResultError = checkBadRequest(result);
     let authorizedError = checkAuthorized(result);
+    let notFoundError = checkNotFound(result);
 
     if(!!roleError) return roleError;
     if(!!serverLiveError) return serverLiveError;
     if(!!badResultError) return badResultError;
     if(!!authorizedError) return authorizedError;
+    if(!!notFoundError) return notFoundError;
 
     return null;
 }
