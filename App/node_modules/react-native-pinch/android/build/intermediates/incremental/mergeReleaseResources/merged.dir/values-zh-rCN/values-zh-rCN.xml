@@ -42,7 +42,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">以%1$s的身份继续</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">确认登录</string>
     <string gender="unknown" name="com_facebook_tooltip_default">应用分享内容由你掌控。</string>
-    <string name="messenger_send_button_text">发送</string>
     <string msgid="146198913615257606" name="search_menu_title">"搜索"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

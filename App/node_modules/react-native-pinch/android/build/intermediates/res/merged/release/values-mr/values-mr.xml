@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s म्हणून चालू ठेवा</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">लॉग इन पुष्टी करा</string>
     <string gender="unknown" name="com_facebook_tooltip_default">तुम्ही नियंत्रणात आहात - तुम्ही अॅपसह कोणती माहिती सामायिक करू इच्छिता ते निवडा.</string>
-    <string name="messenger_send_button_text">पाठवा</string>
 </resources>

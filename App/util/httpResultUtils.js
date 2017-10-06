@@ -49,7 +49,7 @@ function checkNotFound(result) {
     return {
       title: 'Not found',
       description: 'Have you checked UN/LOCODE and host settings?',
-    };
+    };  
   }
 
   return null;
