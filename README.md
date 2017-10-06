@@ -22,3 +22,4 @@ Nicole Ascard
 * Loading bar when loading port calls
 * Dynamic loading of port calls
 * Summary of sent message (instead of current verification) as popup
+* Improved legacy login
