@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s হিসাবে চালিয়ে যান</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">লগ ইন নিশ্চিত করুন</string>
     <string gender="unknown" name="com_facebook_tooltip_default">আপনার নিয়ন্ত্রণ রয়েছে - আপনি অ্যাপগুলির সাথে কোন তথ্য শেয়ার করতে চান সেটি বেছে নিন।</string>
-    <string name="messenger_send_button_text">প্রেরণ করুন</string>
 </resources>

@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s ஆகத் தொடர்</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">உள்நுழைதலை உறுதிப்படுத்தவும்</string>
     <string gender="unknown" name="com_facebook_tooltip_default">கட்டுப்பாடு உங்களிடம் உள்ளது. பயன்பாடுகளுடன் நீங்கள் பகிர விரும்பும் தகவல்களைத் தேர்வுசெய்யவும்.</string>
-    <string name="messenger_send_button_text">அனுப்பு</string>
 </resources>

@@ -2,7 +2,7 @@
   "expo": {
     "name": "PortableCDM",
     "icon": "./assets/portablecdm_app_icon.png",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "slug": "portcdm-app",
     "sdkVersion": "18.0.0",
     "orientation": "portrait",
@@ -13,7 +13,8 @@
       "publishManifestPath": "ios/portablecdm/Supporting/shell-app-manifest.json"
     },
     "android": {
-      "package": "se.viktoria.portablecdm"
+      "package": "se.viktoria.portablecdm",
+      "permissions": []
     },
     "loading": {
       "hideExponentText": true,

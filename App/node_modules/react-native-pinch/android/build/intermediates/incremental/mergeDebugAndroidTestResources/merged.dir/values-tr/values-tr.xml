@@ -42,7 +42,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s olarak devam et</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Girişi Onayla</string>
     <string gender="unknown" name="com_facebook_tooltip_default">Kontrol sende - uygulamalarla paylaşmak istediğin bilgileri seç.</string>
-    <string name="messenger_send_button_text">Gönder</string>
     <string msgid="146198913615257606" name="search_menu_title">"Ara"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

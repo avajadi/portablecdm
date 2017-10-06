@@ -6,7 +6,6 @@ Nicole Ascard
 
 ## Current issues:
 
-* Fetch reliability checkbox not always correct
 * Return from error not working correctly
 * Maritime Cloud not working in staging environment
 * Error when timestamp cannot be sent is not very clear, also when "at" is missing etc
@@ -19,7 +18,6 @@ Nicole Ascard
 * Search on IMO in Port Call view
 
 ## Suggested updates
-* Loading bar when loading port calls
 * Dynamic loading of port calls
 * Summary of sent message (instead of current verification) as popup
 * Improved legacy login

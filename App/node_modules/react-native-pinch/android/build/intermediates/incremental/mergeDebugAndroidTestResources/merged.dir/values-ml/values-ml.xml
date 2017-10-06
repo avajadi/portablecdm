@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s എന്നയാളായി തുടരുക</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">ലോഗിൻ സ്ഥിരീകരിക്കുക</string>
     <string gender="unknown" name="com_facebook_tooltip_default">നിങ്ങൾ നിയന്ത്രണത്തിലാണ് - ആപ്പുകൾ ഉപയോഗിച്ച് നിങ്ങൾക്ക് എന്ത് വിവരമാണ് പങ്കിടേണ്ടതെന്ന് തിരഞ്ഞെടുക്കുക.</string>
-    <string name="messenger_send_button_text">അയയ്ക്കുക</string>
 </resources>
