@@ -41,7 +41,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Magpatuloy bilang %1$s</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">I-confirm ang Pag-log in</string>
     <string gender="unknown" name="com_facebook_tooltip_default">Ikaw ang may kontrol - piliin anong impormasyon ang gusto mong i-share sa mga app.</string>
-    <string name="messenger_send_button_text">Ipadala</string>
     <string msgid="146198913615257606" name="search_menu_title">"Maghanap"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

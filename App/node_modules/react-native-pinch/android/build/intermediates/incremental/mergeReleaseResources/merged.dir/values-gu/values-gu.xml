@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s તરીકે ચાલુ રાખો</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">લૉગિનની પુષ્ટિ કરો</string>
     <string gender="unknown" name="com_facebook_tooltip_default">તમે નિયંત્રણમાં છો - તમે એપ્લિકેશન્સ સાથે શું માહિતી શેર કરવા માંગો પસંદ કરો.</string>
-    <string name="messenger_send_button_text">મોકલો</string>
 </resources>

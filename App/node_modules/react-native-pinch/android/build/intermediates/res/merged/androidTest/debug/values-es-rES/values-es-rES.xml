@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Continuar como %1$s</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Confirmar inicio de sesión</string>
     <string gender="unknown" name="com_facebook_tooltip_default">Tú decides qué información quieres compartir con las aplicaciones.</string>
-    <string name="messenger_send_button_text">Enviar</string>
 </resources>

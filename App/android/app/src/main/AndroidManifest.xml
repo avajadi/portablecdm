@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.viktoria.portcdmapp"
+<manifest package="se.viktoria.portablecdm"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
   <application
-    android:name=".MainApplication"
+    android:name="se.viktoria.portablecdm.MainApplication"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:supportsRtl="true">
-    <activity android:name=".MainActivity"
+    <activity android:name="se.viktoria.portablecdm.MainActivity"
         android:launchMode="singleTask"
               android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
               android:theme="@style/Theme.Exponent.Light"

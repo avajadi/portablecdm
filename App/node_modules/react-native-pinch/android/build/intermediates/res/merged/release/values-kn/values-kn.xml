@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s ಎಂದು ಮುಂದುವರಿಸಿ</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">ಲಾಗಿನ್ ಖಚಿತಪಡಿಸಿ</string>
     <string gender="unknown" name="com_facebook_tooltip_default">ನೀವು ನಿಯಂತ್ರಣದಲ್ಲಿದ್ದಿರಿ- ಅಪ್ಲಿಕೇಶನ್‌ಗಳೊಂದಿಗೆ ನೀವು ಯಾವ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳಬೇಕೆಂದು ಆಯ್ಕೆಮಾಡಿ.</string>
-    <string name="messenger_send_button_text">ಕಳುಹಿಸು</string>
 </resources>

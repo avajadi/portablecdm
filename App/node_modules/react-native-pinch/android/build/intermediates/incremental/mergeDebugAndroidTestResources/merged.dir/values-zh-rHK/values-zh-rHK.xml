@@ -42,7 +42,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">以%1$s的身分繼續</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">確認登入</string>
     <string gender="unknown" name="com_facebook_tooltip_default">一切由你掌握：自行選擇要分享給應用程式的資訊種類。</string>
-    <string name="messenger_send_button_text">傳送</string>
     <string msgid="146198913615257606" name="search_menu_title">"搜尋"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999 +"</string>
 </resources>

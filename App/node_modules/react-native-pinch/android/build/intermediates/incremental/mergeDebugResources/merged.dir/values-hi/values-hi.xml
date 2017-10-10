@@ -42,7 +42,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s के रूप में जारी रखें</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">लॉग इन कन्फ़र्म करें</string>
     <string gender="unknown" name="com_facebook_tooltip_default">नियंत्रण आपके पास है - चुनें कि आप एप्लिकेशन के साथ कौन सी जानकारी साझा करना चाहते हैं.</string>
-    <string name="messenger_send_button_text">भेजें</string>
     <string msgid="146198913615257606" name="search_menu_title">"खोज"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>
