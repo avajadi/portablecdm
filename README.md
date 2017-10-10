@@ -21,3 +21,7 @@ Nicole Ascard
 * Dynamic loading of port calls
 * Summary of sent message (instead of current verification) as popup
 * Improved legacy login
+
+### Important links
+* https://www.bis.doc.gov/index.php/policy-guidance/encryption
+* https://support.google.com/googleplay/android-developer/answer/113770
