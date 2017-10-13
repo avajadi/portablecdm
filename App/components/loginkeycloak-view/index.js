@@ -42,11 +42,9 @@ import {
 
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
-import consts from '../../config/constants';
+import constants from '../../config/constants';
 
 const window = Dimensions.get('window');
-
-let constants = {};
 let server = null;
 
 class LoginKeyCloakView extends Component {
@@ -108,9 +106,7 @@ class LoginKeyCloakView extends Component {
     }
 
     onLoginPress = async () => {
-        let isStaging = this.state.host.includes('dev.portcdm.eu');
-        constants = consts(isStaging);
-        let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
+        let result = await WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI);
     }
 
     handleMaritimeRedirect = async event => {
@@ -119,8 +115,10 @@ class LoginKeyCloakView extends Component {
         }
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
-
-        this.props.loginKeycloak(event.url).then(() => this.loginConfirmed());
+        let isStaging = this.state.host.includes('dev.portcdm.eu');
+        this.props.loginKeycloak(event.url, isStaging).then((result) => {
+            if(result) this.loginConfirmed();
+        });
     }
 
     loginConfirmed() {  
@@ -254,7 +252,7 @@ class LoginKeyCloakView extends Component {
                             </View>
                             </TouchableHighlight>
                         </View>
-                        {this.renderLogos()}
+                        {/*this.renderLogos()*/}
                     </Modal>
                     <View style={styles.containers.centralizer}>
                         <Text h3>

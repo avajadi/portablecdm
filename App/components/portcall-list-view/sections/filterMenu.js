@@ -231,7 +231,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                     <Slider
                         minimumValue={30}
                         /* maximumValue={this.props.maxPortLimitPortCalls}  TODO*/
-                        maximumValue={10000}
+                        maximumValue={300}
                         step={50}
                         value={this.state.limitFilter}
                         onValueChange={(value) => this.setState({limitFilter: value})}  

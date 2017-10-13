@@ -1,6 +1,6 @@
 import * as types from './types';
 import constants from '../config/constants';
-import Alert from 'react';
+import { Alert } from 'react-native';
 
 export const loginKeycloak = (urlPayload, isStaging) => {
     return (dispatch, getState) => { 
@@ -12,6 +12,8 @@ export const loginKeycloak = (urlPayload, isStaging) => {
             map[key] = value;
             return map;
         }, {});
+
+        console.log(responseObj.code);
 
         let params = {
             code: responseObj.code,
@@ -29,6 +31,9 @@ export const loginKeycloak = (urlPayload, isStaging) => {
         }
         formBody = formBody.join('&');
 
+        console.log(formBody);
+        console.log(consts.MaritimeTokenURI);
+
         return fetch(consts.MaritimeTokenURI, {
             method: 'POST',
             headers: {
@@ -38,17 +43,28 @@ export const loginKeycloak = (urlPayload, isStaging) => {
             },
             body: formBody,
             credentials: 'include'
-        }).then((response) => {
-            if(response.status !== 200) {
-                console.log('Unable to login: ' + response.error_description);
+        }).then((response) => response.json()
+        ).then((result) => {
+            if(!!result.error) {
+                dispatch({
+                    type: types.SETTINGS_CHANGE_TOKEN,
+                    payload: {
+                        accessToken: '',
+                        idToken: '',
+                        refreshExpiresIn: 0,
+                        refreshToken: '',
+                        tokenType: 'bearer',
+                    }
+                });
+
+
+                console.log('Unable to login: ' + result.error_description);
                 Alert.alert(
                     'Unable to login',
-                    response.error_description
+                    result.error_description
                 );
-                return;
+                return false;
             }
-            return response.json();
-        }).then((result) => {
             dispatch({
             type: types.SETTINGS_CHANGE_TOKEN,
             payload: {
@@ -60,8 +76,10 @@ export const loginKeycloak = (urlPayload, isStaging) => {
             }
             });
             console.log('Authentication successful');
+            return true;                        
         }).catch((error) => {
-        console.error(error);
+            console.error(error);
         });
     }
+    return false;
 }
