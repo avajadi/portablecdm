@@ -96,9 +96,8 @@ class LoginKeyCloakView extends Component {
     }
 
     onLoginPress = async () => {
-        let isStaging = this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu');
+        let isStaging = this.state.host.includes('dev.portcdm.eu');
         constants = consts(isStaging);
-        //console.log(constants.MaritimeTokenURI);
         let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
     }
 
