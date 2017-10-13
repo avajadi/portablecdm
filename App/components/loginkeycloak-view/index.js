@@ -5,6 +5,7 @@ import queryString from 'query-string';
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
 
+
 import {
     View,
     StyleSheet,
@@ -16,6 +17,7 @@ import {
     Dimensions,
     Modal,
     Platform,
+    NavigatorIOS,
 } from 'react-native';
 
 import {
@@ -24,6 +26,7 @@ import {
     FormLabel,
     FormInput,
     FormValidationMessage,
+    Icon,
 } from 'react-native-elements';
 
 import {
@@ -191,6 +194,18 @@ class LoginKeyCloakView extends Component {
         return null;
     }
 
+    renderLogos() {
+        return (
+            <View style={{flex: 0.4, alignItems: 'center'}}>
+            <View style={[styles.containers.centralizer,styles.containers.flow]}> 
+                <Image source={require('../../assets/stmLogo.jpg')} style={styles.images.logos.stm}/>
+                <Image source={require('../../assets/riseLogo.png')} style={styles.images.logos.rise}/>
+            </View>
+            <Image source={require('../../assets/euCoFinance.png')} style={styles.images.logos.euCoFinance}/>
+        </View>
+        );
+    }
+
     render() {
         return (
             <View style={{flex: 2}}>
@@ -198,37 +213,54 @@ class LoginKeyCloakView extends Component {
                 <Modal
                         animationType={'slide'}
                         transparent={false}
+                        style={{backgroundColor: colorScheme.backgroundColor}}
                         visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
                         onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
                         >
-                            <View style={styles.containers.centralizer}>
-                            <Text h3>Legacy Login</Text>
+                        {(Platform.OS === 'ios') &&
+                        <View style={{flexDirection: 'row'}}>
+                            <Icon
+                                name= 'arrow-back'
+                                color= {colorScheme.secondaryColor}
+                                size= {50}
+                                style={{paddingLeft: 10, paddingTop: 40}}
+                                underlayColor='transparent'
+                                onPress={() => { this.setState({legacyLogin: {enabled: false}})}}
+                            />
+                        </View>
+                        }
+                        <View style={styles.containers.centralizer}>
+                            <Text h3 style={{fontWeight: 'normal'}}>Legacy Login</Text>
+                            <View style={styles.containers.blank}/>
                             <FormLabel>Username: </FormLabel>
                             <FormInput
                                 autoCorrect={false}
-                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
+                                inputStyle={{width: window.width * 0.3, textAlign: 'center'}}
                                 value={this.state.legacyLogin.username}
                                 onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, username: text}})}
                             />
                             <FormLabel>Password: </FormLabel>
                             <FormInput
                                 autoCorrect={false}
-                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
+                                inputStyle={{width: window.width * 0.3, textAlign: 'center'}}
                                 secureTextEntry
                                 value={this.state.legacyLogin.password}
                                 onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, password: text}})}
                             />
-                            <Button
-                                title='Continue'
-                                onPress={this.loginConfirmed}
-                            />
+                            <View style={styles.containers.blank}/>
+                            <TouchableHighlight onPress={this.loginConfirmed}>
+                            <View style={styles.containers.subContainer}>
+                                <Text h3 style={styles.fonts.white}>LOGIN</Text>
+                            </View>
+                            </TouchableHighlight>
                         </View>
+                        {this.renderLogos()}
                     </Modal>
                     <View style={styles.containers.centralizer}>
                         <Text h3>
-                            <Text style={{fontWeight: 'normal'}}>Welcome to </Text> 
-                            <Text style={{fontWeight: 'bold'}}>Port</Text>
-                            <Text style={{fontWeight: 'normal'}}>able</Text>CDM
+                        <Text style={{fontWeight: 'normal'}}>Welcome to </Text> 
+                        <Text style={{fontWeight: 'bold'}}>Port</Text>
+                        <Text style={{fontWeight: 'normal'}}>able</Text>CDM
                         </Text>
                         <View style={styles.containers.blank}/>
                         <View>
@@ -277,13 +309,7 @@ class LoginKeyCloakView extends Component {
                         </TouchableHighlight>
                     </View>
                 </ScrollView>
-                <View style={{flex: 0.4, alignItems: 'center'}}>
-                    <View style={[styles.containers.centralizer,styles.containers.flow]}> 
-                        <Image source={require('../../assets/stmLogo.jpg')} style={styles.images.logos.stm}/>
-                        <Image source={require('../../assets/riseLogo.png')} style={styles.images.logos.rise}/>
-                    </View>
-                    <Image source={require('../../assets/euCoFinance.png')} style={styles.images.logos.euCoFinance}/>
-                </View>
+                {this.renderLogos()}
             </View>
         );
     }
