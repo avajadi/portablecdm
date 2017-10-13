@@ -35,6 +35,7 @@ import {
     changeHostSetting,
     changePortSetting,
     changeUser,
+    loginKeycloak,
   } from '../../actions';
 
 import colorScheme from '../../config/colors';
@@ -51,13 +52,6 @@ class LoginKeyCloakView extends Component {
         super(props);
 
         this.state = {
-            token: {
-                accessToken: '',
-                idToken: '',
-                refreshExpiresIn: 0,
-                refreshToken: '',
-                tokenType: '',
-            },
             unlocode: props.connection.unlocode,
             host: props.connection.host,
             port: props.connection.port,
@@ -108,71 +102,13 @@ class LoginKeyCloakView extends Component {
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
 
-        console.log('Authenticating...');
-        const [, queryString] = event.url.split('#');
-        const responseObj = queryString.split('&').reduce((map, pair) => {
-            const [key, value] = pair.split('=');
-            map[key] = value;
-            return map;
-        }, {});
-
-        let params = {
-            code: responseObj.code,
-            grant_type: 'authorization_code',
-            client_id: constants.ClientID,
-            redirect_uri: constants.RedirectURI
-        };
-
-        var formBody = []
-
-        for(var property in params) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(params[property]);
-            formBody.push(encodedKey + '=' + encodedValue);
-        }
-        formBody = formBody.join('&');
-
-        const response = await fetch(constants.MaritimeTokenURI, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'bearer',
-                'Content-type': 'application/x-www-form-urlencoded',
-            },
-            body: formBody,
-            credentials: 'include'
-        }).catch((error) => {
-           console.error(error);
-        });
-        
-        const result = await response.json();
-
-        if(response.status !== 200) {
-            console.log('Unable to login: ' + result.error_description);
-            Alert.alert(
-                'Unable to login',
-                result.error_description
-            );
-            return;
-        }
-        
-       console.log('Authentication successful');
-
-       this.setState({token: {
-           accessToken: result['access_token'],
-           idToken: result['id_token'],
-           refreshExpiresIn: result['reshresh_expires_in'],
-           refreshToken: result['refresh_token'],
-           tokenType: result['token_type'],
-       }});
-       this.loginConfirmed();
+        this.props.loginKeycloak(event.url).then(() => this.loginConfirmed());
     }
 
     loginConfirmed() {  
         server.stop();
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
-        this.props.changeToken(this.state.token);
         this.props.changePortUnlocode(this.state.unlocode);
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
         this.props.changeUser(this.state.legacyLogin.username, this.state.legacyLogin.password);
@@ -346,4 +282,4 @@ function mapStateToProps(state) {
     }
   }
 
-export default connect(mapStateToProps, {changeToken, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changeUser, changePortUnlocode})(LoginKeyCloakView);
+export default connect(mapStateToProps, {loginKeycloak, changeToken, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changeUser, changePortUnlocode})(LoginKeyCloakView);
