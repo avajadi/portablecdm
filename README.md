@@ -5,13 +5,9 @@ Pontus Stjernström
 Nicole Ascard
 
 ## Current issues:
-
-* Return from error not working correctly
-* Maritime Cloud not working in staging environment
 * Error when timestamp cannot be sent is not very clear, also when "at" is missing etc
 
 ## Future updates
-
 * Recommended and target time types support
 * Show where the current time is on the timeline
 * Search on vessel name in Favorite Vessels
@@ -25,3 +21,12 @@ Nicole Ascard
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
+
+
+# Release notes 1.0.3
+* Fixed SeaSWIM login for at least QA, SEGOT and DEV servers
+* Improved return from error view
+* Revisited the Legacy Login modal
+..* Added logos
+..* Added back arrow for iOS users
+* Many other improvements for future updates
