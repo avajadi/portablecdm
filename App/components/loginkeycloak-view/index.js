@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Constants, WebBrowser } from 'expo';
-import { checkForCertification } from '../../util/certification'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import StaticServer from 'react-native-static-server';
@@ -28,7 +27,6 @@ import {
 } from 'react-native-elements';
 
 import {
-    changeToken,
     fetchLocations,
     changeFetchReliability,
     changePortUnlocode,
@@ -36,6 +34,7 @@ import {
     changePortSetting,
     changeUser,
     loginKeycloak,
+    removeError,
   } from '../../actions';
 
 import colorScheme from '../../config/colors';
@@ -69,6 +68,22 @@ class LoginKeyCloakView extends Component {
     }
 
     componentDidMount() {
+        if(this.props.error.hasError) {
+            this.props.removeError();
+            this.props.navigation.dispatch({
+                type: 'Navigation/RESET',
+                index: 0,
+                actions: [
+                    {
+                        type: 'Navigate',
+                        routeName: 'LoginKeyCloak',
+                    }
+                ],
+            });
+            return;
+        }
+
+
         Linking.addEventListener('url', this.handleMaritimeRedirect);
 
         let path = '';
@@ -82,7 +97,7 @@ class LoginKeyCloakView extends Component {
 
         server.start().then((url) => {
             console.log('Serving at url ' + url + '. Path is ' + path);
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -277,9 +292,8 @@ class LoginKeyCloakView extends Component {
 function mapStateToProps(state) {
     return {
       connection: state.settings.connection,
-      token: state.settings.token,
       error: state.error,
     }
   }
 
-export default connect(mapStateToProps, {loginKeycloak, changeToken, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changeUser, changePortUnlocode})(LoginKeyCloakView);
+export default connect(mapStateToProps, {removeError, loginKeycloak, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changeUser, changePortUnlocode})(LoginKeyCloakView);
