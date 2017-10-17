@@ -8,6 +8,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 import {  
@@ -31,6 +32,8 @@ import {
   fetchVessel,
   clearVesselResult,
   filterChangeVesselList,
+  fetchVesselByName,
+  removeError,
 } from '../../actions';
 
 class VesselList extends Component {
@@ -39,7 +42,7 @@ class VesselList extends Component {
 
     this.state = {
       newListName: '',
-      newVesselImo: '',
+      newVessel: '',
       listDetailModalVisible: false,
       selectedList: null
     }
@@ -64,12 +67,12 @@ class VesselList extends Component {
         />
         <View style={styles.rowContainer}>
           <SearchBar
-            autoCorrent={false} 
+            autoCorrect={false} 
             containerStyle = {styles.searchBarContainer}
-            clearIcon
+            noIcon
             inputStyle = {{backgroundColor: colorScheme.primaryContainerColor, fontSize: 15}}
             lightTheme  
-            placeholder='Type list name and press Add'
+            placeholder='Enter a name for a list'
             placeholderTextColor = {colorScheme.tertiaryTextColor}
             onChangeText={text => this.setState({newListName: text})}
             textInputRef='textInput'
@@ -124,28 +127,51 @@ class VesselList extends Component {
           />
           <View style={styles.rowContainer}>
             <SearchBar
-              autoCorrent={false} 
+              autoCorrect={false} 
               containerStyle = {styles.searchBarContainer}
               clearIcon
               inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
               lightTheme  
-              placeholder='Search by IMO number'
+              placeholder='Search by name or IMO number'
               placeholderTextColor = {colorScheme.tertiaryTextColor}
-              onChangeText={text => this.setState({newVesselImo: text})}
-              keyboardType="numeric"
+              onChangeText={text => this.setState({newVessel: text})}
               textInputRef='textInput'
             />
             <Button
               containerViewStyle={styles.buttonContainer}
               small
               title="Search"
-              disabled={this.state.newVesselImo <= 0}
-              color={this.state.newVesselImo <= 0 ? colorScheme.tertiaryTextColor : colorScheme.primaryTextColor}
+              disabled={this.state.newVessel <= 0}
+              color={this.state.newVessel <= 0 ? colorScheme.tertiaryTextColor : colorScheme.primaryTextColor}
               disabledStyle={{
                 backgroundColor: colorScheme.primaryColor
               }}
               backgroundColor = {colorScheme.primaryColor}
-              onPress={() => this.props.fetchVessel("urn:mrn:stm:vessel:IMO:" + this.state.newVesselImo)}
+              onPress={() => {
+                    const { error, fetchVessel, fetchVesselByName } = this.props;
+                    //Search by either name or IMO
+                    if(isNaN(this.state.newVessel))
+                        fetchVesselByName(this.state.newVessel).then(() => {
+                            if(this.props.error.hasError) {
+                                Alert.alert(
+                                    this.props.error.error.title,
+                                    this.props.error.error.description,
+                                )
+                                this.props.removeError(this.props.error.error.title);
+                            }
+                        });
+                    else
+                        fetchVessel('urn:mrn:stm:vessel:IMO:' + this.state.newVessel).then(() => {
+                            if(this.props.error.hasError) {
+                                Alert.alert(
+                                    this.props.error.error.title,
+                                    this.props.error.error.description,
+                                )
+                            }
+                            this.props.removeError(this.props.error.error.title);
+                        });
+              }
+            }
             /> 
             
           </View>
@@ -154,6 +180,7 @@ class VesselList extends Component {
                 style={styles.addToListContainer}
             >
               <View>
+                <Text>IMO: {this.props.foundVessel.imo.split('IMO:')[1]}</Text>
                 <Text>Name: {this.props.foundVessel.name}</Text>
                 <Text>Type: {this.props.foundVessel.vesselType}</Text>
                 <Text>Call sign: {this.props.foundVessel.callSign}</Text>
@@ -276,7 +303,8 @@ function mapStateToProps(state) {
   return {
     vesselLists: state.settings.vesselLists,
     foundVessel: state.vessel.vessel,
-    chosenVesselListForFiltering: state.filters.vesselList
+    chosenVesselListForFiltering: state.filters.vesselList,
+    error: state.error,
   };
 }
 
@@ -286,7 +314,9 @@ export default connect(mapStateToProps, {
   deleteVesselList,
   removeVesselFromList,
   fetchVessel,
+  fetchVesselByName,
   addVesselToList,
   clearVesselResult,
   filterChangeVesselList,
+  removeError,
 })(VesselList);
