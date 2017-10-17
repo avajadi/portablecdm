@@ -13,11 +13,10 @@ export const clearReportResult = () => {
 
 export const sendPortCall = (pcmAsObject, stateType) => {
     return (dispatch, getState) => {
-        const { connection } = getState().settings;
+        const { connection, token } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
 
-        //TODO: Enable https!
-        fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
+        return pinch.fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
             method: 'POST',
             headers: {
               ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)), 
@@ -26,9 +25,10 @@ export const sendPortCall = (pcmAsObject, stateType) => {
             sslPinning: getCert(connection),
         })
         .then(result => {
-            if(result.ok) return result;
+            console.log(JSON.stringify(result));
+            if(result.status === 200 || result.status === 202) return result;
 
-            let error = result._bodyText;              
+            let error = result.bodyString;              
             throw new Error(error);
         })
         .then(result => {
@@ -37,6 +37,5 @@ export const sendPortCall = (pcmAsObject, stateType) => {
         .catch(error => {
             dispatch({type: types.SEND_PORTCALL_FAILURE, payload: error.message})
         })
-        
     }
 }
