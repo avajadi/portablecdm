@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Constants, WebBrowser } from 'expo';
-import { checkForCertification } from '../../util/certification'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
+
 
 import {
     View,
@@ -17,6 +17,7 @@ import {
     Dimensions,
     Modal,
     Platform,
+    NavigatorIOS,
 } from 'react-native';
 
 import {
@@ -25,25 +26,25 @@ import {
     FormLabel,
     FormInput,
     FormValidationMessage,
+    Icon,
 } from 'react-native-elements';
 
 import {
-    changeToken,
     fetchLocations,
     changeFetchReliability,
     changePortUnlocode,
     changeHostSetting,
     changePortSetting,
     changeUser,
+    loginKeycloak,
+    removeError,
   } from '../../actions';
 
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
-import consts from '../../config/constants';
+import constants from '../../config/constants';
 
 const window = Dimensions.get('window');
-
-let constants = {};
 let server = null;
 
 class LoginKeyCloakView extends Component {
@@ -51,13 +52,6 @@ class LoginKeyCloakView extends Component {
         super(props);
 
         this.state = {
-            token: {
-                accessToken: '',
-                idToken: '',
-                refreshExpiresIn: 0,
-                refreshToken: '',
-                tokenType: '',
-            },
             unlocode: props.connection.unlocode,
             host: props.connection.host,
             port: props.connection.port,
@@ -75,6 +69,22 @@ class LoginKeyCloakView extends Component {
     }
 
     componentDidMount() {
+        if(this.props.error.hasError) {
+            this.props.removeError();
+            this.props.navigation.dispatch({
+                type: 'Navigation/RESET',
+                index: 0,
+                actions: [
+                    {
+                        type: 'Navigate',
+                        routeName: 'LoginKeyCloak',
+                    }
+                ],
+            });
+            return;
+        }
+
+
         Linking.addEventListener('url', this.handleMaritimeRedirect);
 
         let path = '';
@@ -88,7 +98,7 @@ class LoginKeyCloakView extends Component {
 
         server.start().then((url) => {
             console.log('Serving at url ' + url + '. Path is ' + path);
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -96,10 +106,7 @@ class LoginKeyCloakView extends Component {
     }
 
     onLoginPress = async () => {
-        let isStaging = this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu');
-        constants = consts(isStaging);
-        //console.log(constants.MaritimeTokenURI);
-        let result = await WebBrowser.openBrowserAsync(constants.MaritimeAuthURI);
+        let result = await WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI);
     }
 
     handleMaritimeRedirect = async event => {
@@ -108,72 +115,16 @@ class LoginKeyCloakView extends Component {
         }
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
-
-        console.log('Authenticating...');
-        const [, queryString] = event.url.split('#');
-        const responseObj = queryString.split('&').reduce((map, pair) => {
-            const [key, value] = pair.split('=');
-            map[key] = value;
-            return map;
-        }, {});
-
-        let params = {
-            code: responseObj.code,
-            grant_type: 'authorization_code',
-            client_id: constants.ClientID,
-            redirect_uri: constants.RedirectURI
-        };
-
-        var formBody = []
-
-        for(var property in params) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(params[property]);
-            formBody.push(encodedKey + '=' + encodedValue);
-        }
-        formBody = formBody.join('&');
-
-        const response = await fetch(constants.MaritimeTokenURI, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'bearer',
-                'Content-type': 'application/x-www-form-urlencoded',
-            },
-            body: formBody,
-            credentials: 'include'
-        }).catch((error) => {
-           console.error(error);
+        let isStaging = this.state.host.includes('dev.portcdm.eu');
+        this.props.loginKeycloak(event.url, isStaging).then((result) => {
+            if(result) this.loginConfirmed();
         });
-        
-        const result = await response.json();
-
-        if(response.status !== 200) {
-            console.log('Unable to login: ' + result.error_description);
-            Alert.alert(
-                'Unable to login',
-                result.error_description
-            );
-            return;
-        }
-        
-       console.log('Authentication successful');
-
-       this.setState({token: {
-           accessToken: result['access_token'],
-           idToken: result['id_token'],
-           refreshExpiresIn: result['reshresh_expires_in'],
-           refreshToken: result['refresh_token'],
-           tokenType: result['token_type'],
-       }});
-       this.loginConfirmed();
     }
 
     loginConfirmed() {  
         server.stop();
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
-        this.props.changeToken(this.state.token);
         this.props.changePortUnlocode(this.state.unlocode);
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
         this.props.changeUser(this.state.legacyLogin.username, this.state.legacyLogin.password);
@@ -241,6 +192,18 @@ class LoginKeyCloakView extends Component {
         return null;
     }
 
+    renderLogos() {
+        return (
+            <View style={{flex: 0.4, alignItems: 'center'}}>
+            <View style={[styles.containers.centralizer,styles.containers.flow]}> 
+                <Image source={require('../../assets/stmLogo.jpg')} style={styles.images.logos.stm}/>
+                <Image source={require('../../assets/riseLogo.png')} style={styles.images.logos.rise}/>
+            </View>
+            <Image source={require('../../assets/euCoFinance.png')} style={styles.images.logos.euCoFinance}/>
+        </View>
+        );
+    }
+
     render() {
         return (
             <View style={{flex: 2}}>
@@ -248,37 +211,54 @@ class LoginKeyCloakView extends Component {
                 <Modal
                         animationType={'slide'}
                         transparent={false}
+                        style={{backgroundColor: colorScheme.backgroundColor}}
                         visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
                         onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
                         >
-                            <View style={styles.containers.centralizer}>
-                            <Text h3>Legacy Login</Text>
+                        {(Platform.OS === 'ios') &&
+                        <View style={{flexDirection: 'row'}}>
+                            <Icon
+                                name= 'arrow-back'
+                                color= {colorScheme.secondaryColor}
+                                size= {50}
+                                style={{paddingLeft: 10, paddingTop: 40}}
+                                underlayColor='transparent'
+                                onPress={() => { this.setState({legacyLogin: {enabled: false}})}}
+                            />
+                        </View>
+                        }
+                        <View style={styles.containers.centralizer}>
+                            <Text h3 style={{fontWeight: 'normal'}}>Legacy Login</Text>
+                            <View style={styles.containers.blank}/>
                             <FormLabel>Username: </FormLabel>
                             <FormInput
                                 autoCorrect={false}
-                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
+                                inputStyle={{width: window.width * 0.3, textAlign: 'center'}}
                                 value={this.state.legacyLogin.username}
                                 onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, username: text}})}
                             />
                             <FormLabel>Password: </FormLabel>
                             <FormInput
                                 autoCorrect={false}
-                                inputStyle={{width: window.width * 0.5, textAlign: 'center'}}
+                                inputStyle={{width: window.width * 0.3, textAlign: 'center'}}
                                 secureTextEntry
                                 value={this.state.legacyLogin.password}
                                 onChangeText={text => this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, password: text}})}
                             />
-                            <Button
-                                title='Continue'
-                                onPress={this.loginConfirmed}
-                            />
+                            <View style={styles.containers.blank}/>
+                            <TouchableHighlight onPress={this.loginConfirmed}>
+                            <View style={styles.containers.subContainer}>
+                                <Text h3 style={styles.fonts.white}>LOGIN</Text>
+                            </View>
+                            </TouchableHighlight>
                         </View>
+                        {/*this.renderLogos()*/}
                     </Modal>
                     <View style={styles.containers.centralizer}>
                         <Text h3>
-                            <Text style={{fontWeight: 'normal'}}>Welcome to </Text> 
-                            <Text style={{fontWeight: 'bold'}}>Port</Text>
-                            <Text style={{fontWeight: 'normal'}}>able</Text>CDM
+                        <Text style={{fontWeight: 'normal'}}>Welcome to </Text> 
+                        <Text style={{fontWeight: 'bold'}}>Port</Text>
+                        <Text style={{fontWeight: 'normal'}}>able</Text>CDM
                         </Text>
                         <View style={styles.containers.blank}/>
                         <View>
@@ -327,13 +307,7 @@ class LoginKeyCloakView extends Component {
                         </TouchableHighlight>
                     </View>
                 </ScrollView>
-                <View style={{flex: 0.4, alignItems: 'center'}}>
-                    <View style={[styles.containers.centralizer,styles.containers.flow]}> 
-                        <Image source={require('../../assets/stmLogo.jpg')} style={styles.images.logos.stm}/>
-                        <Image source={require('../../assets/riseLogo.png')} style={styles.images.logos.rise}/>
-                    </View>
-                    <Image source={require('../../assets/euCoFinance.png')} style={styles.images.logos.euCoFinance}/>
-                </View>
+                {this.renderLogos()}
             </View>
         );
     }
@@ -342,9 +316,8 @@ class LoginKeyCloakView extends Component {
 function mapStateToProps(state) {
     return {
       connection: state.settings.connection,
-      token: state.settings.token,
       error: state.error,
     }
   }
 
-export default connect(mapStateToProps, {changeToken, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changeUser, changePortUnlocode})(LoginKeyCloakView);
+export default connect(mapStateToProps, {removeError, loginKeycloak, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changeUser, changePortUnlocode})(LoginKeyCloakView);

@@ -69,9 +69,9 @@ class StateDetails extends Component {
                         <Text style={styles.headerTitleText}> {vessel.name} </Text>
                     </View>
                     {/* Operation subtitle */}
-                        { operation.atLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} at {operation.atLocation.name}</Text>}
-                        { operation.fromLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} from {operation.fromLocation.name}</Text>}
-                        { operation.toLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} to {operation.toLocation.name}</Text>}
+                        { operation.atLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace(/_/g,' ')} at {operation.atLocation.name}</Text>}
+                        { operation.fromLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace(/_/g,' ')} from {operation.fromLocation.name}</Text>}
+                        { operation.toLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace(/_/g,' ')} to {operation.toLocation.name}</Text>}
                         
                 </View>
             {/* State List of this state */}

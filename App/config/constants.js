@@ -1,11 +1,11 @@
 const redirectURI = 'http://localhost:1337/authing.html';
-const clientID = '0.1-urn:mrn:stm:service:instance:viktoria:portablecdm-app';
+const clientID = '0.1-urn:mrn:stm:service:instance:viktoria:portablecdm';
 const baseURI = 'https://maritimeid.maritimecloud.net/auth';
 
 /**STAGING */
 const staging = {
     redirectURI: 'http://localhost:1337/authing.html',
-    clientID: '0.1-urn:mrn:stm:service:instance:viktoria:portablecdm-app',
+    clientID: '0.1-urn:mrn:stm:service:instance:viktoria:portablecdm',
     baseURI: 'https://staging-maritimeid.maritimecloud.net/auth',
 }
 

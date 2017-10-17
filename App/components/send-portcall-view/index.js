@@ -14,7 +14,8 @@ import {
   Picker,
   ActivityIndicator,
   ScrollView,
-  Modal
+  Modal,
+  Alert,
 } from 'react-native';
 
 import {
@@ -60,13 +61,39 @@ class SendPortcall extends Component {
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
-    const { vesselId, portCallId, getState, sendPortCall, sendingState } = this.props;
-    const { atLocation, fromLocation, toLocation } = sendingState;
+    const { vesselId, portCallId, getState, sendPortCall, sendingState, vessel } = this.props;
+    const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
 
-    const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
+    if(!atLocation) {
+        Alert.alert('Invalid location', 'At-location is missing!');
+        return;
+    }
 
-    sendPortCall(pcm, type);
+    Alert.alert(
+        'Confirmation',
+        'Would you like to report a new ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for ' + vessel.name + '?',
+        [
+            {text: 'No'},
+            {text: 'Yes', onPress: () => {
+                const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
+                
+                sendPortCall(pcm, type).then(() => {
+                    if(!!this.props.sendingState.error) {
+                        Alert.alert(
+                            'Error',
+                            'Unable to send message!'
+                        );
+                    } else {
+                        Alert.alert(
+                            'Success',
+                            'Timestamp successfully sent.',
+                        );
+                    }
+                });          
+            }}
+        ]
+    );
   }
 
   componentWillMount() {
@@ -207,7 +234,7 @@ class SendPortcall extends Component {
           { (sendingState.successCode === 202) &&
             <Text h4 style={{alignSelf: 'center', color: 'green'}}>Timestamp was successfully sent, but couldn't be matched to an existing Port Call!</Text>
           }
-          { (!!sendingState.error) &&
+          { (!!sendingState.error) && // ERROR SENDING
             <Text h4 style={{alignSelf: 'center', color: 'red', fontSize: 12}}>{sendingState.error}</Text>
           }
         

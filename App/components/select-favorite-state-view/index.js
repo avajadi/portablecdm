@@ -66,6 +66,7 @@ class SelectFavoriteState extends Component {
           lightTheme  
           placeholder='Search'
           placeholderTextColor = {colorScheme.tertiaryTextColor}
+          autoCorrect={false}
           onChangeText={text => this.setState({searchTerm: text})}
           textInputRef='textInput'
         />

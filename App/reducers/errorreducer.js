@@ -16,7 +16,7 @@ const errorReducer = (state=INITIAL_STATE, action) => {
         case SET_ERROR:
             return {...state, hasError: true, error: action.payload}
         case REMOVE_ERROR:
-            return {...state, hasError: false, error: null};
+            return {...state, hasError: false};
         default:
             return state;
     }
