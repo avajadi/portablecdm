@@ -6,24 +6,22 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* Recommended and target time types support
 * Show where the current time is on the timeline
-* Search on vessel name in Favorite Vessels
 
 ## Suggested updates
 * Dynamic loading of port calls
 * Summary of sent message (instead of current verification) as popup
-* Improved legacy login
 
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
 
 ## Release notes 1.1
-* Removed the RELIABILITY: % text from state details when no reliabilities are available
+* Added icons for TARGET and RECOMMENDED time types
 * Added feature to search by IMO and MMSI number
 * Added feature to search by name in Favorite Vessels list
 * Added IMO to search results in Favorite Vessel list
+* Removed the RELIABILITY: % text from state details when no reliabilities are available
 
 ### Release notes 1.0.4
 * Fixed a bug where reliabilities would not be fetched when using keycloak
