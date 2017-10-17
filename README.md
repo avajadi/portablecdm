@@ -22,6 +22,9 @@ Nicole Ascard
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
 
+# Release nites 1.1
+* Removed the RELIABILITY: % text from state details when no reliabilities are available
+* 
 
 # Release notes 1.0.4
 * Fixed a bug where reliabilities would not be fetched when using keycloak
