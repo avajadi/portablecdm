@@ -230,6 +230,14 @@ class OperationView extends Component {
                                                                       <Text style={styles.estimateText}>E</Text>
                                                                   </View>
                       }
+                      {stateToDisplay.timeType === 'TARGET' && <View style={styles.targetContainer}>
+                                                                    <Text style={styles.estimateText}>T</Text>
+                                                               </View>
+                      }
+                      {stateToDisplay.timeType === 'RECOMMENDED' && <View style={styles.recommendedContainer}>
+                                                                    <Text style={styles.estimateText}>R</Text>
+                                                               </View>
+                      }
                   </View>
               </View>
             </TouchableWithoutFeedback>
@@ -450,6 +458,24 @@ const styles = StyleSheet.create({
   },
   estimateContainer: {
     backgroundColor: colorScheme.estimateColor,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    alignItems: 'center',
+  },  
+  targetContainer: {
+    backgroundColor: colorScheme.targetColor,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    alignItems: 'center',
+  },  
+  recommendedContainer: {
+    backgroundColor: colorScheme.recommendedColor,
     borderRadius: 10,
     width: 20,
     height: 20,

@@ -30,7 +30,7 @@ export const fetchVessel = (vesselUrn) => {
         return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
             sslPinning: getCert(connection),
         })
         .then(result => {
@@ -62,7 +62,7 @@ export const fetchPortCalls = () => {
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
         method: 'GET',
-        headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+        headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
         sslPinning: getCert(connection),
       })
         .then(result => {
@@ -80,7 +80,7 @@ export const fetchPortCalls = () => {
             return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
                 method: 'GET',
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
                 sslPinning: getCert(connection),
             })
             .then(result => {
@@ -234,9 +234,10 @@ export const fetchPortCallOperations = (portCallId) => {
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const getReliability = getState().settings.fetchReliability;
-    const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token);
+    const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
     console.log('Fetching operations for port call ' + portCallId);
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
+    console.log(JSON.stringify(headers));
+    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(connection.host.includes('dev') ? 'events' : 'operations')}`, //TODO: Update
         {
             method: 'GET',
             headers: headers,
@@ -244,12 +245,14 @@ export const fetchPortCallOperations = (portCallId) => {
         }
     )
     .then(result => {
-        console.log('Response for operation in port calel');
+        console.log('Response for operation in port call');
         let err = checkResponse(result);
+        console.log(JSON.stringify(result));
         if(!err)
             return JSON.parse(result.bodyString);
 
         dispatch({type: types.SET_ERROR, payload: err});
+        throw new Error('dispatched');
     })
     // Sort the operations, port_visits first, then in 
     .then(sortOperations)
@@ -284,9 +287,11 @@ export const fetchPortCallOperations = (portCallId) => {
             dispatch({type: types.SET_ERROR, payload: { title: "RELIABILITY_FAIL"}});
     })      
     .catch(err => {
-        dispatch({type: types.SET_ERROR, payload: {
-            description: err.message, 
-            title: 'Unable to connect to the server!'}});
+        if(err.message !== 'dispatched') {
+            dispatch({type: types.SET_ERROR, payload: {
+                description: err.message, 
+                title: 'Unable to connect to the server!'}});
+        }
     });
   };
 };

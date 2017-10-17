@@ -1,6 +1,7 @@
-export function createTokenHeaders(token) {
+export function createTokenHeaders(token, host) {
     return {
         'Authorization': `${token.tokenType} ${token.accessToken}`,
+        'Content-Type': host.includes('dev') ? 'application/json' : 'application/xml', //TODO: Remove in production when bug is fixed
     }
 }
 
@@ -20,7 +21,6 @@ export function getCert(connection) {
         connection.host.includes('sandbox') ?
         'staging' :
         'prod',
-        'Content-Type': 'application/xml', //TODO: Remove in production when bug is fixed
         //'Content-Type': 'application/json',
     };
 }
