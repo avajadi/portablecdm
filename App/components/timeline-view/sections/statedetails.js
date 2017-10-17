@@ -149,12 +149,13 @@ class StateDetails extends Component {
                                 </View>
                                 
                                 {/* Reliability for the message, and reliability changes  */}
+                                {!!statement.reliabilityChanges &&
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>RELIABILITY: </Text>  
                                     <Text style={styles.detailText}>{statement.reliability}%</Text>        
                                 </View>
-                                {!!statement.reliabilityChanges && 
-                                    statement.reliabilityChanges
+                                }
+                                {!!statement.reliabilityChanges && statement.reliabilityChanges
                                         .sort((a, b) => a.reliability - b.reliability)
                                         .map((change, i) => (
                                             <Text 
@@ -164,7 +165,6 @@ class StateDetails extends Component {
                                                 {Math.floor(change.reliability*100)}% : {change.reason}
                                             </Text>
                                 ))}
-                                
                             </View>     
                         </View>
                     )

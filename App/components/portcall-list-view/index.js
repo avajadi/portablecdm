@@ -57,7 +57,7 @@ class PortCallList extends Component {
                         clearIcon
                         inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
                         lightTheme  
-                        placeholder='Search'
+                        placeholder='Search by name, IMO or MMSI number'
                         placeholderTextColor = {colorScheme.tertiaryTextColor}
                         onChangeText={text => this.setState({searchTerm: text})}
                         textInputRef='textInput'
@@ -86,7 +86,7 @@ class PortCallList extends Component {
                     }>
                     <List>
                         {
-                            this.search(portCalls, searchTerm).map( (portCall) => (
+                            this.search(portCalls, searchTerm).map( (portCall) => ( 
                                 <ListItem
                                     roundAvatar
                                     avatar={{uri: portCall.vessel.photoURL}}
@@ -96,6 +96,7 @@ class PortCallList extends Component {
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
                                     subtitleStyle={styles.subTitleStyle}
                                     onPress={() => {
+                                        console.log(JSON.stringify(portCall.vessel)); 
                                         selectPortCall(portCall);
                                         navigate('TimeLine')
                                     }}
@@ -109,7 +110,11 @@ class PortCallList extends Component {
     }
 
     search(portCalls, searchTerm) {
-        return portCalls.filter(portCall => portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()));        
+        return portCalls.filter(portCall => {
+            return portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()) || 
+            portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
+            portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
+        });        
     }
 }
 

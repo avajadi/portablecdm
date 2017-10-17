@@ -56,8 +56,6 @@ export const loginKeycloak = (urlPayload, isStaging) => {
                         tokenType: 'bearer',
                     }
                 });
-
-
                 console.log('Unable to login: ' + result.error_description);
                 Alert.alert(
                     'Unable to login',
@@ -82,4 +80,30 @@ export const loginKeycloak = (urlPayload, isStaging) => {
         });
     }
     return false;
+}
+
+export const logoutKeycloak = (isStaging) => {
+    return (dispatch, getState) => {
+        let consts = constants(isStaging);
+        return fetch(consts.MaritimeLogoutURI, {
+            method: 'GET',
+        }).then((result) => {
+            if(!result.ok) {
+                console.log('Cannot logout!');
+            }
+        }).then(() => {
+            dispatch({
+                type: types.SETTINGS_CHANGE_TOKEN,
+                payload: {
+                    accessToken: '',
+                    idToken: '',
+                    refreshExpiresIn: 0,
+                    refreshToken: '',
+                    tokenType: 'bearer',
+                }
+            });
+        }).catch((error) => {
+            console.log('Woops! Could not logout: ' + error.message);
+        });
+    }
 }

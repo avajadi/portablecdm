@@ -12,7 +12,7 @@ export const fetchLocations = (locationType) => {
         return pinch.fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
                 method: 'GET',
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
                 sslPinning: getCert(connection),
             })
             .then(result => {
