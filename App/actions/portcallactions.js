@@ -30,23 +30,83 @@ export const fetchVessel = (vesselUrn) => {
         return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
             sslPinning: getCert(connection),
         })
         .then(result => {
+            if(result.status === 404) {
+                dispatch({
+                    type: types.SET_ERROR, 
+                    payload: {
+                        title: 'Vessel not found',
+                        description: 'No vessel named ' + vesselName + ' found!',
+                    }
+                });
+                throw new Error('dispatched');
+            }
+
             let err = checkResponse(result);
             if(!err)
                 return JSON.parse(result.bodyString);
             
             dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
          })
-        .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel})).catch(err => {
-            dispatch({type: types.SET_ERROR, payload: {
-                description: err.message, 
-                title: 'Unable to connect to the server!'}});
+        .then(vessel => dispatch({type: types.FETCH_VESSEL_SUCCESS, payload: vessel})
+        ).catch(err => {
+            if(err.message !== 'dispatched') {
+                dispatch({type: types.SET_ERROR, payload: {
+                    description: err.message, 
+                    title: 'Unable to connect to the server!'}});
+            }
         });
     }
 };
+
+export const fetchVesselByName = (vesselName) => {
+    return (dispatch, getState) => {
+        
+        return fetch(`http://segot.portcdm.eu:8080/SeaTrafficManagement/vessel-registry/vessel?name=${vesselName}`, {
+            method: 'GET',
+        }).then((result) => {
+            if(result.status === 404) {
+                dispatch({
+                    type: types.SET_ERROR, 
+                    payload: {
+                        title: 'Vessel not found',
+                        description: 'No vessel named ' + vesselName + ' found!',
+                    }
+                });
+                throw new Error('dispatched');
+            }
+
+            let err = checkResponse(result);
+            if(!err)
+                return result.json();
+
+            dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
+        }).then((json) => {
+            dispatch({
+                type: types.FETCH_VESSEL_SUCCESS,
+                payload: {
+                    imo: `urn:mrn:stm:vessel:IMO:${json.imo}`,
+                    mmsi: `urn:mrn:stm:vessel:MMSI:${json.mmsi}`,
+                    name: json.name,
+                    vesselType: json.vesselType,
+                    callSign: json.callSign,
+                    photoURL: json.photoURL,
+                }
+            });
+        }).catch((error) => {
+            if(error.message !== 'dispatched') {
+                dispatch({type: types.SET_ERROR, payload: {
+                    description: error.message, 
+                    title: 'Unable to connect to the server!'}});
+            }
+        });
+    }
+}
 
 /**
  * fetches all portcalls matching the filter criteries defined in the filterReducer
@@ -62,7 +122,7 @@ export const fetchPortCalls = () => {
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
       {
         method: 'GET',
-        headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+        headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
         sslPinning: getCert(connection),
       })
         .then(result => {
@@ -73,14 +133,15 @@ export const fetchPortCalls = () => {
                 return JSON.parse(result.bodyString);
             
             dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
         })
         .then(portCalls => applyFilters(portCalls, filters))
         .then(portCalls => Promise.all(portCalls.map(portCall => {
-            console.log('Requesting vessel info for port call ' + portCall.portCallId);
+            //console.log('Requesting vessel info for port call ' + portCall.portCallId);
             return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
                 method: 'GET',
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
                 sslPinning: getCert(connection),
             })
             .then(result => {
@@ -90,15 +151,18 @@ export const fetchPortCalls = () => {
                     return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
+                throw new Error('dispatched');
             })
             .then(vessel => {portCall.vessel = vessel; return portCall})
         })))
         .then(portCalls => {
             dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
         }).catch(err => {
-            dispatch({type: types.SET_ERROR, payload: {
-                description: err.message, 
-                title: 'Unable to connect to the server!'}});
+            if(err.message != 'dispatched') {
+                dispatch({type: types.SET_ERROR, payload: {
+                    description: err.message, 
+                    title: 'Unable to connect to the server!'}});
+            }
         });
   };
 }
@@ -234,9 +298,10 @@ export const fetchPortCallOperations = (portCallId) => {
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const getReliability = getState().settings.fetchReliability;
-    const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token);
+    const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
     console.log('Fetching operations for port call ' + portCallId);
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
+    console.log(JSON.stringify(headers));
+    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(connection.host.includes('dev') ? 'events' : 'operations')}`, //TODO: Update
         {
             method: 'GET',
             headers: headers,
@@ -244,12 +309,14 @@ export const fetchPortCallOperations = (portCallId) => {
         }
     )
     .then(result => {
-        console.log('Response for operation in port calel');
+        console.log('Response for operation in port call');
         let err = checkResponse(result);
+        console.log(JSON.stringify(result));
         if(!err)
             return JSON.parse(result.bodyString);
 
         dispatch({type: types.SET_ERROR, payload: err});
+        throw new Error('dispatched');
     })
     // Sort the operations, port_visits first, then in 
     .then(sortOperations)
@@ -284,9 +351,11 @@ export const fetchPortCallOperations = (portCallId) => {
             dispatch({type: types.SET_ERROR, payload: { title: "RELIABILITY_FAIL"}});
     })      
     .catch(err => {
-        dispatch({type: types.SET_ERROR, payload: {
-            description: err.message, 
-            title: 'Unable to connect to the server!'}});
+        if(err.message !== 'dispatched') {
+            dispatch({type: types.SET_ERROR, payload: {
+                description: err.message, 
+                title: 'Unable to connect to the server!'}});
+        }
     });
   };
 };

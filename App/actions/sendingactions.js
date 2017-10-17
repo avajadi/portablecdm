@@ -19,7 +19,7 @@ export const sendPortCall = (pcmAsObject, stateType) => {
         return pinch.fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
             method: 'POST',
             headers: {
-              ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token)), 
+              ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host)), 
               'Content-Type' : 'application/xml'},
             body: objectToXml(pcmAsObject, stateType),
             sslPinning: getCert(connection),

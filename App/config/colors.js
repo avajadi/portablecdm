@@ -15,6 +15,8 @@ const colorScheme = {
   warningColor: '#FF6700', // Safety Orange | Warning 
   actualColor: '#1A936F', // Illuminating Emerald | ACTUAL green
   estimateColor: '#0B4F6C', // Dark Imperial Blue | ESTIMATE dark blue
+  targetColor: '#DAA520', // Goldenrod
+  recommendedColor: '#8B4513', // Saddle brown
 
   //Text
   primaryTextColor : 'white', // White text | Headers, 

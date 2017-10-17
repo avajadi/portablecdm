@@ -24,7 +24,7 @@ PortCDMConfig.endpoints = {
   PCBS: { // PortCall Builder Service
     port_call: {
       list: (filters) => `${PortCDMConfig.host}/pcb/port_call`, // TODO(johan): add filters!
-      operations: (portCallId) =>  `${PortCDMConfig.host}/pcb/port_call/${portCallId}/operations`    
+      operations: (portCallId) =>  `${PortCDMConfig.host}/pcb/port_call/${portCallId}/${(connection.host.includes('dev') ? 'events' : 'operations')}`    
     },
     definition: {
       process: (processId) => `${PortCDMConfig.host}/pcb/definition/${processId}`
