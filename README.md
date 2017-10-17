@@ -7,6 +7,8 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
 ## Future updates
 * Show where the current time is on the timeline
+* List of favorite port calls
+* Propose 'recently used' location (from port call) when sending time stamps outside state
 
 ## Suggested updates
 * Dynamic loading of port calls

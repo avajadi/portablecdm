@@ -81,6 +81,11 @@ class OperationView extends Component {
       endTimeDisplayStyle = styles.timeDisplay;
     }
 
+    let startTime = new Date(operation.startTime);
+    let endTime = new Date(operation.endTime);
+    let currentTime = new Date().now();
+    let redlineStyle = this._calculateRedline(startTime, endTime);
+
     return (
       <View style={styles.container}>
         
@@ -88,15 +93,18 @@ class OperationView extends Component {
         <View style={styles.timeContainer}>
           {/*Start Time*/}
           <View style={styles.timeDisplayContainer}>
-            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.startTime))}</Text>
-            <Text style={startTimeDisplayStyle}>{getTimeString(new Date(operation.startTime))}</Text>
+            <Text style={styles.dateDisplay}>{getDateString(startTime)}</Text>
+            <Text style={startTimeDisplayStyle}>{getTimeString(startTime)}</Text>
           </View>
           {/*End Time*/}
           <View style={[styles.timeDisplayContainer, {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colorScheme.tertiaryColor}]}>
-            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.endTime))}</Text>
-            <Text style={endTimeDisplayStyle }>{getTimeString(new Date(operation.endTime))}</Text>
+            <Text style={styles.dateDisplay}>{getDateString(endTime)}</Text>
+            <Text style={endTimeDisplayStyle }>{getTimeString(endTime)}</Text>
           </View>
         </View>
+
+        {/* Red line indicating current time */}
+        {(currentTime >= startTime && currentTime <= endTime) && <View style={redlineStyle}/>}
 
         {/* Line and dots */}
         <View style={styles.timeline}>
@@ -168,6 +176,18 @@ class OperationView extends Component {
         
       </View>
     );
+  }
+
+  _calculateRedline(startTime, endTime) {
+        let currentTime = new Date().now();    
+        return {
+            position: 'absolute',
+            top: 100,
+            left: 0,
+            width: 85,
+            borderBottomColor: 'red',
+            borderBottomWidth: 3,
+        }
   }
 
   renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, stateDef) {
