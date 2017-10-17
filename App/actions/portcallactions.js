@@ -234,11 +234,12 @@ export const fetchPortCallOperations = (portCallId) => {
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const getReliability = getState().settings.fetchReliability;
+    const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token);
     console.log('Fetching operations for port call ' + portCallId);
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/operations`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+            headers: headers,
             sslPinning: getCert(connection),
         }
     )
@@ -273,13 +274,13 @@ export const fetchPortCallOperations = (portCallId) => {
     .then((operations) => {
             if(!getReliability) return operations;
             
-            return fetchReliability(operations, connection, token, portCallId);
+            return fetchReliability(operations, headers, connection, portCallId);
         }
     )
     .then(maybeOperations => {
         if(!!maybeOperations)
             dispatch({type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: maybeOperations})
-        else
+        else if(getReliability)
             dispatch({type: types.SET_ERROR, payload: { title: "RELIABILITY_FAIL"}});
     })      
     .catch(err => {
@@ -291,23 +292,24 @@ export const fetchPortCallOperations = (portCallId) => {
 };
 
 // HELPER FUNCTIONS
-async function fetchReliability(operations, connection, token, portCallId) {
+async function fetchReliability(operations, headers, connection, portCallId) {
     if(operations.length <= 0) return operations;
     await pinch.fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`, 
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token),
+            headers: headers,
             sslPinning: getCert(connection),
         }
     )
     .then(result => {
         console.log('Fetching reliabilities.... ' + result.status);
-
-       if(result.status !== 200) {
-           return null;
-       }
-       else return JSON.parse(result.bodyString);
-    })
+        console.log('Result: ');
+        console.log(JSON.stringify(result));   
+        if(result.status !== 200) {
+            return null;
+        }
+        else return JSON.parse(result.bodyString);
+     })
     // Add the reliability for the entire portcall as member of the array
     .then(result => {
         operations.reliability = Math.floor(result.reliability * 100);

@@ -4,8 +4,8 @@ Johan Berndtsson
 Pontus Stjernström
 Nicole Ascard
 
-## Current issues:
-* Error when timestamp cannot be sent is not very clear, also when "at" is missing etc
+## Current issues
+* Currently empty
 
 ## Future updates
 * Recommended and target time types support
@@ -22,6 +22,14 @@ Nicole Ascard
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
 
+
+# Release notes 1.0.4
+* Fixed a bug where reliabilities would not be fetched when using keycloak
+* Removed autocorrect for the search bar in state selection
+* Added confirmation when sending messages
+* Added support for sending through HTTPS
+* Added confirmation for sent message success and failure
+* Updated error handling for missing "at"-location
 
 # Release notes 1.0.3
 * Fixed SeaSWIM login for at least QA, SEGOT and DEV servers
