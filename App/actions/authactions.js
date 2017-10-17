@@ -88,7 +88,6 @@ export const logoutKeycloak = (isStaging) => {
         return fetch(consts.MaritimeLogoutURI, {
             method: 'GET',
         }).then((result) => {
-            console.log(JSON.stringify(result));
             if(!result.ok) {
                 console.log('Cannot logout!');
             }
@@ -103,6 +102,8 @@ export const logoutKeycloak = (isStaging) => {
                     tokenType: 'bearer',
                 }
             });
+        }).catch((error) => {
+            console.log('Woops! Could not logout: ' + error.message);
         });
     }
 }

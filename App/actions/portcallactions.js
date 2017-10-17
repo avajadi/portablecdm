@@ -73,10 +73,11 @@ export const fetchPortCalls = () => {
                 return JSON.parse(result.bodyString);
             
             dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
         })
         .then(portCalls => applyFilters(portCalls, filters))
         .then(portCalls => Promise.all(portCalls.map(portCall => {
-            console.log('Requesting vessel info for port call ' + portCall.portCallId);
+            //console.log('Requesting vessel info for port call ' + portCall.portCallId);
             return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
             {
                 method: 'GET',
@@ -90,15 +91,18 @@ export const fetchPortCalls = () => {
                     return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
+                throw new Error('dispatched');
             })
             .then(vessel => {portCall.vessel = vessel; return portCall})
         })))
         .then(portCalls => {
             dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
         }).catch(err => {
-            dispatch({type: types.SET_ERROR, payload: {
-                description: err.message, 
-                title: 'Unable to connect to the server!'}});
+            if(err.message != 'dispatched') {
+                dispatch({type: types.SET_ERROR, payload: {
+                    description: err.message, 
+                    title: 'Unable to connect to the server!'}});
+            }
         });
   };
 }
