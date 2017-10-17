@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { WebBrowser } from 'expo';
-import StaticServer from 'react-native-static-server';
 import {
   View,
   StyleSheet,
@@ -23,36 +21,26 @@ import {
 
 import colorScheme from '../../config/colors';
 import consts from '../../config/constants';
-import { changeUser } from '../../actions';
+import { changeUser, logoutKeycloak } from '../../actions';
 
 class SideMenu extends Component {
 
   constructor(props) {
     super(props);
 
-    this.logout = this.logout.bind(this);
+    this._logout = this._logout.bind(this);
   }
 
-  logout = async () =>{
-      console.log('Logging out...');
-      if(!!this.props.connection.host) {
-        this.props.changeUser('', '');
+  _logout() {
+      const { navigation, connection, changeUser, logoutKeycloak } = this.props;
+      if(!!connection.username) {
+        changeUser('', '');
+        console.log('Logging out legacy user...');
+        navigation.navigate('LoginKeyCloak');
       } else {
-        let constants = consts(this.state.host.includes('dev.portcdm.eu') || this.state.host.includes('qa.portcdm.eu'));
-
-        let server = new StaticServer(1337, path, {localOnly: true});
-        
-        server.start().then((url) => {
-          console.log('Serving at url ' + url + '. Path is ' + path);
-        });
-
-        await WebBrowser.openBrowserAsync(constants.MaritimeLogoutURI);
-        WebBrowser.dismissBrowser();
-
-        server.stop();
+        console.log('Logging out keycloak user...');
+        logoutKeycloak(connection.host.includes('dev.portcdm.eu')).then(() => navigation.navigate('LoginKeyCloak'));
       }
-
-      this.props.navigation.navigate('LoginKeyCloak');
   }
 
 
@@ -215,7 +203,7 @@ class SideMenu extends Component {
                             </View>
                         }
                         onPress={() => {
-                                if(activeItemKey !== 'Login') this.logout();
+                                if(activeItemKey !== 'Login') this._logout();
                             }
                         }
                     />
@@ -287,4 +275,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {changeUser})(SideMenu);
+export default connect(mapStateToProps, {changeUser, logoutKeycloak})(SideMenu);
