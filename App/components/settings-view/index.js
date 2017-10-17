@@ -69,6 +69,43 @@ class Settings extends Component {
             checked={this.state.fetchReliability}
             onPress={this.updateFetchReliability}
           />
+          <View style={styles.containers.info}>  
+            <Text style={styles.texts.headerText} h3>
+                PortCDM connection information
+            </Text>
+            <Text style={styles.texts.infoText}>
+                <Text style={{fontWeight: 'bold'}}>
+                    UN/LOCODE: 
+                </Text>
+                <Text style={{fontWeight: 'normal'}}>
+                    {' ' + connection.unlocode}
+                </Text>
+            </Text>
+            <Text style={styles.texts.infoText}>
+                <Text style={{fontWeight: 'bold'}}>
+                    Host: 
+                </Text>
+                <Text style={{fontWeight: 'normal'}}>
+                    {' ' + connection.host}
+                </Text>
+            </Text>
+            <Text style={styles.texts.infoText}>
+                <Text style={{fontWeight: 'bold'}}>
+                    Port: 
+                </Text>
+                <Text style={{fontWeight: 'normal'}}>
+                    {' ' + connection.port}
+                </Text>
+            </Text>
+            <Text style={styles.texts.infoText}>
+                <Text style={{fontWeight: 'bold'}}>
+                    User: 
+                </Text>
+                <Text style={{fontWeight: 'normal'}}>
+                    {' ' + (!!connection.username ? connection.username : 'SeaSWIM user')}
+                </Text>
+            </Text>
+          </View>
         </ScrollView>
       </View>
     );
@@ -115,6 +152,7 @@ const locStyles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     fetchReliability: state.settings.fetchReliability,
+    connection: state.settings.connection,
   };
 }
 
