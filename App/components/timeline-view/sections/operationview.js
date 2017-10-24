@@ -33,7 +33,7 @@ class OperationView extends Component {
       operation: operation,
       reportedStates: reportedStates,
       isCollapsed: operation.endTimeType === 'ACTUAL',
-
+      dimensions: undefined,
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this);
@@ -83,11 +83,14 @@ class OperationView extends Component {
 
     let startTime = new Date(operation.startTime);
     let endTime = new Date(operation.endTime);
-    let currentTime = new Date().now();
+    let currentTime = new Date();
     let redlineStyle = this._calculateRedline(startTime, endTime);
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={(event) => {
+            this.setState({dimensions: event.nativeEvent.layout});
+            //console.log('RECT: ' + JSON.stringify(operationRect));
+          }}>
         
         {/* Time Display */}
         <View style={styles.timeContainer}>
@@ -104,7 +107,7 @@ class OperationView extends Component {
         </View>
 
         {/* Red line indicating current time */}
-        {(currentTime >= startTime && currentTime <= endTime) && <View style={redlineStyle}/>}
+        {(!!this.state.dimensions && currentTime >= startTime && currentTime <= endTime) && <View style={this._calculateRedline(startTime, endTime)}/>}
 
         {/* Line and dots */}
         <View style={styles.timeline}>
@@ -179,10 +182,22 @@ class OperationView extends Component {
   }
 
   _calculateRedline(startTime, endTime) {
-        let currentTime = new Date().now();    
+        if(!this.state.dimensions) return null;
+        
+        let { height } = this.state.dimensions;
+        let currentTime = new Date();    
+        let top = 100;
+        if(this.state.isCollapsed) {
+            top = height / 2;
+        } else {
+            let passedTime = currentTime - startTime;
+            let totalTime = endTime - startTime;
+            top = (passedTime/totalTime) * height;
+            // TODO: Adjustments according to user input
+        }
         return {
             position: 'absolute',
-            top: 100,
+            top: top,
             left: 0,
             width: 85,
             borderBottomColor: 'red',

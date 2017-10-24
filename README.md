@@ -18,6 +18,9 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
 
+### Release notes 1.1.1
+* Added red line on operations for visualizing current time
+
 ## Release notes 1.1
 * Added icons for TARGET and RECOMMENDED time types
 * Added feature to search by IMO and MMSI number
