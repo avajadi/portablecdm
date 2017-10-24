@@ -6,9 +6,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* Show where the current time is on the timeline
 * List of favorite port calls
-* Propose 'recently used' location (from port call) when sending time stamps outside state
 
 ## Suggested updates
 * Dynamic loading of port calls
@@ -20,6 +18,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time
+* Locations are now sorted on locations already mentioned by the port call
 
 ## Release notes 1.1
 * Added icons for TARGET and RECOMMENDED time types
@@ -40,6 +39,5 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Fixed SeaSWIM login for at least QA, SEGOT and DEV servers
 * Improved return from error view
 * Revisited the Legacy Login modal
-..* Added logos
-..* Added back arrow for iOS users
+* Added back arrow for iOS users
 * Many other improvements for future updates

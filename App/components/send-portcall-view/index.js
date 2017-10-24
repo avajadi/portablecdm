@@ -61,7 +61,7 @@ class SendPortcall extends Component {
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType } = this.state;
-    const { vesselId, portCallId, getState, sendPortCall, sendingState, vessel } = this.props;
+    const { vesselId, portCallId, getState, sendPortCall, sendingState, vessel, navigation } = this.props;
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
 
