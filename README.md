@@ -19,6 +19,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time
 * Locations are now sorted on locations already mentioned by the port call
+* Lots of code refactoring
 
 ## Release notes 1.1
 * Added icons for TARGET and RECOMMENDED time types

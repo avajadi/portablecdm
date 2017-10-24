@@ -1,6 +1,8 @@
 import * as types from './types';
 import constants from '../config/constants';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
+import StaticServer from 'react-native-static-server';
+import RNFS from 'react-native-fs';
 
 export const loginKeycloak = (urlPayload, isStaging) => {
     return (dispatch, getState) => { 
@@ -104,6 +106,43 @@ export const logoutKeycloak = (isStaging) => {
             });
         }).catch((error) => {
             console.log('Woops! Could not logout: ' + error.message);
+        });
+    }
+}
+
+export const startLocalServer = () => {
+    return (dispatch, getState) => {
+        let path = '';
+        if(Platform.OS === 'ios') {
+            path = RNFS.MainBundlePath + '/www';
+        } else {
+            path = RNFS.DocumentDirectoryPath;
+        }
+
+        let port = 1337;
+        server = new StaticServer(port, path, {localOnly: true});
+
+        server.start().then((url) => {
+            console.log('Serving at url ' + url + '. Path is ' + path);
+        });
+
+        dispatch({
+            type: types.SERVER_START,
+            payload: {
+                server: server,
+                port: port,
+                path: path,
+            }
+        });
+    }
+}
+
+export const stopLocalServer = () => {
+    return (dispatch, getState) => {
+        console.log(JSON.stringify(getState().server));
+        getState().server.server.stop();
+        dispatch({
+            type: types.SERVER_STOP,
         });
     }
 }

@@ -43,3 +43,5 @@ export const FETCH_VESSEL_CLEAR = 'fetch_vessel_clear';
 export const SET_ERROR = 'set_error';
 export const REMOVE_ERROR = 'remove_error';
 export const UPDATE_PROGRESS = 'update_progress';
+export const SERVER_START = 'server_start';
+export const SERVER_STOP = 'server_stop';
