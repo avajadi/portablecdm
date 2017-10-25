@@ -7,6 +7,13 @@ export const filterChangeVesselList = (vesselList) => {
     };
 };
 
+export const filterChangePortCallList = (portCallList) => {
+    return {
+        type: types.FILTER_CHANGE_PORTCALL_LIST,
+        payload: portCallList,
+    };
+}
+
 export const filterChangeLimit = (limit) => {
     return {
         type: types.FILTER_CHANGE_LIMIT,

@@ -84,12 +84,7 @@ class SendPortcall extends Component {
                             'Error',
                             'Unable to send message!'
                         );
-                    } else {
-                        Alert.alert(
-                            'Success',
-                            'Timestamp successfully sent.',
-                        );
-                    }
+                    } 
                 });          
             }}
         ]
