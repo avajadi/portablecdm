@@ -6,15 +6,25 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* List of favorite port calls
+* Revisit favorite vessels
+* Add favorite port calls
+* Add change log on "About"
+* Dynamic loading of port calls
+* Add support for adding comments to messages
+* Subscribe on locations
+* Update notifications
 
 ## Suggested updates
-* Dynamic loading of port calls
 * Summary of sent message (instead of current verification) as popup
 
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
+
+## Release notes 1.2
+* Added new favorite system. The favorite port call or vessel will be at the top of the port call list
+* Added feature to add system by tap and hold on port call in port call list
+* 
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time

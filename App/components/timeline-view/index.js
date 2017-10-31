@@ -22,7 +22,13 @@ import {
 import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
-import { fetchPortCallOperations, changeFetchReliability, removeError, } from '../../actions';
+import { 
+    fetchPortCallOperations, 
+    changeFetchReliability, 
+    removeError, 
+    toggleFavoritePortCall,
+    toggleFavoriteVessel,
+} from '../../actions';
 import { getTimeDifferenceString } from '../../util/timeservices';
 import colorScheme from '../../config/colors';
 
@@ -91,8 +97,12 @@ class TimeLineView extends Component {
 
         return(
             <View style={{flex: 1, backgroundColor: colorScheme.primaryContainerColor}}>
-                <TopHeader title = 'Timeline' firstPage navigation={this.props.navigation} rightIconFunction={this.goToStateList}/>
-
+                <TopHeader 
+                    title = 'Timeline' 
+                    firstPage
+                    navigation={this.props.navigation} 
+                    rightIconFunction={this.goToStateList}
+                    leftIcons={this.createFavoriteIcons()}/>
                 <View 
                     style={styles.headerContainer}
                 >
@@ -131,6 +141,32 @@ class TimeLineView extends Component {
             </View>
         );
     }
+
+    
+    createFavoriteIcons() {
+
+        const { portCallId, imo } = this.props;
+
+        let showStar = this.props.favoritePortCalls.includes(portCallId);
+        let showBoat = this.props.favoriteVessels.includes(imo);
+
+        return {
+            first: {
+                name: 'star',
+                color: showStar ? 'gold' : 'gray',
+                onPress: () => {
+                    this.props.toggleFavoritePortCall(portCallId);
+                }
+            },
+            second: {
+                name: 'directions-boat',
+                color: showBoat ? 'lightblue' : 'gray',
+                onPress: () => {
+                    this.props.toggleFavoriteVessel(imo);
+                }
+            }
+        }
+    } 
 }
 
 
@@ -160,13 +196,22 @@ function mapStateToProps(state) {
         loading: state.portCalls.selectedPortCallIsLoading,
         operations: state.portCalls.selectedPortCallOperations,
         vesselName: state.portCalls.vessel.name,
+        imo: state.portCalls.vessel.imo,
         portCallId: state.portCalls.selectedPortCall.portCallId,
+        favoritePortCalls: state.favorites.portCalls,
+        favoriteVessels: state.favorites.vessels,
         error: state.error,
         fetchReliability: state.settings.fetchReliability,
     };
 }
 
-export default connect(mapStateToProps, {changeFetchReliability, fetchPortCallOperations, removeError})(TimeLineView);
+export default connect(mapStateToProps, {
+    changeFetchReliability, 
+    fetchPortCallOperations, 
+    removeError,
+    toggleFavoritePortCall,
+    toggleFavoriteVessel,
+})(TimeLineView);
 
 
 
