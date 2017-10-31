@@ -113,16 +113,21 @@ export const updatePortCalls = () => {
         const cached = getState().cache.portCalls;
     
         return fetchPortCalls(dispatch, getState).then(() => {
+            dispatch({
+                type: types.FILTER_CHANGE_UPDATED_AFTER,
+                payload: new Date().getTime(),
+            });
             let newPortCalls = getState().portCalls.foundPortCalls;
 
-            console.log('Only fetched ' + newPortCalls.length + ' while having ' + cached.portCalls.length + ' cached port calls.');
+            console.log('Only fetched ' + newPortCalls.length + ' while having ' + cached.length + ' cached port calls.');
 
-            let counter = cached.length;
-            for(let i = 0; i < cached.portCalls.length; i++) { // This mysteriously didn't work with foreach
-                let portCall = cached.portCalls[i];
-                if(!newPortCalls.find((x) => x.portCallId === portCall.portCallId)) {
-                    newPortCalls.push(portCall);
-                    counter--;
+            let counter = 0;
+            for(let i = 0; i < newPortCalls.length; i++) { // This mysteriously didn't work with foreach
+                let portCall = newPortCalls[i];
+                let toBeReplaced = cached.find((x) => x.portCallId === portCall.portCallId);
+                if(!!toBeReplaced) {
+                    cached.splice(cached.indexOf(toBeReplaced), 1);
+                    counter++;
                 }
             }
 
@@ -130,12 +135,7 @@ export const updatePortCalls = () => {
 
             dispatch({
                 type: types.CACHE_PORTCALLS,
-                payload: newPortCalls,
-            });
-
-            dispatch({
-                type: types.FILTER_CHANGE_UPDATED_AFTER,
-                payload: new Date().getTime(),
+                payload: newPortCalls.concat(cached),
             });
         });
     };
@@ -173,7 +173,6 @@ export const fetchPortCalls = (dispatch, getState) => {
             })
             .then(result => {
                 let err = checkResponse(result);
-                dispatch({type: types.UPDATE_PROGRESS, payload: 0.1})
                 if(!err)
                     return JSON.parse(result.bodyString);
                 

@@ -1,5 +1,7 @@
 import {
     CACHE_PORTCALLS,
+    TOGGLE_PORTCALL_FAVORITE,
+    TOGGLE_VESSEL_FAVORITE,
 } from '../actions/types';
 
 const INITIAL_STATE = {

@@ -9,7 +9,7 @@ export * from './sendingactions';
 export * from './erroractions';
 export * from './authactions';
 export * from './favoriteactions';
-
+export * from './cacheactions';
 
 
 

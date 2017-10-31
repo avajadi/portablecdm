@@ -26,6 +26,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Added feature to edit favorite by tap and hold on port call in port call list
 * Added feature to edit favorite vessel or port call from timeline view
 * Removed old vessel list system
+* Added port call caching for faster loading times
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time

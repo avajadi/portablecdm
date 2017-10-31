@@ -9,6 +9,7 @@ import {
   FILTER_ONLY_FUTURE_PORTCALLS,
   FILTER_CHANGE_PORTCALL_LIST,
   FILTER_CHANGE_UPDATED_AFTER,
+  FILTER_CLEAR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -43,6 +44,8 @@ const filterReducer = (state=INITIAL_STATE, action) => {
       return { ...state, onlyFetchActivePortCalls: action.payload }
     case FILTER_CHANGE_UPDATED_AFTER:
       return { ...state, updatedAfter: action.payload };
+    case FILTER_CLEAR: 
+      return INITIAL_STATE;
     default:
       return state;
   }
