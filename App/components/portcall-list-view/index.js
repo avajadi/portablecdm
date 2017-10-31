@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPortCalls, selectPortCall } from '../../actions';
+import { 
+    fetchPortCalls, 
+    selectPortCall,
+    toggleFavoritePortCall,
+    toggleFavoriteVessel,
+ } from '../../actions';
 
 import {
     View,
@@ -8,6 +13,7 @@ import {
     StyleSheet,
     ScrollView,
     RefreshControl,
+    Alert,
 } from 'react-native';
 
 import { 
@@ -92,13 +98,36 @@ class PortCallList extends Component {
                                     avatar={{uri: portCall.vessel.photoURL}}
                                     key={portCall.portCallId}
                                     title={portCall.vessel.name}
+                                    badge={{element: this.renderFavorites(portCall)}}
                                     titleStyle={styles.titleStyle}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
                                     subtitleStyle={styles.subTitleStyle}
                                     onPress={() => {
-                                        console.log(JSON.stringify(portCall.vessel)); 
+                                        //console.log(JSON.stringify(portCall.vessel)); 
                                         selectPortCall(portCall);
                                         navigate('TimeLine')
+                                    }}
+                                    onLongPress={() => {
+                                        Alert.alert(
+                                            'Favorite ' + portCall.vessel.name,
+                                            'What would you like to do?',
+                                            [
+                                                {text: 'Cancel'},
+                                                {
+                                                    text: 
+                                                        (this.props.favoriteVessels.includes(portCall.vessel.imo) ? 'Unf' : 'F') +
+                                                        'avorite vessel', 
+                                                    onPress: () => {
+                                                        this.props.toggleFavoriteVessel(portCall.vessel.imo);
+                                                }},
+                                                {
+                                                    text: 
+                                                        (this.props.favoritePortCalls.includes(portCall.portCallId) ? 'Unf' : 'F') +
+                                                    'avorite port call', onPress: () => {
+                                                    this.props.toggleFavoritePortCall(portCall.portCallId);
+                                                }}
+                                            ]
+                                        );
                                     }}
                                 />
                             ))
@@ -109,12 +138,40 @@ class PortCallList extends Component {
         );        
     }
 
+    renderFavorites(portCall) {
+        let showStar = this.props.favoritePortCalls.includes(portCall.portCallId);
+        let showBoat = this.props.favoriteVessels.includes(portCall.vessel.imo);
+        return (
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    {showStar && <Icon
+                        name='star'
+                        color='gold'
+                    />}
+                    {showBoat && <Icon
+                        name='directions-boat'
+                        color='lightblue'
+                    />}
+                </View>
+        );
+    } 
+
+    sortFavorites(a,b) {
+        if(this.props.favoritePortCalls.includes(a.portCallId) || this.props.favoriteVessels.includes(a.vessel.imo))
+            return -1;
+        
+        if(this.props.favoritePortCalls.includes(b.portCallId) || this.props.favoriteVessels.includes(b.vessel.imo))
+            return 1;
+
+
+        return 0;
+    }
+
     search(portCalls, searchTerm) {
         return portCalls.filter(portCall => {
             return portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()) || 
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
             portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
-        });        
+        }).sort((a,b) => this.sortFavorites(a,b));        
     }
 }
 
@@ -159,10 +216,17 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         portCalls: state.portCalls.foundPortCalls,
+        favoritePortCalls: state.favorites.portCalls,
+        favoriteVessels: state.favorites.vessels,
         showLoadingIcon: state.portCalls.portCallsAreLoading,
         error: state.error,
     }
 }
 
-export default connect(mapStateToProps, {fetchPortCalls, selectPortCall})(PortCallList);
+export default connect(mapStateToProps, {
+    fetchPortCalls, 
+    selectPortCall,
+    toggleFavoritePortCall,
+    toggleFavoriteVessel,
+})(PortCallList);
 

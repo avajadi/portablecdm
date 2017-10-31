@@ -8,6 +8,7 @@ import filterReducer from './filterreducer';
 import vesselReducer from './vesselreducer';
 import errorReducer from './errorreducer';
 import serverReducer from './serverreducer';
+import favoritesReducer from './favoritesreducer';
 
 export default combineReducers({
   portCalls: portCallReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
   vessel: vesselReducer,  
   error: errorReducer,
   server: serverReducer,
+  favorites: favoritesReducer,
 });
