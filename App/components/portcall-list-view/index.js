@@ -92,6 +92,7 @@ class PortCallList extends Component {
                     }>
                     <List>
                         {
+                            
                             this.search(portCalls, searchTerm).map( (portCall) => ( 
                                 <ListItem
                                     roundAvatar
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        portCalls: state.portCalls.foundPortCalls,
+        portCalls: state.cache.portCalls,
         favoritePortCalls: state.favorites.portCalls,
         favoriteVessels: state.favorites.vessels,
         showLoadingIcon: state.portCalls.portCallsAreLoading,

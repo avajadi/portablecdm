@@ -8,6 +8,7 @@ import {
   FILTER_CLEAR_TIME,
   FILTER_ONLY_FUTURE_PORTCALLS,
   FILTER_CHANGE_PORTCALL_LIST,
+  FILTER_CHANGE_UPDATED_AFTER,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -19,6 +20,7 @@ const INITIAL_STATE = {
   arrivingWithin: 0,
   departingWithin: 0,
   onlyFetchActivePortCalls: false,
+  updatedAfter: 0,
 };
 
 const filterReducer = (state=INITIAL_STATE, action) => {
@@ -39,6 +41,8 @@ const filterReducer = (state=INITIAL_STATE, action) => {
       return { ...state, departingWithin: 0, arrivingWithin: 0}
     case FILTER_ONLY_FUTURE_PORTCALLS:
       return { ...state, onlyFetchActivePortCalls: action.payload }
+    case FILTER_CHANGE_UPDATED_AFTER:
+      return { ...state, updatedAfter: action.payload };
     default:
       return state;
   }
