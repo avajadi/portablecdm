@@ -4,8 +4,8 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import SendPortCall from '../components/send-portcall-view';
 import StateList    from '../components/state-list-view';
-import PortCallList from '../components/portcall-list-view';
 import TimeLineView from '../components/timeline-view';
+import PortCallList from '../components/portcall-list-view';
 import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
 import StateDetails from '../components/timeline-view/sections/statedetails';
 import VesselInfo   from '../components/vessel-info-view';

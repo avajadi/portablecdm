@@ -57,13 +57,13 @@ class Settings extends Component {
             buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('FavoriteStateSetting')}
           />
-          <Button
+          {false && <Button
             backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
             title="Edit Vessel Lists"
             buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('VesselLists')}
-          />         
+          />}         
           <CheckBox
             title='Fetch reliabilities'
             checked={this.state.fetchReliability}

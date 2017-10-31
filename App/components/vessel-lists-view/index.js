@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state.settings.vesselLists)
+  //console.log(state.settings.vesselLists)
   return {
     vesselLists: state.settings.vesselLists,
     foundVessel: state.vessel.vessel,

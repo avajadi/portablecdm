@@ -22,6 +22,7 @@ export const FILTER_CHANGE_LIMIT = 'filter_change_limit';
 export const FILTER_CHANGE_SORTBY = 'filter_change_sortby';
 export const FILTER_CHANGE_ORDER = 'filter_change_order';
 export const FILTER_CHANGE_VESSEL_LIST = 'filter_change_vessel_list';
+export const FILTER_CHANGE_PORTCALL_LIST = 'filter_change_portcall_list';
 export const FILTER_CHANGE_ARRIVING_WITHIN = 'filter_change_arriving_within';
 export const FILTER_CHANGE_DEPARTING_WITHIN = 'filter_change_departing_within';
 export const FILTER_CLEAR_TIME = 'filter_clear_time'
@@ -43,3 +44,11 @@ export const FETCH_VESSEL_CLEAR = 'fetch_vessel_clear';
 export const SET_ERROR = 'set_error';
 export const REMOVE_ERROR = 'remove_error';
 export const UPDATE_PROGRESS = 'update_progress';
+export const SERVER_START = 'server_start';
+export const SERVER_STOP = 'server_stop';
+
+/** FAVORITES */
+export const ADD_FAVORITE_PORTCALL = 'add_favorite_portcall';
+export const REMOVE_FAVORITE_PORTCALL = 'remove_favorite_portcall';
+export const ADD_FAVORITE_VESSEL = 'add_favorite_vessel';
+export const REMOVE_FAVORITE_VESSEL = 'remove_favorite_vessel';

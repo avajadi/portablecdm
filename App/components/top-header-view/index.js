@@ -18,9 +18,8 @@ import colorScheme from '../../config/colors';
 export default class TopHeader extends Component {
 
   render() {
-    const {title, firstPage, rightIconFunction} = this.props;
+    const {title, firstPage, rightIconFunction, leftIcons} = this.props;
 
-    
     return(
       <View >
         <View style={styles.container}>
@@ -44,12 +43,33 @@ export default class TopHeader extends Component {
             onPress={() => { this.props.navigation.goBack()}}
           /> 
           }
+          {(!!leftIcons && !!leftIcons.first) && 
+            <Icon
+                name={leftIcons.first.name}
+                color={leftIcons.first.color}
+                onPress={leftIcons.first.onPress}
+                size={30}
+            />}
+          {(!!leftIcons && !!leftIcons.second) && 
+            <Icon
+                name={leftIcons.second.name}
+                color={leftIcons.second.color}
+                onPress={leftIcons.second.onPress}
+                size={30}
+            />}
           <Text 
             style= {styles.headerText} 
             h4 
           >
-            {title}
+          {title}
           </Text>
+          {/* Compensate for the two icons to the left of the title */}
+          {(!!leftIcons && !!leftIcons.first) &&
+            <View style={{width: 30}}/>
+          }
+          {(!!leftIcons && !!leftIcons.second) &&
+            <View style={{width: 30}}/>
+          }
           {/* Only render the + icon if we have functionality for it on this view  */}
           {!!rightIconFunction &&
             <Icon

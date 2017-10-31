@@ -33,7 +33,10 @@ class OperationView extends Component {
       operation: operation,
       reportedStates: reportedStates,
       isCollapsed: operation.endTimeType === 'ACTUAL',
-
+      dimensions: {
+          operation: undefined,
+          timeContainer: undefined,
+      },
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this);
@@ -81,22 +84,38 @@ class OperationView extends Component {
       endTimeDisplayStyle = styles.timeDisplay;
     }
 
+    let startTime = new Date(operation.startTime);
+    let endTime = new Date(operation.endTime);
+    let currentTime = new Date();
+    let renderRedLine = startTime > 0 && currentTime >= startTime && currentTime <= endTime;
+    let redlineStyle = this._calculateRedline(startTime, endTime);
+
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={(event) => {
+            if(renderRedLine) {
+                this.setState({dimensions: {...this.state.dimensions, operation: event.nativeEvent.layout}});
+            }
+          }}>
         
         {/* Time Display */}
         <View style={styles.timeContainer}>
           {/*Start Time*/}
-          <View style={styles.timeDisplayContainer}>
-            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.startTime))}</Text>
-            <Text style={startTimeDisplayStyle}>{getTimeString(new Date(operation.startTime))}</Text>
+          <View style={styles.timeDisplayContainer} onLayout={(event) => {
+            if(renderRedLine)
+                this.setState({dimensions: {...this.state.dimensions, timeContainer: event.nativeEvent.layout}});
+        }}>
+            <Text style={styles.dateDisplay}>{getDateString(startTime)}</Text>
+            <Text style={startTimeDisplayStyle}>{getTimeString(startTime)}</Text>
           </View>
           {/*End Time*/}
           <View style={[styles.timeDisplayContainer, {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colorScheme.tertiaryColor}]}>
-            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.endTime))}</Text>
-            <Text style={endTimeDisplayStyle }>{getTimeString(new Date(operation.endTime))}</Text>
+            <Text style={styles.dateDisplay}>{getDateString(endTime)}</Text>
+            <Text style={endTimeDisplayStyle }>{getTimeString(endTime)}</Text>
           </View>
         </View>
+
+        {/* Red line indicating current time */}
+        {(!!this.state.dimensions && renderRedLine) && <View style={this._calculateRedline(startTime, endTime)}/>}
 
         {/* Line and dots */}
         <View style={styles.timeline}>
@@ -168,6 +187,32 @@ class OperationView extends Component {
         
       </View>
     );
+  }
+
+  _calculateRedline(startTime, endTime) {
+        if(!this.state.dimensions.operation || !this.state.dimensions.timeContainer) return null;
+        
+        //console.log(JSON.stringify(this.state.dimensions));
+        let { operation, timeContainer } = this.state.dimensions;
+        let currentTime = new Date();    
+        let top = 100;
+        if(this.state.isCollapsed) {
+            top = operation.height / 2;
+        } else {
+            let passedTime = currentTime - startTime;
+            let totalTime = endTime - startTime;
+            let allowedOpHeight = operation.height - timeContainer.height * 2;
+            top = (passedTime/totalTime) * allowedOpHeight + timeContainer.height;
+            // TODO: Adjustments according to user input
+        }
+        return {
+            position: 'absolute',
+            top: top,
+            left: 0,
+            width: 85,
+            borderBottomColor: 'red',
+            borderBottomWidth: 3,
+        }
   }
 
   renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, stateDef) {

@@ -6,11 +6,12 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 
 import {
   Text,
+  Button,
 } from 'react-native-elements';
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
@@ -32,7 +33,7 @@ export default class AboutView extends Component {
             /> 
             <View style={{flexDirection: 'column'}}>
               <Text h4><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
-              <Text style={{fontSize: 9}}>Version 1.0</Text>
+              <Text style={{fontSize: 9}}>Version 1.1.1</Text>
             </View>
             <Image
               source={require('../../assets/riseLogo.png')}
@@ -55,8 +56,11 @@ export default class AboutView extends Component {
             source={require('../../assets/euCoFinance.png')}
             style={{height: 50,width: 358, marginTop: 10}}
           />
+{false &&          <Button
+            buttonStyle={styles.button}
+            title="Change log"
+            />}
         </ScrollView>
-
       </View>
     );
   }
@@ -68,6 +72,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colorScheme.backgroundColor,
     backgroundColor: colorScheme.primaryTextColor
+  },
+  button: {
+    //backgroundColor: colorScheme.primaryColor,
+    marginBottom: 10,
+    marginTop: 50,
+    borderColor: colorScheme.primaryColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
   },
   infoText: {
     marginLeft: 10, 

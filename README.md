@@ -6,15 +6,31 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* Show where the current time is on the timeline
+* Revisit favorite vessels
+* Add favorite port calls
+* Add change log on "About"
+* Dynamic loading of port calls
+* Add support for adding comments to messages
+* Subscribe on locations
+* Update notifications
 
 ## Suggested updates
-* Dynamic loading of port calls
 * Summary of sent message (instead of current verification) as popup
 
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
+
+## Release notes 1.2
+* Added new favorite system. The favorite port call or vessel will be at the top of the port call list
+* Added feature to edit favorite by tap and hold on port call in port call list
+* Added feature to edit favorite vessel or port call from timeline view
+* Removed old vessel list system
+
+### Release notes 1.1.1
+* Added red line on operations for visualizing current time
+* Locations are now sorted on locations already mentioned by the port call
+* Lots of code refactoring
 
 ## Release notes 1.1
 * Added icons for TARGET and RECOMMENDED time types
@@ -35,6 +51,5 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Fixed SeaSWIM login for at least QA, SEGOT and DEV servers
 * Improved return from error view
 * Revisited the Legacy Login modal
-..* Added logos
-..* Added back arrow for iOS users
+* Added back arrow for iOS users
 * Many other improvements for future updates

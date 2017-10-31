@@ -7,6 +7,7 @@ import {
   FILTER_CHANGE_DEPARTING_WITHIN,
   FILTER_CLEAR_TIME,
   FILTER_ONLY_FUTURE_PORTCALLS,
+  FILTER_CHANGE_PORTCALL_LIST,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -14,6 +15,7 @@ const INITIAL_STATE = {
   sort_by: 'LAST_UPDATE',    // LAST_UPDATE | ARRIVAL_DATE
   order: 'DESCENDING',       // DESCENDING | ASCENDING
   vesselList: 'all',             // name of a vessel list in settingsreducer, or "all" to not use filter
+  portCallList: 'all',          // name of a port call list in settingsreducer, or "all" to not use filter
   arrivingWithin: 0,
   departingWithin: 0,
   onlyFetchActivePortCalls: false,
