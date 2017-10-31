@@ -23,8 +23,9 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
 ## Release notes 1.2
 * Added new favorite system. The favorite port call or vessel will be at the top of the port call list
-* Added feature to add system by tap and hold on port call in port call list
-* 
+* Added feature to edit favorite by tap and hold on port call in port call list
+* Added feature to edit favorite vessel or port call from timeline view
+* Removed old vessel list system
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time

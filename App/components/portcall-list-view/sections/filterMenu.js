@@ -211,6 +211,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                 </View>
 
                 {/* Picker for Vessel List */}
+                {false && (
                 <View style={styles.smallContainer}>
                     <Text style={styles.textTitle}>Vessel list</Text>
                     <Picker style={{marginTop: 20, marginLeft: 10, marginRight: 10, borderRadius: 20,backgroundColor: colorScheme.primaryTextColor}}
@@ -222,7 +223,8 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                             <Picker.Item key={vesselListName} label={vesselListName} value={vesselListName} />
                         ))}
                     </Picker>
-                </View>
+                </View>)
+                }
 
                 {/*Limit View with title and slider*/}
                 <View style={styles.smallTimeContainer}> 
