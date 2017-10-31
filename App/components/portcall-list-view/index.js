@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { 
-    fetchPortCalls, 
+    updatePortCalls, 
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
@@ -40,7 +40,7 @@ class PortCallList extends Component {
     }
 
     loadPortCalls() {
-        this.props.fetchPortCalls().then(() => {
+        this.props.updatePortCalls().then(() => {
             if(this.props.error.hasError)
                 navigate('Error');
         });
@@ -224,7 +224,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    fetchPortCalls, 
+    updatePortCalls, 
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
