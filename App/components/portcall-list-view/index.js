@@ -46,6 +46,13 @@ class PortCallList extends Component {
         });
     }
 
+    checkBottom({layoutMeasurement, contentOffset, contentSize}) {
+        const paddingToBottom = 20;
+        if(layoutMeasurement.height - contentOffset.y >= contentSize.height - paddingToBottom) {
+            console.log('Need to fetch more port calls!');
+        }
+    }
+
     render() {
         const {navigation, showLoadingIcon, portCalls, selectPortCall} = this.props;
         const {navigate} = navigation;
@@ -57,7 +64,7 @@ class PortCallList extends Component {
                 {/*Render the search/filters header*/}
                 <View style={styles.containerRow}>
                     <SearchBar
-                        autoCorrent={false} 
+                        autoCorrect={false} 
                         containerStyle = {styles.searchBarContainer}
                         showLoadingIcon={showLoadingIcon}
                         clearIcon
@@ -89,7 +96,11 @@ class PortCallList extends Component {
                         refreshing={this.state.refreshing}
                         onRefresh={this.loadPortCalls.bind(this)}
                     />
-                    }>
+                    }
+                    onScroll={({nativeElement}) => {
+                     //   this.checkBottom(nativeElement);
+                    }}
+                    >
                     <List>
                         {
                             

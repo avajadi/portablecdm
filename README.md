@@ -6,8 +6,6 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* Revisit favorite vessels
-* Add favorite port calls
 * Add change log on "About"
 * Dynamic loading of port calls
 * Add support for adding comments to messages

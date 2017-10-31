@@ -147,6 +147,7 @@ export const fetchPortCalls = (dispatch, getState) => {
     const token = getState().settings.token;
     const filters = getState().filters;
     const filterString = createFilterString(filters, getState);
+    const favorites = getState().favorites;
     console.log('Filterstring: ' + filterString);
     console.log('Fetching port calls....');
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
@@ -181,6 +182,8 @@ export const fetchPortCalls = (dispatch, getState) => {
             })
             .then(vessel => {
                 portCall.vessel = vessel; 
+                portCall.favorite = favorites.portCalls.includes(portCall.portCallId);
+                vessel.favorite = favorites.vessels.includes(vessel.imo);
                 return portCall;
             })
         })))
