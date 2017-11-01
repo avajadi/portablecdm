@@ -59,8 +59,8 @@ class PortCallList extends Component {
              if(numLoaded >= portCalls.length) {
                 console.log('Need to fetch more port calls!');
                 // TODO: What if the ordering is the opposite?
-                let firstUpdated = portCalls[portCalls.length - 1].lastUpdated;
-                appendPortCalls(new Date(firstUpdated).getTime());
+                let lastPortCall = portCalls[portCalls.length - 1];
+                appendPortCalls(lastPortCall);
              } else {
                  console.log('Loading more local port calls. Showing ' + numLoaded + ' of ' + portCalls.length + ' port calls.');
              }

@@ -6,8 +6,8 @@ export const clearCache = () => {
             type: types.CACHE_CLEAR,
         });
 
-        dispatch({
-            type: types.FILTER_CLEAR,
-        });
+        // dispatch({
+        //     type: types.FILTER_CLEAR,
+        // });
     };
 }

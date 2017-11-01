@@ -27,6 +27,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Added feature to edit favorite vessel or port call from timeline view
 * Removed old vessel list system
 * Added port call caching for faster loading times
+* Added dynamic fetching of port calls (like Facebook feed)
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time

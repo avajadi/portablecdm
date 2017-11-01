@@ -25,6 +25,7 @@ import MiniHeader from '../../mini-header-view';
 
 import {
     updatePortCalls,
+    clearCache,
     filterChangeLimit,
     filterChangeSortBy,  
     filterChangeOrder,
@@ -93,6 +94,7 @@ onDoneIconPressed() {
     const { 
         filters, 
         updatePortCalls, 
+        clearCache,
         filterChangeLimit, 
         filterChangeSortBy, 
         filterChangeOrder,
@@ -131,6 +133,7 @@ onDoneIconPressed() {
     // Vessel List
     filterChangeVesselList(this.state.vesselListFilter);
 
+    clearCache();
     updatePortCalls();
     this.props.navigation.goBack();
 }
@@ -344,6 +347,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     updatePortCalls,
+    clearCache,
     filterChangeLimit,
     filterChangeSortBy,
     filterChangeOrder,

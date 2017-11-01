@@ -108,13 +108,21 @@ export const fetchVesselByName = (vesselName) => {
     }
 }
 
-export const appendPortCalls = (firstUpdated) => {
+export const appendPortCalls = (lastPortCall) => {
     return (dispatch, getState) => {
+        
+        let filters = getState().filters;
+        let filterString = '';
+        let beforeOrAfter = filters.order === 'DESCENDING' ? 'before' : 'after';
+        if(filters.sort_by === 'LAST_UPDATE') {
+            filterString = `updated_${beforeOrAfter}=${new Date(lastPortCall.lastUpdated).toISOString()}`;
+        } else {
+            filterString = `${beforeOrAfter}=${new Date(lastPortCall.endTime).toISOString()}`;
+        }
+
         const portCalls = getState().cache.portCalls;
 
-        let updatedBefore = 'updated_before=' + new Date(firstUpdated).toISOString();
-
-        return fetchPortCalls(dispatch, getState, updatedBefore).then(() => {
+        return fetchPortCalls(dispatch, getState, filterString).then(() => {
             let olderPortCalls = getState().portCalls.foundPortCalls;
 
             console.log('Fetched another ' + olderPortCalls.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
@@ -157,7 +165,7 @@ export const updatePortCalls = () => {
 
             dispatch({
                 type: types.CACHE_PORTCALLS,
-                payload: newPortCalls.concat(portCalls),
+                payload: getState().filters.order === 'DESCENDING' ? newPortCalls.concat(portCalls) : portCalls.concat(newPortCalls),
             });
         });
     };
