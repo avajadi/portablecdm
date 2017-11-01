@@ -7,10 +7,12 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
 ## Future updates
 * Add change log on "About"
+* Sort favorite states by alphabet
 * Dynamic loading of port calls
 * Add support for adding comments to messages
 * Subscribe on locations
 * Update notifications
+* Enable drag and drop on favorite states
 
 ## Suggested updates
 * Summary of sent message (instead of current verification) as popup

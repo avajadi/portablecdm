@@ -3,8 +3,7 @@ import * as types from './types';
 export const clearCache = () => {
     return (dispatch, getState) => {
         dispatch({
-            type: types.CACHE_PORTCALLS,
-            payload: [],
+            type: types.CACHE_CLEAR,
         });
 
         dispatch({

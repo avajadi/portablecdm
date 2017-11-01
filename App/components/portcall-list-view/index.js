@@ -5,6 +5,7 @@ import {
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
+    appendPortCalls,
  } from '../../actions';
 
 import {
@@ -46,11 +47,16 @@ class PortCallList extends Component {
         });
     }
 
-    checkBottom({layoutMeasurement, contentOffset, contentSize}) {
-        const paddingToBottom = 20;
-        if(layoutMeasurement.height - contentOffset.y >= contentSize.height - paddingToBottom) {
-            console.log('Need to fetch more port calls!');
-        }
+    checkBottom(event){
+         let {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
+         const paddingToBottom = 100;
+         let { showLoadingIcon, portCalls, appendPortCalls } = this.props;
+         if(!showLoadingIcon && layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
+             console.log('Need to fetch more port calls!');
+             // TODO: What if the ordering is the opposite?
+             let firstUpdated = portCalls[portCalls.length - 1].lastUpdated;
+             appendPortCalls(new Date(firstUpdated).getTime());
+         }
     }
 
     render() {
@@ -97,9 +103,7 @@ class PortCallList extends Component {
                         onRefresh={this.loadPortCalls.bind(this)}
                     />
                     }
-                    onScroll={({nativeElement}) => {
-                     //   this.checkBottom(nativeElement);
-                    }}
+                    onScroll={this.checkBottom.bind(this)}
                     >
                     <List>
                         {
@@ -236,7 +240,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    updatePortCalls, 
+    updatePortCalls,
+    appendPortCalls, 
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,

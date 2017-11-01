@@ -108,25 +108,47 @@ export const fetchVesselByName = (vesselName) => {
     }
 }
 
+export const appendPortCalls = (firstUpdated) => {
+    return (dispatch, getState) => {
+        const portCalls = getState().cache.portCalls;
+
+        let updatedBefore = 'updated_before=' + new Date(firstUpdated).toISOString();
+
+        return fetchPortCalls(dispatch, getState, updatedBefore).then(() => {
+            let olderPortCalls = getState().portCalls.foundPortCalls;
+
+            console.log('Fetched another ' + olderPortCalls.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
+            
+            dispatch({
+                type: types.CACHE_PORTCALLS,
+                payload: portCalls.concat(olderPortCalls)
+            });
+        });
+    }
+}
+
 export const updatePortCalls = () => {
     return (dispatch, getState) => {
-        const cached = getState().cache.portCalls;
+        const { portCalls, lastUpdated } = getState().cache;
     
-        return fetchPortCalls(dispatch, getState).then(() => {
+        let updatedAfter = 'updated_after=' + new Date(lastUpdated).toISOString();
+
+        return fetchPortCalls(dispatch, getState, updatedAfter).then(() => {
             dispatch({
-                type: types.FILTER_CHANGE_UPDATED_AFTER,
+                type: types.CACHE_UPDATE,
                 payload: new Date().getTime(),
             });
+
             let newPortCalls = getState().portCalls.foundPortCalls;
 
-            console.log('Only fetched ' + newPortCalls.length + ' while having ' + cached.length + ' cached port calls.');
+            console.log('Only fetched ' + newPortCalls.length + ' while having ' + portCalls.length + ' cached port calls.');
 
             let counter = 0;
             for(let i = 0; i < newPortCalls.length; i++) { // This mysteriously didn't work with foreach
                 let portCall = newPortCalls[i];
-                let toBeReplaced = cached.find((x) => x.portCallId === portCall.portCallId);
+                let toBeReplaced = portCalls.find((x) => x.portCallId === portCall.portCallId);
                 if(!!toBeReplaced) {
-                    cached.splice(cached.indexOf(toBeReplaced), 1);
+                    portCalls.splice(portCalls.indexOf(toBeReplaced), 1);
                     counter++;
                 }
             }
@@ -135,18 +157,18 @@ export const updatePortCalls = () => {
 
             dispatch({
                 type: types.CACHE_PORTCALLS,
-                payload: newPortCalls.concat(cached),
+                payload: newPortCalls.concat(portCalls),
             });
         });
     };
 }
 
-export const fetchPortCalls = (dispatch, getState) => {
+export const fetchPortCalls = (dispatch, getState, additionalFilterString) => {
     dispatch({type: types.FETCH_PORTCALLS});
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const filters = getState().filters;
-    const filterString = createFilterString(filters, getState);
+    const filterString = createFilterString(filters, getState) + (!!filters ? '&' : '?') + additionalFilterString;
     const favorites = getState().favorites;
     console.log('Filterstring: ' + filterString);
     console.log('Fetching port calls....');
