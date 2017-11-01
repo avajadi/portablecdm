@@ -33,6 +33,7 @@ class PortCallList extends Component {
     state = {
         searchTerm: '',
         refreshing: false,
+        numLoadedPortCalls: 20,
     }
 
     componentWillMount() {
@@ -50,12 +51,19 @@ class PortCallList extends Component {
     checkBottom(event){
          let {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
          const paddingToBottom = 100;
-         let { showLoadingIcon, portCalls, appendPortCalls } = this.props;
-         if(!showLoadingIcon && layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
-             console.log('Need to fetch more port calls!');
-             // TODO: What if the ordering is the opposite?
-             let firstUpdated = portCalls[portCalls.length - 1].lastUpdated;
-             appendPortCalls(new Date(firstUpdated).getTime());
+         if(!this.props.showLoadingIcon && layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
+            let numLoaded = this.state.numLoadedPortCalls;
+
+             this.setState({numLoadedPortCalls: numLoaded + 20});
+             let { portCalls, appendPortCalls } = this.props;
+             if(numLoaded >= portCalls.length) {
+                console.log('Need to fetch more port calls!');
+                // TODO: What if the ordering is the opposite?
+                let firstUpdated = portCalls[portCalls.length - 1].lastUpdated;
+                appendPortCalls(new Date(firstUpdated).getTime());
+             } else {
+                 console.log('Loading more local port calls. Showing ' + numLoaded + ' of ' + portCalls.length + ' port calls.');
+             }
          }
     }
 
@@ -104,6 +112,7 @@ class PortCallList extends Component {
                     />
                     }
                     onScroll={this.checkBottom.bind(this)}
+                    scrollEventThrottle={4}
                     >
                     <List>
                         {
@@ -187,7 +196,7 @@ class PortCallList extends Component {
             return portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()) || 
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
             portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
-        }).sort((a,b) => this.sortFavorites(a,b));        
+        }).sort((a,b) => this.sortFavorites(a,b)).slice(0, this.state.numLoadedPortCalls);        
     }
 }
 

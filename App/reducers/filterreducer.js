@@ -41,10 +41,6 @@ const filterReducer = (state=INITIAL_STATE, action) => {
       return { ...state, departingWithin: 0, arrivingWithin: 0, updatedAfter: 0}
     case FILTER_ONLY_FUTURE_PORTCALLS:
       return { ...state, onlyFetchActivePortCalls: action.payload, updatedAfter: 0 }
-    case FILTER_CHANGE_UPDATED_AFTER:
-      return { ...state, updatedAfter: action.payload };
-    case FILTER_CHANGE_UPDATED_BEFORE:
-      return { ...state, updatedBefore: action.payload };
     case FILTER_CLEAR: 
       return INITIAL_STATE;
     default:

@@ -288,13 +288,6 @@ function createFilterString(filters, getState) {
             continue;
         }
 
-        if(filter === 'updatedAfter') {
-            let after = new Date(filters[filter]);
-            console.log('Time: ' + filters[filter]);
-            filterString += getFilterString('updated_after', after.toISOString(), count);
-            continue;
-        }
-
         filterString += getFilterString(filter, filters[filter], count);
         count++;
     }
