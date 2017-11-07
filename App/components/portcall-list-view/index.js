@@ -180,14 +180,29 @@ class PortCallList extends Component {
                 </View>
         );
     } 
+    
+    isFavorite(portCall) {
+        return this.props.favoritePortCalls.includes(portCall.portCallId) || 
+        this.props.favoriteVessels.includes(portCall.vessel.imo);
+    }
 
-    sortFavorites(a,b) {
-        if(this.props.favoritePortCalls.includes(a.portCallId) || this.props.favoriteVessels.includes(a.vessel.imo))
-            return -1;
-        
-        if(this.props.favoritePortCalls.includes(b.portCallId) || this.props.favoriteVessels.includes(b.vessel.imo))
-            return 1;
+    sortFilters(a,b) {
+        let aFav = this.isFavorite(a);
+        let bFav = this.isFavorite(b);
+        if (aFav && !bFav) return -1;
+        if (bFav && !aFav) return 1;
 
+        let { filters } = this.props;
+        let invert = filters.order === 'ASCENDING';
+        if (filters.sort_by === 'LAST_UPDATE') {
+            if (a.lastUpdated > b.lastUpdated)
+                 return invert ? 1 : -1;
+            else return invert ? -1 : 1;
+        } else if (filters.sort_by === 'ARRIVAL_DATE') {
+            if (a.startTime > b.startTime) 
+                 return invert ? 1 : -1;
+            else return invert ? -1 : 1;
+        }
 
         return 0;
     }
@@ -197,7 +212,8 @@ class PortCallList extends Component {
             return portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()) || 
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
             portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
-        }).sort((a,b) => this.sortFavorites(a,b)).slice(0, this.state.numLoadedPortCalls);        
+        }).sort((a,b) => this.sortFilters(a,b))
+        .slice(0, this.state.numLoadedPortCalls);        
     }
 }
 
@@ -245,6 +261,7 @@ function mapStateToProps(state) {
         favoritePortCalls: state.favorites.portCalls,
         favoriteVessels: state.favorites.vessels,
         showLoadingIcon: state.portCalls.portCallsAreLoading,
+        filters: state.filters,
         error: state.error,
     }
 }

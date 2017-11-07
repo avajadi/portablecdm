@@ -50,6 +50,10 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed a bug in sorting favorites</Text>
+                </View>
                 <Text h4>Version 1.2</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added new favorite system. The favorite port call or vessel will be at the top of the port call list </Text>
