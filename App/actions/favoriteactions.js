@@ -15,7 +15,7 @@ export const toggleFavoritePortCall = (portCallId) => {
             type: types.ADD_FAVORITE_PORTCALL,
             payload: portCallId,
         });
-
+        
         return true;
     }
 }

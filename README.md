@@ -6,13 +6,12 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* Revisit favorite vessels
-* Add favorite port calls
 * Add change log on "About"
-* Dynamic loading of port calls
+* Sort favorite states by alphabet
 * Add support for adding comments to messages
 * Subscribe on locations
 * Update notifications
+* Enable drag and drop on favorite states
 
 ## Suggested updates
 * Summary of sent message (instead of current verification) as popup
@@ -26,6 +25,11 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Added feature to edit favorite by tap and hold on port call in port call list
 * Added feature to edit favorite vessel or port call from timeline view
 * Removed old vessel list system
+* Added port call caching for faster loading times
+* Added dynamic fetching of port calls (like Facebook feed)
+* Added dynamic rendering for port calls to greatly improve performance
+* Fixed a bug with https for all QA instances
+* Fixed a bug where it was not possible to navigate from About view
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time

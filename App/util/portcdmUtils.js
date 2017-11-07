@@ -18,6 +18,7 @@ export function getCert(connection) {
     return {
         cert: 
         connection.host.includes('dev.portcdm.eu') ||
+        (connection.host.includes('qa') && !connection.host.includes('qa.portcdm')) ||
         connection.host.includes('sandbox') ?
         'staging' :
         'prod',

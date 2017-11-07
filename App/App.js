@@ -25,7 +25,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    let persistore = persistStore(store, {whitelist: ['states', 'settings', 'filters', 'favorites'], storage: AsyncStorage}, () => {
+    let persistore = persistStore(store, {whitelist: ['states', 'settings', 'filters', 'favorites', 'cache'], storage: AsyncStorage}, () => {
       this.setState({rehydrated: true})
     });
     // persistore.purge();

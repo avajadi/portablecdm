@@ -24,7 +24,8 @@ import {
 import MiniHeader from '../../mini-header-view';
 
 import {
-    fetchPortCalls,
+    updatePortCalls,
+    clearCache,
     filterChangeLimit,
     filterChangeSortBy,  
     filterChangeOrder,
@@ -92,7 +93,8 @@ onDoneIconPressed() {
     } = this.state;
     const { 
         filters, 
-        fetchPortCalls, 
+        updatePortCalls, 
+        clearCache,
         filterChangeLimit, 
         filterChangeSortBy, 
         filterChangeOrder,
@@ -131,7 +133,8 @@ onDoneIconPressed() {
     // Vessel List
     filterChangeVesselList(this.state.vesselListFilter);
 
-    fetchPortCalls();
+    clearCache();
+    updatePortCalls();
     this.props.navigation.goBack();
 }
 
@@ -227,7 +230,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                 }
 
                 {/*Limit View with title and slider*/}
-                <View style={styles.smallTimeContainer}> 
+                {false && <View style={styles.smallTimeContainer}> 
                     <Text style={styles.textTitle}> Limit </Text>
                     {/* List first then sliding bar */}
                     <Slider
@@ -240,7 +243,7 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                         thumbTintColor={colorScheme.primaryColor}
                     />
                     <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.limitFilter} portcalls retrieved </Text>
-                </View>
+            </View> }
             
                 {/*Button - SHOW RESULTS*/}
                 <View style={{backgroundColor: colorScheme.primaryColor, marginTop: 10, paddingVertical: 5,}}>
@@ -343,7 +346,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    fetchPortCalls,
+    updatePortCalls,
+    clearCache,
     filterChangeLimit,
     filterChangeSortBy,
     filterChangeOrder,
