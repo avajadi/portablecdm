@@ -8,7 +8,6 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 ## Future updates
 * Add change log on "About"
 * Sort favorite states by alphabet
-* Dynamic loading of port calls
 * Add support for adding comments to messages
 * Subscribe on locations
 * Update notifications
@@ -30,6 +29,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Added dynamic fetching of port calls (like Facebook feed)
 * Added dynamic rendering for port calls to greatly improve performance
 * Fixed a bug with https for all QA instances
+* Fixed a bug where it was not possible to navigate from About view
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time
