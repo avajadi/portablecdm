@@ -16,7 +16,7 @@ const favoritesReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case ADD_FAVORITE_PORTCALL:
             if(state.portCalls.includes(action.payload)) return state; // No duplicates
-            return { ...state, portCalls: [...state.portCalls, action.payload], test: state.test + 1}
+            return { ...state, portCalls: [...state.portCalls, action.payload],}
         case REMOVE_FAVORITE_PORTCALL:
             const portCallsCopy = state.portCalls.slice();
             portCallsCopy.splice(portCallsCopy.indexOf(action.payload), 1);
