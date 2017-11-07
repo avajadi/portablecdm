@@ -3,6 +3,7 @@ import {
     REMOVE_FAVORITE_PORTCALL,
     ADD_FAVORITE_VESSEL,
     REMOVE_FAVORITE_VESSEL,
+    CLEAR_FAVORITES,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -15,7 +16,7 @@ const favoritesReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case ADD_FAVORITE_PORTCALL:
             if(state.portCalls.includes(action.payload)) return state; // No duplicates
-            return { ...state, portCalls: [...state.portCalls, action.payload], test: state.test + 1}
+            return { ...state, portCalls: [...state.portCalls, action.payload],}
         case REMOVE_FAVORITE_PORTCALL:
             const portCallsCopy = state.portCalls.slice();
             portCallsCopy.splice(portCallsCopy.indexOf(action.payload), 1);
@@ -27,6 +28,8 @@ const favoritesReducer = (state = INITIAL_STATE, action) => {
             const vesselsCopy = state.vessels.slice();
             vesselsCopy.splice(vesselsCopy.indexOf(action.payload), 1);
             return {...state, vessels: vesselsCopy};
+        case CLEAR_FAVORITES:
+            return INITIAL_STATE;
         default:
             return state;
     }

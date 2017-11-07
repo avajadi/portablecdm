@@ -1,4 +1,5 @@
 import * as types from './types';   
+import APP_VERSION from '../config';
 
 export const changeFetchReliability = (fetchReliability) => {
     return {
@@ -84,3 +85,25 @@ export const changePortSetting = (port) => {
         payload: port
     };
 };
+
+export const checkNewVersion = () => {
+    return (dispatch, getState) => {
+        console.log('Current version: ' + APP_VERSION);
+        if (getState().settings.appVersion !== APP_VERSION) {
+            dispatch({
+                type: types.CACHE_CLEAR,
+            });
+            dispatch({
+                type: types.FILTER_CLEAR,
+            });
+            dispatch({
+                type: types.SETTINGS_UPDATE_VERSION,
+                payload: APP_VERSION,
+            });
+
+            return true;
+        }
+    }
+
+    return false;
+}

@@ -3,10 +3,11 @@ import constants from '../config/constants';
 import { Alert, Platform } from 'react-native';
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
+import isStaging from '../config/instances';
 
-export const loginKeycloak = (urlPayload, isStaging) => {
+export const loginKeycloak = (urlPayload) => {
     return (dispatch, getState) => { 
-        let consts = constants(isStaging);
+        let consts = constants(isStaging.some((x) => getState().settings.host.includes(x)));
         console.log('Authenticating...');
         const [, queryString] = urlPayload.split('#');
         const responseObj = queryString.split('&').reduce((map, pair) => {
@@ -84,9 +85,9 @@ export const loginKeycloak = (urlPayload, isStaging) => {
     return false;
 }
 
-export const logoutKeycloak = (isStaging) => {
+export const logoutKeycloak = () => {
     return (dispatch, getState) => {
-        let consts = constants(isStaging);
+        let consts = constants(isStaging.some((x) => getState().settings.host.includes(x)));
         return fetch(consts.MaritimeLogoutURI, {
             method: 'GET',
         }).then((result) => {
