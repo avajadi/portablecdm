@@ -117,19 +117,19 @@ export const appendPortCalls = (lastPortCall) => {
         if(filters.sort_by === 'LAST_UPDATE') {
             filterString = `updated_${beforeOrAfter}=${new Date(lastPortCall.lastUpdated).toISOString()}`;
         } else {
-            filterString = `${beforeOrAfter}=${new Date(lastPortCall.endTime).toISOString()}`;
+            filterString = `${beforeOrAfter}=${new Date(filters.order === 'DESCENDING' ? lastPortCall.startTime : lastPortCall.endTime).toISOString()}`;
         }
 
         const portCalls = getState().cache.portCalls;
 
         return fetchPortCalls(dispatch, getState, filterString).then(() => {
-            let olderPortCalls = getState().portCalls.foundPortCalls;
+            let toAppend = getState().portCalls.foundPortCalls.filter((x) => !portCalls.some((y) => y.portCallId == x.portCallId));
 
-            console.log('Fetched another ' + olderPortCalls.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
+            console.log('Fetched another ' + toAppend.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
             
             dispatch({
                 type: types.CACHE_PORTCALLS,
-                payload: portCalls.concat(olderPortCalls)
+                payload: portCalls.concat(toAppend)
             });
         });
     }
@@ -362,7 +362,12 @@ export const fetchPortCallOperations = (portCallId) => {
     const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
     console.log('Fetching operations for port call ' + portCallId);
     console.log(JSON.stringify(headers));
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(connection.host.includes('dev') ? 'events' : 'operations')}`, //TODO: Update
+    let newUpdate = connection.host.includes('dev') ||
+    connection.host.includes('qa.segot') ||
+    connection.host.includes('qa.portcdm.eu') ||
+    connection.host.includes('qa.seume');// ||
+    //connection.host.includes('qa.nosvg.portcdm.eu');
+return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(newUpdate ? 'events' : 'operations')}`, //TODO: Update
         {
             method: 'GET',
             headers: headers,
