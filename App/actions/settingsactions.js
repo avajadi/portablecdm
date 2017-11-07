@@ -25,10 +25,17 @@ export const changePortUnlocode = (unlocode) => {
 }
 
 export const changeHostSetting = (host) => {
-    return {
-        type: types.SETTINGS_CHANGE_HOST,
-        payload: host
-    };
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.SETTINGS_CHANGE_HOST,
+            payload: host
+        });
+
+        // Need to clear all cached port calls since they are unique to ports
+        dispatch({
+            type: types.CACHE_CLEAR,
+        });
+    }
 };
 
 export const createVesselList = (vesselListName) => {

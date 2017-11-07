@@ -139,6 +139,7 @@ export const updatePortCalls = () => {
     return (dispatch, getState) => {
         const { portCalls, lastUpdated } = getState().cache;
     
+        // Maybe TODO: Instead use after/before when updating on filter Arrival_Date
         let updatedAfter = 'updated_after=' + new Date(lastUpdated).toISOString();
 
         return fetchPortCalls(dispatch, getState, updatedAfter).then(() => {
@@ -365,8 +366,9 @@ export const fetchPortCallOperations = (portCallId) => {
     let newUpdate = connection.host.includes('dev') ||
     connection.host.includes('qa.segot') ||
     connection.host.includes('qa.portcdm.eu') ||
-    connection.host.includes('qa.seume');// ||
-    //connection.host.includes('qa.nosvg.portcdm.eu');
+    connection.host.includes('qa.seume') ||
+    connection.host.includes('qa.nosvg');
+    console.log('NewUpdate: ' + newUpdate);
 return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(newUpdate ? 'events' : 'operations')}`, //TODO: Update
         {
             method: 'GET',
