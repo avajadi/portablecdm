@@ -39,7 +39,7 @@ class SideMenu extends Component {
         navigation.navigate('LoginKeyCloak');
       } else {
         console.log('Logging out keycloak user...');
-        logoutKeycloak(connection.host.includes('dev.portcdm.eu')).then(() => navigation.navigate('LoginKeyCloak'));
+        logoutKeycloak().then(() => navigation.navigate('LoginKeyCloak'));
       }
   }
 

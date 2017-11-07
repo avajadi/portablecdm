@@ -112,8 +112,7 @@ class LoginKeyCloakView extends Component {
         }
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
-        let isStaging = this.state.host.includes('dev.portcdm.eu');
-        this.props.loginKeycloak(event.url, isStaging).then((result) => {
+        this.props.loginKeycloak(event.url).then((result) => {
             if(result) this.loginConfirmed();
         });
     }

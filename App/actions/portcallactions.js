@@ -442,7 +442,7 @@ export const fetchPortCallOperations = (portCallId) => {
     const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
     console.log('Fetching operations for port call ' + portCallId);
     console.log(JSON.stringify(headers));
-    let newUpdate = hasEvents.some((x) => x.includes(connection.host));
+    let newUpdate = hasEvents.some((x) => connection.host.includes(x));
     console.log('NewUpdate: ' + newUpdate);
 return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(newUpdate ? 'events' : 'operations')}`, 
         {

@@ -9,12 +9,11 @@ export const hasEvents = [
     'qa.portcdm.eu',
     'qa.seume',
     'qa.nosvg',
+    'dev.portcdm.eu',
 ]
 
-/*
-    let newUpdate = connection.host.includes('dev') ||
-    connection.host.includes('qa.segot') ||
-    connection.host.includes('qa.portcdm.eu') ||
-    connection.host.includes('qa.seume') ||
-    connection.host.includes('qa.nosvg');
-*/
+export const isStaging = [
+    'dev.portcdm.eu',
+]
+
+export const contentTypeBug = hasEvents;
