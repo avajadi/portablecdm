@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 import {
@@ -23,7 +24,13 @@ import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
-import { changeHostSetting, changePortSetting, changePortUnlocode, changeFetchReliability } from '../../actions';
+import { 
+    changeHostSetting, 
+    changePortSetting, 
+    changePortUnlocode, 
+    changeFetchReliability,
+    clearCache,
+} from '../../actions';
 
 class Settings extends Component {
 
@@ -60,10 +67,26 @@ class Settings extends Component {
           <Button
             backgroundColor={colorScheme.primaryColor}
             color={colorScheme.primaryTextColor}
+            title="Clear cache"
+            buttonStyle={locStyles.buttonStyle}
+            onPress={() => {
+                Alert.alert(
+                    'Confirmation',
+                    'This will clear all cache and filters. Are you sure?',
+                    [
+                        {text: 'No'},
+                        {text: 'Yes', onPress: () => this.props.clearCache()}
+                    ]
+                );
+            }}
+        />
+          {false && <Button
+            backgroundColor={colorScheme.primaryColor}
+            color={colorScheme.primaryTextColor}
             title="Edit Vessel Lists"
             buttonStyle={locStyles.buttonStyle}
             onPress={() => navigate('VesselLists')}
-          />         
+          />}         
           <CheckBox
             title='Fetch reliabilities'
             checked={this.state.fetchReliability}
@@ -156,4 +179,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {changeHostSetting, changePortSetting, changePortUnlocode, changeFetchReliability})(Settings);
+export default connect(mapStateToProps, {
+    changeHostSetting, 
+    changePortSetting, 
+    changePortUnlocode, 
+    changeFetchReliability,
+    clearCache,
+})(Settings);

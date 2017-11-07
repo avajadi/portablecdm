@@ -5,10 +5,15 @@ import {
   SETTINGS_ADD_VESSEL_TO_LIST,
   SETTINGS_REMOVE_VESSEL_FROM_LIST,
   SETTINGS_REMOVE_VESSEL_LIST,
+  SETTINGS_ADD_PORTCALL_LIST,
+  SETTINGS_ADD_PORTCALL_TO_LIST,
+  SETTINGS_REMOVE_PORTCALL_FROM_LIST,
+  SETTINGS_REMOVE_PORTCALL_LIST,
   SETTINGS_CHANGE_USER,
   SETTINGS_CHANGE_FETCH_RELIABILITY,
   SETTINGS_CHANGE_PORT_UNLOCODE,
   SETTINGS_CHANGE_TOKEN,
+  SETTINGS_CLEAR,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -29,6 +34,7 @@ const INITIAL_STATE = {
     }
   */
   vesselLists: {},
+  portCallLists: {},
   fetchReliability: false,
   token: {
     accessToken: '',
@@ -71,6 +77,8 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
     case SETTINGS_REMOVE_VESSEL_FROM_LIST:
       const vesselRemoved = [...state.vesselLists[action.payload.listName]].filter(vessel => vessel.imo !== action.payload.vessel.imo)
       return { ...state, vesselLists: {...state.vesselLists, [action.payload.listName]: vesselRemoved}}
+    case SETTINGS_CLEAR:
+      return INITIAL_STATE;
     default:
       return state;
   }

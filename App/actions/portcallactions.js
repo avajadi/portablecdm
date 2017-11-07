@@ -108,55 +108,104 @@ export const fetchVesselByName = (vesselName) => {
     }
 }
 
-/**
- * fetches all portcalls matching the filter criteries defined in the filterReducer
- */
-export const fetchPortCalls = () => {
-  return (dispatch, getState) => {
+export const appendPortCalls = (lastPortCall) => {
+    return (dispatch, getState) => {
+        
+        let filters = getState().filters;
+        let filterString = '';
+        let beforeOrAfter = filters.order === 'DESCENDING' ? 'before' : 'after';
+        if(filters.sort_by === 'LAST_UPDATE') {
+            filterString = `updated_${beforeOrAfter}=${new Date(lastPortCall.lastUpdated).toISOString()}`;
+        } else {
+            filterString = `${beforeOrAfter}=${new Date(filters.order === 'DESCENDING' ? lastPortCall.startTime : lastPortCall.endTime).toISOString()}`;
+        }
+
+        const portCalls = getState().cache.portCalls;
+
+        return fetchPortCalls(dispatch, getState, filterString).then(() => {
+            let toAppend = getState().portCalls.foundPortCalls.filter((x) => !portCalls.some((y) => y.portCallId == x.portCallId));
+
+            console.log('Fetched another ' + toAppend.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
+            
+            dispatch({
+                type: types.CACHE_PORTCALLS,
+                payload: portCalls.concat(toAppend)
+            });
+        });
+    }
+}
+
+export const updatePortCalls = () => {
+    return (dispatch, getState) => {
+        const { portCalls, lastUpdated } = getState().cache;
+    
+        // Maybe TODO: Instead use after/before when updating on filter Arrival_Date
+        let updatedAfter = 'updated_after=' + new Date(lastUpdated).toISOString();
+
+        return fetchPortCalls(dispatch, getState, updatedAfter).then(() => {
+            dispatch({
+                type: types.CACHE_UPDATE,
+                payload: new Date().getTime(),
+            });
+            
+            fetchFavoritePortCalls(dispatch, getState)
+            .then(favoritePortCalls => {
+                let newPortCalls = getState().portCalls.foundPortCalls
+                .filter(portCall => !favoritePortCalls.some(favorite => favorite.portCallId === portCall.portCallId))
+                .concat(favoritePortCalls);
+    
+                console.log('Only fetched ' + newPortCalls.length + ' while having ' + portCalls.length + ' cached port calls.');
+    
+                let counter = 0;
+                for(let i = 0; i < newPortCalls.length; i++) { // This mysteriously didn't work with foreach
+                    let portCall = newPortCalls[i];
+                    let toBeReplaced = portCalls.find((x) => x.portCallId === portCall.portCallId);
+                    if(!!toBeReplaced) {
+                        portCalls.splice(portCalls.indexOf(toBeReplaced), 1);
+                        counter++;
+                    }
+                }
+    
+                console.log('Updated ' + counter + ' port calls.');
+    
+                dispatch({
+                    type: types.CACHE_PORTCALLS,
+                    payload: getState().filters.order === 'DESCENDING' ? newPortCalls.concat(portCalls) : portCalls.concat(newPortCalls),
+                });
+            });
+        });
+    };
+}
+
+export const fetchPortCalls = (dispatch, getState, additionalFilterString) => {
     dispatch({type: types.FETCH_PORTCALLS});
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const filters = getState().filters;
-    const filterString = createFilterString(filters, getState);
+    const filterString = createFilterString(filters, getState) + (!!filters ? '&' : '?') + additionalFilterString;
+    const favorites = getState().favorites;
+    console.log('Filterstring: ' + filterString);
     console.log('Fetching port calls....');
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
-      {
+    {
         method: 'GET',
         headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
         sslPinning: getCert(connection),
-      })
+    })
         .then(result => {
             console.log('Got response from port calls!');
-            dispatch({type: types.UPDATE_PROGRESS, payload: 0.1});
             let err = checkResponse(result);
             if(!err)
                 return JSON.parse(result.bodyString);
             
             dispatch({type: types.SET_ERROR, payload: err});
             throw new Error('dispatched');
-        })
-        .then(portCalls => applyFilters(portCalls, filters))
+        }).then(portCalls => applyFilters(portCalls, filters))
         .then(portCalls => Promise.all(portCalls.map(portCall => {
-            //console.log('Requesting vessel info for port call ' + portCall.portCallId);
-            return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
-            {
-                method: 'GET',
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
-                sslPinning: getCert(connection),
-            })
-            .then(result => {
-                let err = checkResponse(result);
-                dispatch({type: types.UPDATE_PROGRESS, payload: 0.1})
-                if(!err)
-                    return JSON.parse(result.bodyString);
-                
-                dispatch({type: types.SET_ERROR, payload: err});
-                throw new Error('dispatched');
-            })
-            .then(vessel => {portCall.vessel = vessel; return portCall})
+            return fetchVesselForPortCall(connection, token, portCall, favorites);
         })))
         .then(portCalls => {
-            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls})
+            dispatch({type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls});
         }).catch(err => {
             if(err.message != 'dispatched') {
                 dispatch({type: types.SET_ERROR, payload: {
@@ -164,7 +213,88 @@ export const fetchPortCalls = () => {
                     title: 'Unable to connect to the server!'}});
             }
         });
-  };
+  }
+
+function fetchVesselForPortCall(connection, token, portCall, favorites) {
+    return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+    {
+        method: 'GET',
+        headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+        sslPinning: getCert(connection),
+    })
+    .then(result => {
+        let err = checkResponse(result);
+        if(!err)
+            return JSON.parse(result.bodyString);
+        
+        dispatch({type: types.SET_ERROR, payload: err});
+        throw new Error('dispatched');
+    })
+    .then(vessel => {
+        portCall.vessel = vessel; 
+        portCall.favorite = favorites.portCalls.includes(portCall.portCallId);
+        vessel.favorite = favorites.vessels.includes(vessel.imo);
+        return portCall;
+    });
+}
+
+function fetchFavoritePortCalls(dispatch, getState) {
+    const connection = getState().settings.connection;
+    const token = getState().settings.token;
+    const favorites = getState().favorites;
+    console.log('Fetching favorite port calls...');
+    return Promise.all(favorites.portCalls.map(favorite => {
+        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${favorite}`,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            sslPinning: getCert(connection),
+        }).then(result => {
+            let err = checkResponse(result);
+            if(!err)
+                return JSON.parse(result.bodyString);
+            
+            dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
+        }).then(portCall => fetchVesselForPortCall(connection, token, portCall, favorites));
+    })).then(favoritePortCalls => {
+
+        let filterString = '';
+        for(let i = 0; i < favorites.vessels.length; i++) {
+            filterString += `${((i === 0) ? '?' : '&')}vessel=${favorites.vessels[i]}`;
+        }
+
+        if(favorites.vessels.length === 0) return favoritePortCalls;
+
+        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            sslPinning: getCert(connection),
+        })
+        .then(result => {
+            let err = checkResponse(result);
+            if(!err)
+                return JSON.parse(result.bodyString);
+            
+            dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
+        }).then(favoriteVessels => 
+            Promise.all(favoriteVessels.map(favoriteVessel => 
+                fetchVesselForPortCall(connection, token, favoriteVessel, favorites)
+            )).then(favoriteVessels => {
+            return favoriteVessels
+            .filter(favoriteVessel => !favoritePortCalls.some(favoritePortCall => favoritePortCall.portCallId === favoriteVessel.portCallId))
+            .concat(favoritePortCalls);
+        }));
+    })
+    .catch(err => {
+        if(err.message != 'dispatched') {
+            dispatch({type: types.SET_ERROR, payload: {
+                description: err.message, 
+                title: 'Unable to connect to the server!'}});
+        }
+    });
 }
 
 // Helper functions for fetchPortCalls
@@ -301,7 +431,13 @@ export const fetchPortCallOperations = (portCallId) => {
     const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
     console.log('Fetching operations for port call ' + portCallId);
     console.log(JSON.stringify(headers));
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(connection.host.includes('dev') ? 'events' : 'operations')}`, //TODO: Update
+    let newUpdate = connection.host.includes('dev') ||
+    connection.host.includes('qa.segot') ||
+    connection.host.includes('qa.portcdm.eu') ||
+    connection.host.includes('qa.seume') ||
+    connection.host.includes('qa.nosvg');
+    console.log('NewUpdate: ' + newUpdate);
+return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(newUpdate ? 'events' : 'operations')}`, //TODO: Update
         {
             method: 'GET',
             headers: headers,

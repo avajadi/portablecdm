@@ -95,9 +95,27 @@ class SideMenu extends Component {
                             if(activeItemKey !== 'Login') navigate('PortCalls')}
                         }
                     />
+
+                    {false &&<ListItem
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
+                          leftIcon={{
+                          name: 'add',
+                          color: 'white'
+                        }}
+                        hideChevron
+                        underlayColor={colorScheme.secondaryColor}
+                        title={
+                            <View style={styles.textContainer}>
+                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Initiate new port call</Text>     
+                            </View>
+                        }
+                        onPress={() => {
+                            //TODO
+                        }}
+                    />}
      
                     <ListItem
-                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' /* TODO: Change color when selected */ ? [containerStyle, styles.selectedContainer] : containerStyle}
                           leftIcon={{
                           name: 'access-time',
                           color: 'white'
@@ -114,8 +132,6 @@ class SideMenu extends Component {
                                 navigate('FavoriteStatesSideMenu');
                         }}
                     />
-    
-                    
 
                     <ListItem
                         containerStyle={activeItemKey === 'TimeLine' ? [containerStyle, styles.selectedContainer] : containerStyle}

@@ -29,7 +29,7 @@ import {
   deleteVesselList, 
   addVesselToList, 
   removeVesselFromList, 
-  fetchVessel,
+  fetchVesselForPortCall,
   clearVesselResult,
   filterChangeVesselList,
   fetchVesselByName,
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state.settings.vesselLists)
+  //console.log(state.settings.vesselLists)
   return {
     vesselLists: state.settings.vesselLists,
     foundVessel: state.vessel.vessel,
@@ -313,7 +313,7 @@ export default connect(mapStateToProps, {
   createVesselList,
   deleteVesselList,
   removeVesselFromList,
-  fetchVessel,
+  fetchVesselForPortCall,
   fetchVesselByName,
   addVesselToList,
   clearVesselResult,

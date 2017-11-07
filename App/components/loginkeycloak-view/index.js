@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { Constants, WebBrowser } from 'expo';
 import { connect } from 'react-redux';
-import queryString from 'query-string';
-import StaticServer from 'react-native-static-server';
-import RNFS from 'react-native-fs';
-
 
 import {
     View,
@@ -38,6 +34,8 @@ import {
     changeUser,
     loginKeycloak,
     removeError,
+    startLocalServer,
+    stopLocalServer, 
   } from '../../actions';
 
 import colorScheme from '../../config/colors';
@@ -87,22 +85,11 @@ class LoginKeyCloakView extends Component {
 
         Linking.addEventListener('url', this.handleMaritimeRedirect);
 
-        let path = '';
-        if(Platform.OS === 'ios') {
-            path = RNFS.MainBundlePath + '/www';
-        } else {
-            path = RNFS.DocumentDirectoryPath;
-        }
-
-        server = new StaticServer(1337, path, {localOnly: true});
-
-        server.start().then((url) => {
-            console.log('Serving at url ' + url + '. Path is ' + path);
-        });
+        this.props.startLocalServer();
     }
 
     componentWillUnmount() {
-        server.stop();
+        this.props.stopLocalServer();
     }
 
     onLoginPress = async () => {
@@ -122,7 +109,7 @@ class LoginKeyCloakView extends Component {
     }
 
     loginConfirmed() {  
-        server.stop();
+        this.props.stopLocalServer();
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changePortUnlocode(this.state.unlocode);
@@ -320,4 +307,15 @@ function mapStateToProps(state) {
     }
   }
 
-export default connect(mapStateToProps, {removeError, loginKeycloak, changeFetchReliability, fetchLocations, changeHostSetting, changePortSetting, changeUser, changePortUnlocode})(LoginKeyCloakView);
+export default connect(mapStateToProps, { 
+        stopLocalServer, 
+        startLocalServer, 
+        removeError, 
+        loginKeycloak, 
+        changeFetchReliability, 
+        fetchLocations, 
+        changeHostSetting, 
+        changePortSetting, 
+        changeUser, 
+        changePortUnlocode,
+    })(LoginKeyCloakView);
