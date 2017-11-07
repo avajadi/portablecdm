@@ -23,6 +23,7 @@ export default class AboutView extends Component {
         <TopHeader
           title="About"
           firstPage
+          navigation={this.props.navigation}
         />
         <ScrollView>
           {/* Top section, with logos and app name */}
@@ -33,7 +34,7 @@ export default class AboutView extends Component {
             /> 
             <View style={{flexDirection: 'column'}}>
               <Text h4><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
-              <Text style={{fontSize: 9}}>Version 1.1.1</Text>
+              <Text style={{fontSize: 9}}>Version 1.2</Text>
             </View>
             <Image
               source={require('../../assets/riseLogo.png')}
