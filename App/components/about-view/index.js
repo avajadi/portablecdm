@@ -7,19 +7,95 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  Modal,
+  Platform,
 } from 'react-native';
 
 import {
   Text,
   Button,
+  Icon,
 } from 'react-native-elements';
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 
 export default class AboutView extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {showChangeLog: false}
+  }
+
   render() {
+    const BULLET = '\u2022';
     return(
       <View style={styles.container}>
+        <Modal
+            animationType={'slide'}
+            transparent={false}
+            style={{backgroundColor: colorScheme.backgroundColor}}
+            visible={this.state.showChangeLog}
+            onRequestClose={() => this.setState({showChangeLog: false})}
+        >
+            {(Platform.OS === 'ios') &&
+            <View style={{flexDirection: 'row'}}>
+                <Icon
+                    name= 'arrow-back'
+                    color= {colorScheme.secondaryColor}
+                    size= {50}
+                    style={{paddingLeft: 10, paddingTop: 40}}
+                    underlayColor='transparent'
+                    onPress={() => this.setState({showChangeLog: false})}
+                />
+            </View>
+            }
+            <ScrollView style={{padding: 10}}>
+                <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
+                <Text h4>Version 1.2</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Added new favorite system. The favorite port call or vessel will be at the top of the port call list </Text>
+                    <Text>{BULLET} Added feature to edit favorite by tap and hold on port call in port call list </Text>
+                    <Text>{BULLET} Added feature to edit favorite vessel or port call from timeline view </Text>
+                    <Text>{BULLET} Removed old vessel list system </Text>
+                    <Text>{BULLET} Added port call caching for faster loading times </Text>
+                    <Text>{BULLET} Added dynamic fetching of port calls (like Facebook feed) </Text>
+                    <Text>{BULLET} Added dynamic rendering for port calls to greatly improve performance </Text>
+                    <Text>{BULLET} Added this change log modal </Text>
+                    <Text>{BULLET} Fixed a bug with https for all QA instances </Text>
+                    <Text>{BULLET} Fixed a bug where it was not possible to navigate from About view </Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.1.1</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Added red line on operations for visualizing current time</Text>
+                    <Text>{BULLET} Locations are now sorted on locations already mentioned by the port call</Text>
+                    <Text>{BULLET} Lots of code improvement</Text>
+                </View>
+                <Text h4>Version 1.1</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Added icons for TARGET and RECOMMENDED time types</Text>
+                    <Text>{BULLET} Added feature to search by IMO and MMSI number</Text>
+                    <Text>{BULLET} Added feature to search by name in Favorite Vessels list</Text>
+                    <Text>{BULLET} Added IMO to search results in Favorite Vessel list</Text>
+                    <Text>{BULLET} Removed the RELIABILITY: % text from state details when no reliabilities are available</Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.0.4</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed a bug where reliabilities would not be fetched when using keycloak</Text>
+                    <Text>{BULLET} Removed autocorrect for the search bar in state selection</Text>
+                    <Text>{BULLET} Added confirmation when sending messages</Text>
+                    <Text>{BULLET} Added support for sending through HTTPS</Text>
+                    <Text>{BULLET} Added confirmation for sent message success and failure</Text>
+                    <Text>{BULLET} Updated error handling for missing "at"-location</Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.0.3</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed SeaSWIM login for at least QA, SEGOT and DEV servers</Text>
+                    <Text>{BULLET} Improved return from error view</Text>
+                    <Text>{BULLET} Revisited the Legacy Login modal</Text>
+                    <Text>{BULLET} Added back arrow for iOS users</Text>
+                    <Text>{BULLET} Many other improvements for future updates</Text>
+                </View>
+            </ScrollView>
+        </Modal>
         <TopHeader
           title="About"
           firstPage
@@ -34,7 +110,15 @@ export default class AboutView extends Component {
             /> 
             <View style={{flexDirection: 'column'}}>
               <Text h4><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
-              <Text style={{fontSize: 9}}>Version 1.2</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontSize: 12}}>Version 1.2</Text>
+                <Text 
+                    style={{color: 'blue', textDecorationLine: 'underline', paddingLeft: 7, fontSize: 12}}
+                    onPress={() => this.setState({showChangeLog: true})}
+                >
+                Change log
+                </Text>
+              </View>
             </View>
             <Image
               source={require('../../assets/riseLogo.png')}
