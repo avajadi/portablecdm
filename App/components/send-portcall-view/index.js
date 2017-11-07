@@ -22,12 +22,15 @@ import {
   Button,
   Text,
   Icon,
+  FormInput,
+  FormLabel,
 } from 'react-native-elements';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import TopHeader from '../top-header-view';
 import LocationSelection from './sections/locationselection';
+import AddComment from './sections/comment';
 
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
@@ -42,6 +45,7 @@ class SendPortcall extends Component {
       showDateTimePicker: false,
       showLocationSelectionModal: false,
       selectLocationFor: '',
+      comment: '',
     };
   }
 
@@ -60,7 +64,7 @@ class SendPortcall extends Component {
    
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
-    const { selectedDate, selectedTimeType } = this.state;
+    const { selectedDate, selectedTimeType, comment } = this.state;
     const { vesselId, portCallId, getState, sendPortCall, sendingState, vessel, navigation } = this.props;
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
@@ -76,7 +80,7 @@ class SendPortcall extends Component {
         [
             {text: 'No'},
             {text: 'Yes', onPress: () => {
-                const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
+                const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType, comment}, state);
                 
                 sendPortCall(pcm, type).then(() => {
                     if(!!this.props.sendingState.error) {
@@ -191,6 +195,19 @@ class SendPortcall extends Component {
             </View>
           }
 
+          <View style={styles.commentContainer}>
+            <FormLabel>Comment</FormLabel>
+            <FormInput 
+                inputStyle={{width: window.width * 0.8, height: 50}}
+                multiline
+                numberOfLines={5}
+                autoCorrect={false}
+                underlineColorAndroid="transparent"
+                placeholder="Tap to add comment"
+                value={this.state.comment}
+                onChangeText={(text) => this.setState({comment: text})}
+                />
+          </View>
           <Modal
             visible={this.state.showLocationSelectionModal}
             onRequestClose={this._hideLocationSelectionModal}
@@ -310,6 +327,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
+  },
+  commentContainer: {
+    backgroundColor: colorScheme.primaryContainerColor, 
+    borderColor: colorScheme.tertiaryTextColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    height: 100,
   },
   buttonStyle: { 
     backgroundColor: colorScheme.primaryColor,
