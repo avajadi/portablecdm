@@ -54,6 +54,9 @@ export default class AboutView extends Component {
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Fixed a bug in sorting favorites</Text>
+                    <Text>{BULLET} Fixed a bug in adding favorites to some older instances</Text>
+                    <Text>{BULLET} Added alert for new version updates</Text>
+                    <Text>{BULLET} Now flushing cache on version update</Text>
                 </View>
                 <Text h4>Version 1.2</Text>
                 <View style={{padding: 5}}>
