@@ -51,9 +51,9 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
-                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.2</Text>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1.1</Text>
                 <View style={{padding: 5}}>
-                <Text>{BULLET} </Text>
+                    <Text>{BULLET} Fixed a bug with wrong end points on some QA updates</Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1</Text>
                 <View style={{padding: 5}}>

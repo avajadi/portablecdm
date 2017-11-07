@@ -444,7 +444,7 @@ export const fetchPortCallOperations = (portCallId) => {
     console.log(JSON.stringify(headers));
     let newUpdate = hasEvents.some((x) => connection.host.includes(x));
     console.log('NewUpdate: ' + newUpdate);
-return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(newUpdate ? 'events' : 'operations')}`, 
+return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/events`,
         {
             method: 'GET',
             headers: headers,
