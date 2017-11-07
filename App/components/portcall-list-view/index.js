@@ -144,6 +144,7 @@ class PortCallList extends Component {
                                                         'avorite vessel', 
                                                     onPress: () => {
                                                         this.props.toggleFavoriteVessel(portCall.vessel.imo);
+                                                        this.props.updatePortCalls();
                                                 }},
                                                 {
                                                     text: 

@@ -28,6 +28,8 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Removed old vessel list system
 * Added port call caching for faster loading times
 * Added dynamic fetching of port calls (like Facebook feed)
+* Added dynamic rendering for port calls to greatly improve performance
+* Fixed a bug with https for all QA instances
 
 ### Release notes 1.1.1
 * Added red line on operations for visualizing current time
