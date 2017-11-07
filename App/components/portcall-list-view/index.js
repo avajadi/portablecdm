@@ -180,7 +180,6 @@ class PortCallList extends Component {
                 </View>
         );
     } 
-    
     isFavorite(portCall) {
         return this.props.favoritePortCalls.includes(portCall.portCallId) || 
         this.props.favoriteVessels.includes(portCall.vessel.imo);

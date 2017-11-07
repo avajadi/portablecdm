@@ -17,6 +17,7 @@ import {
   Icon,
 } from 'react-native-elements';
 import TopHeader from '../top-header-view';
+import APP_VERSION from '../../config';
 import colorScheme from '../../config/colors';
 
 export default class AboutView extends Component {
@@ -115,7 +116,7 @@ export default class AboutView extends Component {
             <View style={{flexDirection: 'column'}}>
               <Text h4><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 12}}>Version 1.2</Text>
+                <Text style={{fontSize: 12}}>Version {APP_VERSION}</Text>
                 <Text 
                     style={{color: 'blue', textDecorationLine: 'underline', paddingLeft: 7, fontSize: 12}}
                     onPress={() => this.setState({showChangeLog: true})}

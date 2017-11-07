@@ -31,6 +31,7 @@ import {
     changePortUnlocode,
     changeHostSetting,
     changePortSetting,
+    checkNewVersion,
     changeUser,
     loginKeycloak,
     removeError,
@@ -41,6 +42,7 @@ import {
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 import constants from '../../config/constants';
+import APP_VERSION from '../../config';
 
 const window = Dimensions.get('window');
 let server = null;
@@ -67,7 +69,7 @@ class LoginKeyCloakView extends Component {
     }
 
     componentDidMount() {
-        if(this.props.error.hasError) {
+        if(this.props.error.hasError) { // Return from error
             this.props.removeError();
             this.props.navigation.dispatch({
                 type: 'Navigation/RESET',
@@ -83,9 +85,17 @@ class LoginKeyCloakView extends Component {
         }
 
 
+
         Linking.addEventListener('url', this.handleMaritimeRedirect);
 
         this.props.startLocalServer();
+
+        if (this.props.checkNewVersion()) {
+            Alert.alert(
+                'New version',
+                'Updated to new version ' + APP_VERSION + '. See changes in change log from About view.'
+            );
+        }
     }
 
     componentWillUnmount() {
@@ -318,4 +328,5 @@ export default connect(mapStateToProps, {
         changePortSetting, 
         changeUser, 
         changePortUnlocode,
+        checkNewVersion,
     })(LoginKeyCloakView);

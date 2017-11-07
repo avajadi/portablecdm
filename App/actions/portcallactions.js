@@ -155,6 +155,7 @@ export const updatePortCalls = () => {
                 .concat(favoritePortCalls);
     
                 console.log('Only fetched ' + newPortCalls.length + ' while having ' + portCalls.length + ' cached port calls.');
+                console.log(JSON.stringify(newPortCalls));
     
                 let counter = 0;
                 for(let i = 0; i < newPortCalls.length; i++) { // This mysteriously didn't work with foreach

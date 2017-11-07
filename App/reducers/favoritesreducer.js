@@ -3,6 +3,7 @@ import {
     REMOVE_FAVORITE_PORTCALL,
     ADD_FAVORITE_VESSEL,
     REMOVE_FAVORITE_VESSEL,
+    CLEAR_FAVORITES,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -27,6 +28,8 @@ const favoritesReducer = (state = INITIAL_STATE, action) => {
             const vesselsCopy = state.vessels.slice();
             vesselsCopy.splice(vesselsCopy.indexOf(action.payload), 1);
             return {...state, vessels: vesselsCopy};
+        case CLEAR_FAVORITES:
+            return INITIAL_STATE;
         default:
             return state;
     }
