@@ -16,4 +16,8 @@ export const isStaging = [
     'dev.portcdm.eu',
 ]
 
+export const hasComment = [
+    'dev.portcdm.eu',
+]
+
 export const contentTypeBug = hasEvents;

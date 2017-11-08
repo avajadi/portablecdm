@@ -28,7 +28,8 @@ class StateList extends Component {
   render() {
     const { params } = this.props.navigation.state;
     const { navigate } = this.props.navigation;
-    const { favoriteStates, getState, stateCatalogue } = this.props;
+    const { getState, stateCatalogue } = this.props;
+    let favoriteStates = this.props.favoriteStates.sort((a,b) => (a < b ? -1 : 1));
 
     return(
       <View style={styles.container}>

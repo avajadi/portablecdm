@@ -4,7 +4,6 @@ import {
   sendPortCall, 
   clearReportResult,
   selectLocation,
-
 } from '../../actions';
 
 import {
@@ -22,6 +21,8 @@ import {
   Button,
   Text,
   Icon,
+  FormInput,
+  FormLabel,
 } from 'react-native-elements';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -32,6 +33,7 @@ import LocationSelection from './sections/locationselection';
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
 import { getDateTimeString } from '../../util/timeservices';
+import { hasComment } from '../../config/instances';
 
 class SendPortcall extends Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class SendPortcall extends Component {
       showDateTimePicker: false,
       showLocationSelectionModal: false,
       selectLocationFor: '',
+      comment: '',
     };
   }
 
@@ -60,7 +63,7 @@ class SendPortcall extends Component {
    
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
-    const { selectedDate, selectedTimeType } = this.state;
+    const { selectedDate, selectedTimeType, comment } = this.state;
     const { vesselId, portCallId, getState, sendPortCall, sendingState, vessel, navigation } = this.props;
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
@@ -76,7 +79,7 @@ class SendPortcall extends Component {
         [
             {text: 'No'},
             {text: 'Yes', onPress: () => {
-                const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType}, state);
+                const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType, comment}, state);
                 
                 sendPortCall(pcm, type).then(() => {
                     if(!!this.props.sendingState.error) {
@@ -111,10 +114,11 @@ class SendPortcall extends Component {
   }
 
   render() {
-    const { vesselId, portCallId, getState, sendingState, navigation, vessel } = this.props;
+    const { vesselId, portCallId, getState, sendingState, navigation, vessel, host } = this.props;
     const { atLocation, fromLocation, toLocation } = sendingState;
     const { stateId, mostRelevantStatement } = this.props.navigation.state.params;
     const state = getState(stateId);
+    let enableComment = hasComment.some((x) => host.includes(x));
  
     return(
       <View style={styles.container}>
@@ -191,6 +195,21 @@ class SendPortcall extends Component {
             </View>
           }
 
+          {enableComment && <View style={styles.commentContainer}>
+            <FormLabel>Comment</FormLabel>
+            <FormInput 
+                inputStyle={{width: window.width * 0.8, height: 50}}
+                multiline
+                numberOfLines={5}
+                maxLength={200}
+                autoCorrect={false}
+                underlineColorAndroid="transparent"
+                placeholder="Tap to add comment"
+                value={this.state.comment}
+                onChangeText={(text) => this.setState({comment: text})}
+                />
+          </View>
+          }
           <Modal
             visible={this.state.showLocationSelectionModal}
             onRequestClose={this._hideLocationSelectionModal}
@@ -202,7 +221,6 @@ class SendPortcall extends Component {
               onBackPress={this._hideLocationSelectionModal.bind(this)}
             />
           </Modal>
-
 
           <Button 
             title="Send TimeStamp" 
@@ -311,6 +329,16 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  commentContainer: {
+    backgroundColor: colorScheme.primaryContainerColor, 
+    borderColor: colorScheme.tertiaryTextColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    height: 100,
+  },
   buttonStyle: { 
     backgroundColor: colorScheme.primaryColor,
     marginBottom: 10,
@@ -392,6 +420,7 @@ function mapStateToProps(state) {
     vessel: state.portCalls.vessel,
     vesselId: state.portCalls.vessel.imo,
     portCallId: state.portCalls.selectedPortCall.portCallId,
+    host: state.settings.connection.host,
     getState: state.states.stateById,
     sendingState: state.sending,
   }
