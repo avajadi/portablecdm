@@ -33,6 +33,7 @@ import LocationSelection from './sections/locationselection';
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
 import { getDateTimeString } from '../../util/timeservices';
+import { hasComment } from '../../config/instances';
 
 class SendPortcall extends Component {
   constructor(props) {
@@ -113,10 +114,11 @@ class SendPortcall extends Component {
   }
 
   render() {
-    const { vesselId, portCallId, getState, sendingState, navigation, vessel } = this.props;
+    const { vesselId, portCallId, getState, sendingState, navigation, vessel, host } = this.props;
     const { atLocation, fromLocation, toLocation } = sendingState;
     const { stateId, mostRelevantStatement } = this.props.navigation.state.params;
     const state = getState(stateId);
+    let enableComment = hasComment.some((x) => host.includes(x));
  
     return(
       <View style={styles.container}>
@@ -193,7 +195,7 @@ class SendPortcall extends Component {
             </View>
           }
 
-          <View style={styles.commentContainer}>
+          {enableComment && <View style={styles.commentContainer}>
             <FormLabel>Comment</FormLabel>
             <FormInput 
                 inputStyle={{width: window.width * 0.8, height: 50}}
@@ -207,6 +209,7 @@ class SendPortcall extends Component {
                 onChangeText={(text) => this.setState({comment: text})}
                 />
           </View>
+          }
           <Modal
             visible={this.state.showLocationSelectionModal}
             onRequestClose={this._hideLocationSelectionModal}
@@ -417,6 +420,7 @@ function mapStateToProps(state) {
     vessel: state.portCalls.vessel,
     vesselId: state.portCalls.vessel.imo,
     portCallId: state.portCalls.selectedPortCall.portCallId,
+    host: state.settings.connection.host,
     getState: state.states.stateById,
     sendingState: state.sending,
   }
