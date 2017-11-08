@@ -54,6 +54,7 @@ export default class AboutView extends Component {
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.2</Text>
                 <Text>{BULLET} Added feature to add comment to a port call message (currently only on selected instances)</Text>
                 <Text>{BULLET} Added comment field in statement details view for supporting instances </Text>
+                <Text>{BULLET} The list of favorite states is now in alphabetic order </Text>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1.1</Text>
                 <View style={{padding: 5}}>
                 <Text>{BULLET} Fixed a bug with wrong end points on some QA updates</Text>

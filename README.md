@@ -6,7 +6,6 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* Sort favorite states by alphabet
 * Subscribe on locations
 * Update notifications
 * Enable drag and drop on favorite states
