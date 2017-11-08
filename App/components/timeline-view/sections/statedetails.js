@@ -147,6 +147,11 @@ class StateDetails extends Component {
                                     <Text style={styles.stateSubTitleText}>REPORTED AT: </Text>  
                                     <Text style={styles.detailText}>{getDateTimeString(new Date(statement.reportedAt))}</Text>        
                                 </View>
+                                {!!statement.comment && <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>COMMENT: </Text>  
+                                    <Text style={styles.detailText}>{statement.comment}</Text>        
+                                </View>
+                                }
                                 
                                 {/* Reliability for the message, and reliability changes  */}
                                 {!!statement.reliabilityChanges &&

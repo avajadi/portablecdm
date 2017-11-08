@@ -13,8 +13,11 @@ import {
   SETTINGS_CHANGE_FETCH_RELIABILITY,
   SETTINGS_CHANGE_PORT_UNLOCODE,
   SETTINGS_CHANGE_TOKEN,
+  SETTINGS_UPDATE_VERSION,
   SETTINGS_CLEAR,
 } from '../actions/types';
+
+import APP_VERSION from '../config';
 
 const INITIAL_STATE = {
   connection: {
@@ -34,7 +37,6 @@ const INITIAL_STATE = {
     }
   */
   vesselLists: {},
-  portCallLists: {},
   fetchReliability: false,
   token: {
     accessToken: '',
@@ -42,7 +44,8 @@ const INITIAL_STATE = {
     refreshExpiresIn: 0,
     refreshToken: '',
     tokenType: 'bearer',
-  }
+  },
+  appVersion: APP_VERSION,  
 }
 
 const settingsReducer = (state = INITIAL_STATE, action) => {
@@ -77,6 +80,8 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
     case SETTINGS_REMOVE_VESSEL_FROM_LIST:
       const vesselRemoved = [...state.vesselLists[action.payload.listName]].filter(vessel => vessel.imo !== action.payload.vessel.imo)
       return { ...state, vesselLists: {...state.vesselLists, [action.payload.listName]: vesselRemoved}}
+    case SETTINGS_UPDATE_VERSION:
+      return { ...state, appVersion: action.payload };
     case SETTINGS_CLEAR:
       return INITIAL_STATE;
     default:

@@ -17,6 +17,7 @@ import {
   Icon,
 } from 'react-native-elements';
 import TopHeader from '../top-header-view';
+import APP_VERSION from '../../config';
 import colorScheme from '../../config/colors';
 
 export default class AboutView extends Component {
@@ -50,6 +51,21 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.2</Text>
+                <Text>{BULLET} Added feature to add comment to a port call message (currently only on selected instances)</Text>
+                <Text>{BULLET} Added comment field in statement details view for supporting instances </Text>
+                <Text>{BULLET} The list of favorite states is now in alphabetic order </Text>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1.1</Text>
+                <View style={{padding: 5}}>
+                <Text>{BULLET} Fixed a bug with wrong end points on some QA updates</Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed a bug in sorting favorites</Text>
+                    <Text>{BULLET} Fixed a bug in adding favorites to some older instances</Text>
+                    <Text>{BULLET} Added alert for new version updates</Text>
+                    <Text>{BULLET} Now flushing cache on version update</Text>
+                </View>
                 <Text h4>Version 1.2</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added new favorite system. The favorite port call or vessel will be at the top of the port call list </Text>
@@ -111,7 +127,7 @@ export default class AboutView extends Component {
             <View style={{flexDirection: 'column'}}>
               <Text h4><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 12}}>Version 1.2</Text>
+                <Text style={{fontSize: 12}}>Version {APP_VERSION}</Text>
                 <Text 
                     style={{color: 'blue', textDecorationLine: 'underline', paddingLeft: 7, fontSize: 12}}
                     onPress={() => this.setState({showChangeLog: true})}

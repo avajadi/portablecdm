@@ -6,11 +6,12 @@ const administrationTimeSequences = ['CANCELLED', 'CONFIRMED', 'DENIED', 'REQUES
 
 
 export function createPortCallMessageAsObject(params, stateDefinition) {
-  const { vesselId, portCallId, atLocation, fromLocation, toLocation, selectedDate, selectedTimeType } = params;
+  const { vesselId, portCallId, atLocation, fromLocation, toLocation, selectedDate, selectedTimeType, comment } = params;
 
   let pcm = {
     vesselId: vesselId,
     portCallId: portCallId,    
+    comment: comment,
     payload: {
 
     }
@@ -103,7 +104,7 @@ export function objectToXml(pcm, stateType) {
   pcmAsXml += pcm.portCallId ? `\t<portCallId>${pcm.portCallId}</portCallId>\n` : '';
   pcmAsXml += pcm.vesselId ? `\t<vesselId>${pcm.vesselId}</vesselId>\n` : '';
   pcmAsXml += `\t<messageId>${preMessageId}${uuid()}</messageId>\n`;
-  
+  pcmAsXml += `\t<comment>${pcm.comment}</comment>\n`;
 
   if(pcm.payload) {
     pcmAsXml += `\t<payload xsi:type="ns2:${stateType}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n`;
