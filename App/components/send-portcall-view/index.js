@@ -4,7 +4,6 @@ import {
   sendPortCall, 
   clearReportResult,
   selectLocation,
-
 } from '../../actions';
 
 import {
@@ -30,7 +29,6 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import TopHeader from '../top-header-view';
 import LocationSelection from './sections/locationselection';
-import AddComment from './sections/comment';
 
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
@@ -201,6 +199,7 @@ class SendPortcall extends Component {
                 inputStyle={{width: window.width * 0.8, height: 50}}
                 multiline
                 numberOfLines={5}
+                maxLength={200}
                 autoCorrect={false}
                 underlineColorAndroid="transparent"
                 placeholder="Tap to add comment"
@@ -219,7 +218,6 @@ class SendPortcall extends Component {
               onBackPress={this._hideLocationSelectionModal.bind(this)}
             />
           </Modal>
-
 
           <Button 
             title="Send TimeStamp" 
