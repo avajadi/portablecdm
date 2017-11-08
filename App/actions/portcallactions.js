@@ -443,8 +443,10 @@ export const fetchPortCallOperations = (portCallId) => {
     console.log('Fetching operations for port call ' + portCallId);
     console.log(JSON.stringify(headers));
     let newUpdate = hasEvents.some((x) => connection.host.includes(x));
+    let ending = 'operations';
+    if (newUpdate) ending = 'events';
     console.log('NewUpdate: ' + newUpdate);
-return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${(newUpdate ? 'events' : 'operations')}`, 
+return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${ending}`, 
         {
             method: 'GET',
             headers: headers,
