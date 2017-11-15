@@ -4,6 +4,8 @@ import {
   sendPortCall, 
   clearReportResult,
   selectLocation,
+  fetchVessel,
+  fetchVesselByName,
 } from '../../actions';
 
 import {
@@ -23,6 +25,7 @@ import {
   Icon,
   FormInput,
   FormLabel,
+  SearchBar,
 } from 'react-native-elements';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -39,12 +42,13 @@ class SendPortcall extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTimeType: 'ACTUAL',
+      selectedTimeType: 'ESTIMATED',
       selectedDate: new Date(),
       showDateTimePicker: false,
       showLocationSelectionModal: false,
       selectLocationFor: '',
       comment: '',
+      selectedVessel: '',
     };
   }
 
@@ -118,14 +122,19 @@ class SendPortcall extends Component {
     const { atLocation, fromLocation, toLocation } = sendingState;
     const { stateId, mostRelevantStatement } = this.props.navigation.state.params;
     const state = getState(stateId);
-    let enableComment = hasComment.some((x) => host.includes(x));
+    const enableComment = hasComment.some((x) => host.includes(x));
+    const initializeNew = !vesselId;
+    const newVessel = this.props.vessel;
  
     return(
       <View style={styles.container}>
-        <TopHeader title = 'Report' navigation={this.props.navigation}/>
+        <TopHeader 
+            title = {(initializeNew ? 'Initiate port call' : 'Report')} 
+            navigation={this.props.navigation}
+            />
         {/* Information header */}
         <View style={styles.headerContainer} >
-          <Text style={styles.headerTitleText}>{vessel.name}</Text>
+          <Text style={styles.headerTitleText}>{(!!vessel.name ? vessel.name : this.state.selectedVessel.name)}</Text>
           <Text style={styles.headerSubText}>{state.Name}</Text>
           <Text style={styles.headerSubInfoText}>
             {!!atLocation && <Text>AT: {atLocation.name}</Text>}
@@ -135,6 +144,90 @@ class SendPortcall extends Component {
         </View>
 
         <ScrollView>
+          {/* PART OF INITIALIZATION */}
+        {initializeNew &&
+        <View>
+            <View style={styles.pickerTextContainer}>
+                <Text style={styles.pickerTextStyle}>Select vessel</Text>
+            </View>
+            <View style={styles.pickerContainer}>
+                <View style={styles.rowContainer}>
+                <SearchBar
+                autoCorrect={false} 
+                containerStyle = {styles.searchBarContainer}
+                clearIcon
+                inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+                lightTheme  
+                placeholder='Search by name or IMO number'
+                placeholderTextColor = {colorScheme.tertiaryTextColor}
+                onChangeText={text => this.setState({newVessel: text, selectedVessel: ''})}
+                textInputRef='textInput'
+                />
+                <Button
+                containerViewStyle={styles.buttonContainer}
+                small
+                title="Search"
+                disabled={this.state.newVessel <= 0}
+                color={this.state.newVessel <= 0 ? colorScheme.tertiaryTextColor : colorScheme.primaryTextColor}
+                disabledStyle={{
+                    backgroundColor: colorScheme.primaryColor
+                }}
+                backgroundColor = {colorScheme.primaryColor}
+                onPress={() => {
+                        const { error, fetchVessel, fetchVesselByName } = this.props;
+                        //Search by either name or IMO
+                        if(isNaN(this.state.newVessel))
+                            fetchVesselByName(this.state.newVessel).then(() => {
+                                if(this.props.error.hasError) {
+                                    Alert.alert(
+                                        this.props.error.error.title,
+                                        this.props.error.error.description,
+                                    )
+                                    this.props.removeError(this.props.error.error.title);
+                                }
+                            });
+                        else
+                            fetchVessel('urn:mrn:stm:vessel:IMO:' + this.state.newVessel).then(() => {
+                                if(this.props.error.hasError) {
+                                    Alert.alert(
+                                        this.props.error.error.title,
+                                        this.props.error.error.description,
+                                    )
+                                }
+                                this.props.removeError(this.props.error.error.title);
+                            });
+                        }
+                    }
+                />
+                </View>
+            </View>
+        </View>
+        }
+            {!!this.state.newVessel && !!this.props.newVessel && !this.state.selectedVessel && 
+            <View
+                style={styles.addToListContainer}
+            >
+              <View>
+                <Text>IMO: {this.props.newVessel.imo.split('IMO:')[1]}</Text>
+                <Text>Name: {this.props.newVessel.name}</Text>
+                <Text>Type: {this.props.newVessel.vesselType}</Text>
+                <Text>Call sign: {this.props.newVessel.callSign}</Text>
+              </View>
+              <View
+                style={{alignSelf: 'center'}}
+              >
+                <Button
+                  title="Select"
+                  textStyle={{color: colorScheme.primaryTextColor, fontSize: 9}}
+                  buttonStyle={styles.buttonStyle}
+                  onPress={() => this.setState({selectedVessel: this.props.newVessel})}                
+                />
+              </View>
+
+            </View>
+          }
+
+
           {/* Data that must be picked! */}
           <View style={styles.pickerTextContainer}><Text style={styles.pickerTextStyle}>Pick Time Type</Text></View>
           <Picker
@@ -142,8 +235,8 @@ class SendPortcall extends Component {
             onValueChange={(itemValue, itemIndex) => this.setState({selectedTimeType: itemValue})}
             style={styles.pickerContainer}
           >
-            <Picker.Item label="Actual" value="ACTUAL" />
             <Picker.Item label="Estimated" value="ESTIMATED" />
+            <Picker.Item label="Actual" value="ACTUAL" />
           </Picker>
 
           <View style={styles.pickerContainer}> 
@@ -329,6 +422,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  vesselSelectContainer: {
+    backgroundColor: colorScheme.primaryContainerColor, 
+    borderColor: colorScheme.tertiaryTextColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+    marginLeft: 10,
+    marginRight: 10,
+  },
   commentContainer: {
     backgroundColor: colorScheme.primaryContainerColor, 
     borderColor: colorScheme.tertiaryTextColor, 
@@ -412,7 +513,38 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop:10,
     paddingBottom:10,
-    }
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        backgroundColor: colorScheme.primaryColor,
+      //  marginBottom: 5,
+      },
+      searchBarContainer: {
+        backgroundColor: colorScheme.primaryColor,
+        flex: 3,
+        marginRight: 0,
+        borderBottomWidth: 0,
+        borderTopWidth: 0,      
+      },
+      buttonContainer: {
+        flex: 1,
+        marginRight: 0,
+        marginLeft: 0,
+        alignSelf: 'center',
+      },
+      addToListContainer: {
+        backgroundColor: colorScheme.primaryContainerColor,
+        alignSelf: 'center', 
+        flexDirection: 'row',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        borderColor: colorScheme.tertiaryTextColor, 
+        borderWidth: 1,
+        borderRadius: 5, 
+      },
 });
 
 function mapStateToProps(state) {
@@ -423,7 +555,9 @@ function mapStateToProps(state) {
     host: state.settings.connection.host,
     getState: state.states.stateById,
     sendingState: state.sending,
+    newVessel: state.vessel.vessel,
+    error: state.error,
   }
 }
 
-export default connect(mapStateToProps, {sendPortCall, clearReportResult, selectLocation})(SendPortcall);
+export default connect(mapStateToProps, {fetchVessel, fetchVesselByName, sendPortCall, clearReportResult, selectLocation})(SendPortcall);

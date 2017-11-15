@@ -53,7 +53,7 @@ export default class AboutView extends Component {
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
                 <Text h4>Version 1.3</Text>
                 <View style={{padding: 5}}>
-                    <Text>{BULLET} . </Text>
+                    <Text>{BULLET} Changed the default selected time type from ACTUAL to ESTIMATED. </Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.2</Text>
                 <View style={{padding: 5}}>

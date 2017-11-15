@@ -49,7 +49,7 @@ class SideMenu extends Component {
     const { navigate, state } = this.props.navigation;
     const { selectedPortCall, vessel, activeItemKey } = this.props;
 
-    const haveSelectedPortCall = !!selectedPortCall;
+    const haveSelectedPortCall = !!selectedPortCall.portCallId;
     const containerStyle = haveSelectedPortCall ? styles.menuContainer : [styles.menuContainer, styles.unavailableContainer];
     const textStyle = haveSelectedPortCall && activeItemKey !== 'Login' ? styles.menuText : [styles.menuText, styles.unavailableMenuText];
     const canBeAccessedEverywhereExceptOnLogin = activeItemKey === 'Login' ? [styles.menuText, styles.unavailableMenuText] : styles.menuText;
@@ -96,8 +96,8 @@ class SideMenu extends Component {
                         }
                     />
 
-                    {false &&<ListItem
-                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
+                    {true &&<ListItem
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' /* TODO: Change color when selected */ ? [containerStyle, styles.selectedContainer] : containerStyle}
                           leftIcon={{
                           name: 'add',
                           color: 'white'
@@ -110,12 +110,14 @@ class SideMenu extends Component {
                             </View>
                         }
                         onPress={() => {
-                            //TODO
+                            if (activeItemKey !== 'StateList') {
+                                navigate('FavoriteStatesSideMenu');
+                            }
                         }}
                     />}
      
                     <ListItem
-                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' /* TODO: Change color when selected */ ? [containerStyle, styles.selectedContainer] : containerStyle}
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
                           leftIcon={{
                           name: 'access-time',
                           color: 'white'
