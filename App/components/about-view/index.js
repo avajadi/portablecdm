@@ -51,10 +51,22 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.4</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Changed the default time type from ACTUAL to ESTIMATED </Text>
+                    <Text>{BULLET} Updated SEGOT to new version </Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.3</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed a bug where it was not possible to send messages with nautical states </Text>
+                    <Text>{BULLET} Fixed a bug with locations not being shown correctly in some instances </Text>
+                </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.2</Text>
-                <Text>{BULLET} Added feature to add comment to a port call message (currently only on selected instances)</Text>
-                <Text>{BULLET} Added comment field in statement details view for supporting instances </Text>
-                <Text>{BULLET} The list of favorite states is now in alphabetic order </Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Added feature to add comment to a port call message (currently only on selected instances)</Text>
+                    <Text>{BULLET} Added comment field in statement details view for supporting instances </Text>
+                    <Text>{BULLET} The list of favorite states is now in alphabetic order </Text>
+                </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1.1</Text>
                 <View style={{padding: 5}}>
                 <Text>{BULLET} Fixed a bug with wrong end points on some QA updates</Text>

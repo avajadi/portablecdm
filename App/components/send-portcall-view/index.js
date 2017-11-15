@@ -39,7 +39,7 @@ class SendPortcall extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTimeType: 'ACTUAL',
+      selectedTimeType: 'ESTIMATED',
       selectedDate: new Date(),
       showDateTimePicker: false,
       showLocationSelectionModal: false,
@@ -68,10 +68,15 @@ class SendPortcall extends Component {
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
 
-    if(!atLocation) {
+    if (!atLocation && state.ServiceType !== 'NAUTICAL') {
         Alert.alert('Invalid location', 'At-location is missing!');
         return;
     }
+
+    if (state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation)) {
+        Alert.alert('Invalid location(s)', 'From- or To-location is missing!');
+        return;
+    } 
 
     Alert.alert(
         'Confirmation',
@@ -142,8 +147,8 @@ class SendPortcall extends Component {
             onValueChange={(itemValue, itemIndex) => this.setState({selectedTimeType: itemValue})}
             style={styles.pickerContainer}
           >
-            <Picker.Item label="Actual" value="ACTUAL" />
             <Picker.Item label="Estimated" value="ESTIMATED" />
+            <Picker.Item label="Actual" value="ACTUAL" />
           </Picker>
 
           <View style={styles.pickerContainer}> 
