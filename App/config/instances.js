@@ -7,7 +7,7 @@ export const noSummary = [
 export const hasEvents = [
     'qa.segot',
     'qa.portcdm.eu',
-    'qa.seume',
+    'seume.portcdm',
     'qa.nosvg',
     'dev.portcdm.eu',
 ]
