@@ -6,9 +6,12 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
+* Respond to TTA with RTA
+* Initialize new port call
 * Subscribe on locations
 * Update notifications
 * Enable drag and drop on favorite states
+* Maybe show current location of vessel (by MarineTraffic)
 
 ## Suggested updates
 * Summary of sent message (instead of current verification) as popup
