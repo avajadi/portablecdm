@@ -4,6 +4,7 @@ import {
   sendPortCall, 
   initPortCall,
   clearReportResult,
+  clearVesselResult,
   selectLocation,
   fetchVessel,
   fetchVesselByName,
@@ -112,7 +113,7 @@ class SendPortcall extends Component {
   _initPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
-    const { portCall, getState, initPortCall, sendingState, navigation } = this.props;
+    const { portCall, getState, initPortCall, sendingState, navigation, clearVesselResult } = this.props;
     const { selectedVessel } = this.state;
     const vesselId = selectedVessel.imo;
     const { atLocation, fromLocation, toLocation, } = sendingState;
@@ -145,6 +146,7 @@ class SendPortcall extends Component {
                             'Unable to send message!'
                         );
                     } 
+                    clearVesselResult();
                 });          
             }}
         ]
@@ -163,7 +165,6 @@ class SendPortcall extends Component {
     if(toLocation) {
       selectLocation('toLocation', toLocation);
     }
-
   }
 
   componentWillUnmount() {
@@ -639,5 +640,6 @@ export default connect(
         sendPortCall, 
         initPortCall,
         clearReportResult, 
-        selectLocation
+        selectLocation,
+        clearVesselResult,
     })(SendPortcall);
