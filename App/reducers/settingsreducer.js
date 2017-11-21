@@ -17,7 +17,7 @@ import {
   SETTINGS_CLEAR,
 } from '../actions/types';
 
-import APP_VERSION from '../config';
+import{ APP_VERSION } from '../config/version';
 
 const INITIAL_STATE = {
   connection: {

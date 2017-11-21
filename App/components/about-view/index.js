@@ -17,7 +17,7 @@ import {
   Icon,
 } from 'react-native-elements';
 import TopHeader from '../top-header-view';
-import APP_VERSION from '../../config';
+import { APP_VERSION } from '../../config/version';
 import colorScheme from '../../config/colors';
 
 export default class AboutView extends Component {
