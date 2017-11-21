@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { 
   sendPortCall, 
+  initPortCall,
   clearReportResult,
   selectLocation,
   fetchVessel,
@@ -96,6 +97,45 @@ class SendPortcall extends Component {
                 const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType, comment}, state);
                 
                 sendPortCall(pcm, type).then(() => {
+                    if(!!this.props.sendingState.error) {
+                        Alert.alert(
+                            'Error',
+                            'Unable to send message!'
+                        );
+                    } 
+                });          
+            }}
+        ]
+    );
+  }
+
+  _initPortCall() {
+    const { stateId } = this.props.navigation.state.params;
+    const { selectedDate, selectedTimeType, comment } = this.state;
+    const { portCall, getState, sendPortCall, sendingState, navigation } = this.props;
+    const { vesselId } = this.state.selectedVessel;
+    const { atLocation, fromLocation, toLocation, } = sendingState;
+    const state = getState(stateId);
+
+    if (!atLocation && state.ServiceType !== 'NAUTICAL') {
+        Alert.alert('Invalid location', 'At-location is missing!');
+        return;
+    }
+
+    if (state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation)) {
+        Alert.alert('Invalid location(s)', 'From- or To-location is missing!');
+        return;
+    } 
+
+    Alert.alert(
+        'Confirmation',
+        'Would you like to report a new ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for new port call ' + vessel.name + '?',
+        [
+            {text: 'No'},
+            {text: 'Yes', onPress: () => {
+                const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId: null, selectedDate, selectedTimeType, comment}, state);
+                
+                initPortCall(pcm, type).then(() => {
                     if(!!this.props.sendingState.error) {
                         Alert.alert(
                             'Error',
@@ -340,7 +380,7 @@ class SendPortcall extends Component {
             title="Send TimeStamp" 
             buttonStyle={this.getSendButtonEnabled() ? styles.sendButtonStyle : styles.sendButtonStyleGray}
             disabled={!this.getSendButtonEnabled()}
-            onPress={this._sendPortCall.bind(this)}
+            onPress={!this.props.navigation.state.newVessel ? this._sendPortCall.bind(this) : this._initPortCall.bind(this)}
           />
 
           <DateTimePicker
@@ -587,4 +627,13 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchVessel, fetchVesselByName, removeError, sendPortCall, clearReportResult, selectLocation})(SendPortcall);
+export default connect(
+    mapStateToProps, 
+    {
+        fetchVessel, 
+        fetchVesselByName, 
+        removeError, 
+        sendPortCall, 
+        clearReportResult, 
+        selectLocation
+    })(SendPortcall);

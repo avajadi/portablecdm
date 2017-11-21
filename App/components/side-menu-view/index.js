@@ -111,7 +111,12 @@ class SideMenu extends Component {
                         }
                         onPress={() => {
                             if (activeItemKey !== 'StateList') {
-                                navigate('FavoriteStatesSideMenu', { initPortCall: true });
+                                // Only to pass params to the children of the stack navigator
+                                navigate('FavoriteStatesInit', {}, {
+                                    type: "Navigation/NAVIGATE",
+                                    routeName: "FavoriteStatesInit",
+                                    params: { initNew: true }
+                                  });
                             }
                         }}
                     />}

@@ -22,16 +22,16 @@ import TopHeader from '../top-header-view';
 
 class StateList extends Component {
   onAddStatesPress(init) {
-    if (this.props.navigation.state.params) {
-        this.props.navigation.navigate('SelectFavoriteStatesInit');
+    if (!!this.props.navigation.state.params) {
+        this.props.navigation.navigate('SelectFavoriteStateInit');
     } else {
         this.props.navigation.navigate('SelectFavoriteStatesTimeLine');
     }
   }
 
   render() {
-    const { params } = this.props.navigation.state;
-    const { navigate } = this.props.navigation;
+    const { navigate, state } = this.props.navigation;
+    const initNew = !!state.params;
     const { getState, stateCatalogue } = this.props;
     let favoriteStates = this.props.favoriteStates.sort((a,b) => (a < b ? -1 : 1));
 
@@ -39,6 +39,7 @@ class StateList extends Component {
       <View style={styles.container}>
         <TopHeader title="Favorite States" 
           navigation={this.props.navigation}
+          firstPage={initNew}
           rightIconFunction={this.onAddStatesPress.bind(this)} 
         />
         <ScrollView>
@@ -50,7 +51,7 @@ class StateList extends Component {
                   key={index}
                   title={state.Name}
                   onPress={() => {
-                      if (this.props.navigation.state.params) {
+                      if (initNew) {
                         navigate('InitPortCall', {stateId: state.StateId, newVessel: true});
                       } else {
                         navigate('SendPortCall', {stateId: state.StateId});
