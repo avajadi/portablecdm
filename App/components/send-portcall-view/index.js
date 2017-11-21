@@ -112,10 +112,13 @@ class SendPortcall extends Component {
   _initPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
-    const { portCall, getState, sendPortCall, sendingState, navigation } = this.props;
-    const { vesselId } = this.state.selectedVessel;
+    const { portCall, getState, initPortCall, sendingState, navigation } = this.props;
+    const { selectedVessel } = this.state;
+    const vesselId = selectedVessel.imo;
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
+
+    console.log('Selected vessel: ' + JSON.stringify(selectedVessel));
 
     if (!atLocation && state.ServiceType !== 'NAUTICAL') {
         Alert.alert('Invalid location', 'At-location is missing!');
@@ -129,7 +132,7 @@ class SendPortcall extends Component {
 
     Alert.alert(
         'Confirmation',
-        'Would you like to report a new ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for new port call ' + vessel.name + '?',
+        'Would you like to report a new ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for new port call ' + selectedVessel.name + '?',
         [
             {text: 'No'},
             {text: 'Yes', onPress: () => {
@@ -380,7 +383,7 @@ class SendPortcall extends Component {
             title="Send TimeStamp" 
             buttonStyle={this.getSendButtonEnabled() ? styles.sendButtonStyle : styles.sendButtonStyleGray}
             disabled={!this.getSendButtonEnabled()}
-            onPress={!this.props.navigation.state.newVessel ? this._sendPortCall.bind(this) : this._initPortCall.bind(this)}
+            onPress={!this.props.navigation.state.params.newVessel ? this._sendPortCall.bind(this) : this._initPortCall.bind(this)}
           />
 
           <DateTimePicker
@@ -634,6 +637,7 @@ export default connect(
         fetchVesselByName, 
         removeError, 
         sendPortCall, 
+        initPortCall,
         clearReportResult, 
         selectLocation
     })(SendPortcall);

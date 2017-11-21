@@ -49,22 +49,27 @@ export const initPortCall = (pcmAsObject, stateType) => {
             method: 'POST',
             headers: {
               ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host)), 
-              'Content-Type' : 'application/xml'},
-            body: objectToXml(pcmAsObject, stateType),
+              'Content-Type' : 'application/json'},
+            body: createInitParams(pcmAsObject.vesselId),
             sslPinning: getCert(connection),
         })
         .then(result => {
             console.log(JSON.stringify(result));
-            if(result.status === 200) return result;
+            if(result.status === 200) return JSON.parse(result.bodyString);
 
             let error = result.bodyString;              
-            throw new Error(error);
+            throw new Error(result.status + ': ' + error);
         })
         .then(result => {
-            dispatch({type: types.SEND_PORTCALL_SUCCESS, payload: result})
+            pcmAsObject.portCallId = result.portCallId;
+            return dispatch(sendPortCall(pcmAsObject, stateType));
         })
         .catch(error => {
             dispatch({type: types.SEND_PORTCALL_FAILURE, payload: error.message})
         })
     }
+}
+
+function createInitParams(vesselId) {
+    return `{"vesselId":"${vesselId}"}`;
 }
