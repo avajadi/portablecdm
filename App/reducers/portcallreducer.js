@@ -2,13 +2,8 @@ import * as types from '../actions/types';
 
 const INITIAL_STATE = { 
   foundPortCalls: [],
-  selectedPortCall: {
-      portCallId: '',
-  },
-  vessel: {
-      imo: '',
-      name: '',
-  },
+  selectedPortCall: null,
+  vessel: null,
   selectedPortCallOperations: [],
   portCallsAreLoading: false,
   selectedPortCallIsLoading: false,

@@ -42,6 +42,13 @@ const SettingsNavigator = StackNavigator({
   headerMode: 'none'
 })
 
+const InitiatePortCallNavigator = StackNavigator({
+    PortCalls: { screen: PortCallListNavigator },
+    InitPortCall: { screen: SendPortCall },
+}, {
+    headerMode: 'none'
+});
+
 const MainNavigator = DrawerNavigator({
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
@@ -50,6 +57,7 @@ const MainNavigator = DrawerNavigator({
   Settings: { screen: SettingsNavigator },
   About: { screen: AboutView },
   Error: { screen: ErrorView },
+  InitiatePortCall: { screen: InitiatePortCallNavigator },
 }, {
   headerMode: 'none',
   drawerWidth: 3*Dimensions.get('window').width/4, 

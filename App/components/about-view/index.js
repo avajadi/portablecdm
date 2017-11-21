@@ -53,7 +53,17 @@ export default class AboutView extends Component {
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
                 <Text h4>Version 1.3</Text>
                 <View style={{padding: 5}}>
-                    <Text>{BULLET} Changed the default selected time type from ACTUAL to ESTIMATED. </Text>
+                    <Text>{BULLET} Fixed a typo in the state catalogue </Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.4</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Changed the default time type from ACTUAL to ESTIMATED </Text>
+                    <Text>{BULLET} Updated SEGOT to new version </Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.3</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed a bug where it was not possible to send messages with nautical states </Text>
+                    <Text>{BULLET} Fixed a bug with locations not being shown correctly in some instances </Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.2</Text>
                 <View style={{padding: 5}}>

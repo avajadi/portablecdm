@@ -21,7 +21,7 @@ import {
 
 import colorScheme from '../../config/colors';
 import consts from '../../config/constants';
-import { changeUser, logoutKeycloak } from '../../actions';
+import { changeUser, logoutKeycloak, initiatePortCall, } from '../../actions';
 
 class SideMenu extends Component {
 
@@ -49,7 +49,7 @@ class SideMenu extends Component {
     const { navigate, state } = this.props.navigation;
     const { selectedPortCall, vessel, activeItemKey } = this.props;
 
-    const haveSelectedPortCall = !!selectedPortCall.portCallId;
+    const haveSelectedPortCall = !!selectedPortCall;
     const containerStyle = haveSelectedPortCall ? styles.menuContainer : [styles.menuContainer, styles.unavailableContainer];
     const textStyle = haveSelectedPortCall && activeItemKey !== 'Login' ? styles.menuText : [styles.menuText, styles.unavailableMenuText];
     const canBeAccessedEverywhereExceptOnLogin = activeItemKey === 'Login' ? [styles.menuText, styles.unavailableMenuText] : styles.menuText;
@@ -111,7 +111,7 @@ class SideMenu extends Component {
                         }
                         onPress={() => {
                             if (activeItemKey !== 'StateList') {
-                                navigate('FavoriteStatesSideMenu');
+                                navigate('FavoriteStatesSideMenu', { initPortCall: true });
                             }
                         }}
                     />}
@@ -293,4 +293,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {changeUser, logoutKeycloak})(SideMenu);
+export default connect(mapStateToProps, {initiatePortCall, changeUser, logoutKeycloak})(SideMenu);

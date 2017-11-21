@@ -17,12 +17,16 @@ import {
 } from 'react-native-elements';
 
 import { connect } from 'react-redux';
-import { removeFavoriteState, addFavoriteState } from '../../actions'
+import { removeFavoriteState, addFavoriteState, } from '../../actions'
 import TopHeader from '../top-header-view';
 
 class StateList extends Component {
-  onAddStatesPress() {
-    this.props.navigation.navigate('SelectFavoriteStatesTimeLine');
+  onAddStatesPress(init) {
+    if (this.props.navigation.state.params) {
+        this.props.navigation.navigate('SelectFavoriteStatesInit');
+    } else {
+        this.props.navigation.navigate('SelectFavoriteStatesTimeLine');
+    }
   }
 
   render() {
@@ -45,7 +49,13 @@ class StateList extends Component {
                 <ListItem
                   key={index}
                   title={state.Name}
-                  onPress={() => navigate('SendPortCall', {stateId: state.StateId})}
+                  onPress={() => {
+                      if (this.props.navigation.state.params) {
+                        navigate('InitPortCall', {stateId: state.StateId, newVessel: true});
+                      } else {
+                        navigate('SendPortCall', {stateId: state.StateId});
+                      }
+                    }}
                 />
               );
             })} 
@@ -66,7 +76,7 @@ function mapStateToProps(state) {
   return {
     favoriteStates: state.states.favoriteStates,
     getState: state.states.stateById,
-    stateCatalogue: state.states.stateCatalogue
+    stateCatalogue: state.states.stateCatalogue,
   }
 }
 

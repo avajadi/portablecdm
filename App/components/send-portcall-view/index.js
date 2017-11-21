@@ -6,6 +6,7 @@ import {
   selectLocation,
   fetchVessel,
   fetchVesselByName,
+  removeError,
 } from '../../actions';
 
 import {
@@ -48,7 +49,9 @@ class SendPortcall extends Component {
       showLocationSelectionModal: false,
       selectLocationFor: '',
       comment: '',
-      selectedVessel: '',
+      selectedVessel: {
+        name: '',
+      },
     };
   }
 
@@ -68,14 +71,21 @@ class SendPortcall extends Component {
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
-    const { vesselId, portCallId, getState, sendPortCall, sendingState, vessel, navigation } = this.props;
+    const { vessel, portCall, getState, sendPortCall, sendingState, navigation } = this.props;
+    const { vesselId } = vessel;
+    const { portCallId } = portCall;
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
 
-    if(!atLocation) {
+    if (!atLocation && state.ServiceType !== 'NAUTICAL') {
         Alert.alert('Invalid location', 'At-location is missing!');
         return;
     }
+
+    if (state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation)) {
+        Alert.alert('Invalid location(s)', 'From- or To-location is missing!');
+        return;
+    } 
 
     Alert.alert(
         'Confirmation',
@@ -117,14 +127,23 @@ class SendPortcall extends Component {
     this.props.clearReportResult();
   }
 
+  getSendButtonEnabled() {
+      const { atLocation, fromLocation, toLocation, } = this.props.sendingState;
+      const { stateId, newVessel } = this.props.navigation.state.params;
+      const state = this.props.getState(stateId);
+      return (!(state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation) ||
+                (state.ServiceType !== 'NAUTICAL' && (!atLocation))) &&
+                !((!this.state.selectedVessel && newVessel) ||
+                 (!this.props.vessel && !newVessel)));
+  }
+
   render() {
-    const { vesselId, portCallId, getState, sendingState, navigation, vessel, host } = this.props;
+    const { portCallId, getState, sendingState, navigation, vessel, host } = this.props;
     const { atLocation, fromLocation, toLocation } = sendingState;
-    const { stateId, mostRelevantStatement } = this.props.navigation.state.params;
+    const { stateId, mostRelevantStatement, newVessel } = this.props.navigation.state.params; 
     const state = getState(stateId);
     const enableComment = hasComment.some((x) => host.includes(x));
-    const initializeNew = !vesselId;
-    const newVessel = this.props.vessel;
+    const initializeNew = !!newVessel;
  
     return(
       <View style={styles.container}>
@@ -134,7 +153,7 @@ class SendPortcall extends Component {
             />
         {/* Information header */}
         <View style={styles.headerContainer} >
-          <Text style={styles.headerTitleText}>{(!!vessel.name ? vessel.name : this.state.selectedVessel.name)}</Text>
+          <Text style={styles.headerTitleText}>{(!newVessel ? vessel.name : this.state.selectedVessel.name)}</Text>
           <Text style={styles.headerSubText}>{state.Name}</Text>
           <Text style={styles.headerSubInfoText}>
             {!!atLocation && <Text>AT: {atLocation.name}</Text>}
@@ -182,7 +201,8 @@ class SendPortcall extends Component {
                                     Alert.alert(
                                         this.props.error.error.title,
                                         this.props.error.error.description,
-                                    )
+                                    );
+                                    this.setState({selectedVessel: '', newVessel: ''});
                                     this.props.removeError(this.props.error.error.title);
                                 }
                             });
@@ -192,7 +212,8 @@ class SendPortcall extends Component {
                                     Alert.alert(
                                         this.props.error.error.title,
                                         this.props.error.error.description,
-                                    )
+                                    );
+                                    this.setState({selectedVessel: '',});
                                 }
                                 this.props.removeError(this.props.error.error.title);
                             });
@@ -317,7 +338,8 @@ class SendPortcall extends Component {
 
           <Button 
             title="Send TimeStamp" 
-            buttonStyle={styles.sendButtonStyle}
+            buttonStyle={this.getSendButtonEnabled() ? styles.sendButtonStyle : styles.sendButtonStyleGray}
+            disabled={!this.getSendButtonEnabled()}
             onPress={this._sendPortCall.bind(this)}
           />
 
@@ -454,7 +476,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5, 
     flex: 1,
-    
+  },
+  sendButtonStyleGray: {
+    backgroundColor: colorScheme.secondaryContainerColor, // Gray
+    borderColor: colorScheme.actualColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+    flex: 1,
   },
   selectedDateText: {
     alignSelf: 'center',
@@ -550,8 +578,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     vessel: state.portCalls.vessel,
-    vesselId: state.portCalls.vessel.imo,
-    portCallId: state.portCalls.selectedPortCall.portCallId,
+    portCall: state.portCalls.selectedPortCall,
     host: state.settings.connection.host,
     getState: state.states.stateById,
     sendingState: state.sending,
@@ -560,4 +587,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchVessel, fetchVesselByName, sendPortCall, clearReportResult, selectLocation})(SendPortcall);
+export default connect(mapStateToProps, {fetchVessel, fetchVesselByName, removeError, sendPortCall, clearReportResult, selectLocation})(SendPortcall);
