@@ -106,7 +106,7 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Initiate new port call</Text>     
+                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Create new port call</Text>     
                             </View>
                         }
                         onPress={() => {

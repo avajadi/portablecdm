@@ -53,6 +53,10 @@ export default class AboutView extends Component {
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
                 <Text h4>Version 1.3</Text>
                 <View style={{padding: 5}}>
+                    <Text>{BULLET} Added feature to create port calls from scratch </Text>
+                    <Text>{BULLET} Send message button now disabled if not everything is filled in </Text>
+                    <Text>{BULLET} Fixed a bug for instance ESVLC </Text>
+                    <Text>{BULLET} Changed style of successfully sent message </Text>
                     <Text>{BULLET} Fixed a typo in the state catalogue </Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.4</Text>

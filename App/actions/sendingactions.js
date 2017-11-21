@@ -15,7 +15,7 @@ export const sendPortCall = (pcmAsObject, stateType) => {
     return (dispatch, getState) => {
         const { connection, token } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
-
+        
         return pinch.fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
             method: 'POST',
             headers: {

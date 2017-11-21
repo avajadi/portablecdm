@@ -19,6 +19,7 @@ import {
 import { connect } from 'react-redux';
 import { removeFavoriteState, addFavoriteState, } from '../../actions'
 import TopHeader from '../top-header-view';
+import colorScheme from '../../config/colors';
 
 class StateList extends Component {
   onAddStatesPress(init) {
@@ -37,11 +38,14 @@ class StateList extends Component {
 
     return(
       <View style={styles.container}>
-        <TopHeader title="Favorite States" 
+        <TopHeader title={initNew ? 'Create port call' : 'Favorite States'}
           navigation={this.props.navigation}
           firstPage={initNew}
           rightIconFunction={this.onAddStatesPress.bind(this)} 
         />
+        <View style={styles.headerContainer} >
+          <Text style={styles.headerSubText}>Select state</Text>
+        </View>
         <ScrollView>
           <List>
               {favoriteStates.map((stateId, index) => {
@@ -54,7 +58,7 @@ class StateList extends Component {
                       if (initNew) {
                         navigate('InitPortCall', {stateId: state.StateId, newVessel: true});
                       } else {
-                        navigate('SendPortCall', {stateId: state.StateId});
+                        navigate('SendPortCall', {stateId: state.StateId, newVessel: false});
                       }
                     }}
                 />
@@ -71,6 +75,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  headerContainer: {
+    backgroundColor: colorScheme.primaryColor,
+    alignItems: 'center',
+    flexDirection: 'column',
+    },
+    headerSubText: {
+        textAlign: 'center',
+        color: colorScheme.primaryTextColor,
+        fontSize: 18,
+        fontWeight: 'bold',
+     },
 });
 
 function mapStateToProps(state) {

@@ -74,7 +74,7 @@ class SendPortcall extends Component {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
     const { vessel, portCall, getState, sendPortCall, sendingState, navigation } = this.props;
-    const { vesselId } = vessel;
+    const vesselId = vessel.imo;
     const { portCallId } = portCall;
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
@@ -103,7 +103,9 @@ class SendPortcall extends Component {
                             'Error',
                             'Unable to send message!'
                         );
-                    } 
+                    } else {
+                        this.refs._scrollView.scrollToEnd();
+                    }
                 });          
             }}
         ]
@@ -133,7 +135,7 @@ class SendPortcall extends Component {
 
     Alert.alert(
         'Confirmation',
-        'Would you like to report a new ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for new port call ' + selectedVessel.name + '?',
+        'Would you like to create a new port call with ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for vessel ' + selectedVessel.name + '?',
         [
             {text: 'No'},
             {text: 'Yes', onPress: () => {
@@ -145,7 +147,9 @@ class SendPortcall extends Component {
                             'Error',
                             'Unable to send message!'
                         );
-                    } 
+                    } else {
+                        this.refs._scrollView.scrollToEnd();
+                    }
                     clearVesselResult();
                 });          
             }}
@@ -192,7 +196,7 @@ class SendPortcall extends Component {
     return(
       <View style={styles.container}>
         <TopHeader 
-            title = {(initializeNew ? 'Initiate port call' : 'Report')} 
+            title = {(initializeNew ? 'Create port call' : 'Report')} 
             navigation={this.props.navigation}
             />
         {/* Information header */}
@@ -206,7 +210,7 @@ class SendPortcall extends Component {
           </Text>
         </View>
 
-        <ScrollView>
+        <ScrollView ref="_scrollView">
           {/* PART OF INITIALIZATION */}
         {initializeNew &&
         <View>
@@ -401,13 +405,15 @@ class SendPortcall extends Component {
             style={{alignSelf: 'center'}} 
           />
           { (sendingState.successCode === 200) && 
-            <Text h4 style={{alignSelf: 'center', color: 'green'}}>Timestamp was successfully sent!</Text>
+            <Text h4 style={styles.success}>{initializeNew ? 
+                'Port call was successfully created!':
+                'Timestamp was successfully sent!'}</Text>
           }
           { (sendingState.successCode === 202) &&
-            <Text h4 style={{alignSelf: 'center', color: 'green'}}>Timestamp was successfully sent, but couldn't be matched to an existing Port Call!</Text>
+            <Text h4 style={styles.success}>Timestamp was successfully sent, but couldn't be matched to an existing Port Call!</Text>
           }
           { (!!sendingState.error) && // ERROR SENDING
-            <Text h4 style={{alignSelf: 'center', color: 'red', fontSize: 12}}>{sendingState.error}</Text>
+            <Text h4 style={styles.error}>{sendingState.error}</Text>
           }
         
         {mostRelevantStatement && 
@@ -617,6 +623,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5, 
       },
+      success: {
+          alignSelf: 'center', 
+          color: colorScheme.primaryColor,
+          margin: 20,
+          fontSize: 18,
+        },
+      error: {
+          alignSelf: 'center',
+          color: 'red',
+          fontSize: 12,
+          marginLeft: 20,
+      }
 });
 
 function mapStateToProps(state) {
