@@ -2,7 +2,7 @@
   "expo": {
     "name": "PortableCDM",
     "icon": "./assets/portablecdm_app_icon.png",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "slug": "portcdm-app",
     "sdkVersion": "18.0.0",
     "orientation": "portrait",
