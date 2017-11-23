@@ -6,20 +6,20 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Currently empty
 
 ## Future updates
-* Update error message on invalid login
+* Update error message on invalid login*
+* Start local server only if user uses seaSWIM*
 * Respond to TTA with RTA
-* Start local server only if user uses seaSWIM
 * Subscribe on locations
 * Update notifications
 * Enable drag and drop on favorite states
 * Maybe show current location of vessel (by MarineTraffic)
 
 ## Feedback
+* Bug with Within-filter not working*
+* Apply filters to Favorites as well*
 * Use timezones from instances
 * Show current timezone (somewhere)
 * Mirror start and endtime with latest reported statement
-* Bug with Within-filter not working
-* Apply filters to Favorites as well
 * Show dates in swedish-style
 
 ## Suggested updates
