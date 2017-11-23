@@ -43,6 +43,7 @@ class TimeLineView extends Component {
         this.state = {
             dataSource: ds.cloneWithRows(['row 1, row 2']),
             refreshing: false,
+            showExpiredStates: false,
         }
 
         this.goToStateList = this.goToStateList.bind(this);
@@ -103,7 +104,8 @@ class TimeLineView extends Component {
                     firstPage
                     navigation={this.props.navigation} 
                     rightIconFunction={this.goToStateList}
-                    leftIcons={this.createFavoriteIcons()}/>
+                    leftIcons={this.createFavoriteIcons()}
+                    selectorIcon={this.createShowHideExpiredIcon()}/>
                 <View 
                     style={styles.headerContainer}
                 >
@@ -128,9 +130,12 @@ class TimeLineView extends Component {
                                     />
                                 }
                                 renderRow={(data, sectionId, rowId) => {
-                                    if(typeof data == 'number') return null; // disgusting way to not handle operations.reliability as a member of the dataset for operations
+                                    if (!this.state.showExpiredStates && data.isExpired) {
+                                        return null;
+                                    }
+                                    if (typeof data == 'number') return null; // disgusting way to not handle operations.reliability as a member of the dataset for operations
                                     return <OperationView 
-                                        operation={data} 
+                                        operation={data}
                                         rowNumber={rowId}
                                         navigation={this.props.navigation}
                                         vesselName={vesselName}
@@ -143,6 +148,13 @@ class TimeLineView extends Component {
         );
     }
 
+    createShowHideExpiredIcon() {
+        return {
+            name: 'remove-red-eye',
+            color: this.state.showExpiredStates ? 'lightblue' : 'gray',
+            onPress: () => this.setState({showExpiredStates: !this.state.showExpiredStates}),
+        };
+    }
     
     createFavoriteIcons() {
 

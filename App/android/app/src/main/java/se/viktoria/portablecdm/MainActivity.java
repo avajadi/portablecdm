@@ -2,6 +2,7 @@ package se.viktoria.portablecdm;
 
 import android.os.Bundle;
 
+import com.facebook.react.BuildConfig;
 import com.facebook.react.ReactPackage;
 
 import java.util.ArrayList;
