@@ -123,10 +123,6 @@ export const startLocalServer = () => {
         let port = 1337;
         server = new StaticServer(port, path, {localOnly: true});
 
-        server.start().then((url) => {
-            console.log('Serving at url ' + url + '. Path is ' + path);
-        });
-
         dispatch({
             type: types.SERVER_START,
             payload: {
@@ -134,6 +130,10 @@ export const startLocalServer = () => {
                 port: port,
                 path: path,
             }
+        });
+
+        return server.start().then((url) => {
+            console.log('Serving at url ' + url + '. Path is ' + path);
         });
     }
 }

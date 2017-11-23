@@ -96,9 +96,9 @@ class LoginKeyCloakView extends Component {
         }
     }
 
-    onLoginPress = async () => {
-        this.props.startLocalServer();
-        let result = await WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI);
+    onLoginPress() {
+        this.props.startLocalServer().then(() => 
+            WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI));
     }
 
     handleMaritimeRedirect = async event => {
@@ -293,7 +293,7 @@ class LoginKeyCloakView extends Component {
                             </View>
                         </View>
                         <View style={styles.containers.blank}/>
-                        <TouchableHighlight onPress={this.onLoginPress} onLongPress={() => {
+                        <TouchableHighlight onPress={this.onLoginPress.bind(this)} onLongPress={() => {
                                 this.validateForms();
                                 this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, enabled: true}});
                             }}>

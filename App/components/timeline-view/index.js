@@ -156,8 +156,8 @@ class TimeLineView extends Component {
 
     createShowHideExpiredIcon() {
         return {
-            name: 'remove-red-eye',
-            color: this.state.showExpiredStates ? 'lightblue' : 'gray',
+            name: this.state.showExpiredStates ? 'remove-red-eye' : 'visibility-off',
+            color: 'white',
             onPress: () => this.setState({showExpiredStates: !this.state.showExpiredStates}),
         };
     }
