@@ -96,7 +96,6 @@ class OperationView extends Component {
                 this.setState({dimensions: {...this.state.dimensions, operation: event.nativeEvent.layout}});
             }
           }}>
-        
         {/* Time Display */}
         <View style={styles.timeContainer}>
           {/*Start Time*/}

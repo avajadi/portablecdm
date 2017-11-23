@@ -17,7 +17,7 @@ import {
   Icon,
 } from 'react-native-elements';
 import TopHeader from '../top-header-view';
-import APP_VERSION from '../../config';
+import { APP_VERSION } from '../../config/version';
 import colorScheme from '../../config/colors';
 
 export default class AboutView extends Component {
@@ -51,10 +51,30 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
+                <Text h4>Version 1.3</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Added feature to create port calls from scratch </Text>
+                    <Text>{BULLET} Send message button now disabled if not everything is filled in </Text>
+                    <Text>{BULLET} Fixed a bug for instance ESVLC </Text>
+                    <Text>{BULLET} Changed style of successfully sent message </Text>
+                    <Text>{BULLET} Fixed a typo in the state catalogue </Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.4</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Changed the default time type from ACTUAL to ESTIMATED </Text>
+                    <Text>{BULLET} Updated SEGOT to new version </Text>
+                </View>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.3</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed a bug where it was not possible to send messages with nautical states </Text>
+                    <Text>{BULLET} Fixed a bug with locations not being shown correctly in some instances </Text>
+                </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.2</Text>
-                <Text>{BULLET} Added feature to add comment to a port call message (currently only on selected instances)</Text>
-                <Text>{BULLET} Added comment field in statement details view for supporting instances </Text>
-                <Text>{BULLET} The list of favorite states is now in alphabetic order </Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Added feature to add comment to a port call message (currently only on selected instances)</Text>
+                    <Text>{BULLET} Added comment field in statement details view for supporting instances </Text>
+                    <Text>{BULLET} The list of favorite states is now in alphabetic order </Text>
+                </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.2.1.1</Text>
                 <View style={{padding: 5}}>
                 <Text>{BULLET} Fixed a bug with wrong end points on some QA updates</Text>

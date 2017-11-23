@@ -2,8 +2,13 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { 
   sendPortCall, 
+  initPortCall,
   clearReportResult,
+  clearVesselResult,
   selectLocation,
+  fetchVessel,
+  fetchVesselByName,
+  removeError,
 } from '../../actions';
 
 import {
@@ -23,6 +28,7 @@ import {
   Icon,
   FormInput,
   FormLabel,
+  SearchBar,
 } from 'react-native-elements';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -39,12 +45,15 @@ class SendPortcall extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTimeType: 'ACTUAL',
+      selectedTimeType: 'ESTIMATED',
       selectedDate: new Date(),
       showDateTimePicker: false,
       showLocationSelectionModal: false,
       selectLocationFor: '',
       comment: '',
+      selectedVessel: {
+        name: '',
+      },
     };
   }
 
@@ -64,14 +73,21 @@ class SendPortcall extends Component {
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
-    const { vesselId, portCallId, getState, sendPortCall, sendingState, vessel, navigation } = this.props;
+    const { vessel, portCall, getState, sendPortCall, sendingState, navigation } = this.props;
+    const vesselId = vessel.imo;
+    const { portCallId } = portCall;
     const { atLocation, fromLocation, toLocation, } = sendingState;
     const state = getState(stateId);
 
-    if(!atLocation) {
+    if (!atLocation && state.ServiceType !== 'NAUTICAL') {
         Alert.alert('Invalid location', 'At-location is missing!');
         return;
     }
+
+    if (state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation)) {
+        Alert.alert('Invalid location(s)', 'From- or To-location is missing!');
+        return;
+    } 
 
     Alert.alert(
         'Confirmation',
@@ -87,7 +103,54 @@ class SendPortcall extends Component {
                             'Error',
                             'Unable to send message!'
                         );
-                    } 
+                    } else {
+                        this.refs._scrollView.scrollToEnd();
+                    }
+                });          
+            }}
+        ]
+    );
+  }
+
+  _initPortCall() {
+    const { stateId } = this.props.navigation.state.params;
+    const { selectedDate, selectedTimeType, comment } = this.state;
+    const { portCall, getState, initPortCall, sendingState, navigation, clearVesselResult } = this.props;
+    const { selectedVessel } = this.state;
+    const vesselId = selectedVessel.imo;
+    const { atLocation, fromLocation, toLocation, } = sendingState;
+    const state = getState(stateId);
+
+    console.log('Selected vessel: ' + JSON.stringify(selectedVessel));
+
+    if (!atLocation && state.ServiceType !== 'NAUTICAL') {
+        Alert.alert('Invalid location', 'At-location is missing!');
+        return;
+    }
+
+    if (state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation)) {
+        Alert.alert('Invalid location(s)', 'From- or To-location is missing!');
+        return;
+    } 
+
+    Alert.alert(
+        'Confirmation',
+        'Would you like to create a new port call with ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for vessel ' + selectedVessel.name + '?',
+        [
+            {text: 'No'},
+            {text: 'Yes', onPress: () => {
+                const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId: null, selectedDate, selectedTimeType, comment}, state);
+                
+                initPortCall(pcm, type).then(() => {
+                    if(!!this.props.sendingState.error) {
+                        Alert.alert(
+                            'Error',
+                            'Unable to send message!'
+                        );
+                    } else {
+                        this.refs._scrollView.scrollToEnd();
+                    }
+                    clearVesselResult();
                 });          
             }}
         ]
@@ -106,26 +169,39 @@ class SendPortcall extends Component {
     if(toLocation) {
       selectLocation('toLocation', toLocation);
     }
-
   }
 
   componentWillUnmount() {
     this.props.clearReportResult();
   }
 
+  getSendButtonEnabled() {
+      const { atLocation, fromLocation, toLocation, } = this.props.sendingState;
+      const { stateId, newVessel } = this.props.navigation.state.params;
+      const state = this.props.getState(stateId);
+      return (!(state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation) ||
+                (state.ServiceType !== 'NAUTICAL' && (!atLocation))) &&
+                !((!this.state.selectedVessel && newVessel) ||
+                 (!this.props.vessel && !newVessel)));
+  }
+
   render() {
-    const { vesselId, portCallId, getState, sendingState, navigation, vessel, host } = this.props;
+    const { portCallId, getState, sendingState, navigation, vessel, host } = this.props;
     const { atLocation, fromLocation, toLocation } = sendingState;
-    const { stateId, mostRelevantStatement } = this.props.navigation.state.params;
+    const { stateId, mostRelevantStatement, newVessel } = this.props.navigation.state.params; 
     const state = getState(stateId);
-    let enableComment = hasComment.some((x) => host.includes(x));
+    const enableComment = hasComment.some((x) => host.includes(x));
+    const initializeNew = !!newVessel;
  
     return(
       <View style={styles.container}>
-        <TopHeader title = 'Report' navigation={this.props.navigation}/>
+        <TopHeader 
+            title = {(initializeNew ? 'Create port call' : 'Report')} 
+            navigation={this.props.navigation}
+            />
         {/* Information header */}
         <View style={styles.headerContainer} >
-          <Text style={styles.headerTitleText}>{vessel.name}</Text>
+          <Text style={styles.headerTitleText}>{(!newVessel ? vessel.name : this.state.selectedVessel.name)}</Text>
           <Text style={styles.headerSubText}>{state.Name}</Text>
           <Text style={styles.headerSubInfoText}>
             {!!atLocation && <Text>AT: {atLocation.name}</Text>}
@@ -134,7 +210,93 @@ class SendPortcall extends Component {
           </Text>
         </View>
 
-        <ScrollView>
+        <ScrollView ref="_scrollView">
+          {/* PART OF INITIALIZATION */}
+        {initializeNew &&
+        <View>
+            <View style={styles.pickerTextContainer}>
+                <Text style={styles.pickerTextStyle}>Select vessel</Text>
+            </View>
+            <View style={styles.pickerContainer}>
+                <View style={styles.rowContainer}>
+                <SearchBar
+                autoCorrect={false} 
+                containerStyle = {styles.searchBarContainer}
+                clearIcon
+                inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
+                lightTheme  
+                placeholder='Search by name or IMO number'
+                placeholderTextColor = {colorScheme.tertiaryTextColor}
+                onChangeText={text => this.setState({newVessel: text, selectedVessel: ''})}
+                textInputRef='textInput'
+                />
+                <Button
+                containerViewStyle={styles.buttonContainer}
+                small
+                title="Search"
+                disabled={this.state.newVessel <= 0}
+                color={this.state.newVessel <= 0 ? colorScheme.tertiaryTextColor : colorScheme.primaryTextColor}
+                disabledStyle={{
+                    backgroundColor: colorScheme.primaryColor
+                }}
+                backgroundColor = {colorScheme.primaryColor}
+                onPress={() => {
+                        const { error, fetchVessel, fetchVesselByName } = this.props;
+                        //Search by either name or IMO
+                        if(isNaN(this.state.newVessel))
+                            fetchVesselByName(this.state.newVessel).then(() => {
+                                if(this.props.error.hasError) {
+                                    Alert.alert(
+                                        this.props.error.error.title,
+                                        this.props.error.error.description,
+                                    );
+                                    this.setState({selectedVessel: '', newVessel: ''});
+                                    this.props.removeError(this.props.error.error.title);
+                                }
+                            });
+                        else
+                            fetchVessel('urn:mrn:stm:vessel:IMO:' + this.state.newVessel).then(() => {
+                                if(this.props.error.hasError) {
+                                    Alert.alert(
+                                        this.props.error.error.title,
+                                        this.props.error.error.description,
+                                    );
+                                    this.setState({selectedVessel: '',});
+                                }
+                                this.props.removeError(this.props.error.error.title);
+                            });
+                        }
+                    }
+                />
+                </View>
+            </View>
+        </View>
+        }
+            {!!this.state.newVessel && !!this.props.newVessel && !this.state.selectedVessel && 
+            <View
+                style={styles.addToListContainer}
+            >
+              <View>
+                <Text>IMO: {this.props.newVessel.imo.split('IMO:')[1]}</Text>
+                <Text>Name: {this.props.newVessel.name}</Text>
+                <Text>Type: {this.props.newVessel.vesselType}</Text>
+                <Text>Call sign: {this.props.newVessel.callSign}</Text>
+              </View>
+              <View
+                style={{alignSelf: 'center'}}
+              >
+                <Button
+                  title="Select"
+                  textStyle={{color: colorScheme.primaryTextColor, fontSize: 9}}
+                  buttonStyle={styles.buttonStyle}
+                  onPress={() => this.setState({selectedVessel: this.props.newVessel})}                
+                />
+              </View>
+
+            </View>
+          }
+
+
           {/* Data that must be picked! */}
           <View style={styles.pickerTextContainer}><Text style={styles.pickerTextStyle}>Pick Time Type</Text></View>
           <Picker
@@ -142,8 +304,8 @@ class SendPortcall extends Component {
             onValueChange={(itemValue, itemIndex) => this.setState({selectedTimeType: itemValue})}
             style={styles.pickerContainer}
           >
-            <Picker.Item label="Actual" value="ACTUAL" />
             <Picker.Item label="Estimated" value="ESTIMATED" />
+            <Picker.Item label="Actual" value="ACTUAL" />
           </Picker>
 
           <View style={styles.pickerContainer}> 
@@ -224,8 +386,9 @@ class SendPortcall extends Component {
 
           <Button 
             title="Send TimeStamp" 
-            buttonStyle={styles.sendButtonStyle}
-            onPress={this._sendPortCall.bind(this)}
+            buttonStyle={this.getSendButtonEnabled() ? styles.sendButtonStyle : styles.sendButtonStyleGray}
+            disabled={!this.getSendButtonEnabled()}
+            onPress={!this.props.navigation.state.params.newVessel ? this._sendPortCall.bind(this) : this._initPortCall.bind(this)}
           />
 
           <DateTimePicker
@@ -242,13 +405,15 @@ class SendPortcall extends Component {
             style={{alignSelf: 'center'}} 
           />
           { (sendingState.successCode === 200) && 
-            <Text h4 style={{alignSelf: 'center', color: 'green'}}>Timestamp was successfully sent!</Text>
+            <Text h4 style={styles.success}>{initializeNew ? 
+                'Port call was successfully created!':
+                'Timestamp was successfully sent!'}</Text>
           }
           { (sendingState.successCode === 202) &&
-            <Text h4 style={{alignSelf: 'center', color: 'green'}}>Timestamp was successfully sent, but couldn't be matched to an existing Port Call!</Text>
+            <Text h4 style={styles.success}>Timestamp was successfully sent, but couldn't be matched to an existing Port Call!</Text>
           }
           { (!!sendingState.error) && // ERROR SENDING
-            <Text h4 style={{alignSelf: 'center', color: 'red', fontSize: 12}}>{sendingState.error}</Text>
+            <Text h4 style={styles.error}>{sendingState.error}</Text>
           }
         
         {mostRelevantStatement && 
@@ -329,6 +494,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  vesselSelectContainer: {
+    backgroundColor: colorScheme.primaryContainerColor, 
+    borderColor: colorScheme.tertiaryTextColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+    marginLeft: 10,
+    marginRight: 10,
+  },
   commentContainer: {
     backgroundColor: colorScheme.primaryContainerColor, 
     borderColor: colorScheme.tertiaryTextColor, 
@@ -353,7 +526,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5, 
     flex: 1,
-    
+  },
+  sendButtonStyleGray: {
+    backgroundColor: colorScheme.secondaryContainerColor, // Gray
+    borderColor: colorScheme.actualColor, 
+    borderWidth: 1,
+    borderRadius: 5, 
+    flex: 1,
   },
   selectedDateText: {
     alignSelf: 'center',
@@ -412,18 +591,73 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop:10,
     paddingBottom:10,
-    }
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        backgroundColor: colorScheme.primaryColor,
+      //  marginBottom: 5,
+      },
+      searchBarContainer: {
+        backgroundColor: colorScheme.primaryColor,
+        flex: 3,
+        marginRight: 0,
+        borderBottomWidth: 0,
+        borderTopWidth: 0,      
+      },
+      buttonContainer: {
+        flex: 1,
+        marginRight: 0,
+        marginLeft: 0,
+        alignSelf: 'center',
+      },
+      addToListContainer: {
+        backgroundColor: colorScheme.primaryContainerColor,
+        alignSelf: 'center', 
+        flexDirection: 'row',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        borderColor: colorScheme.tertiaryTextColor, 
+        borderWidth: 1,
+        borderRadius: 5, 
+      },
+      success: {
+          alignSelf: 'center', 
+          color: colorScheme.primaryColor,
+          margin: 20,
+          fontSize: 18,
+        },
+      error: {
+          alignSelf: 'center',
+          color: 'red',
+          fontSize: 12,
+          marginLeft: 20,
+      }
 });
 
 function mapStateToProps(state) {
   return {
     vessel: state.portCalls.vessel,
-    vesselId: state.portCalls.vessel.imo,
-    portCallId: state.portCalls.selectedPortCall.portCallId,
+    portCall: state.portCalls.selectedPortCall,
     host: state.settings.connection.host,
     getState: state.states.stateById,
     sendingState: state.sending,
+    newVessel: state.vessel.vessel,
+    error: state.error,
   }
 }
 
-export default connect(mapStateToProps, {sendPortCall, clearReportResult, selectLocation})(SendPortcall);
+export default connect(
+    mapStateToProps, 
+    {
+        fetchVessel, 
+        fetchVesselByName, 
+        removeError, 
+        sendPortCall, 
+        initPortCall,
+        clearReportResult, 
+        selectLocation,
+        clearVesselResult,
+    })(SendPortcall);

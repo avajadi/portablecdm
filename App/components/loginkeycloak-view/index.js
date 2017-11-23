@@ -42,7 +42,7 @@ import {
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 import constants from '../../config/constants';
-import APP_VERSION from '../../config';
+import { APP_VERSION, STAGING, } from '../../config/version';
 
 const window = Dimensions.get('window');
 let server = null;
@@ -203,6 +203,9 @@ class LoginKeyCloakView extends Component {
     render() {
         return (
             <View style={{flex: 2}}>
+                {STAGING && <View style={{backgroundColor: 'red', marginTop: 30}}>
+                    <Text style={{color: 'white', alignSelf: 'center'}}>DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV</Text>
+                </View>}
                 <ScrollView contentContainerStyle={styles.containers.main}>
                 <Modal
                         animationType={'slide'}

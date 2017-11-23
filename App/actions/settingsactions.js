@@ -1,5 +1,5 @@
 import * as types from './types';   
-import APP_VERSION from '../config';
+import { APP_VERSION } from '../config/version';
 
 export const changeFetchReliability = (fetchReliability) => {
     return {

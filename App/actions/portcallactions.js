@@ -18,6 +18,13 @@ export const selectPortCall = (portCall) => {
     };
 }
 
+export const selectVessel = (vessel) => {
+    return {
+        type: types.SELECT_VESSEL,
+        payload: vessel,
+    };
+}
+
 /**Given a URN for a vessel, fetches the vessel information from the backend
  * 
  * @param {string} vesselUrn 
@@ -469,13 +476,14 @@ return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCa
         const locations = getState().location.locations;
         return operations.map(operation => {
             if(operation.at) {
-                operation.atLocation = locations.find(location => location.URN === operation.at);
+                // Actually case sensitive, so keep in mind
+                operation.atLocation = locations.find(location => location.URN.toUpperCase() === operation.at.toUpperCase());
             }
             if(operation.from) {
-                operation.fromLocation = locations.find(location => location.URN === operation.from);
+                operation.fromLocation = locations.find(location => location.URN.toUpperCase() === operation.from.toUpperCase());
             }
             if(operation.to) {
-                operation.toLocation = locations.find(location => location.URN === operation.to);
+                operation.toLocation = locations.find(location => location.URN.toUpperCase() === operation.to.toUpperCase());
             }
             
             return operation;

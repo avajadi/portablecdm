@@ -141,7 +141,9 @@ export const startLocalServer = () => {
 export const stopLocalServer = () => {
     return (dispatch, getState) => {
         console.log(JSON.stringify(getState().server));
-        getState().server.server.stop();
+        const server = getState().server.server;
+        if (!!server) 
+            server.stop();
         dispatch({
             type: types.SERVER_STOP,
         });
