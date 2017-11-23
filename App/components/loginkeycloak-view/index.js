@@ -88,8 +88,6 @@ class LoginKeyCloakView extends Component {
 
         Linking.addEventListener('url', this.handleMaritimeRedirect);
 
-        this.props.startLocalServer();
-
         if (this.props.checkNewVersion()) {
             Alert.alert(
                 'New version',
@@ -98,11 +96,8 @@ class LoginKeyCloakView extends Component {
         }
     }
 
-    componentWillUnmount() {
-        this.props.stopLocalServer();
-    }
-
     onLoginPress = async () => {
+        this.props.startLocalServer();
         let result = await WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI);
     }
 
@@ -113,12 +108,14 @@ class LoginKeyCloakView extends Component {
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
         this.props.loginKeycloak(event.url).then((result) => {
-            if(result) this.loginConfirmed();
+            if(result) {
+                this.props.stopLocalServer();
+                this.loginConfirmed();
+            }
         });
     }
 
     loginConfirmed() {  
-        this.props.stopLocalServer();
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changePortUnlocode(this.state.unlocode);
