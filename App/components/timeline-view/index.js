@@ -133,6 +133,12 @@ class TimeLineView extends Component {
                                     if (!this.state.showExpiredStates && data.isExpired) {
                                         return null;
                                     }
+                                    if (data.isExpired) {
+                                        let expiredMessage = 'This event has expired.';
+                                        if (!data.warnings.some(w => w.message === expiredMessage)) {
+                                            data.warnings.push({message: expiredMessage});
+                                        }
+                                    }
                                     if (typeof data == 'number') return null; // disgusting way to not handle operations.reliability as a member of the dataset for operations
                                     return <OperationView 
                                         operation={data}

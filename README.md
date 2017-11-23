@@ -14,7 +14,6 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Maybe show current location of vessel (by MarineTraffic)
 
 ## Feedback
-* Hide (and add button to show) expired events
 * Use timezones from instances
 * Show current timezone (somewhere)
 * Mirror start and endtime with latest reported statement
