@@ -11,6 +11,7 @@ export const hasEvents = [
     'qa.nosvg',
     'dev.portcdm.eu',
     'segot.portcdm.eu',
+    'qa.esvlc.portcdm.eu',
 ]
 
 export const isStaging = [

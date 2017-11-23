@@ -53,7 +53,8 @@ class TimeLineView extends Component {
         timer = setInterval(() => this.loadOperations, 60000);
 
         this.loadOperations = this.loadOperations.bind(this);
-        this.loadOperations();
+        if (!!portCallId)
+            this.loadOperations();
     }
 
     loadOperations() {

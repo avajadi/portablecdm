@@ -42,10 +42,19 @@ const SettingsNavigator = StackNavigator({
   headerMode: 'none'
 })
 
+const InitiatePortCallNavigator = StackNavigator({
+    FavoriteStatesInit: { screen: StateList },
+    SelectFavoriteStateInit: { screen: SelectFavoriteState },
+    InitPortCall: { screen: SendPortCall },
+}, {
+    headerMode: 'none'
+});
+
 const MainNavigator = DrawerNavigator({
   PortCalls: { screen: PortCallListNavigator },
   TimeLine: {screen: TimeLineNavigator},
   FavoriteStatesSideMenu: { screen: StateList },
+  FavoriteStatesInit: { screen: InitiatePortCallNavigator },
   VesselInfo: { screen: VesselInfo },
   Settings: { screen: SettingsNavigator },
   About: { screen: AboutView },

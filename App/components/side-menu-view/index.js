@@ -21,7 +21,7 @@ import {
 
 import colorScheme from '../../config/colors';
 import consts from '../../config/constants';
-import { changeUser, logoutKeycloak } from '../../actions';
+import { changeUser, logoutKeycloak, initiatePortCall, } from '../../actions';
 
 class SideMenu extends Component {
 
@@ -96,8 +96,8 @@ class SideMenu extends Component {
                         }
                     />
 
-                    {false &&<ListItem
-                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
+                    {true &&<ListItem
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' /* TODO: Change color when selected */ ? [containerStyle, styles.selectedContainer] : containerStyle}
                           leftIcon={{
                           name: 'add',
                           color: 'white'
@@ -106,16 +106,23 @@ class SideMenu extends Component {
                         underlayColor={colorScheme.secondaryColor}
                         title={
                             <View style={styles.textContainer}>
-                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Initiate new port call</Text>     
+                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Create new port call</Text>     
                             </View>
                         }
                         onPress={() => {
-                            //TODO
+                            if (activeItemKey !== 'StateList') {
+                                // Only to pass params to the children of the stack navigator
+                                navigate('FavoriteStatesInit', {}, {
+                                    type: "Navigation/NAVIGATE",
+                                    routeName: "FavoriteStatesInit",
+                                    params: { initNew: true }
+                                  });
+                            }
                         }}
                     />}
      
                     <ListItem
-                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' /* TODO: Change color when selected */ ? [containerStyle, styles.selectedContainer] : containerStyle}
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
                           leftIcon={{
                           name: 'access-time',
                           color: 'white'
@@ -291,4 +298,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {changeUser, logoutKeycloak})(SideMenu);
+export default connect(mapStateToProps, {initiatePortCall, changeUser, logoutKeycloak})(SideMenu);

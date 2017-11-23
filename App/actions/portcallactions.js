@@ -18,6 +18,13 @@ export const selectPortCall = (portCall) => {
     };
 }
 
+export const selectVessel = (vessel) => {
+    return {
+        type: types.SELECT_VESSEL,
+        payload: vessel,
+    };
+}
+
 /**Given a URN for a vessel, fetches the vessel information from the backend
  * 
  * @param {string} vesselUrn 
