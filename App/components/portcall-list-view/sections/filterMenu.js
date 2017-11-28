@@ -26,6 +26,7 @@ import MiniHeader from '../../mini-header-view';
 import {
     updatePortCalls,
     clearCache,
+    bufferPortCalls,
     filterChangeLimit,
     filterChangeSortBy,
     filterChangeOrder,
@@ -94,6 +95,7 @@ class FilterMenu extends Component {
         const {
         filters,
             updatePortCalls,
+            bufferPortCalls,
             clearCache,
             filterChangeLimit,
             filterChangeSortBy,
@@ -134,7 +136,8 @@ class FilterMenu extends Component {
         filterChangeVesselList(this.state.vesselListFilter);
 
         clearCache();
-        updatePortCalls();
+        updatePortCalls()
+            .then(bufferPortCalls);
         this.props.navigation.goBack();
     }
 
@@ -362,4 +365,5 @@ export default connect(mapStateToProps, {
     filterChangeDepartingWithin,
     filterClearArrivingDepartureTime,
     filterChangeOnlyFuturePortCalls,
+    bufferPortCalls,
 })(FilterMenu);
