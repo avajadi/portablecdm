@@ -7,7 +7,7 @@ import {
 const INITIAL_STATE = {
     portCalls: [],
     lastUpdated: 0,
-    limit: 500,
+    limit: 100,
 }
 
 const cacheReducer = (state=INITIAL_STATE, action) => {

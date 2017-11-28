@@ -94,7 +94,7 @@ class Settings extends Component {
                         <Slider
                             style={locStyles.sliderStyle}
                             minimumValue={0}
-                            maximumValue={1000}
+                            maximumValue={5000}
                             step={50}
                             value={this.state.limitCache}
                             onValueChange={value => {

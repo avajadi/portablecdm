@@ -6,6 +6,7 @@ import {
     toggleFavoritePortCall,
     toggleFavoriteVessel,
     appendPortCalls,
+    bufferPortCalls,
  } from '../../actions';
 
 import {
@@ -39,20 +40,9 @@ class PortCallList extends Component {
     componentWillMount() {
         this.loadPortCalls = this.loadPortCalls.bind(this);
         this._appendPortCalls = this._appendPortCalls.bind(this);
-        this.loadPortCalls().then(() => this.bufferPortCalls());
+        this.loadPortCalls()
+            .then(this.props.bufferPortCalls);
 
-    }
-
-    bufferPortCalls() {
-        const { cacheLimit, portCalls } = this.props;
-        const beforeFetching = portCalls.length;
-        if (portCalls.length < cacheLimit) {
-            this._appendPortCalls().then(() => {
-                if (beforeFetching < this.props.portCalls.length) {
-                    this.bufferPortCalls();
-                }
-            })
-        }
     }
 
     loadPortCalls() {
@@ -65,7 +55,7 @@ class PortCallList extends Component {
 
     _appendPortCalls() {
         let { portCalls, appendPortCalls, } = this.props;
-        if (portCalls.length > 0 || true) {
+        if (portCalls.length > 0) {
             return appendPortCalls(portCalls[portCalls.length - 1]);
         }
     }
@@ -291,5 +281,6 @@ export default connect(mapStateToProps, {
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
+    bufferPortCalls
 })(PortCallList);
 

@@ -18,6 +18,21 @@ export const selectPortCall = (portCall) => {
     };
 }
 
+export const bufferPortCalls = () => {
+    return (dispatch, getState) => {
+        const { limit, portCalls } = getState().cache;
+        
+        const beforeFetching = portCalls.length;
+        if (portCalls.length < limit && portCalls.length > 0) {
+            dispatch(appendPortCalls(portCalls[portCalls.length - 1])).then(() => {
+                if (beforeFetching < getState().cache.portCalls.length) {
+                    dispatch(bufferPortCalls);
+                }
+            })
+        }
+    }
+}
+
 export const appendPortCalls = (lastPortCall) => {
     return (dispatch, getState) => {
 
