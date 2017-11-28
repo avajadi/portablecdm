@@ -2,30 +2,6 @@
 Contributors: 
 Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
-## Current issues
-* Haven't found a nice way to debug
-* Can't search (filter) port calls when not scrolled down
-* Operations change place after update
-
-## Future updates
-* Update error message on invalid login*
-* Respond to TTA with RTA
-* Subscribe on locations
-* Update notifications
-* Enable drag and drop on favorite states
-* Maybe show current location of vessel (by MarineTraffic)
-
-## Feedback
-* Use timezones from instances
-* Show current timezone (somewhere)
-* Mirror start and endtime with latest reported statement
-* Show dates in swedish-style
-
-## Suggested updates
-* Add setting for how many port calls to cache 
-* Cache port calls in background (preferably several hundred) to improve port call filtering
-* Summary of sent message (instead of current verification) as popup
-
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
