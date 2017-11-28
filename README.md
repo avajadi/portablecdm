@@ -22,6 +22,8 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Show dates in swedish-style
 
 ## Suggested updates
+* Add setting for how many port calls to cache 
+* Cache port calls in background (preferably several hundred) to improve port call filtering
 * Summary of sent message (instead of current verification) as popup
 
 ### Important links
