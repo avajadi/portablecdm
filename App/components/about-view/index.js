@@ -54,6 +54,8 @@ export default class AboutView extends Component {
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added button to show/hide expired events. </Text>
+                    <Text>{BULLET} Added background caching of port calls for better searching </Text>
+                    <Text>{BULLET} Added setting to change maximum background caching of port calls </Text>
                     <Text>{BULLET} Small visual changes in filters menu </Text>
                     <Text>{BULLET} Fixed some issues with SeaSWIM login not working for Android and staging environment </Text>
                     <Text>{BULLET} Updated error message for code 404 </Text>
