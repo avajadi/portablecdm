@@ -128,8 +128,9 @@ class LoginKeyCloakView extends Component {
         if(!this.validateForms()) return;
 
         this.props.fetchLocations().then(() => {
-            if(this.props.error.hasError)
+            if(this.props.error.hasError) {
                 navigate('Error');
+            }
         });
 
         console.log('Logged in.');

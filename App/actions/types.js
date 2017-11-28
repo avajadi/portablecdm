@@ -60,3 +60,6 @@ export const REMOVE_FAVORITE_PORTCALL = 'remove_favorite_portcall';
 export const ADD_FAVORITE_VESSEL = 'add_favorite_vessel';
 export const REMOVE_FAVORITE_VESSEL = 'remove_favorite_vessel';
 export const CLEAR_FAVORITES = 'clear_favorites';
+
+/* ERRORS */
+export const ERR_DISPATCHED = 'dispatched';

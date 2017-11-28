@@ -48,7 +48,7 @@ function checkNotFound(result) {
   if(result.status === 404) {
     return {
       title: 'Not found',
-      description: 'Have you checked UN/LOCODE and host settings?',
+      description: 'Have you checked host settings and internet connection?',
     };  
   }
 

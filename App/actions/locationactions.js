@@ -17,12 +17,12 @@ export const fetchLocations = (locationType) => {
                 sslPinning: getCert(connection),
             })
             .then(result => {
-                console.log('Got response');
                 let err = checkResponse(result);
                 if(!err)
                     return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
+                throw new Error(types.ERR_DISPATCHED);
             })
             .then(locations => {
                 // Need to add locations for logical locations
@@ -46,14 +46,16 @@ export const fetchLocations = (locationType) => {
                 return locations;
             })
             .then(locations => {
+                console.log('Actually got locations this time');
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
-                console.log('*************');
+                console.log('********LOCATION FETCH ERROR********');
+                if (err.message === tpyes.ERR_DISPATCHED) return;
                 console.log(err);
                 dispatch({type: types.SET_ERROR, payload: {
-                    title: 'Unable to connect to the server!', 
+                    title: 'Unable to fetch locations!', 
                     description: 
-                      !err.description ? 'Have you checked the UN/LOCODE?' 
+                      !err.description ? 'Please check your internet connection.' 
                                         : err.description}});
             });
     }
