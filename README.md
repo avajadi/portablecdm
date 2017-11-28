@@ -4,6 +4,8 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
 ## Current issues
 * Haven't found a nice way to debug
+* Can't search (filter) port calls when not scrolled down
+* Operations change place after update
 
 ## Future updates
 * Update error message on invalid login*
@@ -14,7 +16,6 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Maybe show current location of vessel (by MarineTraffic)
 
 ## Feedback
-* Can't search (filter) port calls when not scrolled down
 * Use timezones from instances
 * Show current timezone (somewhere)
 * Mirror start and endtime with latest reported statement
