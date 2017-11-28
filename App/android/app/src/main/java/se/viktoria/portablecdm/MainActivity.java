@@ -16,7 +16,8 @@ public class MainActivity extends ExponentActivity {
 
   @Override
   public String publishedUrl() {
-    return "exp://exp.host/@pontusstjerna/portcdm-app";
+    return "exp://exp.host/@pontusstjerna/portcdm-app"; // TODO: Research why this stopped worked suddenly
+    //return ExponentBuildConstants.DEVELOPMENT_URL;
   }
 
   @Override

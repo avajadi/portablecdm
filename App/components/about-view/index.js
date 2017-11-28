@@ -54,6 +54,7 @@ export default class AboutView extends Component {
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added button to show/hide expired events. </Text>
+                    <Text>{BULLET} . </Text>
                 </View>
                 <Text h4>Version 1.3</Text>
                 <View style={{padding: 5}}>
