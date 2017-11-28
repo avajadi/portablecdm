@@ -195,19 +195,25 @@ const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
                             selectedBackgroundColor={colorScheme.primaryColor}
                             onPress={(index) => this.setState({selectedTimeIndex: index})}
                         />
-                    <Slider
+                    {selectedTimeIndex !== 2 && <Slider
                         value={this.state.withinValue}
+                        style={{marginLeft: 10, marginRight: 10}}
                         minimumValue={0}
                         maximumValue={72}
                         step={1}
                         onValueChange={(value) => this.setState({withinValue: value})}  
                         thumbTintColor={colorScheme.primaryColor}
-                    />
-                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.withinValue} hours</Text>
+                    />}
+                    {selectedTimeIndex !== 2 && 
+                    <Text style={{fontWeight: 'bold', paddingLeft: 10, marginBottom: 10,}}>
+                        Port calls {selectedTimeIndex == 0 ? 'arrived' : 'departured'} within {this.state.withinValue} hours
+                    </Text>
+                    }
                     <CheckBox
                         title="Don't display departed Port Calls"
+                        inputStyle={{marginTop: 20}}
                         iconRight
-                        right
+                        center
                         checked={this.state.onlyFetchActivePortCalls}
                         onPress={() => this.setState({onlyFetchActivePortCalls: !this.state.onlyFetchActivePortCalls})}
                     />

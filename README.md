@@ -3,11 +3,10 @@ Contributors:
 Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
 ## Current issues
-* Currently empty
+* Haven't found a nice way to debug
 
 ## Future updates
 * Update error message on invalid login*
-* Start local server only if user uses seaSWIM*
 * Respond to TTA with RTA
 * Subscribe on locations
 * Update notifications
@@ -15,8 +14,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Maybe show current location of vessel (by MarineTraffic)
 
 ## Feedback
-* Bug with Within-filter not working*
-* Apply filters to Favorites as well*
+* Can't search (filter) port calls when not scrolled down
 * Use timezones from instances
 * Show current timezone (somewhere)
 * Mirror start and endtime with latest reported statement
@@ -32,6 +30,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 # Developer info
 ## Build version
 ### iOS
+0. Change Expo account in .plist
 1. Targets->Build Settings->Packaging->Product Bundle Idenfifier = SET
 2. Targets->Build Settings->Packaging->Product Name = SET
 3. Targets->Info->Bundle name = SET
@@ -42,6 +41,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 7. Export->Select Ad-Hoc->Manual sign->Select correct provisioning profile->Export
 
 ### Android
+0. Change Expo account in MainActivity
 1. Change applicationId to choice in build.gradle
 
 ## Expo info
