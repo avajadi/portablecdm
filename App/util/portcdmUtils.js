@@ -3,7 +3,7 @@ import { contentTypeBug } from '../config/instances';
 export function createTokenHeaders(token, host) {
     return {
         'Authorization': `${token.tokenType} ${token.accessToken}`,
-        'Content-Type': contentTypeBug.some((x) => connection.host.includes(x)) ? 'application/json' : 'application/xml',
+        'Content-Type': contentTypeBug.some((x) => host.includes(x)) ? 'application/json' : 'application/xml',
     }
 }
 

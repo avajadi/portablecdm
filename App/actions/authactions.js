@@ -3,11 +3,11 @@ import constants from '../config/constants';
 import { Alert, Platform } from 'react-native';
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
-import isStaging from '../config/instances';
+import { isStaging } from '../config/instances';
 
 export const loginKeycloak = (urlPayload) => {
     return (dispatch, getState) => { 
-        let consts = constants(isStaging.some((x) => getState().settings.host.includes(x)));
+        let consts = constants(isStaging.some((x) => getState().settings.connection.host.includes(x)));
         console.log('Authenticating...');
         const [, queryString] = urlPayload.split('#');
         const responseObj = queryString.split('&').reduce((map, pair) => {

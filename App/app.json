@@ -13,7 +13,7 @@
       "publishManifestPath": "ios/portablecdm/Supporting/shell-app-manifest.json"
     },
     "android": {
-      "package": "se.viktoria.portablecdmstaging"
+      "package": "se.viktoria.portablecdm"
     },
     "loading": {
       "hideExponentText": true,

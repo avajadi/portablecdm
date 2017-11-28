@@ -6,9 +6,10 @@ import pinch from 'react-native-pinch';
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
         dispatch({type: types.FETCH_LOCATIONS});
-        const connection = getState().settings.connection;
+        let connection = getState().settings.connection;
+        console.log('Connection: ' + JSON.stringify(connection));
         const token = getState().settings.token;
-        console.log('Requesting locations with pinch....');
+        console.log('Requesting locations...');
         return pinch.fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
                 method: 'GET',
@@ -16,7 +17,7 @@ export const fetchLocations = (locationType) => {
                 sslPinning: getCert(connection),
             })
             .then(result => {
-            
+                console.log('Got response');
                 let err = checkResponse(result);
                 if(!err)
                     return JSON.parse(result.bodyString);

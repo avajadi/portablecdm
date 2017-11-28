@@ -97,6 +97,8 @@ class LoginKeyCloakView extends Component {
     }
 
     onLoginPress() {
+        // This is for the keycloak login
+        this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
         this.props.startLocalServer().then(() => 
             WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI));
     }
@@ -119,7 +121,6 @@ class LoginKeyCloakView extends Component {
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changePortUnlocode(this.state.unlocode);
-        this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
         this.props.changeUser(this.state.legacyLogin.username, this.state.legacyLogin.password);
         this.props.changePortSetting(this.state.port);
         this.setState({host: this.reformatHostHttp(this.state.host)});
@@ -130,6 +131,8 @@ class LoginKeyCloakView extends Component {
             if(this.props.error.hasError)
                 navigate('Error');
         });
+
+        console.log('Logged in.');
 
         navigate('Application');
     }
