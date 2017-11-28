@@ -14,6 +14,7 @@ export const FETCH_PORTCALL_STRUCTURE_FAILURE = 'fetch_portcall_structure_failur
 export const CACHE_PORTCALLS = 'cache_portcalls';
 export const CACHE_UPDATE = 'cache_update';
 export const CACHE_CLEAR = 'cache_clear';
+export const CACHE_CHANGE_LIMIT = 'cache_change_limit';
 export const SEND_PORTCALL = 'send_portcall';
 export const SEND_PORTCALL_SUCCESS = 'send_portcall_success';
 export const SEND_PORTCALL_FAILURE = 'send_portcall_failure';
