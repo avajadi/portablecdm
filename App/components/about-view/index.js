@@ -54,8 +54,9 @@ export default class AboutView extends Component {
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added button to show/hide expired events. </Text>
+                    <Text>{BULLET} Small visual changes in filters menu </Text>
                     <Text>{BULLET} Fixed some issues with SeaSWIM login not working for Android and staging environment </Text>
-                    <Text>{BULLET} Updated error message for code 404. </Text>
+                    <Text>{BULLET} Updated error message for code 404 </Text>
                 </View>
                 <Text h4>Version 1.3</Text>
                 <View style={{padding: 5}}>
