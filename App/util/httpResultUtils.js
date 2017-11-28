@@ -37,7 +37,7 @@ function checkAuthorized(result) {
     if(result.status === 401) {
         return {
            title: 'Unauthorized',
-           description: 'Access denied.'
+           description: 'Access denied. Invalid username or password.'
         };
     }
 

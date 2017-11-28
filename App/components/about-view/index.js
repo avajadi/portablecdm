@@ -58,6 +58,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Added setting to change maximum background caching of port calls </Text>
                     <Text>{BULLET} Small visual changes in filters menu </Text>
                     <Text>{BULLET} Fixed some issues with SeaSWIM login not working for Android and staging environment </Text>
+                    <Text>{BULLET} Updated username/password error message. </Text>
                     <Text>{BULLET} Updated error message for code 404 </Text>
                 </View>
                 <Text h4>Version 1.3</Text>

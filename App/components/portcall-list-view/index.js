@@ -80,7 +80,7 @@ class PortCallList extends Component {
         const {navigation, showLoadingIcon, portCalls, selectPortCall} = this.props;
         const {navigate} = navigation;
         const {searchTerm} = this.state;
-
+        
         return(
             <View style={styles.container}>
                 <TopHeader title="Port Calls" navigation={this.props.navigation} firstPage/>

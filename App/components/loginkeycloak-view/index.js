@@ -117,7 +117,7 @@ class LoginKeyCloakView extends Component {
         });
     }
 
-    loginConfirmed() {  
+    async loginConfirmed() {  
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
@@ -129,7 +129,9 @@ class LoginKeyCloakView extends Component {
         if(!this.validateForms()) return;
 
         this.props.fetchLocations().then(() => {
+            console.log('fetched locations');
             if(this.props.error.hasError) {
+                console.log('Inside if');
                 navigate('Error');
             }
         });
@@ -248,9 +250,9 @@ class LoginKeyCloakView extends Component {
                             />
                             <View style={styles.containers.blank}/>
                             <TouchableHighlight onPress={this.loginConfirmed}>
-                            <View style={styles.containers.subContainer}>
-                                <Text h3 style={styles.fonts.white}>LOGIN</Text>
-                            </View>
+                                <View style={styles.containers.subContainer}>
+                                    <Text h3 style={styles.fonts.white}>LOGIN</Text>
+                                </View>
                             </TouchableHighlight>
                         </View>
                         {/*this.renderLogos()*/}

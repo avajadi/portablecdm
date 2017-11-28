@@ -22,6 +22,7 @@ export const fetchLocations = (locationType) => {
                     return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
+            
                 throw new Error(types.ERR_DISPATCHED);
             })
             .then(locations => {
@@ -46,17 +47,16 @@ export const fetchLocations = (locationType) => {
                 return locations;
             })
             .then(locations => {
-                console.log('Actually got locations this time');
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
                 console.log('********LOCATION FETCH ERROR********');
-                if (err.message === tpyes.ERR_DISPATCHED) return;
-                console.log(err);
-                dispatch({type: types.SET_ERROR, payload: {
-                    title: 'Unable to fetch locations!', 
-                    description: 
-                      !err.description ? 'Please check your internet connection.' 
-                                        : err.description}});
+                if (err.message !== types.ERR_DISPATCHED) {
+                    dispatch({type: types.SET_ERROR, payload: {
+                        title: 'Unable to fetch locations!', 
+                        description: 
+                          !err.description ? 'Please check your internet connection.' 
+                                            : err.description}});
+                }
             });
     }
 }
