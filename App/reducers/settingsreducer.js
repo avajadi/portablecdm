@@ -22,8 +22,8 @@ import{ APP_VERSION } from '../config/version';
 
 const INITIAL_STATE = {
   connection: {
-    host: 'https://',
-    port: '8443',
+    host: 'http://',
+    port: '8080',
     username: '',
     password: '',
     unlocode: ''
