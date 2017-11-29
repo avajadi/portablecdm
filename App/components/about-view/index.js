@@ -51,6 +51,16 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Added button to show/hide expired events. </Text>
+                    <Text>{BULLET} Added background caching of port calls for better searching </Text>
+                    <Text>{BULLET} Added setting to change maximum background caching of port calls </Text>
+                    <Text>{BULLET} Small visual changes in filters menu </Text>
+                    <Text>{BULLET} Fixed some issues with SeaSWIM login not working for Android and staging environment </Text>
+                    <Text>{BULLET} Updated username/password error message. </Text>
+                    <Text>{BULLET} Updated error message for code 404 </Text>
+                </View>
                 <Text h4>Version 1.3</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added feature to create port calls from scratch </Text>

@@ -11,3 +11,10 @@ export const clearCache = () => {
         // });
     };
 }
+
+export const changeCacheLimit = (limit) => {
+    return {
+        type: types.CACHE_CHANGE_LIMIT,
+        payload: limit,
+    };
+}

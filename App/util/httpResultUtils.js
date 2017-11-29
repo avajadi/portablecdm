@@ -37,7 +37,7 @@ function checkAuthorized(result) {
     if(result.status === 401) {
         return {
            title: 'Unauthorized',
-           description: 'Access denied.'
+           description: 'Access denied. Invalid username or password.'
         };
     }
 
@@ -48,7 +48,7 @@ function checkNotFound(result) {
   if(result.status === 404) {
     return {
       title: 'Not found',
-      description: 'Have you checked UN/LOCODE and host settings?',
+      description: 'Have you checked host settings and internet connection?',
     };  
   }
 

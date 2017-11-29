@@ -6,6 +6,7 @@ import {
     toggleFavoritePortCall,
     toggleFavoriteVessel,
     appendPortCalls,
+    bufferPortCalls,
  } from '../../actions';
 
 import {
@@ -38,14 +39,25 @@ class PortCallList extends Component {
 
     componentWillMount() {
         this.loadPortCalls = this.loadPortCalls.bind(this);
-        this.loadPortCalls();
+        this._appendPortCalls = this._appendPortCalls.bind(this);
+        this.loadPortCalls()
+            .then(this.props.bufferPortCalls);
+
     }
 
     loadPortCalls() {
-        this.props.updatePortCalls().then(() => {
-            if(this.props.error.hasError)
+        return this.props.updatePortCalls().then(() => {
+            if(this.props.error.hasError) {
                 navigate('Error');
+            }
         });
+    }
+
+    _appendPortCalls() {
+        let { portCalls, appendPortCalls, } = this.props;
+        if (portCalls.length > 0) {
+            return appendPortCalls(portCalls[portCalls.length - 1]);
+        }
     }
 
     checkBottom(event){
@@ -57,10 +69,7 @@ class PortCallList extends Component {
              this.setState({numLoadedPortCalls: numLoaded + 20});
              let { portCalls, appendPortCalls } = this.props;
              if(numLoaded >= portCalls.length) {
-                console.log('Need to fetch more port calls!');
-                // TODO: What if the ordering is the opposite?
-                let lastPortCall = portCalls[portCalls.length - 1];
-                appendPortCalls(lastPortCall);
+                this._appendPortCalls();
              } else {
                  console.log('Loading more local port calls. Showing ' + numLoaded + ' of ' + portCalls.length + ' port calls.');
              }
@@ -71,7 +80,7 @@ class PortCallList extends Component {
         const {navigation, showLoadingIcon, portCalls, selectPortCall} = this.props;
         const {navigate} = navigation;
         const {searchTerm} = this.state;
-
+        
         return(
             <View style={styles.container}>
                 <TopHeader title="Port Calls" navigation={this.props.navigation} firstPage/>
@@ -257,6 +266,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         portCalls: state.cache.portCalls,
+        cacheLimit: state.cache.limit,
         favoritePortCalls: state.favorites.portCalls,
         favoriteVessels: state.favorites.vessels,
         showLoadingIcon: state.portCalls.portCallsAreLoading,
@@ -271,5 +281,6 @@ export default connect(mapStateToProps, {
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
+    bufferPortCalls
 })(PortCallList);
 

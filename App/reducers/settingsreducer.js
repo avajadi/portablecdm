@@ -13,6 +13,7 @@ import {
   SETTINGS_CHANGE_FETCH_RELIABILITY,
   SETTINGS_CHANGE_PORT_UNLOCODE,
   SETTINGS_CHANGE_TOKEN,
+  SETTINGS_CHANGE_CACHE_LIMIT,
   SETTINGS_UPDATE_VERSION,
   SETTINGS_CLEAR,
 } from '../actions/types';
@@ -21,13 +22,12 @@ import{ APP_VERSION } from '../config/version';
 
 const INITIAL_STATE = {
   connection: {
-    host: 'https://',
-    port: '8443',
+    host: 'http://',
+    port: '8080',
     username: '',
     password: '',
     unlocode: ''
   },
-  maxPortCallsFetched: 100,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*

@@ -88,8 +88,6 @@ class LoginKeyCloakView extends Component {
 
         Linking.addEventListener('url', this.handleMaritimeRedirect);
 
-        this.props.startLocalServer();
-
         if (this.props.checkNewVersion()) {
             Alert.alert(
                 'New version',
@@ -98,12 +96,11 @@ class LoginKeyCloakView extends Component {
         }
     }
 
-    componentWillUnmount() {
-        this.props.stopLocalServer();
-    }
-
-    onLoginPress = async () => {
-        let result = await WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI);
+    onLoginPress() {
+        // This is for the keycloak login
+        this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
+        this.props.startLocalServer().then(() => 
+            WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI));
     }
 
     handleMaritimeRedirect = async event => {
@@ -113,16 +110,18 @@ class LoginKeyCloakView extends Component {
         WebBrowser.dismissBrowser();
         Linking.removeEventListener('url', this.handleMaritimeRedirect);
         this.props.loginKeycloak(event.url).then((result) => {
-            if(result) this.loginConfirmed();
+            if(result) {
+                this.props.stopLocalServer();
+                this.loginConfirmed();
+            }
         });
     }
 
-    loginConfirmed() {  
-        this.props.stopLocalServer();
+    async loginConfirmed() {  
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
-        this.props.changePortUnlocode(this.state.unlocode);
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
+        this.props.changePortUnlocode(this.state.unlocode);
         this.props.changeUser(this.state.legacyLogin.username, this.state.legacyLogin.password);
         this.props.changePortSetting(this.state.port);
         this.setState({host: this.reformatHostHttp(this.state.host)});
@@ -130,9 +129,14 @@ class LoginKeyCloakView extends Component {
         if(!this.validateForms()) return;
 
         this.props.fetchLocations().then(() => {
-            if(this.props.error.hasError)
+            console.log('fetched locations');
+            if(this.props.error.hasError) {
+                console.log('Inside if');
                 navigate('Error');
+            }
         });
+
+        console.log('Logged in.');
 
         navigate('Application');
     }
@@ -246,9 +250,9 @@ class LoginKeyCloakView extends Component {
                             />
                             <View style={styles.containers.blank}/>
                             <TouchableHighlight onPress={this.loginConfirmed}>
-                            <View style={styles.containers.subContainer}>
-                                <Text h3 style={styles.fonts.white}>LOGIN</Text>
-                            </View>
+                                <View style={styles.containers.subContainer}>
+                                    <Text h3 style={styles.fonts.white}>LOGIN</Text>
+                                </View>
                             </TouchableHighlight>
                         </View>
                         {/*this.renderLogos()*/}
@@ -296,7 +300,7 @@ class LoginKeyCloakView extends Component {
                             </View>
                         </View>
                         <View style={styles.containers.blank}/>
-                        <TouchableHighlight onPress={this.onLoginPress} onLongPress={() => {
+                        <TouchableHighlight onPress={this.onLoginPress.bind(this)} onLongPress={() => {
                                 this.validateForms();
                                 this.setState({...this.state, legacyLogin: {...this.state.legacyLogin, enabled: true}});
                             }}>

@@ -6,9 +6,10 @@ import pinch from 'react-native-pinch';
 export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
         dispatch({type: types.FETCH_LOCATIONS});
-        const connection = getState().settings.connection;
+        let connection = getState().settings.connection;
+        console.log('Connection: ' + JSON.stringify(connection));
         const token = getState().settings.token;
-        console.log('Requesting locations with pinch....');
+        console.log('Requesting locations...');
         return pinch.fetch(`${connection.host}:${connection.port}/location-registry/locations`,
             {
                 method: 'GET',
@@ -16,12 +17,13 @@ export const fetchLocations = (locationType) => {
                 sslPinning: getCert(connection),
             })
             .then(result => {
-            
                 let err = checkResponse(result);
                 if(!err)
                     return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
+            
+                throw new Error(types.ERR_DISPATCHED);
             })
             .then(locations => {
                 // Need to add locations for logical locations
@@ -47,13 +49,14 @@ export const fetchLocations = (locationType) => {
             .then(locations => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
-                console.log('*************');
-                console.log(err);
-                dispatch({type: types.SET_ERROR, payload: {
-                    title: 'Unable to connect to the server!', 
-                    description: 
-                      !err.description ? 'Have you checked the UN/LOCODE?' 
-                                        : err.description}});
+                console.log('********LOCATION FETCH ERROR********');
+                if (err.message !== types.ERR_DISPATCHED) {
+                    dispatch({type: types.SET_ERROR, payload: {
+                        title: 'Unable to fetch locations!', 
+                        description: 
+                          !err.description ? 'Please check your internet connection.' 
+                                            : err.description}});
+                }
             });
     }
 }
