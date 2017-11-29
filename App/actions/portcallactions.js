@@ -26,7 +26,7 @@ export const bufferPortCalls = () => {
         if (portCalls.length < limit && portCalls.length > 0) {
             dispatch(appendPortCalls(portCalls[portCalls.length - 1])).then(() => {
                 if (beforeFetching < getState().cache.portCalls.length) {
-                    dispatch(bufferPortCalls);
+                    dispatch(bufferPortCalls());
                 }
             })
         }
