@@ -56,6 +56,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Matched start and end time of operations to last reported statement </Text>
                     <Text>{BULLET} Improved searching for port calls </Text>
                     <Text>{BULLET} Improved searching for states (searching for "berth" now shows berths) </Text>
+                    <Text>{BULLET} Changed all time occurences to be language dependent </Text>
                     <Text>{BULLET} Fixed an issue with cache not being persistent between sessions</Text>
                 </View>                
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
