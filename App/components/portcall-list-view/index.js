@@ -217,7 +217,7 @@ class PortCallList extends Component {
 
     search(portCalls, searchTerm) {
         return portCalls.filter(portCall => {
-            return portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()) || 
+            return portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) || 
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
             portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
         }).sort((a,b) => this.sortFilters(a,b))
