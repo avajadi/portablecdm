@@ -53,6 +53,7 @@ export default class AboutView extends Component {
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>                 
                 <View style={{padding: 5}}>
+                    <Text>{BULLET} Matched start and end time of operations to last reported statement </Text>
                     <Text>{BULLET} Fixed an issue with the cache not being persistent between sessions</Text>
                 </View>                
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>

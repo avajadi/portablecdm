@@ -84,7 +84,7 @@ class LoginKeyCloakView extends Component {
             return;
         }
 
-        if (__DEV__ && !!this.state.legacyLogin.usernames) {
+        if (__DEV__ && !!this.state.legacyLogin.username) {
             this.loginConfirmed();
         }
 
