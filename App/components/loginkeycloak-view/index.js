@@ -151,7 +151,7 @@ class LoginKeyCloakView extends Component {
 
     reformatHostHttp(rawHost) {
         if(!rawHost.startsWith("http"))
-          return "https://" + rawHost;
+          return "http://" + rawHost;
         
         return rawHost;
       }

@@ -51,6 +51,10 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>                 
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Fixed an issue with the slider for cache limit not being persistent </Text>
+                </View>                
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added button to show/hide expired events. </Text>
