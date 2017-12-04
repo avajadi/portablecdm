@@ -84,6 +84,9 @@ class LoginKeyCloakView extends Component {
             return;
         }
 
+        if (__DEV__ && !!this.state.legacyLogin.usernames) {
+            this.loginConfirmed();
+        }
 
 
         Linking.addEventListener('url', this.handleMaritimeRedirect);
