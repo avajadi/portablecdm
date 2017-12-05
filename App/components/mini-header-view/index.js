@@ -5,7 +5,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { 
+import {
   Text,
   Icon,
 } from 'react-native-elements';
@@ -25,7 +25,7 @@ export default class MiniHeader extends Component {
           onPress={leftIconFunction}
         />
         <Text h4 style={styles.headerText}>{title}</Text>
-        { !hideRightIcon && 
+        { !hideRightIcon &&
           <Icon
             name="check-circle"
             color='white'

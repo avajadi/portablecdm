@@ -42,7 +42,10 @@ class PortCallList extends Component {
         this._appendPortCalls = this._appendPortCalls.bind(this);
         this.loadPortCalls()
             .then(this.props.bufferPortCalls);
+    }
 
+    componentDidMount() {
+       
     }
 
     loadPortCalls() {
@@ -217,11 +220,11 @@ class PortCallList extends Component {
 
     search(portCalls, searchTerm) {
         return portCalls.filter(portCall => {
-            return portCall.vessel.name.toUpperCase().startsWith(searchTerm.toUpperCase()) || 
+            return portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) || 
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
             portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
         }).sort((a,b) => this.sortFilters(a,b))
-        .slice(0, this.state.numLoadedPortCalls);        
+        .slice(0, this.state.numLoadedPortCalls);
     }
 }
 

@@ -84,8 +84,20 @@ class OperationView extends Component {
       endTimeDisplayStyle = styles.timeDisplay;
     }
 
-    let startTime = new Date(operation.startTime);
-    let endTime = new Date(operation.endTime);
+    /* THIS IS A DEVIATION FROM BACKEND */
+    let firstStatement = Object.keys(reportedStates)
+    .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
+    .sort((a,b) => a.time < b.time ? -1 : 1)[0];
+
+    let lastStatement = Object.keys(reportedStates)
+    .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
+    .sort((a, b) => a.time > b.time ? -1 : 1)[0];
+
+
+    let startTime = new Date(!!operation.startTime ? firstStatement.time : null);
+    let endTime = new Date(!!operation.endTime ? lastStatement.time : null);
+
+    
     let currentTime = new Date();
     let renderRedLine = startTime > 0 && currentTime >= startTime && currentTime <= endTime;
     let redlineStyle = this._calculateRedline(startTime, endTime);
@@ -104,12 +116,12 @@ class OperationView extends Component {
                 this.setState({dimensions: {...this.state.dimensions, timeContainer: event.nativeEvent.layout}});
         }}>
             <Text style={styles.dateDisplay}>{getDateString(startTime)}</Text>
-            <Text style={startTimeDisplayStyle}>{getTimeString(startTime)}</Text>
+            <Text style={startTimeDisplayStyle}>{getTimeString(startTime).slice(0,5)}</Text>
           </View>
           {/*End Time*/}
           <View style={[styles.timeDisplayContainer, {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colorScheme.tertiaryColor}]}>
             <Text style={styles.dateDisplay}>{getDateString(endTime)}</Text>
-            <Text style={endTimeDisplayStyle }>{getTimeString(endTime)}</Text>
+            <Text style={endTimeDisplayStyle }>{getTimeString(endTime).slice(0,5)}</Text>
           </View>
         </View>
 
@@ -164,15 +176,7 @@ class OperationView extends Component {
               {
                 Object.keys(reportedStates)
                   .map((stateDef) => this.findMostRelevantStatement(reportedStates[stateDef]))
-                  .sort((a, b) => {
-                    const aTime = new Date(a.time);
-                    const bTime = new Date(b.time);
-
-                    if(aTime < bTime) return -1;
-                    if(aTime > bTime) return 1;
-                    else return 0;
-
-                  }) 
+                  .sort((a, b) => a.time < b.time ? -1 : 1) 
                   .map((mostRelevantStatement) => this.renderStateRow(operation, 
                                                         mostRelevantStatement, 
                                                         reportedStates[mostRelevantStatement.stateDefinition],
@@ -265,7 +269,7 @@ class OperationView extends Component {
                     {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
                   </View>
                   <View style= {{flexDirection: 'row'}} >
-                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
+                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{getTimeString(new Date(stateToDisplay.time))} </Text>
                       {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
                                                                     <Text style={styles.actualText}>A</Text>
                                                                </View>

@@ -41,6 +41,9 @@ import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils'
 import { getDateTimeString } from '../../util/timeservices';
 import { hasComment } from '../../config/instances';
 
+
+let navBackTimer = null;
+
 class SendPortcall extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +77,7 @@ class SendPortcall extends Component {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
     const { vessel, portCall, getState, sendPortCall, sendingState, navigation } = this.props;
+    const { navigate } = navigation;
     const vesselId = vessel.imo;
     const { portCallId } = portCall;
     const { atLocation, fromLocation, toLocation, } = sendingState;
@@ -105,6 +109,10 @@ class SendPortcall extends Component {
                         );
                     } else {
                         this.refs._scrollView.scrollToEnd();
+                        navBackTimer = setTimeout(() => {
+                            this.props.clearReportResult();
+                            navigate('TimeLineDetails');
+                        }, 1000);
                     }
                 });          
             }}
@@ -173,6 +181,7 @@ class SendPortcall extends Component {
 
   componentWillUnmount() {
     this.props.clearReportResult();
+    clearTimeout(navBackTimer);
   }
 
   getSendButtonEnabled() {

@@ -45,7 +45,7 @@ class SelectFavoriteState extends Component {
   }
 
   search(states, searchTerm) {
-    return states.filter(state => state.Name.toUpperCase().startsWith(searchTerm.toUpperCase()));        
+    return states.filter(state => state.Name.toUpperCase().includes(searchTerm.toUpperCase()));        
   }
 
   render() {
