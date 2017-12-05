@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import {Text, Dimensions} from 'react-native';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
-import SendPortCall from '../components/send-portcall-view';
-import StateList    from '../components/state-list-view';
-import TimeLineView from '../components/timeline-view';
-import PortCallList from '../components/portcall-list-view';
-import FilterMenu   from '../components/portcall-list-view/sections/filterMenu';
-import StateDetails from '../components/timeline-view/sections/statedetails';
-import VesselInfo   from '../components/vessel-info-view';
-import Settings     from '../components/settings-view';
-import LoginKeyCloakView from '../components/loginkeycloak-view';
-import SelectFavoriteState from '../components/select-favorite-state-view';
-import VesselLists from '../components/vessel-lists-view';
-import SideMenu     from '../components/side-menu-view';
-import AboutView    from '../components/about-view';
-import ErrorView from '../components/error-view';
+import SendPortCall         from '../components/send-portcall-view';
+import StateList            from '../components/state-list-view';
+import TimeLineView         from '../components/timeline-view';
+import PortCallList         from '../components/portcall-list-view';
+import FilterMenu           from '../components/portcall-list-view/sections/filterMenu';
+import StateDetails         from '../components/timeline-view/sections/statedetails';
+import VesselInfo           from '../components/vessel-info-view';
+import Settings             from '../components/settings-view';
+import LoginKeyCloakView    from '../components/loginkeycloak-view';
+import SelectFavoriteState  from '../components/select-favorite-state-view';
+import VesselLists          from '../components/vessel-lists-view';
+import SideMenu             from '../components/side-menu-view';
+import AboutView            from '../components/about-view';
+import ErrorView            from '../components/error-view';
 
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
