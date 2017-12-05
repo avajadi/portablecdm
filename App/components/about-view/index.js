@@ -51,14 +51,15 @@ export default class AboutView extends Component {
             }
             <ScrollView style={{padding: 10}}>
                 <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
-                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>                 
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Matched start and end time of operations to last reported statement </Text>
                     <Text>{BULLET} Improved searching for port calls </Text>
                     <Text>{BULLET} Changed all time and date occurences to be language dependent </Text>
                     <Text>{BULLET} Improved searching for states (searching for "berth" now shows berths) </Text>
                     <Text>{BULLET} Fixed an issue with cache not being persistent between sessions</Text>
-                </View>                
+                    <Text>{BULLET} Back arrows shows in top menu on Android as well as iOS</Text>
+                </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Added button to show/hide expired events. </Text>
@@ -160,14 +161,14 @@ export default class AboutView extends Component {
           {/* Top section, with logos and app name */}
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 10, marginLeft: 10, marginTop: 15}}>
             <Image
-              source={require('../../assets/stmLogo.jpg')} 
+              source={require('../../assets/stmLogo.jpg')}
               style={{height: 50, width: 92}}
-            /> 
+            />
             <View style={{flexDirection: 'column'}}>
               <Text h4><Text style={{fontWeight: 'bold'}}>Port</Text><Text style={{fontWeight: 'normal'}}>able</Text>CDM</Text>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{fontSize: 12}}>Version {APP_VERSION}</Text>
-                <Text 
+                <Text
                     style={{color: 'blue', textDecorationLine: 'underline', paddingLeft: 7, fontSize: 12}}
                     onPress={() => this.setState({showChangeLog: true})}
                 >
@@ -181,13 +182,13 @@ export default class AboutView extends Component {
             />
           </View>
           <Text style={styles.infoText}>
-            PortableCDM, a mobile App is to be used on smartphones and tablets for port coordination, developed for Port Collaborative Decision Making (PortCDM) - a concept within the STM Validation Project (2015-2018 - an EU project Co-financed by the European Union). 
+            PortableCDM, a mobile App is to be used on smartphones and tablets for port coordination, developed for Port Collaborative Decision Making (PortCDM) - a concept within the STM Validation Project (2015-2018 - an EU project Co-financed by the European Union).
           </Text>
           <Text style={styles.infoText}>
-            PortableCDM gives the users an easy access to monitor and update forthcoming and present port calls in a port. By selecting a port call the users can report new timestamps (Estimates and Actuals) to selected port calls. 
+            PortableCDM gives the users an easy access to monitor and update forthcoming and present port calls in a port. By selecting a port call the users can report new timestamps (Estimates and Actuals) to selected port calls.
           </Text>
           <Text style={styles.infoText}>
-            To enhance the possibility to coordinate, the users of PortableCDM are presented with a common situational awareness of the port calls, displayed as a detailed timeline that also presents reliability of different time stamps, warnings, and on-time probability for different time stamps. 
+            To enhance the possibility to coordinate, the users of PortableCDM are presented with a common situational awareness of the port calls, displayed as a detailed timeline that also presents reliability of different time stamps, warnings, and on-time probability for different time stamps.
           </Text>
           <Text style={styles.infoText}>
             PortableCDM require connectivity to PortCDM infrastructure implemented in the port.
@@ -217,14 +218,14 @@ const styles = StyleSheet.create({
     //backgroundColor: colorScheme.primaryColor,
     marginBottom: 10,
     marginTop: 50,
-    borderColor: colorScheme.primaryColor, 
+    borderColor: colorScheme.primaryColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
   },
   infoText: {
-    marginLeft: 10, 
-    marginRight: 10, 
-    color: colorScheme.quaternaryTextColor, 
+    marginLeft: 10,
+    marginRight: 10,
+    color: colorScheme.quaternaryTextColor,
     marginTop: 4
   }
 });

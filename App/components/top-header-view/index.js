@@ -5,7 +5,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { 
+import {
   Text,
   Icon,
   Button,
@@ -14,7 +14,7 @@ import {
 
 import colorScheme from '../../config/colors';
 
-// Class showing the first header. The header should later adjust to other pages. 
+// Class showing the first header. The header should later adjust to other pages.
 export default class TopHeader extends Component {
 
   render() {
@@ -24,42 +24,42 @@ export default class TopHeader extends Component {
       <View >
         <View style={styles.container}>
           {/* On the landing page on IOS, and all pages on android we want to show a meny icon */}
-          {(firstPage || Platform.OS === 'android') && 
+          {(firstPage) &&
           <Icon
             name= 'menu'
             color= {colorScheme.primaryContainerColor}
             size= {50}
             underlayColor='transparent'
             onPress={() => this.props.navigation.navigate('DrawerOpen')}
-          /> 
+          />
           }
           {/* But on all other pages on IOS, we want to show a back button  */}
-          {(!firstPage && Platform.OS === 'ios') &&
+          {(!firstPage) &&
           <Icon
             name= 'arrow-back'
             color= {colorScheme.primaryContainerColor}
             size= {50}
             underlayColor='transparent'
             onPress={() => { this.props.navigation.goBack()}}
-          /> 
+          />
           }
-          {(!!leftIcons && !!leftIcons.first) && 
+          {(!!leftIcons && !!leftIcons.first) &&
             <Icon
                 name={leftIcons.first.name}
                 color={leftIcons.first.color}
                 onPress={leftIcons.first.onPress}
                 size={30}
             />}
-          {(!!leftIcons && !!leftIcons.second) && 
+          {(!!leftIcons && !!leftIcons.second) &&
             <Icon
                 name={leftIcons.second.name}
                 color={leftIcons.second.color}
                 onPress={leftIcons.second.onPress}
                 size={30}
             />}
-          <Text 
-            style= {styles.headerText} 
-            h4 
+          <Text
+            style= {styles.headerText}
+            h4
           >
           {title}
           </Text>
@@ -104,7 +104,7 @@ export default class TopHeader extends Component {
     );
   }
 }
-// 
+//
 const styles = StyleSheet.create({
   container: {
     paddingTop: 30,

@@ -36,7 +36,7 @@ import {
     loginKeycloak,
     removeError,
     startLocalServer,
-    stopLocalServer, 
+    stopLocalServer,
   } from '../../actions';
 
 import colorScheme from '../../config/colors';
@@ -102,7 +102,7 @@ class LoginKeyCloakView extends Component {
     onLoginPress() {
         // This is for the keycloak login
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
-        this.props.startLocalServer().then(() => 
+        this.props.startLocalServer().then(() =>
             WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI));
     }
 
@@ -120,7 +120,7 @@ class LoginKeyCloakView extends Component {
         });
     }
 
-    async loginConfirmed() {  
+    async loginConfirmed() {
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
@@ -155,7 +155,7 @@ class LoginKeyCloakView extends Component {
     reformatHostHttp(rawHost) {
         if(!rawHost.startsWith("http"))
           return "http://" + rawHost;
-        
+
         return rawHost;
       }
 
@@ -198,7 +198,7 @@ class LoginKeyCloakView extends Component {
     renderLogos() {
         return (
             <View style={{flex: 0.4, alignItems: 'center'}}>
-            <View style={[styles.containers.centralizer,styles.containers.flow]}> 
+            <View style={[styles.containers.centralizer,styles.containers.flow]}>
                 <Image source={require('../../assets/stmLogo.jpg')} style={styles.images.logos.stm}/>
                 <Image source={require('../../assets/riseLogo.png')} style={styles.images.logos.rise}/>
             </View>
@@ -221,7 +221,6 @@ class LoginKeyCloakView extends Component {
                         visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
                         onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
                         >
-                        {(Platform.OS === 'ios') &&
                         <View style={{flexDirection: 'row'}}>
                             <Icon
                                 name= 'arrow-back'
@@ -232,7 +231,6 @@ class LoginKeyCloakView extends Component {
                                 onPress={() => { this.setState({legacyLogin: {enabled: false}})}}
                             />
                         </View>
-                        }
                         <View style={styles.containers.centralizer}>
                             <Text h3 style={{fontWeight: 'normal'}}>Legacy Login</Text>
                             <View style={styles.containers.blank}/>
@@ -262,7 +260,7 @@ class LoginKeyCloakView extends Component {
                     </Modal>
                     <View style={styles.containers.centralizer}>
                         <Text h3>
-                        <Text style={{fontWeight: 'normal'}}>Welcome to </Text> 
+                        <Text style={{fontWeight: 'normal'}}>Welcome to </Text>
                         <Text style={{fontWeight: 'bold'}}>Port</Text>
                         <Text style={{fontWeight: 'normal'}}>able</Text>CDM
                         </Text>
@@ -281,17 +279,17 @@ class LoginKeyCloakView extends Component {
                                 <View>
                                     <FormLabel>Host: </FormLabel>
                                     <FormInput
-                                        inputStyle={{width: window.width * 0.6, paddingRight: window.width * 0.1}} 
+                                        inputStyle={{width: window.width * 0.6, paddingRight: window.width * 0.1}}
                                         autoCorrect={false}
                                         placeholder="http://example.com"
-                                        value={this.state.host} 
+                                        value={this.state.host}
                                         onChangeText={(text) => this.setState({host: text})}
                                         />
                                     {this.renderInvalidHost()}
                                 </View>
                                 <View>
                                     <FormLabel>Port: </FormLabel>
-                                    <FormInput 
+                                    <FormInput
                                         inputStyle={{width: window.width * 0.2}}
                                         autoCorrect={false}
                                         keyboardType = 'numeric'
@@ -326,16 +324,16 @@ function mapStateToProps(state) {
     }
   }
 
-export default connect(mapStateToProps, { 
-        stopLocalServer, 
-        startLocalServer, 
-        removeError, 
-        loginKeycloak, 
-        changeFetchReliability, 
-        fetchLocations, 
-        changeHostSetting, 
-        changePortSetting, 
-        changeUser, 
+export default connect(mapStateToProps, {
+        stopLocalServer,
+        startLocalServer,
+        removeError,
+        loginKeycloak,
+        changeFetchReliability,
+        fetchLocations,
+        changeHostSetting,
+        changePortSetting,
+        changeUser,
         changePortUnlocode,
         checkNewVersion,
     })(LoginKeyCloakView);
