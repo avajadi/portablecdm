@@ -42,7 +42,10 @@ class PortCallList extends Component {
         this._appendPortCalls = this._appendPortCalls.bind(this);
         this.loadPortCalls()
             .then(this.props.bufferPortCalls);
+    }
 
+    componentDidMount() {
+       
     }
 
     loadPortCalls() {

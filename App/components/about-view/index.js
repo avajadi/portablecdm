@@ -56,6 +56,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Matched start and end time of operations to last reported statement </Text>
                     <Text>{BULLET} Improved searching for port calls </Text>
                     <Text>{BULLET} Changed all time and date occurences to be language dependent </Text>
+                    <Text>{BULLET} Automatic navigation back to TimeLine after submitted timestamp</Text>
                     <Text>{BULLET} Improved searching for states (searching for "berth" now shows berths) </Text>
                     <Text>{BULLET} Fixed an issue with cache not being persistent between sessions</Text>
                     <Text>{BULLET} Back arrows shows in top menu on Android as well as iOS</Text>

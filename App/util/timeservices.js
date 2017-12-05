@@ -15,8 +15,6 @@ export function getDateString(date) {
     
     let reference = date.toLocaleDateString();
 
-    console.log('Reference: ' + reference);
-
     if (reference.includes('-') || 
        (reference.split(/\//g)[0] === ('0' + onlyDay).slice(-2) &&
         reference.split(/\//g)[1] === ('0' + onlyMonth).slice(-2))) { // Swedish style!
