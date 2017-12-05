@@ -12,7 +12,14 @@ export function getDateString(date) {
     let onlyYear = date.getFullYear();
     let onlyDay = date.getDate();
     let onlyMonth = date.getMonth() + 1;
-    if (date.toLocaleDateString().includes('-')) { // Swedish style!
+    
+    let reference = date.toLocaleDateString();
+
+    console.log('Reference: ' + reference);
+
+    if (reference.includes('-') || 
+       (reference.split(/\//g)[0] === ('0' + onlyDay).slice(-2) &&
+        reference.split(/\//g)[1] === ('0' + onlyMonth).slice(-2))) { // Swedish style!
         return `${('0' + onlyDay).slice(-2)}/${('0' + onlyMonth).slice(-2)}/${onlyYear}`;
     } 
     return `${('0' + onlyMonth).slice(-2)}/${('0' + onlyDay).slice(-2)}/${onlyYear}`;
@@ -43,16 +50,10 @@ export function getTimeString(date) {
  *  Date object, representing the DateTime in UTC
  */
 export function getDateTimeString(date) {
-    let onlyYear = date.getFullYear();
-    let onlyDay = date.getDate();
-    let onlyMonth = date.getMonth() + 1;
     let onlyHour = date.getHours();
     let onlyMin = date.getMinutes();
 
-    if (date.toLocaleDateString().includes('-')) { // It's Swedish! (or anything else in EU really)
-        return `${('0' + onlyDay).slice(-2)}/${('0' + onlyMonth).slice(-2)}/${onlyYear} ${getTimeString(date)}`;
-    }
-    return `${('0' + onlyMonth).slice(-2)}/${('0' + onlyDay).slice(-2)}/${onlyYear} ${getTimeString(date)}`;
+    return `${getDateString(date)} ${getTimeString(date)}`;
 }
 
 /** Gets a string that says how many seconds, minutes or hours ago
