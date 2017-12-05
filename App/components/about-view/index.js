@@ -37,20 +37,8 @@ export default class AboutView extends Component {
             visible={this.state.showChangeLog}
             onRequestClose={() => this.setState({showChangeLog: false})}
         >
-            {(Platform.OS === 'ios') &&
-            <View style={{flexDirection: 'row'}}>
-                <Icon
-                    name= 'arrow-back'
-                    color= {colorScheme.secondaryColor}
-                    size= {50}
-                    style={{paddingLeft: 10, paddingTop: 40}}
-                    underlayColor='transparent'
-                    onPress={() => this.setState({showChangeLog: false})}
-                />
-            </View>
-            }
+            <TopHeader title="Change log" backArrowFunction={() => this.setState({showChangeLog: false})}/>
             <ScrollView style={{padding: 10}}>
-                <Text h3 style={{textAlign: 'center', paddingBottom: 20}}>Change log</Text>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Matched start and end time of operations to last reported statement </Text>
@@ -60,7 +48,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Improved searching for states (searching for "berth" now shows berths) </Text>
                     <Text>{BULLET} Fixed an issue with cache not being persistent between sessions</Text>
                     <Text>{BULLET} Back arrows shows in top menu on Android as well as iOS</Text>
-                    <Text>{BULLET} Added Top Header in Legacy Login View</Text>
+                    <Text>{BULLET} Added Top Header in Legacy Login View and Change Log View</Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
                 <View style={{padding: 5}}>
