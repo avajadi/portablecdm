@@ -39,6 +39,7 @@ import {
     stopLocalServer,
   } from '../../actions';
 
+import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 import constants from '../../config/constants';
@@ -221,18 +222,9 @@ class LoginKeyCloakView extends Component {
                         visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
                         onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
                         >
-                        <View style={{flexDirection: 'row'}}>
-                            <Icon
-                                name= 'arrow-back'
-                                color= {colorScheme.secondaryColor}
-                                size= {50}
-                                style={{paddingLeft: 10, paddingTop: 40}}
-                                underlayColor='transparent'
-                                onPress={() => { this.setState({legacyLogin: {enabled: false}})}}
-                            />
-                        </View>
+                        <TopHeader title="Legacy Login" navigation={this.props.navigation} backArrowFunction={() => this.setState({legacyLogin: {enabled: false}})} />
+                        
                         <View style={styles.containers.centralizer}>
-                            <Text h3 style={{fontWeight: 'normal'}}>Legacy Login</Text>
                             <View style={styles.containers.blank}/>
                             <FormLabel>Username: </FormLabel>
                             <FormInput

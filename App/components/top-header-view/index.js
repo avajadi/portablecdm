@@ -18,7 +18,7 @@ import colorScheme from '../../config/colors';
 export default class TopHeader extends Component {
 
   render() {
-    const {title, firstPage, rightIconFunction, leftIcons, selectorIcon} = this.props;
+    const {title, firstPage, rightIconFunction, backArrowFunction, leftIcons, selectorIcon} = this.props;
 
     return(
       <View >
@@ -40,7 +40,13 @@ export default class TopHeader extends Component {
             color= {colorScheme.primaryContainerColor}
             size= {50}
             underlayColor='transparent'
-            onPress={() => { this.props.navigation.goBack()}}
+            onPress={() => { 
+              if(!!backArrowFunction) {
+                backArrowFunction();
+              } else {
+                this.props.navigation.goBack();
+              }
+            }}
           />
           }
           {(!!leftIcons && !!leftIcons.first) &&

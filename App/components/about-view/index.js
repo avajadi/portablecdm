@@ -59,6 +59,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Improved searching for states (searching for "berth" now shows berths) </Text>
                     <Text>{BULLET} Fixed an issue with cache not being persistent between sessions</Text>
                     <Text>{BULLET} Back arrows shows in top menu on Android as well as iOS</Text>
+                    <Text>{BULLET} Added Top Header in Legacy Login View</Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.1</Text>
                 <View style={{padding: 5}}>
