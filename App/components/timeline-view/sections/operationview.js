@@ -116,12 +116,12 @@ class OperationView extends Component {
                 this.setState({dimensions: {...this.state.dimensions, timeContainer: event.nativeEvent.layout}});
         }}>
             <Text style={styles.dateDisplay}>{getDateString(startTime)}</Text>
-            <Text style={startTimeDisplayStyle}>{getTimeString(startTime)}</Text>
+            <Text style={startTimeDisplayStyle}>{getTimeString(startTime).slice(0,5)}</Text>
           </View>
           {/*End Time*/}
           <View style={[styles.timeDisplayContainer, {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colorScheme.tertiaryColor}]}>
             <Text style={styles.dateDisplay}>{getDateString(endTime)}</Text>
-            <Text style={endTimeDisplayStyle }>{getTimeString(endTime)}</Text>
+            <Text style={endTimeDisplayStyle }>{getTimeString(endTime).slice(0,5)}</Text>
           </View>
         </View>
 
@@ -269,7 +269,7 @@ class OperationView extends Component {
                     {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
                   </View>
                   <View style= {{flexDirection: 'row'}} >
-                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toLocaleTimeString().slice(0, 5)} </Text>
+                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{getTimeString(new Date(stateToDisplay.time))} </Text>
                       {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
                                                                     <Text style={styles.actualText}>A</Text>
                                                                </View>

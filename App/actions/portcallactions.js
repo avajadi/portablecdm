@@ -110,8 +110,6 @@ export const fetchPortCalls = (dispatch, getState, additionalFilterString) => {
     const filters = getState().filters;
     const filterString = createFilterString(filters, getState) + (!!filters ? '&' : '?') + additionalFilterString;
     const favorites = getState().favorites;
-    console.log('Filterstring: ' + filterString);
-    console.log('Fetching port calls....');
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
         {
             method: 'GET',
@@ -375,7 +373,6 @@ export const fetchPortCallOperations = (portCallId) => {
         const getReliability = getState().settings.fetchReliability;
         const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
         console.log('Fetching operations for port call ' + portCallId);
-        console.log(JSON.stringify(headers));
         let newUpdate = hasEvents.some((x) => connection.host.includes(x));
         let ending = 'operations';
         if (newUpdate) ending = 'events';
@@ -389,7 +386,6 @@ export const fetchPortCallOperations = (portCallId) => {
             .then(result => {
                 console.log('Response for operation in port call');
                 let err = checkResponse(result);
-                console.log(JSON.stringify(result));
                 if (!err)
                     return JSON.parse(result.bodyString);
 
@@ -454,8 +450,6 @@ async function fetchReliability(operations, headers, connection, portCallId) {
     )
         .then(result => {
             console.log('Fetching reliabilities.... ' + result.status);
-            console.log('Result: ');
-            console.log(JSON.stringify(result));
             if (result.status !== 200) {
                 return null;
             }

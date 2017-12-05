@@ -1,3 +1,5 @@
+import { Util } from 'expo'
+
 /**
  * 
  * @param {Date} date 
@@ -6,13 +8,14 @@
 export function getDateString(date) {
     if (date.getTime() === new Date(null).getTime()) return '';
 
-    // TODO: MAKE AMERICAN(-n great again)!
-
+    
     let onlyYear = date.getFullYear();
     let onlyDay = date.getDate();
     let onlyMonth = date.getMonth() + 1;
+    if (date.toLocaleDateString().includes('-')) { // Swedish style!
+        return `${('0' + onlyDay).slice(-2)}/${('0' + onlyMonth).slice(-2)}/${onlyYear}`;
+    } 
     return `${('0' + onlyMonth).slice(-2)}/${('0' + onlyDay).slice(-2)}/${onlyYear}`;
-
 }
 
 /**
@@ -21,8 +24,17 @@ export function getDateString(date) {
  *  Date object, representing the DateTime in UTC
  */
 export function getTimeString(date) {
-    return date.getTime() === new Date(null).getTime() ? 'N/A' : `${date.toLocaleTimeString().slice(0, 5)}`;
+    if (date.getTime() === new Date(null).getTime()) {
+        return 'N/A';
+    }
 
+    let timeStringSplit = date.toLocaleTimeString().split(/:/g);
+    let maybeAMPM = timeStringSplit[2].split(/ /g)[1];
+    
+    return `${timeStringSplit[0].length === 1 ? '0' : ''
+            }${timeStringSplit[0]
+            }:${timeStringSplit[1]
+            } ${!!maybeAMPM ? maybeAMPM : ''}`
 }
 
 /**
@@ -36,6 +48,10 @@ export function getDateTimeString(date) {
     let onlyMonth = date.getMonth() + 1;
     let onlyHour = date.getHours();
     let onlyMin = date.getMinutes();
+
+    if (date.toLocaleDateString().includes('-')) { // It's Swedish! (or anything else in EU really)
+        return `${('0' + onlyDay).slice(-2)}/${('0' + onlyMonth).slice(-2)}/${onlyYear} ${getTimeString(date)}`;
+    }
     return `${('0' + onlyMonth).slice(-2)}/${('0' + onlyDay).slice(-2)}/${onlyYear} ${getTimeString(date)}`;
 }
 
