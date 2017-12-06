@@ -27,7 +27,8 @@ import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
 
 function removeStringReportedBy(string) {
-    return string.replace('urn:mrn:legacy:user:', '')
+    let splitString = string.split(/:/g);
+    return splitString[splitString.length - 1]
 }
 
 class StateDetails extends Component {

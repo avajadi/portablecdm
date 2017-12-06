@@ -21,6 +21,23 @@ import Collapsible from 'react-native-collapsible';
 import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
 import colorScheme from '../../../config/colors';
 
+function removeStringReportedBy(string) {
+    let splitString = string.split(/:/g);
+    return splitString[splitString.length - 1]
+}
+
+function getWarningText(warning) {
+    let result;
+    if(warning.warningType) {
+        let noUnderscore = warning.warningType.replace(/_/g, ' ');
+        result = noUnderscore.charAt(0).toUpperCase() + noUnderscore.slice(1).toLowerCase();
+    } else {
+        result = warning.message;
+    }
+
+    return result;
+}
+
 class OperationView extends Component {
 
   constructor(props) {
@@ -167,7 +184,7 @@ class OperationView extends Component {
               return (
                 <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10,}} key={index}>
                   <Icon name='warning' color={colorScheme.warningColor} size={14} paddingRight={10} />
-                  <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{warning.message}</Text>
+                  <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{getWarningText(warning)}</Text>
                 </View>
               );
             })}
@@ -300,7 +317,7 @@ class OperationView extends Component {
                   <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy:', '')} 
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{removeStringReportedBy(stateToDisplay.reportedBy)} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
