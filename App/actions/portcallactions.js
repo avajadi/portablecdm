@@ -464,7 +464,7 @@ async function fetchReliability(operations, headers, connection, portCallId) {
         // For every operation in the result
         .then(result => result.operations.map(resultOperation => {
             // We need to find the operation in our own data structure and set it's reliability
-            let ourOperation = operations.find(operation => operation.operationId === resultOperation.operationId);
+            let ourOperation = operations.find(operation => operation.eventId === resultOperation.eventId);
             ourOperation.reliability = Math.floor(resultOperation.reliability * 100);
             // Then for each state in the operation
             resultOperation.states.map(resultState => {
@@ -489,6 +489,7 @@ async function fetchReliability(operations, headers, connection, portCallId) {
             });
         })).catch(err => {
             console.log('Unable to fetch reliabilities.');
+            console.log("Error: " + err);
             operations = false;
         });;
     return operations;

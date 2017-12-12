@@ -12,6 +12,7 @@ export const hasEvents = [
     'dev.portcdm.eu',
     'segot.portcdm.eu',
     'qa.esvlc.portcdm.eu',
+    '192.168.56.101',
 ]
 
 export const isStaging = [
