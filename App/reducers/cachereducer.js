@@ -3,7 +3,8 @@ import {
     CACHE_UPDATE,
     CACHE_CLEAR,
     CACHE_CHANGE_LIMIT,
-    CACHE_APPENDING_PORTCALLS
+    CACHE_APPENDING_PORTCALLS,
+    CACHE_ENABLE_APPENDING_PORTCALLS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -16,7 +17,7 @@ const INITIAL_STATE = {
 const cacheReducer = (state=INITIAL_STATE, action) => {
     switch(action.type) {
         case CACHE_PORTCALLS:
-            return {...state, portCalls: action.payload, appendingPortCalls: false};
+            return {...state, portCalls: action.payload };
         case CACHE_UPDATE:
             return { ...state, lastUpdated: action.payload };
         case CACHE_CLEAR:
@@ -24,7 +25,9 @@ const cacheReducer = (state=INITIAL_STATE, action) => {
         case CACHE_CHANGE_LIMIT:
             return { ...state, limit: action.payload };
         case CACHE_APPENDING_PORTCALLS:
-            return { ...state, appendingPortCalls: true}
+            return { ...state, appendingPortCalls: true};
+        case CACHE_ENABLE_APPENDING_PORTCALLS:
+            return { ...state, appendingPortCalls: false };
         default:
             return state;
     }

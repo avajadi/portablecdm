@@ -5,6 +5,8 @@ import { noSummary, hasEvents } from '../config/instances';
 import { Alert } from 'react-native';
 import pinch from 'react-native-pinch';
 
+const APPENDING_PORTCALLS_TIMEOUT_MS = 1000;
+
 export const clearPortCallSelection = () => {
     return {
         type: types.CLEAR_PORTCALL_SELECTION
@@ -55,6 +57,14 @@ export const appendPortCalls = (lastPortCall) => {
 
             console.log('Fetched another ' + toAppend.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
 
+            console.log("Setting timeout!!!");
+            setTimeout(() => {
+                console.log("Timeout triggered");
+                dispatch({
+                    type: types.CACHE_ENABLE_APPENDING_PORTCALLS
+                });
+            }, APPENDING_PORTCALLS_TIMEOUT_MS);
+            
             dispatch({
                 type: types.CACHE_PORTCALLS,
                 payload: portCalls.concat(toAppend)
