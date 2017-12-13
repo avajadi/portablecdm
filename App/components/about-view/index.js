@@ -39,6 +39,10 @@ export default class AboutView extends Component {
         >
             <TopHeader title="Change log" backArrowFunction={() => this.setState({showChangeLog: false})}/>
             <ScrollView style={{padding: 10}}>
+                <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.3</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Now suggest ending timestamps when a commenced/arrival to timestamp is reported </Text>
+                </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Matched start and end time of operations to last reported statement </Text>
