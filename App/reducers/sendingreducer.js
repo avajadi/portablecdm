@@ -3,7 +3,8 @@ import {
   SEND_PORTCALL, 
   SEND_PORTCALL_FAILURE, 
   SEND_PORTCALL_SUCCESS,
-  SEND_PORTCALL_SELECT_LOCATION
+  SEND_PORTCALL_SELECT_LOCATION,
+  SEND_PORTCALL_CLEAR_LOCATIONS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -27,6 +28,8 @@ const sendingReducer = (state=INITIAL_STATE, action) => {
       return { ...INITIAL_STATE, toLocation: state.toLocation, fromLocation: state.fromLocation, atLocation: state.atLocation };
     case SEND_PORTCALL_SELECT_LOCATION:
       return { ...state, [action.payload.locationType]: action.payload.location}
+    case SEND_PORTCALL_CLEAR_LOCATIONS:
+      return { ...state, toLocation: null, fromLocation: null, atLocation: null }
     default:
       return state;
   }

@@ -11,6 +11,13 @@ export const clearReportResult = () => {
     }
 }
 
+// Clears atLocation, fromLocation and toLocation in sendingReducer
+export const clearLocations = () => {
+    return {
+        type: types.SEND_PORTCALL_CLEAR_LOCATIONS
+    };
+}
+
 export const sendPortCall = (pcmAsObject, stateType) => {
     return (dispatch, getState) => {
         const { connection, token } = getState().settings;

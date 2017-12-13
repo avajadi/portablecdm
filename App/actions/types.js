@@ -22,6 +22,7 @@ export const SEND_PORTCALL_SUCCESS = 'send_portcall_success';
 export const SEND_PORTCALL_FAILURE = 'send_portcall_failure';
 export const SEND_PORTCALL_CLEAR_RESULT = 'send_portcall_clear_result';
 export const SEND_PORTCALL_SELECT_LOCATION = 'send_portcall_select_location';
+export const SEND_PORTCALL_CLEAR_LOCATIONS = 'send_portcall_clear_locations';
 export const FETCH_LOCATIONS = 'fetch_locations';
 export const FETCH_LOCATIONS_SUCCESS = 'fetch_locations_success';
 export const FETCH_LOCATIONS_FAILURE = 'fetch_locations_failure';

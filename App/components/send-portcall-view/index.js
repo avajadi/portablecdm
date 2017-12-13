@@ -9,6 +9,7 @@ import {
   fetchVessel,
   fetchVesselByName,
   removeError,
+  clearLocations,
 } from '../../actions';
 
 import {
@@ -202,7 +203,9 @@ class SendPortcall extends Component {
 
   componentWillMount() {
     const { atLocation, fromLocation, toLocation } = this.props.navigation.state.params;
-    const { selectLocation } = this.props;
+    const { selectLocation, clearLocations } = this.props;
+
+    clearLocations();
 
     if(atLocation) {
         selectLocation('atLocation', atLocation);
@@ -713,4 +716,5 @@ export default connect(
         clearReportResult, 
         selectLocation,
         clearVesselResult,
+        clearLocations,
     })(SendPortcall);
