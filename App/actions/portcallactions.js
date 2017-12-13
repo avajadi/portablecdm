@@ -21,7 +21,7 @@ export const selectPortCall = (portCall) => {
 export const bufferPortCalls = () => {
     return (dispatch, getState) => {
         const { limit, portCalls } = getState().cache;
-        
+
         const beforeFetching = portCalls.length;
         if (portCalls.length < limit && portCalls.length > 0) {
             dispatch(appendPortCalls(portCalls[portCalls.length - 1])).then(() => {
@@ -36,6 +36,9 @@ export const bufferPortCalls = () => {
 export const appendPortCalls = (lastPortCall) => {
     return (dispatch, getState) => {
 
+        dispatch({
+            type: types.CACHE_APPENDING_PORTCALLS
+        })
         let filters = getState().filters;
         let filterString = '';
         let beforeOrAfter = filters.order === 'DESCENDING' ? 'before' : 'after';
@@ -244,9 +247,9 @@ function getFilterString(filter, value, count) {
 /**
  * Given the filters object from the Redux Store and the getState function, converts all the filters
  * to a actual query string
- * 
- * @param {object} filters 
- * @param {function} getState 
+ *
+ * @param {object} filters
+ * @param {function} getState
  */
 function createFilterString(filters, getState) {
     let filterString = '';
@@ -311,10 +314,10 @@ function createFilterString(filters, getState) {
 }
 
 /**
- * 
- * 
- * @param {[object]} portCalls 
- * @param {object} filters 
+ *
+ *
+ * @param {[object]} portCalls
+ * @param {object} filters
  */
 function applyFilters(portCalls, filters) {
 
@@ -361,9 +364,9 @@ function applyFilters(portCalls, filters) {
 // end helper functions
 
 /**
- * Fetches all operations for the port call with the specified id 
- * 
- * @param {string} portCallId 
+ * Fetches all operations for the port call with the specified id
+ *
+ * @param {string} portCallId
  */
 export const fetchPortCallOperations = (portCallId) => {
     return (dispatch, getState) => {
@@ -392,7 +395,7 @@ export const fetchPortCallOperations = (portCallId) => {
                 dispatch({ type: types.SET_ERROR, payload: err });
                 throw new Error('dispatched');
             })
-            // Sort the operations, port_visits first, then in 
+            // Sort the operations, port_visits first, then in
             .then(sortOperations)
             .then(filterStatements)
             .then(operations => {
@@ -481,7 +484,7 @@ async function fetchReliability(operations, headers, connection, portCallId) {
                         if (ourStatement.messageId == resultState.messages[i].messageId) {
                             // We want the reliability for this statement
                             ourStatement.reliability = Math.floor(resultState.messages[i].reliability * 100);
-                            // And also all the changes for the statement. 
+                            // And also all the changes for the statement.
                             ourStatement.reliabilityChanges = resultState.messages[i].reliabilityChanges;
                         }
                     }
@@ -529,12 +532,12 @@ function sortOperations(operations) {
 }
 
 /**
- * Removes warnings from the operation level, and instead assigns it to 
+ * Removes warnings from the operation level, and instead assigns it to
  * the reportedState it warns about. Only thing left should be warnings
  * that aren't about a certain state.
- * 
- * @param {[Operation]} operations 
- * 
+ *
+ * @param {[Operation]} operations
+ *
  * @return
  *  all operations, with warnings that is connected to a certain state
  */

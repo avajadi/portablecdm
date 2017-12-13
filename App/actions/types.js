@@ -13,6 +13,7 @@ export const FETCH_PORTCALL_STRUCTURE_SUCCESS = 'fetch_portcall_structure_succes
 export const FETCH_PORTCALL_STRUCTURE_FAILURE = 'fetch_portcall_structure_failure';
 export const CACHE_PORTCALLS = 'cache_portcalls';
 export const CACHE_UPDATE = 'cache_update';
+export const CACHE_APPENDING_PORTCALLS = 'cache_appending_portcalls';
 export const CACHE_CLEAR = 'cache_clear';
 export const CACHE_CHANGE_LIMIT = 'cache_change_limit';
 export const SEND_PORTCALL = 'send_portcall';
