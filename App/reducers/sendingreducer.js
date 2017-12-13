@@ -24,7 +24,7 @@ const sendingReducer = (state=INITIAL_STATE, action) => {
     case SEND_PORTCALL_FAILURE:
       return { ...state, sending: false, error: action.payload, successCode: 'none'};
     case SEND_PORTCALL_CLEAR_RESULT:
-      return { ...INITIAL_STATE };
+      return { ...INITIAL_STATE, toLocation: state.toLocation, fromLocation: state.fromLocation, atLocation: state.atLocation };
     case SEND_PORTCALL_SELECT_LOCATION:
       return { ...state, [action.payload.locationType]: action.payload.location}
     default:

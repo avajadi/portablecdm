@@ -30,10 +30,10 @@ class LocationSelection extends Component {
     let operations = this.props.operations;
     let recentlyUsed = [];
 
-    if(operations.filter((x) => 
+    if(operations.filter((x) => (
         x.at === a.URN ||
         x.from === a.URN ||
-        x.to === a.URN
+        x.to === a.URN)
     ).length > 0) {
         return -1;
     }

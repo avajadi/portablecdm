@@ -1,2 +1,2 @@
-export const APP_VERSION = '1.3.2.2-improveRefresh';
+export const APP_VERSION = '1.3.3-improvedRefresh';
 export const STAGING = true;

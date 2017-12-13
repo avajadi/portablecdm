@@ -57,9 +57,8 @@ export const appendPortCalls = (lastPortCall) => {
 
             console.log('Fetched another ' + toAppend.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
 
-            console.log("Setting timeout!!!");
+            // Redux will think we're still appending portcalls for awhile, so that we can't spam requests
             setTimeout(() => {
-                console.log("Timeout triggered");
                 dispatch({
                     type: types.CACHE_ENABLE_APPENDING_PORTCALLS
                 });
