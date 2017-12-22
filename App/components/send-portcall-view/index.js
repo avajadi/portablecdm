@@ -9,6 +9,9 @@ import {
   fetchVessel,
   fetchVesselByName,
   removeError,
+  clearLocations,
+  fetchSinglePortCall,
+  selectPortCall,
 } from '../../actions';
 
 import {
@@ -42,7 +45,8 @@ import { getDateTimeString } from '../../util/timeservices';
 import { hasComment } from '../../config/instances';
 
 
-let navBackTimer = null;
+let navBackTimer      = null;
+let initRedirectTimer = null;
 
 class SendPortcall extends Component {
   constructor(props) {
@@ -95,7 +99,7 @@ class SendPortcall extends Component {
 
     Alert.alert(
         'Confirmation',
-        'Would you like to report a new ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for ' + vessel.name + '?',
+        'Would you like to report a new ' + selectedTimeType.toLowerCase() + ' ' + state.Name + ' for ' + vessel.name + '?',
         [
             {text: 'No'},
             {text: 'Yes', onPress: () => {
@@ -107,12 +111,47 @@ class SendPortcall extends Component {
                             'Error',
                             'Unable to send message!'
                         );
-                    } else {
-                        this.refs._scrollView.scrollToEnd();
-                        navBackTimer = setTimeout(() => {
-                            this.props.clearReportResult();
-                            navigate('TimeLineDetails');
-                        }, 1000);
+                    } else { // Success
+                        // If the timestamp has reported the start of something, we want to suggest also reporting the end of it
+                        if(state.TimeSequence === 'COMMENCED' || state.TimeSequence == 'ARRIVAL_TO') {
+                            let oppositeStateId;
+                            if(state.TimeSequence === 'COMMENCED') {
+                                oppositeStateId = state.StateId.replace('Commenced', 'Completed');
+                            } else {
+                                oppositeStateId = state.StateId.replace('Arrival', 'Departure')
+                            }
+                            const oppositeState = getState(oppositeStateId);
+                            Alert.alert(
+                                'Send completed?',
+                                `Timestamp was successfully sent!\nWould you like to also report ${oppositeState.Name}?`,
+                                [
+                                    {text: 'No', onPress: () => { // No button, just navigate back to TimeLine
+                                        this.props.clearReportResult();
+                                        navigate('TimeLineDetails');
+                                    }},
+                                    {text: 'Yes', onPress: () => {
+                                        this.props.clearReportResult();
+                                        navigate('SendPortCall', {
+                                            stateId: oppositeState.StateId, 
+                                            newVessel: false,
+                                            fromLocation: fromLocation, 
+                                            toLocation: toLocation, 
+                                            atLocation: atLocation,
+                                        });
+                                    }}
+                                ],
+                                {
+                                    cancelable: false
+                                }
+                            );
+                        } else {
+                            this.refs._scrollView.scrollToEnd();
+                            navBackTimer = setTimeout(() => {
+                                this.props.clearReportResult();
+                                navigate('TimeLineDetails');
+                            }, 1000);
+                        } 
+
                     }
                 });          
             }}
@@ -124,6 +163,7 @@ class SendPortcall extends Component {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
     const { portCall, getState, initPortCall, sendingState, navigation, clearVesselResult } = this.props;
+    const { navigate } = navigation;
     const { selectedVessel } = this.state;
     const vesselId = selectedVessel.imo;
     const { atLocation, fromLocation, toLocation, } = sendingState;
@@ -143,13 +183,13 @@ class SendPortcall extends Component {
 
     Alert.alert(
         'Confirmation',
-        'Would you like to create a new port call with ' + selectedTimeType.toLowerCase() + ' ' + stateId.replace(/_/g, ' ') + ' for vessel ' + selectedVessel.name + '?',
+        'Would you like to create a new port call with ' + selectedTimeType.toLowerCase() + ' ' + state.Name + ' for vessel ' + selectedVessel.name + '?',
         [
             {text: 'No'},
             {text: 'Yes', onPress: () => {
                 const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId: null, selectedDate, selectedTimeType, comment}, state);
                 
-                initPortCall(pcm, type).then(() => {
+                initPortCall(pcm, type).then((portCallId) => {
                     if(!!this.props.sendingState.error) {
                         Alert.alert(
                             'Error',
@@ -157,9 +197,28 @@ class SendPortcall extends Component {
                         );
                     } else {
                         this.refs._scrollView.scrollToEnd();
+
+                        let fetching = false;
+                        // Fetch the portCall so that we can navigate to timeline, need to be on a delay so that the backend have time to create the port call
+                        initRedirectTimer = setInterval(() => {
+                            if(!fetching) {
+                                fetching = true;
+                                this.props.fetchSinglePortCall(portCallId)
+                                    .then(portCall => {
+                                        if(!!portCall) {
+                                            this.props.selectPortCall(portCall);
+                                            clearInterval(initRedirectTimer);
+                                            navigate('TimeLineDetails');
+                                        }
+
+                                        fetching = false;
+                                    })
+                            }
+                        }, 2000);
+
                     }
                     clearVesselResult();
-                });          
+                });       
             }}
         ]
     );
@@ -167,21 +226,26 @@ class SendPortcall extends Component {
 
   componentWillMount() {
     const { atLocation, fromLocation, toLocation } = this.props.navigation.state.params;
-    const { selectLocation } = this.props;
+    const { selectLocation, clearLocations } = this.props;
+
+    clearLocations();
+
     if(atLocation) {
-      selectLocation('atLocation', atLocation);
+        selectLocation('atLocation', atLocation);
     }
     if(fromLocation) {
-      selectLocation('fromLocation', fromLocation);
+        selectLocation('fromLocation', fromLocation);
     }
     if(toLocation) {
-      selectLocation('toLocation', toLocation);
+        selectLocation('toLocation', toLocation);
     }
   }
 
   componentWillUnmount() {
     this.props.clearReportResult();
+    
     clearTimeout(navBackTimer);
+    clearInterval(initRedirectTimer);
   }
 
   getSendButtonEnabled() {
@@ -414,9 +478,12 @@ class SendPortcall extends Component {
             style={{alignSelf: 'center'}} 
           />
           { (sendingState.successCode === 200) && 
-            <Text h4 style={styles.success}>{initializeNew ? 
-                'Port call was successfully created!':
-                'Timestamp was successfully sent!'}</Text>
+            <View>
+                <Text h4 style={styles.success}>{initializeNew ? 
+                    'Creating port call...':
+                    'Timestamp was successfully sent!'}</Text>
+                <ActivityIndicator size="large" color={colorScheme.primaryColor} />
+            </View>
           }
           { (sendingState.successCode === 202) &&
             <Text h4 style={styles.success}>Timestamp was successfully sent, but couldn't be matched to an existing Port Call!</Text>
@@ -676,4 +743,7 @@ export default connect(
         clearReportResult, 
         selectLocation,
         clearVesselResult,
+        clearLocations,
+        fetchSinglePortCall,
+        selectPortCall,
     })(SendPortcall);

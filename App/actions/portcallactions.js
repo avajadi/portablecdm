@@ -5,6 +5,8 @@ import { noSummary, hasEvents } from '../config/instances';
 import { Alert } from 'react-native';
 import pinch from 'react-native-pinch';
 
+const APPENDING_PORTCALLS_TIMEOUT_MS = 1000;
+
 export const clearPortCallSelection = () => {
     return {
         type: types.CLEAR_PORTCALL_SELECTION
@@ -21,7 +23,7 @@ export const selectPortCall = (portCall) => {
 export const bufferPortCalls = () => {
     return (dispatch, getState) => {
         const { limit, portCalls } = getState().cache;
-        
+
         const beforeFetching = portCalls.length;
         if (portCalls.length < limit && portCalls.length > 0) {
             dispatch(appendPortCalls(portCalls[portCalls.length - 1])).then(() => {
@@ -36,6 +38,9 @@ export const bufferPortCalls = () => {
 export const appendPortCalls = (lastPortCall) => {
     return (dispatch, getState) => {
 
+        dispatch({
+            type: types.CACHE_APPENDING_PORTCALLS
+        })
         let filters = getState().filters;
         let filterString = '';
         let beforeOrAfter = filters.order === 'DESCENDING' ? 'before' : 'after';
@@ -52,6 +57,13 @@ export const appendPortCalls = (lastPortCall) => {
 
             console.log('Fetched another ' + toAppend.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
 
+            // Redux will think we're still appending portcalls for awhile, so that we can't spam requests
+            setTimeout(() => {
+                dispatch({
+                    type: types.CACHE_ENABLE_APPENDING_PORTCALLS
+                });
+            }, APPENDING_PORTCALLS_TIMEOUT_MS);
+            
             dispatch({
                 type: types.CACHE_PORTCALLS,
                 payload: portCalls.concat(toAppend)
@@ -101,6 +113,45 @@ export const updatePortCalls = () => {
                 });
         });
     };
+}
+
+export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
+    dispatch({type: types.FETCH_PORTCALLS});
+    const connection = getState().settings.connection;
+    const token = getState().settings.token;
+    const favorites = getState().favorites;
+
+    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}`,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            sslPinning: getCert(connection)
+        })
+        .then(result => {
+            let err = checkResponse(result);
+            if(!err) {
+                return JSON.parse(result.bodyString);
+            }
+
+            // dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
+
+        })
+        .then(portCall => fetchVesselForPortCall(connection, token, portCall, favorites))
+        .then(portCall => {
+            dispatch({type: types.FETCH_PORTCALLS_SUCCESS});
+            return portCall;
+        })
+        .catch(err => {
+            if (err.message != 'dispatched') {
+                dispatch({
+                    type: types.SET_ERROR, payload: {
+                        description: err.message,
+                        title: 'Unable to connect to the server!'
+                    }
+                });
+            }
+        });
 }
 
 export const fetchPortCalls = (dispatch, getState, additionalFilterString) => {
@@ -244,9 +295,9 @@ function getFilterString(filter, value, count) {
 /**
  * Given the filters object from the Redux Store and the getState function, converts all the filters
  * to a actual query string
- * 
- * @param {object} filters 
- * @param {function} getState 
+ *
+ * @param {object} filters
+ * @param {function} getState
  */
 function createFilterString(filters, getState) {
     let filterString = '';
@@ -311,10 +362,10 @@ function createFilterString(filters, getState) {
 }
 
 /**
- * 
- * 
- * @param {[object]} portCalls 
- * @param {object} filters 
+ *
+ *
+ * @param {[object]} portCalls
+ * @param {object} filters
  */
 function applyFilters(portCalls, filters) {
 
@@ -361,9 +412,9 @@ function applyFilters(portCalls, filters) {
 // end helper functions
 
 /**
- * Fetches all operations for the port call with the specified id 
- * 
- * @param {string} portCallId 
+ * Fetches all operations for the port call with the specified id
+ *
+ * @param {string} portCallId
  */
 export const fetchPortCallOperations = (portCallId) => {
     return (dispatch, getState) => {
@@ -392,7 +443,7 @@ export const fetchPortCallOperations = (portCallId) => {
                 dispatch({ type: types.SET_ERROR, payload: err });
                 throw new Error('dispatched');
             })
-            // Sort the operations, port_visits first, then in 
+            // Sort the operations, port_visits first, then in
             .then(sortOperations)
             .then(filterStatements)
             .then(operations => {
@@ -481,7 +532,7 @@ async function fetchReliability(operations, headers, connection, portCallId) {
                         if (ourStatement.messageId == resultState.messages[i].messageId) {
                             // We want the reliability for this statement
                             ourStatement.reliability = Math.floor(resultState.messages[i].reliability * 100);
-                            // And also all the changes for the statement. 
+                            // And also all the changes for the statement.
                             ourStatement.reliabilityChanges = resultState.messages[i].reliabilityChanges;
                         }
                     }
@@ -529,12 +580,12 @@ function sortOperations(operations) {
 }
 
 /**
- * Removes warnings from the operation level, and instead assigns it to 
+ * Removes warnings from the operation level, and instead assigns it to
  * the reportedState it warns about. Only thing left should be warnings
  * that aren't about a certain state.
- * 
- * @param {[Operation]} operations 
- * 
+ *
+ * @param {[Operation]} operations
+ *
  * @return
  *  all operations, with warnings that is connected to a certain state
  */

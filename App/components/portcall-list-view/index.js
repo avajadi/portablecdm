@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { 
-    updatePortCalls, 
+import {
+    updatePortCalls,
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
@@ -18,10 +18,10 @@ import {
     Alert,
 } from 'react-native';
 
-import { 
-    SearchBar, 
-    Button, 
-    List, 
+import {
+    SearchBar,
+    Button,
+    List,
     ListItem,
     Icon,
 } from 'react-native-elements';
@@ -30,7 +30,7 @@ import colorScheme from '../../config/colors';
 import TopHeader from '../top-header-view';
 import { getDateTimeString } from '../../util/timeservices';
 
-class PortCallList extends Component {   
+class PortCallList extends Component {
     state = {
         searchTerm: '',
         refreshing: false,
@@ -45,7 +45,7 @@ class PortCallList extends Component {
     }
 
     componentDidMount() {
-       
+
     }
 
     loadPortCalls() {
@@ -57,8 +57,8 @@ class PortCallList extends Component {
     }
 
     _appendPortCalls() {
-        let { portCalls, appendPortCalls, } = this.props;
-        if (portCalls.length > 0) {
+        let { portCalls, appendPortCalls, isAppendingPortCalls } = this.props;
+        if (portCalls.length > 0 && !isAppendingPortCalls) {
             return appendPortCalls(portCalls[portCalls.length - 1]);
         }
     }
@@ -83,19 +83,19 @@ class PortCallList extends Component {
         const {navigation, showLoadingIcon, portCalls, selectPortCall} = this.props;
         const {navigate} = navigation;
         const {searchTerm} = this.state;
-        
+
         return(
             <View style={styles.container}>
                 <TopHeader title="Port Calls" navigation={this.props.navigation} firstPage/>
                 {/*Render the search/filters header*/}
                 <View style={styles.containerRow}>
                     <SearchBar
-                        autoCorrect={false} 
+                        autoCorrect={false}
                         containerStyle = {styles.searchBarContainer}
                         showLoadingIcon={showLoadingIcon}
                         clearIcon
                         inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
-                        lightTheme  
+                        lightTheme
                         placeholder='Search by name, IMO or MMSI number'
                         placeholderTextColor = {colorScheme.tertiaryTextColor}
                         onChangeText={text => this.setState({searchTerm: text})}
@@ -110,9 +110,9 @@ class PortCallList extends Component {
                             color: colorScheme.primaryTextColor,
                             style: styles.iconStyle,
                         }}
-                        backgroundColor = {colorScheme.primaryColor} 
+                        backgroundColor = {colorScheme.primaryColor}
                         onPress= {() => navigate('FilterMenu')}
-                    /> 
+                    />
                 </View>
 
                 {/*Render the List of PortCalls*/}
@@ -128,8 +128,8 @@ class PortCallList extends Component {
                     >
                     <List>
                         {
-                            
-                            this.search(portCalls, searchTerm).map( (portCall) => ( 
+
+                            this.search(portCalls, searchTerm).map( (portCall) => (
                                 <ListItem
                                     roundAvatar
                                     avatar={{uri: portCall.vessel.photoURL}}
@@ -140,7 +140,7 @@ class PortCallList extends Component {
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
                                     subtitleStyle={styles.subTitleStyle}
                                     onPress={() => {
-                                        //console.log(JSON.stringify(portCall.vessel)); 
+                                        //console.log(JSON.stringify(portCall.vessel));
                                         selectPortCall(portCall);
                                         navigate('TimeLine')
                                     }}
@@ -151,15 +151,15 @@ class PortCallList extends Component {
                                             [
                                                 {text: 'Cancel'},
                                                 {
-                                                    text: 
+                                                    text:
                                                         (this.props.favoriteVessels.includes(portCall.vessel.imo) ? 'Unf' : 'F') +
-                                                        'avorite vessel', 
+                                                        'avorite vessel',
                                                     onPress: () => {
                                                         this.props.toggleFavoriteVessel(portCall.vessel.imo);
                                                         this.props.updatePortCalls();
                                                 }},
                                                 {
-                                                    text: 
+                                                    text:
                                                         (this.props.favoritePortCalls.includes(portCall.portCallId) ? 'Unf' : 'F') +
                                                     'avorite port call', onPress: () => {
                                                     this.props.toggleFavoritePortCall(portCall.portCallId);
@@ -169,11 +169,11 @@ class PortCallList extends Component {
                                     }}
                                 />
                             ))
-                        }                    
+                        }
                     </List>
                 </ScrollView>
             </View>
-        );        
+        );
     }
 
     renderFavorites(portCall) {
@@ -191,9 +191,9 @@ class PortCallList extends Component {
                     />}
                 </View>
         );
-    } 
+    }
     isFavorite(portCall) {
-        return this.props.favoritePortCalls.includes(portCall.portCallId) || 
+        return this.props.favoritePortCalls.includes(portCall.portCallId) ||
         this.props.favoriteVessels.includes(portCall.vessel.imo);
     }
 
@@ -210,7 +210,7 @@ class PortCallList extends Component {
                  return invert ? 1 : -1;
             else return invert ? -1 : 1;
         } else if (filters.sort_by === 'ARRIVAL_DATE') {
-            if (a.startTime > b.startTime) 
+            if (a.startTime > b.startTime)
                  return invert ? 1 : -1;
             else return invert ? -1 : 1;
         }
@@ -220,7 +220,7 @@ class PortCallList extends Component {
 
     search(portCalls, searchTerm) {
         return portCalls.filter(portCall => {
-            return portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) || 
+            return portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
             portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
         }).sort((a,b) => this.sortFilters(a,b))
@@ -231,9 +231,9 @@ class PortCallList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colorScheme.primaryColor  
+        backgroundColor: colorScheme.primaryColor
     },
-    // Search bar and filter button  
+    // Search bar and filter button
     containerRow: {
         flexDirection: 'row',
         alignItems:'center',
@@ -246,9 +246,9 @@ const styles = StyleSheet.create({
         flex: 4,
         marginRight: 0,
         borderBottomWidth: 0,
-        borderTopWidth: 0,      
+        borderTopWidth: 0,
     },
-    // Filter button container 
+    // Filter button container
     buttonContainer: {
         flex: 1,
         marginRight: 0,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     },
     subTitleStyle: {
         color: colorScheme.tertiaryTextColor,
-    }, 
+    },
 })
 
 function mapStateToProps(state) {
@@ -275,15 +275,15 @@ function mapStateToProps(state) {
         showLoadingIcon: state.portCalls.portCallsAreLoading,
         filters: state.filters,
         error: state.error,
+        isAppendingPortCalls: state.cache.appendingPortCalls
     }
 }
 
 export default connect(mapStateToProps, {
     updatePortCalls,
-    appendPortCalls, 
+    appendPortCalls,
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
     bufferPortCalls
 })(PortCallList);
-
