@@ -10,6 +10,8 @@ import {
   fetchVesselByName,
   removeError,
   clearLocations,
+  fetchSinglePortCall,
+  selectPortCall,
 } from '../../actions';
 
 import {
@@ -43,7 +45,8 @@ import { getDateTimeString } from '../../util/timeservices';
 import { hasComment } from '../../config/instances';
 
 
-let navBackTimer = null;
+let navBackTimer      = null;
+let initRedirectTimer = null;
 
 class SendPortcall extends Component {
   constructor(props) {
@@ -160,6 +163,7 @@ class SendPortcall extends Component {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
     const { portCall, getState, initPortCall, sendingState, navigation, clearVesselResult } = this.props;
+    const { navigate } = navigation;
     const { selectedVessel } = this.state;
     const vesselId = selectedVessel.imo;
     const { atLocation, fromLocation, toLocation, } = sendingState;
@@ -185,7 +189,7 @@ class SendPortcall extends Component {
             {text: 'Yes', onPress: () => {
                 const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId: null, selectedDate, selectedTimeType, comment}, state);
                 
-                initPortCall(pcm, type).then(() => {
+                initPortCall(pcm, type).then((portCallId) => {
                     if(!!this.props.sendingState.error) {
                         Alert.alert(
                             'Error',
@@ -193,9 +197,28 @@ class SendPortcall extends Component {
                         );
                     } else {
                         this.refs._scrollView.scrollToEnd();
+
+                        let fetching = false;
+                        // Fetch the portCall so that we can navigate to timeline, need to be on a delay so that the backend have time to create the port call
+                        initRedirectTimer = setInterval(() => {
+                            if(!fetching) {
+                                fetching = true;
+                                this.props.fetchSinglePortCall(portCallId)
+                                    .then(portCall => {
+                                        if(!!portCall) {
+                                            this.props.selectPortCall(portCall);
+                                            clearInterval(initRedirectTimer);
+                                            navigate('TimeLineDetails');
+                                        }
+
+                                        fetching = false;
+                                    })
+                            }
+                        }, 2000);
+
                     }
                     clearVesselResult();
-                });          
+                });       
             }}
         ]
     );
@@ -222,6 +245,7 @@ class SendPortcall extends Component {
     this.props.clearReportResult();
     
     clearTimeout(navBackTimer);
+    clearInterval(initRedirectTimer);
   }
 
   getSendButtonEnabled() {
@@ -454,9 +478,12 @@ class SendPortcall extends Component {
             style={{alignSelf: 'center'}} 
           />
           { (sendingState.successCode === 200) && 
-            <Text h4 style={styles.success}>{initializeNew ? 
-                'Port call was successfully created!':
-                'Timestamp was successfully sent!'}</Text>
+            <View>
+                <Text h4 style={styles.success}>{initializeNew ? 
+                    'Creating port call...':
+                    'Timestamp was successfully sent!'}</Text>
+                <ActivityIndicator size="large" color={colorScheme.primaryColor} />
+            </View>
           }
           { (sendingState.successCode === 202) &&
             <Text h4 style={styles.success}>Timestamp was successfully sent, but couldn't be matched to an existing Port Call!</Text>
@@ -717,4 +744,6 @@ export default connect(
         selectLocation,
         clearVesselResult,
         clearLocations,
+        fetchSinglePortCall,
+        selectPortCall,
     })(SendPortcall);
