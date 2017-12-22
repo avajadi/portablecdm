@@ -131,6 +131,45 @@ export const updatePortCalls = () => {
     };
 }
 
+export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
+    dispatch({type: types.FETCH_PORTCALLS});
+    const connection = getState().settings.connection;
+    const token = getState().settings.token;
+    const favorites = getState().favorites;
+
+    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}`,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            sslPinning: getCert(connection)
+        })
+        .then(result => {
+            let err = checkResponse(result);
+            if(!err) {
+                return JSON.parse(result.bodyString);
+            }
+
+            // dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
+
+        })
+        .then(portCall => fetchVesselForPortCall(connection, token, portCall, favorites))
+        .then(portCall => {
+            dispatch({type: types.FETCH_PORTCALLS_SUCCESS});
+            return portCall;
+        })
+        .catch(err => {
+            if (err.message != 'dispatched') {
+                dispatch({
+                    type: types.SET_ERROR, payload: {
+                        description: err.message,
+                        title: 'Unable to connect to the server!'
+                    }
+                });
+            }
+        });
+}
+
 export const fetchPortCalls = (dispatch, getState, additionalFilterString) => {
     dispatch({ type: types.FETCH_PORTCALLS });
     const connection = getState().settings.connection;
