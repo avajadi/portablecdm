@@ -4,61 +4,65 @@ import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcd
 import { noSummary, hasEvents } from '../config/instances';
 import pinch from 'react-native-pinch';
 
-export const appendPortCalls = (lastPortCall) => {
-    return (dispatch, getState) => {
+export const appendPortCallIds = (lastPortCall) => {
+    return (dispatch, getEvent) => {
+        dispatch({ type: types.FETCH_PORTCALLS });
 
-        dispatch({
-            type: types.CACHE_APPENDING_PORTCALLS
-        })
-        let filters = getState().filters;
-        let filterString = '';
-        let beforeOrAfter = filters.order === 'DESCENDING' ? 'before' : 'after';
-        if (filters.sort_by === 'LAST_UPDATE') {
-            filterString = `updated_${beforeOrAfter}=${new Date(lastPortCall.lastUpdated).toISOString()}`;
-        } else {
-            filterString = `${beforeOrAfter}=${new Date(filters.order === 'DESCENDING' ? lastPortCall.startTime : lastPortCall.endTime).toISOString()}`;
-        }
+        return dispatch(fetchPortCallIds());
+    }
+}
 
-        const portCalls = getState().cache.portCalls;
+export const updatePortCallIds = (lastUpdated) => {
+    return (dispatch, getEvent) => {
+        let updatedAfter = '&updated_after=' + new Date(lastUpdated).toISOString();
 
-        return fetchPortCalls(dispatch, getState, filterString).then(() => {
-            let toAppend = getState().portCalls.foundPortCalls.filter((x) => !portCalls.some((y) => y.portCallId == x.portCallId));
-
-            console.log('Fetched another ' + toAppend.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
-
-            // Redux will think we're still appending portcalls for awhile, so that we can't spam requests
-            setTimeout(() => {
-                dispatch({
-                    type: types.CACHE_ENABLE_APPENDING_PORTCALLS
-                });
-            }, APPENDING_PORTCALLS_TIMEOUT_MS);
-            
-            dispatch({
-                type: types.CACHE_PORTCALLS,
-                payload: portCalls.concat(toAppend)
-            });
-        });
+        return dispatch(fetchPortCallIds(updatedAfter));
     }
 }
 
 export const fetchPortCallIds = (filterString) => {
     return (dispatch, getState) => {
-        dispatch({ type: types.FETCH_PORTCALLS });
-
         const connection = getState().settings.connection;
         const token = getState().settings.token;
         const { locations } = getState().favorites;
         const { arrivingWithin, departingWithin } = getState().filters;
         const timeParameters = getTimeParameters(arrivingWithin, departingWithin);
+        const locationParams = getLocationParameters(locations);
+        const url = `${connection.host}:${connection.port}/pcb/event?${timeParameters}${locationParams}${filterString ? filterString : ''}`;
 
-        return pinch.fetch(`${connection.host}:${connection.port}/pcb/event?${timeParameters}${filterString}`,
+        console.log('Fetching events: ' + url);
+
+        return pinch.fetch(url,
             {
                 method: 'GET',
                 headers: connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
                 sslPinning: getCert(connection),
             })
             .then(result => {
+                let err = checkResponse(result);
+                if (!err) {
+                    return JSON.parse(result.bodyString);
+                }
 
+                dispatch({type: types.SET_ERROR, payload: err});
+                throw new Error('dispatched');
+            }).then(result => Promise.all(result.map(element => element.portCallId)))
+            .then(result => result.filter((elem, index) => result.indexOf(elem) === index))
+            .catch(err => {
+                if (!err.message != 'dispatched') {
+                    dispatch({
+                        type: types.SET_ERROR,
+                        payload: {
+                            description: err.message,
+                            title: 'Unable to fetch events for locations!',
+                        }
+                    });
+
+                    dispatch({
+                        type: types.ADD_FAVORITE_LOCATIONS,
+                        payload: []
+                    });
+                }
             })
     }
 }
@@ -66,7 +70,7 @@ export const fetchPortCallIds = (filterString) => {
 
 // Helper functions
 function getTimeParameters(arrivingWithin, departingWithin) {
-    const fromTime = 'from_time=';
+    let fromTime = 'from_time=';
     if (arrivingWithin == 0) {
         fromTime += '1970-01-01T00:00:00Z';
     } else {
@@ -75,11 +79,11 @@ function getTimeParameters(arrivingWithin, departingWithin) {
         fromTime += from.toISOString();
     }
 
-    const toTime = 'to_time=';
+    let toTime = 'to_time=';
     if (departingWithin == 0) {
         let oneYearAhead = new Date();
-        oneYearAhead.setFullYear(oneYearAhead.getFullYear + 1);
-        toTime += oneYearAhead.toISOString;
+        oneYearAhead.setFullYear(oneYearAhead.getFullYear() + 1);
+        toTime += oneYearAhead.toISOString();
     } else {
         let to = new Date();
         to.setHours(to.getHours + departingWithin);
@@ -87,4 +91,14 @@ function getTimeParameters(arrivingWithin, departingWithin) {
     }
 
     return fromTime + '&' + toTime;
+}
+
+function getLocationParameters(locations) {
+    let parameters = '';
+
+    for (let i = 0, location; location = locations[i]; i++) {
+        parameters += `&location=${location}`;
+    }
+
+    return parameters;
 }
