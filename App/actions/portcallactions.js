@@ -4,7 +4,7 @@ import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcd
 import { noSummary, hasEvents } from '../config/instances';
 import { Alert } from 'react-native';
 import pinch from 'react-native-pinch';
-import { appendPortCallIds } from './eventactions';
+import { appendPortCallIds, updatePortCallIds } from './eventactions';
 
 const APPENDING_PORTCALLS_TIMEOUT_MS = 1000;
 
@@ -43,12 +43,14 @@ export const appendPortCalls = (lastPortCall) => {
             type: types.CACHE_APPENDING_PORTCALLS
         })
 
-        if (getState().favorites.locations.length > 0 && false) {
+        const cache = getState().cache.portCalls;
+
+        if (getState().favorites.locations.length > 0) {
             return dispatch(appendPortCallIds(lastPortCall)).then(ids => {
                 return Promise.all(ids.map(id => {
-                    
+                    return dispatch(fetchSinglePortCall(id));
                 })).then(portCalls => 
-                    dispatch(appendFetchedPortCalls(portCalls)));
+                    dispatch(appendFetchedPortCalls(cache, portCalls)));
             });
         }
 
@@ -61,16 +63,14 @@ export const appendPortCalls = (lastPortCall) => {
             filterString = `${beforeOrAfter}=${new Date(filters.order === 'DESCENDING' ? lastPortCall.startTime : lastPortCall.endTime).toISOString()}`;
         }
 
-        const portCalls = getState().cache.portCalls;
-
         return fetchPortCalls(dispatch, getState, filterString).then(() => 
-            dispatch(appendFetchedPortCalls(portCalls)));
+            dispatch(appendFetchedPortCalls(cache, getState().portCalls.foundPortCalls)));
     }
 }
 
-const appendFetchedPortCalls = (cached) => {
+const appendFetchedPortCalls = (cached, newPortCalls) => {
     return (dispatch, getState) => {
-        let toAppend = getState().portCalls.foundPortCalls.filter((x) => !cached.some((y) => y.portCallId == x.portCallId));
+        let toAppend = newPortCalls.filter((x) => !cached.some((y) => y.portCallId == x.portCallId));
 
         console.log('Fetched another ' + toAppend.length + ' port calls while having ' + cached.length + ' cached port calls.');
 
@@ -90,45 +90,57 @@ const appendFetchedPortCalls = (cached) => {
 
 export const updatePortCalls = () => {
     return (dispatch, getState) => {
-        const { portCalls, lastUpdated } = getState().cache;
+        const { portCalls: cache, lastUpdated } = getState().cache;
 
         // Maybe TODO: Instead use after/before when updating on filter Arrival_Date
         let updatedAfter = 'updated_after=' + new Date(lastUpdated).toISOString();
 
-        return fetchPortCalls(dispatch, getState, updatedAfter).then(() => {
-            dispatch({
-                type: types.CACHE_UPDATE,
-                payload: new Date().getTime(),
-            });
+        if (getState().favorites.locations.length > 0) {
+            return dispatch(updatePortCallIds(lastUpdated)).then(ids =>
+                Promise.all(ids.map(id =>
+                    dispatch(fetchSinglePortCall(id))
+                )).then(portCalls => 
+                    dispatch(updateFetchedPortCalls(cache, portCalls)))
+            );
+        }
 
-            return fetchFavoritePortCalls(dispatch, getState)
-                .then(favoritePortCalls => applyFilters(favoritePortCalls, getState().filters))
-                .then(favoritePortCalls => {
-                    let newPortCalls = getState().portCalls.foundPortCalls
-                        .filter(portCall => !favoritePortCalls.some(favorite => favorite.portCallId === portCall.portCallId))
-                        .concat(favoritePortCalls);
-
-                    console.log('Only fetched ' + newPortCalls.length + ' while having ' + portCalls.length + ' cached port calls.');
-
-                    let counter = 0;
-                    for (let i = 0; i < newPortCalls.length; i++) { // This mysteriously didn't work with foreach
-                        let portCall = newPortCalls[i];
-                        let toBeReplaced = portCalls.find((x) => x.portCallId === portCall.portCallId);
-                        if (!!toBeReplaced) {
-                            portCalls.splice(portCalls.indexOf(toBeReplaced), 1);
-                            counter++;
-                        }
-                    }
-
-                    console.log('Updated ' + counter + ' port calls.');
-
-                    dispatch({
-                        type: types.CACHE_PORTCALLS,
-                        payload: getState().filters.order === 'DESCENDING' ? newPortCalls.concat(portCalls) : portCalls.concat(newPortCalls),
-                    });
-                });
-        });
+        return fetchPortCalls(dispatch, getState, updatedAfter).then(() => 
+            dispatch(updateFetchedPortCalls(cache, getState().portCalls.foundPortCalls)));
     };
+}
+
+const updateFetchedPortCalls = (cache, newPortCalls) => (dispatch, getState) => {
+    dispatch({
+        type: types.CACHE_UPDATE,
+        payload: new Date().getTime(),
+    });
+
+    return fetchFavoritePortCalls(dispatch, getState)
+        .then(favoritePortCalls => applyFilters(favoritePortCalls, getState().filters))
+        .then(favoritePortCalls => {
+            newPortCalls = newPortCalls
+            .filter(portCall => !favoritePortCalls.some(favorite => favorite.portCallId === portCall.portCallId))
+            .concat(favoritePortCalls);
+            
+            console.log('Only fetched ' + newPortCalls.length + ' while having ' + cache.length + ' cached port calls.');
+
+            let counter = 0;
+            for (let i = 0; i < newPortCalls.length; i++) { // This mysteriously didn't work with foreach
+                let portCall = newPortCalls[i];
+                let toBeReplaced = cache.find((x) => x.portCallId === portCall.portCallId);
+                if (!!toBeReplaced) {
+                    cache.splice(cache.indexOf(toBeReplaced), 1);
+                    counter++;
+                }
+            }
+
+            console.log('Updated ' + counter + ' port calls.');
+
+            dispatch({
+                type: types.CACHE_PORTCALLS,
+                payload: getState().filters.order === 'DESCENDING' ? newPortCalls.concat(cache) : cache.concat(newPortCalls),
+            });
+        });
 }
 
 export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
