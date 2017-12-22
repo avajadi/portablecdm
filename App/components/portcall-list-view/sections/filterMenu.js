@@ -76,7 +76,8 @@ class FilterMenu extends Component {
 
         this.onBackIconPressed = this.onBackIconPressed.bind(this);
         this.onDoneIconPressed = this.onDoneIconPressed.bind(this);
-        this.onLocationButtonPressed = this.onLocationButtonPressed.bind(this);
+        this.showLocationModal = this.showLocationModal.bind(this);
+        this.hideLocationModal = this.hideLocationModal.bind(this);
     }
     setModalStagesVisible(visible) {
         this.setState({ modalStagesVisible: visible });
@@ -86,8 +87,12 @@ class FilterMenu extends Component {
         this.props.navigation.goBack();
     }
 
-    onLocationButtonPressed() {
-        
+    showLocationModal() {
+        this.setState({showLocationModal: true});
+    }
+
+    hideLocationModal() {
+        this.setState({showLocationModal: false});
     }
 
     onDoneIconPressed() {
@@ -265,8 +270,8 @@ class FilterMenu extends Component {
                     <Button
                         title="Filter on locations"
                         textStyle={{ color: colorScheme.primaryTextColor }}
-                        buttonStyle={{ backgroundColor: colorScheme.primaryColor }}
-                        onPress={this.onLocationButtonPressed}
+                        buttonStyle={{ backgroundColor: colorScheme.primaryColor, marginTop: 20 }}
+                        onPress={this.showLocationModal}
                     />
 
 
@@ -284,10 +289,11 @@ class FilterMenu extends Component {
 
                 <Modal
                     visible={this.state.showLocationModal}
+                    onRequestClose={this.hideLocationModal}
                     transparent={false}
                     animationType='slide'
                 >
-                    <LocationFilter />
+                    <LocationFilter onBackPress={this.hideLocationModal}/>
                 </Modal>
             </View>
         ); //Return
