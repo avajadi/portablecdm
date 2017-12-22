@@ -4,6 +4,7 @@ import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcd
 import { noSummary, hasEvents } from '../config/instances';
 import { Alert } from 'react-native';
 import pinch from 'react-native-pinch';
+import { appendPortCallIds } from './eventactions';
 
 const APPENDING_PORTCALLS_TIMEOUT_MS = 1000;
 
@@ -41,6 +42,16 @@ export const appendPortCalls = (lastPortCall) => {
         dispatch({
             type: types.CACHE_APPENDING_PORTCALLS
         })
+
+        if (getState().favorites.locations.length > 0 && false) {
+            return dispatch(appendPortCallIds(lastPortCall)).then(ids => {
+                return Promise.all(ids.map(id => {
+                    
+                })).then(portCalls => 
+                    dispatch(appendFetchedPortCalls(portCalls)));
+            });
+        }
+
         let filters = getState().filters;
         let filterString = '';
         let beforeOrAfter = filters.order === 'DESCENDING' ? 'before' : 'after';
@@ -52,22 +63,27 @@ export const appendPortCalls = (lastPortCall) => {
 
         const portCalls = getState().cache.portCalls;
 
-        return fetchPortCalls(dispatch, getState, filterString).then(() => {
-            let toAppend = getState().portCalls.foundPortCalls.filter((x) => !portCalls.some((y) => y.portCallId == x.portCallId));
+        return fetchPortCalls(dispatch, getState, filterString).then(() => 
+            dispatch(appendFetchedPortCalls(portCalls)));
+    }
+}
 
-            console.log('Fetched another ' + toAppend.length + ' port calls while having ' + portCalls.length + ' cached port calls.');
+const appendFetchedPortCalls = (cached) => {
+    return (dispatch, getState) => {
+        let toAppend = getState().portCalls.foundPortCalls.filter((x) => !cached.some((y) => y.portCallId == x.portCallId));
 
-            // Redux will think we're still appending portcalls for awhile, so that we can't spam requests
-            setTimeout(() => {
-                dispatch({
-                    type: types.CACHE_ENABLE_APPENDING_PORTCALLS
-                });
-            }, APPENDING_PORTCALLS_TIMEOUT_MS);
-            
+        console.log('Fetched another ' + toAppend.length + ' port calls while having ' + cached.length + ' cached port calls.');
+
+        // Redux will think we're still appending portcalls for awhile, so that we can't spam requests
+        setTimeout(() => {
             dispatch({
-                type: types.CACHE_PORTCALLS,
-                payload: portCalls.concat(toAppend)
+                type: types.CACHE_ENABLE_APPENDING_PORTCALLS
             });
+        }, APPENDING_PORTCALLS_TIMEOUT_MS);
+        
+        dispatch({
+            type: types.CACHE_PORTCALLS,
+            payload: cached.concat(toAppend)
         });
     }
 }
