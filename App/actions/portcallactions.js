@@ -404,7 +404,7 @@ export const fetchPortCallOperations = (portCallId) => {
                 dispatch({ type: types.SET_ERROR, payload: err });
                 throw new Error('dispatched');
             })
-            // Sort the operations, port_visits first, then in
+            // Sort the operations, port_visits first, then earliest arrival start first
             .then(sortOperations)
             .then(filterStatements)
             .then(operations => {

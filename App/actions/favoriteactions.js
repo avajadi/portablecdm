@@ -1,5 +1,12 @@
 import * as types from './types';
 
+
+export const clearFavoriteLocations = () => {
+    return {
+        type: types.CLEAR_FAVORITE_LOCATIONS
+    };
+}
+
 export const toggleFavoritePortCall = (portCallId) => {
     return (dispatch, getState) => {
         if(getState().favorites.portCalls.includes(portCallId)) {

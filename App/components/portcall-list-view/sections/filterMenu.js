@@ -8,7 +8,7 @@ import {
     Dimensions,
     Modal,
     TouchableHighlight,
-    Picker
+    Picker,
 } from 'react-native';
 import {
     List,
@@ -22,6 +22,7 @@ import {
 } from 'react-native-elements';
 
 import MiniHeader from '../../mini-header-view';
+import LocationFilter from './locationFilter';
 
 import {
     updatePortCalls,
@@ -70,10 +71,12 @@ class FilterMenu extends Component {
             vesselListFilter: props.filters.vesselList,
             withinValue: withinValue,
             onlyFetchActivePortCalls: props.filters.onlyFetchActivePortCalls,
+            showLocationModal: false,
         }
 
         this.onBackIconPressed = this.onBackIconPressed.bind(this);
         this.onDoneIconPressed = this.onDoneIconPressed.bind(this);
+        this.onLocationButtonPressed = this.onLocationButtonPressed.bind(this);
     }
     setModalStagesVisible(visible) {
         this.setState({ modalStagesVisible: visible });
@@ -83,17 +86,21 @@ class FilterMenu extends Component {
         this.props.navigation.goBack();
     }
 
+    onLocationButtonPressed() {
+        
+    }
+
     onDoneIconPressed() {
         const {
-        limitFilter,
+            limitFilter,
             selectedSortByIndex,
             selectedOrderByIndex,
             withinValue,
             selectedTimeIndex,
             onlyFetchActivePortCalls
-    } = this.state;
+        } = this.state;
         const {
-        filters,
+            filters,
             updatePortCalls,
             bufferPortCalls,
             clearCache,
@@ -105,7 +112,7 @@ class FilterMenu extends Component {
             filterChangeDepartingWithin,
             filterClearArrivingDepartureTime,
             filterChangeOnlyFuturePortCalls
-    } = this.props;
+        } = this.props;
 
         // Limit
         filterChangeLimit(limitFilter);
@@ -254,6 +261,15 @@ class FilterMenu extends Component {
                         <Text style={{ fontWeight: 'bold', paddingLeft: 10, }}> Limit: {this.state.limitFilter} portcalls retrieved </Text>
                     </View>}
 
+                    {/* Location filter */}
+                    <Button
+                        title="Filter on locations"
+                        textStyle={{ color: colorScheme.primaryTextColor }}
+                        buttonStyle={{ backgroundColor: colorScheme.primaryColor }}
+                        onPress={this.onLocationButtonPressed}
+                    />
+
+
                     {/*Button - SHOW RESULTS*/}
                     <View style={{ backgroundColor: colorScheme.primaryColor, marginTop: 10, paddingVertical: 5, }}>
                         <Button
@@ -263,8 +279,16 @@ class FilterMenu extends Component {
                             onPress={this.onDoneIconPressed}
                         />
                     </View>
-
+                    
                 </ScrollView>
+
+                <Modal
+                    visible={this.state.showLocationModal}
+                    transparent={false}
+                    animationType='slide'
+                >
+                    <LocationFilter />
+                </Modal>
             </View>
         ); //Return
     } //Render
