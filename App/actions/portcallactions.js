@@ -140,6 +140,10 @@ const updateFetchedPortCalls = (cache, newPortCalls) => (dispatch, getState) => 
                 type: types.CACHE_PORTCALLS,
                 payload: getState().filters.order === 'DESCENDING' ? newPortCalls.concat(cache) : cache.concat(newPortCalls),
             });
+
+            dispatch({
+                type: types.FETCH_PORTCALLS_SUCCESS
+            });
         });
 }
 

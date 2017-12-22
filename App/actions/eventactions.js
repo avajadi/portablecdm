@@ -57,6 +57,11 @@ export const fetchPortCallIds = (filterString) => {
                             title: 'Unable to fetch events for locations!',
                         }
                     });
+
+                    dispatch({
+                        type: types.ADD_FAVORITE_LOCATIONS,
+                        payload: []
+                    });
                 }
             })
     }
