@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  FlatList
 } from 'react-native';
 
 import {
@@ -56,8 +57,7 @@ class LocationFilter extends Component {
             textInputRef='textInput'
             />
             <Button
-                title="Clear all"
-                small
+                title="Clear"
                 containerViewStyle={styles.clearButtonContainer}
                 textStyle={{ color: colorScheme.primaryTextColor }}
                 buttonStyle={{ backgroundColor: colorScheme.primaryColor }}
@@ -66,6 +66,7 @@ class LocationFilter extends Component {
                 }}
             />
         </View>
+
         <ScrollView>
           {(locations.length <= 0) && <ActivityIndicator animating={!locations} size="large" style={{alignSelf: 'center'}}/>}
           {(locations.length > 0) && <List>
@@ -77,6 +78,7 @@ class LocationFilter extends Component {
                   subtitle={`${location.locationType.replace(/_/g, " ")}`}
                   rightIcon={<CheckBox
                     checked={this.state.favoriteLocations.indexOf(location.URN) >= 0}
+                    containerStyle={{backgroundColor: colorScheme.primaryTextColor, borderColor: colorScheme.primaryTextColor}}
                     onPress={() => {
                       const indexOfLocation = this.state.favoriteLocations.indexOf(location.URN);
 
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
   containerRow: {
     flexDirection: 'row',
     alignItems:'center',
-    paddingLeft: 15,
+    paddingLeft: 0,
     paddingRight: 0,
     backgroundColor: colorScheme.primaryColor
   },
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 0,
     marginLeft: 0,
-    alignSelf: 'stretch',
+    padding: 0
   },
 });
 
