@@ -1,10 +1,11 @@
 import * as types from './types';
 
-
-export const clearFavoriteLocations = () => {
+export const addFavoriteLocations = (favoriteLocations) => {
     return {
-        type: types.CLEAR_FAVORITE_LOCATIONS
-    };
+        type: types.ADD_FAVORITE_LOCATIONS,
+        payload: favoriteLocations
+    }
+    
 }
 
 export const toggleFavoritePortCall = (portCallId) => {

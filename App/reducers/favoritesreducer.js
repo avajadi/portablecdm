@@ -4,9 +4,7 @@ import {
     ADD_FAVORITE_VESSEL,
     REMOVE_FAVORITE_VESSEL,
     CLEAR_FAVORITES,
-    CLEAR_FAVORITE_LOCATIONS,
-    ADD_FAVORITE_LOCATION,
-    REMOVE_FAVORITE_LOCATION,
+    ADD_FAVORITE_LOCATIONS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -32,16 +30,8 @@ const favoritesReducer = (state = INITIAL_STATE, action) => {
             const vesselsCopy = state.vessels.slice();
             vesselsCopy.splice(vesselsCopy.indexOf(action.payload), 1);
             return {...state, vessels: vesselsCopy};
-        case ADD_FAVORITE_LOCATION:
-            const locationsCopy = state.locations.slice();
-            locationsCopy.push(action.payload);
-            return {...state, locations: locationsCopy};
-        case REMOVE_FAVORITE_LOCATION:
-            const locationCopy = state.locations.slice();
-            locationCopy.splice(vesselsCopy.indexOf(action.payload), 1);
-            return {...state, locations: locationCopy}
-        case CLEAR_FAVORITE_LOCATIONS:
-            return {...state, locations: []}
+        case ADD_FAVORITE_LOCATIONS:
+            return {...state, locations: action.payload};
         case CLEAR_FAVORITES:
             return INITIAL_STATE;
         default:

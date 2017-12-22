@@ -65,9 +65,7 @@ export const ADD_FAVORITE_VESSEL = 'add_favorite_vessel';
 export const REMOVE_FAVORITE_VESSEL = 'remove_favorite_vessel';
 export const CLEAR_FAVORITES = 'clear_favorites';
 
-export const ADD_FAVORITE_LOCATION = 'add_favorite_location';
-export const CLEAR_FAVORITE_LOCATIONS = 'clear_favorite_locations';
-export const REMOVE_FAVORITE_LOCATION = 'remove_favorite_location';
+export const ADD_FAVORITE_LOCATIONS = 'add_favorite_location';
 
 /* ERRORS */
 export const ERR_DISPATCHED = 'dispatched';
