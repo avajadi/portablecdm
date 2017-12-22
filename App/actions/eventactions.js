@@ -47,6 +47,7 @@ export const fetchPortCallIds = (filterString) => {
                 dispatch({type: types.SET_ERROR, payload: err});
                 throw new Error('dispatched');
             }).then(result => Promise.all(result.map(element => element.portCallId)))
+            .then(result => result.filter((elem, index) => result.indexOf(elem) === index))
             .catch(err => {
                 if (!err.message != 'dispatched') {
                     dispatch({

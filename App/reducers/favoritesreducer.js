@@ -10,7 +10,7 @@ import {
 const INITIAL_STATE = {
     vessels: [],
     portCalls: [],
-    locations: ['urn:mrn:stm:location:segot:berth:skarvik519'],
+    locations: [],
     test: 0,
 }
 
