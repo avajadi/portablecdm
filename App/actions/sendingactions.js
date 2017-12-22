@@ -40,6 +40,7 @@ export const sendPortCall = (pcmAsObject, stateType) => {
         })
         .then(result => {
             dispatch({type: types.SEND_PORTCALL_SUCCESS, payload: result})
+            return pcmAsObject.portCallId;
         })
         .catch(error => {
             dispatch({type: types.SEND_PORTCALL_FAILURE, payload: error.message})

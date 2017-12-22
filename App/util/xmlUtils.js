@@ -115,7 +115,7 @@ export function objectToXml(pcm, stateType) {
   }   
 
   pcmAsXml += `</portCallMessage>`
-  console.log(pcmAsXml);
+  //console.log(pcmAsXml);
   return pcmAsXml;
 }
 
