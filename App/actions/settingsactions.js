@@ -27,15 +27,19 @@ export const changePortUnlocode = (unlocode) => {
 
 export const changeHostSetting = (host) => {
     return (dispatch, getState) => {
-        dispatch({
-            type: types.SETTINGS_CHANGE_HOST,
-            payload: host
-        });
-
+        
         // Need to clear all cached port calls since they are unique to ports
-        dispatch({
-            type: types.CACHE_CLEAR,
-        });
+        // but only if host changed since last time
+        if (getState().settings.connection.host !== host) {
+            dispatch({
+                type: types.CACHE_CLEAR,
+            });
+
+            dispatch({
+                type: types.SETTINGS_CHANGE_HOST,
+                payload: host
+            });
+        }
     }
 };
 

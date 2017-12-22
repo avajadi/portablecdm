@@ -80,6 +80,8 @@ class LocationSelection extends Component {
                 <ListItem
                   key={location.URN}
                   title={location.name}
+                  subtitle={`${location.locationType.replace(/_/g, " ")}`}
+                  subtitleStyle={styles.subtitle}
                   onPress={() => {
                       selectLocation(selectLocationFor, location);
                       onBackPress();
@@ -105,6 +107,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     borderTopWidth: 0,      
   },
+  subtitle: {
+      fontSize: 10,
+  }
 });
 
 function mapStateToProps(state) {

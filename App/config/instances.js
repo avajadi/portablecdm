@@ -1,7 +1,6 @@
 export const noSummary = [
     'seume',
     'prod.portcdm',
-    'qa.sebro'
 ]
 
 export const hasEvents = [
@@ -12,6 +11,9 @@ export const hasEvents = [
     'dev.portcdm.eu',
     'segot.portcdm.eu',
     'qa.esvlc.portcdm.eu',
+    '192.168.56.101',
+    'qa.sebro.portcdm.eu',
+    'esbcn.portcdm.eu',
 ]
 
 export const isStaging = [

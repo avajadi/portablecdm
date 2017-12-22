@@ -41,6 +41,9 @@ import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils'
 import { getDateTimeString } from '../../util/timeservices';
 import { hasComment } from '../../config/instances';
 
+
+let navBackTimer = null;
+
 class SendPortcall extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +77,7 @@ class SendPortcall extends Component {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
     const { vessel, portCall, getState, sendPortCall, sendingState, navigation } = this.props;
+    const { navigate } = navigation;
     const vesselId = vessel.imo;
     const { portCallId } = portCall;
     const { atLocation, fromLocation, toLocation, } = sendingState;
@@ -105,6 +109,10 @@ class SendPortcall extends Component {
                         );
                     } else {
                         this.refs._scrollView.scrollToEnd();
+                        navBackTimer = setTimeout(() => {
+                            this.props.clearReportResult();
+                            navigate('TimeLineDetails');
+                        }, 1000);
                     }
                 });          
             }}
@@ -173,6 +181,7 @@ class SendPortcall extends Component {
 
   componentWillUnmount() {
     this.props.clearReportResult();
+    clearTimeout(navBackTimer);
   }
 
   getSendButtonEnabled() {
@@ -323,7 +332,7 @@ class SendPortcall extends Component {
             <View>
               <View style={styles.locationSelectionContainer}>
                 <Text style={styles.locationStaticText}>From: </Text>
-                {fromLocation && <Text style={styles.locationDynamicText}>{fromLocation.name}</Text>}
+                {fromLocation && <Text style={styles.locationDynamicText}>{fromLocation.name}{'\n'}<Text style={styles.loocationStaticSubtitle}>{fromLocation.locationType.replace(/_/g, ' ')}</Text></Text>}
                 <Icon
                   name='edit-location'
                   size= {50}
@@ -333,7 +342,7 @@ class SendPortcall extends Component {
               </View>
               <View style={styles.locationSelectionContainer}>
                 <Text style={styles.locationStaticText}>To: </Text>
-                {toLocation && <Text style={styles.locationDynamicText}>{toLocation.name}</Text>}
+                {toLocation && <Text style={styles.locationDynamicText}>{toLocation.name}{'\n'}<Text style={styles.loocationStaticSubtitle}>{toLocation.locationType.replace(/_/g, ' ')}</Text></Text>}
                 <Icon
                   name='edit-location'
                   size= {50}
@@ -347,7 +356,7 @@ class SendPortcall extends Component {
           { !(state.ServiceType === 'NAUTICAL') &&
             <View style={styles.locationSelectionContainer}>
               <Text style={styles.locationStaticText}>At: </Text>
-              {atLocation && <Text style={styles.locationDynamicText}>{atLocation.name}</Text>}
+              {atLocation && <Text style={styles.locationDynamicText}>{atLocation.name}{'\n'}<Text style={styles.loocationStaticSubtitle}>{atLocation.locationType.replace(/_/g, ' ')}</Text></Text>}
               <Icon
                 name='edit-location'
                 size= {50}
@@ -554,7 +563,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  locationStaticText:{
+  locationStaticText:{ // To / From / At
     color: colorScheme.quaternaryTextColor,
     fontSize: 14,
     paddingBottom: 10,
@@ -563,14 +572,21 @@ const styles = StyleSheet.create({
     borderRadius: 5, 
     overflow: 'hidden',
     fontWeight: 'bold',  
+    width: 60,
   },
-  locationDynamicText:{
+  loocationStaticSubtitle: { // Location type
+    color: colorScheme.tertiaryTextColor,
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  locationDynamicText:{ // ACtual location
     color: colorScheme.quaternaryTextColor,
     fontSize: 14,
     paddingBottom: 10,
     paddingTop: 10,
     borderRadius: 5, 
     overflow: 'hidden', 
+    flex: 1,
   },
   bottomInfo: {
     backgroundColor: colorScheme.secondaryContainerColor, 
@@ -634,7 +650,7 @@ const styles = StyleSheet.create({
           color: 'red',
           fontSize: 12,
           marginLeft: 20,
-      }
+      },
 });
 
 function mapStateToProps(state) {

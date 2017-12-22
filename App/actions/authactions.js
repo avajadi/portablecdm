@@ -3,11 +3,11 @@ import constants from '../config/constants';
 import { Alert, Platform } from 'react-native';
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
-import isStaging from '../config/instances';
+import { isStaging } from '../config/instances';
 
 export const loginKeycloak = (urlPayload) => {
     return (dispatch, getState) => { 
-        let consts = constants(isStaging.some((x) => getState().settings.host.includes(x)));
+        let consts = constants(isStaging.some((x) => getState().settings.connection.host.includes(x)));
         console.log('Authenticating...');
         const [, queryString] = urlPayload.split('#');
         const responseObj = queryString.split('&').reduce((map, pair) => {
@@ -123,10 +123,6 @@ export const startLocalServer = () => {
         let port = 1337;
         server = new StaticServer(port, path, {localOnly: true});
 
-        server.start().then((url) => {
-            console.log('Serving at url ' + url + '. Path is ' + path);
-        });
-
         dispatch({
             type: types.SERVER_START,
             payload: {
@@ -134,6 +130,10 @@ export const startLocalServer = () => {
                 port: port,
                 path: path,
             }
+        });
+
+        return server.start().then((url) => {
+            console.log('Serving at url ' + url + '. Path is ' + path);
         });
     }
 }
