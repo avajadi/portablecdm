@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     locations: state.location.locations,
-    locationsByType: state.location.locationsByType,
     loading: state.location.loading,
     operations: state.portCalls.selectedPortCallOperations,
   }
