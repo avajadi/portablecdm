@@ -26,6 +26,7 @@ import colorScheme from '../../../config/colors';
 class LocationFilter extends Component {
   state = {
     searchTerm: '',
+    locations: this.props.locations,
     favoriteLocations: this.props.favoriteLocations,
   }
 
@@ -33,8 +34,25 @@ class LocationFilter extends Component {
       return locations.filter(location => location.name.toUpperCase().includes(searchTerm.toUpperCase()));        
   }
 
+  bubbleSelectedToTop = (a, b) => {
+    if(this.state.favoriteLocations.includes(a.URN)) {
+      return -1;
+    }
+    if(this.state.favoriteLocations.includes(b.URN)) {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  componentWillMount() {
+    // Make sure all selected locations are on top
+    this.setState({locations: this.state.locations.sort(this.bubbleSelectedToTop)});
+  }
+
   render() {
-    const { locations, onBackPress, addFavoriteLocations } = this.props;
+    const { onBackPress, addFavoriteLocations } = this.props;
+    const { locations } = this.state;
     
     return(
       <View style={styles.container}>
@@ -77,6 +95,7 @@ class LocationFilter extends Component {
                   title={location.name}
                   subtitle={`${location.locationType.replace(/_/g, " ")}`}
                   rightIcon={<CheckBox
+                    checkedColor={colorScheme.primaryColor}
                     checked={this.state.favoriteLocations.indexOf(location.URN) >= 0}
                     containerStyle={{backgroundColor: colorScheme.primaryTextColor, borderColor: colorScheme.primaryTextColor}}
                     onPress={() => {
@@ -132,7 +151,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     locations: state.location.locations,
-    locationsByType: state.location.locationsByType,
     loading: state.location.loading,
     favoriteLocations: state.favorites.locations
   }

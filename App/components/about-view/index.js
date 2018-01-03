@@ -42,6 +42,7 @@ export default class AboutView extends Component {
                 <Text h4>Version 1.4</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Now suggest ending timestamps when a commenced/arrival to timestamp is reported </Text>
+                    <Text>{BULLET} Can now filter on locations </Text>
                     <Text>{BULLET} Redirecting when sending in a timestamp or created a new port call </Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>
