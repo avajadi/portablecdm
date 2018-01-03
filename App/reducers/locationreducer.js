@@ -22,4 +22,8 @@ const locationReducer = (state=INITIAL_STATE, action) => {
   }
 };
 
+const locationsByTypes = (state, locationTypes) => {
+    return state.location.locations.filter(l => locationTypes.includes(l.locationType));
+};
+
 export default locationReducer;

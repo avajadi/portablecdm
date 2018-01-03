@@ -46,6 +46,7 @@ class LocationFilter extends Component {
   }
 
   componentWillMount() {
+    // Make sure all selected locations are on top
     this.setState({locations: this.state.locations.sort(this.bubbleSelectedToTop)});
   }
 
@@ -94,6 +95,7 @@ class LocationFilter extends Component {
                   title={location.name}
                   subtitle={`${location.locationType.replace(/_/g, " ")}`}
                   rightIcon={<CheckBox
+                    checkedColor={colorScheme.primaryColor}
                     checked={this.state.favoriteLocations.indexOf(location.URN) >= 0}
                     containerStyle={{backgroundColor: colorScheme.primaryTextColor, borderColor: colorScheme.primaryTextColor}}
                     onPress={() => {
