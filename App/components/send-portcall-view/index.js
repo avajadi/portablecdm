@@ -451,7 +451,7 @@ class SendPortcall extends Component {
           >
             <LocationSelection
               selectLocationFor={this.state.selectLocationFor}
-              locationType={state.LocationType}
+              selectForState={state}
               navigation={navigation}
               onBackPress={this._hideLocationSelectionModal.bind(this)}
             />
