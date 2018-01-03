@@ -32,7 +32,9 @@ class LocationFilter extends Component {
 
     search(locations, searchTerm) {
         return locations.filter(location => location.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
-            location.locationType.toUpperCase().includes(searchTerm.toUpperCase()));
+            location.locationType.toUpperCase().includes(searchTerm.toUpperCase()) ||
+            this.state.favoriteLocations.includes(location.URN)
+        );
     }
 
     bubbleSelectedToTop = (a, b) => {
