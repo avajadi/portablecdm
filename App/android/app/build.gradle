@@ -9,8 +9,8 @@ android {
             storePassword 'SummerCrewPontus345'
         }
     }
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "se.viktoria.portablecdm"
         minSdkVersion 19
@@ -69,6 +69,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.0.2'
+    implementation 'com.android.support:recyclerview-v7:25.0.2'
     //compile 'com.android.support:multidex:1.0.0'
     compile('host.exp.exponent:expoview:18.0.0@aar') {
         exclude group: 'com.facebook.android', module: 'facebook-android-sdk'
