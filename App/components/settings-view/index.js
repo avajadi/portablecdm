@@ -7,6 +7,7 @@ import {
     Dimensions,
     ScrollView,
     Alert,
+    ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -20,6 +21,8 @@ import {
     CheckBox,
     Slider,
 } from 'react-native-elements';
+
+import { Util } from 'expo';
 
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
@@ -42,6 +45,7 @@ class Settings extends Component {
         this.state = {
             fetchReliability: props.fetchReliability,
             limitCache: props.limitCache,
+            currentTimeZone: null
         }
 
         this.updateFetchReliability = this.updateFetchReliability.bind(this);
@@ -50,6 +54,16 @@ class Settings extends Component {
     updateFetchReliability() {
         this.props.changeFetchReliability(!this.state.fetchReliability);
         this.setState({ fetchReliability: !this.state.fetchReliability });
+    }
+
+    componentWillMount() {
+        Util.getCurrentTimeZoneAsync()
+            .then(timeZoneName => {
+                const offset = new Date().getTimezoneOffset()*(-1)/60;
+                const offsetString = offset < 0 ? `-${Math.abs(offset)}` : `+${Math.abs(offset)}`;
+                let currentTimeZone = `${timeZoneName} (UTC ${offsetString})`
+                this.setState({currentTimeZone})
+            })
     }
 
     render() {
@@ -148,6 +162,13 @@ class Settings extends Component {
                                 {' ' + (!!connection.username ? connection.username : 'SeaSWIM user')}
                             </Text>
                         </Text>
+                    </View>
+                    <View style={styles.containers.info}>
+                        <Text style={styles.texts.headerText} h3>
+                            Current Time Zone
+                        </Text>
+                        {!!this.state.currentTimeZone && <Text style={{alignSelf: 'center'}}>{this.state.currentTimeZone}</Text>}
+                        {!this.state.currentTimeZone && <ActivityIndicator animating={!this.state.currentTimeZone} small/>}
                     </View>
                 </ScrollView>
             </View>
