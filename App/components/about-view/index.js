@@ -42,6 +42,7 @@ export default class AboutView extends Component {
                 <Text h4>Version 1.4</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Now suggest ending timestamps when a commenced/arrival to timestamp is reported </Text>
+                    <Text>{BULLET} For timestamps that has a LocationType, it is only possible to select a location of that type when reporting timestamps</Text>
                     <Text>{BULLET} Can now filter on locations </Text>
                     <Text>{BULLET} Redirecting when sending in a timestamp or created a new port call </Text>
                 </View>
