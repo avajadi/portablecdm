@@ -75,7 +75,7 @@ function getTimeParameters(arrivingWithin, departingWithin) {
         fromTime += '1970-01-01T00:00:00Z';
     } else {
         let from = new Date();
-        from.setHours(from.getHours - arrivingWithin);
+        from.setHours(from.getHours() - arrivingWithin);
         fromTime += from.toISOString();
     }
 
@@ -86,7 +86,7 @@ function getTimeParameters(arrivingWithin, departingWithin) {
         toTime += oneYearAhead.toISOString();
     } else {
         let to = new Date();
-        to.setHours(to.getHours + departingWithin);
+        to.setHours(to.getHours() + departingWithin);
         toTime += to.toISOString();
     }
 
