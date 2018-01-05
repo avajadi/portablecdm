@@ -1,4 +1,6 @@
-import { combineReducers } from 'redux';
+//import { combineReducers } from 'redux';
+import { persistCombineReducers } from 'redux-persist';
+import { AsyncStorage } from 'react-native';
 import portCallReducer from './portcallreducer';
 import stateReducer from './statereducer';
 import settingsReducer from './settingsreducer';
@@ -11,7 +13,12 @@ import serverReducer from './serverreducer';
 import favoritesReducer from './favoritesreducer';
 import cacheReducer from './cachereducer';
 
-export default combineReducers({
+export default persistCombineReducers(
+  { 
+    key: 'primary', 
+    whitelist: ['states', 'settings', 'filters', 'favorites', 'cache'], 
+    storage: AsyncStorage
+  }, {
   portCalls: portCallReducer,
   states: stateReducer,
   settings: settingsReducer,

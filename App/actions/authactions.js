@@ -1,8 +1,8 @@
 import * as types from './types';
 import constants from '../config/constants';
 import { Alert, Platform } from 'react-native';
-import StaticServer from 'react-native-static-server';
-import RNFS from 'react-native-fs';
+//import StaticServer from 'react-native-static-server';
+//import RNFS from 'react-native-fs';
 import { isStaging } from '../config/instances';
 
 export const loginKeycloak = (urlPayload) => {
