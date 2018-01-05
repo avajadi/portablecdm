@@ -3,36 +3,40 @@
 buildscript {
   repositories {
     jcenter()
-    maven {
-      url 'https://maven.google.com/'
-      name 'Google'
-    }
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.1'
-
-    // NOTE: Do not place your application dependencies here; they belong
-    // in the individual module build.gradle files
+    classpath 'com.google.gms:google-services:3.0.0'
+    classpath 'de.undercouch:gradle-download-task:2.0.0'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
   }
 }
 
 allprojects {
   repositories {
-    mavenLocal()
+    maven {
+      url "$rootDir/maven"
+    }
+    maven {
+      // We use a modified build of com.android.support.test:runner:1.0.1. Explanation in maven-test/README
+      url "$rootDir/maven-test"
+    }
     jcenter()
     maven {
-      // Point to local maven repository
-      url "$rootDir/../.expo-source/android/maven"
+      // Local Maven repo containing AARs with JSC built for Android
+      url "$rootDir/../js/node_modules/jsc-android/android"
     }
-//      maven {
-//          url 'https://maven.google.com'
-//          name 'Google'
-//
-//      }
+    flatDir {
+      dirs 'libs'
+      // dirs project(':expoview').file('libs')
+    }
+    maven { url "https://jitpack.io" }
     maven {
-      url 'https://maven.google.com/'
-      name 'Google'
+      url 'https://maven.google.com'
     }
+
+    // Want this last so that we never end up with a stale cache
+    mavenLocal()
   }
 }
 
