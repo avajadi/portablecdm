@@ -2,6 +2,7 @@ package host.exp.exponent;
 
 
 import com.facebook.react.ReactPackage;
+import com.localz.PinchPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,8 @@ public class MainApplication extends ExpoApplication {
         // TODO: add native modules!
 
         // Needed for `react-native link`
-        // new MainReactPackage()
+        // new MainReactPackage(),
+            new PinchPackage()
     );
   }
 
