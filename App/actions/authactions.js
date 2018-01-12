@@ -26,7 +26,7 @@ export const loginKeycloak = (code) => {
         }
         formBody = formBody.join('&');
 
-        console.log(formBody);
+        console.log(JSON.stringify(formBody));
         console.log(consts.MaritimeTokenURI);
 
         return fetch(consts.MaritimeTokenURI, {
