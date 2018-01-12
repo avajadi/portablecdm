@@ -106,7 +106,7 @@ class LoginKeyCloakView extends Component {
         });
 
         if(result.type == 'success') {
-            const authenticated = await loginKeycloak(result.code);
+            const authenticated = await this.props.loginKeycloak(result.code);
             if(authenticated) {
                 this.loginConfirmed();
             }
