@@ -1,2 +1,2 @@
-export const APP_VERSION = '1.4-locations';
+export const APP_VERSION = '1.5';
 export const STAGING = true;
