@@ -5,6 +5,9 @@ import {
   SEND_PORTCALL_SUCCESS,
   SEND_PORTCALL_SELECT_LOCATION,
   SEND_PORTCALL_CLEAR_LOCATIONS,
+  WITHDRAW_TIMESTAMP_BEGIN,
+  WITHDRAW_TIMESTAMP_SUCCESS,
+  WITHDRAW_TIMESTAMP_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -14,6 +17,8 @@ const INITIAL_STATE = {
   toLocation: null,
   fromLocation: null,
   atLocation: null,
+  withdrawingStatement: false,
+  withdrawingErrorCode: 'none'
 }
 
 const sendingReducer = (state=INITIAL_STATE, action) => {
@@ -27,9 +32,15 @@ const sendingReducer = (state=INITIAL_STATE, action) => {
     case SEND_PORTCALL_CLEAR_RESULT:
       return { ...INITIAL_STATE, toLocation: state.toLocation, fromLocation: state.fromLocation, atLocation: state.atLocation };
     case SEND_PORTCALL_SELECT_LOCATION:
-      return { ...state, [action.payload.locationType]: action.payload.location}
+      return { ...state, [action.payload.locationType]: action.payload.location};
     case SEND_PORTCALL_CLEAR_LOCATIONS:
-      return { ...state, toLocation: null, fromLocation: null, atLocation: null }
+      return { ...state, toLocation: null, fromLocation: null, atLocation: null };
+    case WITHDRAW_TIMESTAMP_BEGIN:
+        return { ...state, withdrawingStatement: true, withdrawingErrorCode: 'none' };
+    case WITHDRAW_TIMESTAMP_SUCCESS:
+        return { ...state, withdrawingStatement: false, withdrawingErrorCode: 'none' };
+    case WITHDRAW_TIMESTAMP_FAILURE:
+        return { ...state, withdrawingStatement: false, withdrawingErrorCode: action.payload };
     default:
       return state;
   }

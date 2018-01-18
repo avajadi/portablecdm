@@ -4,6 +4,12 @@ const serviceTimeSequences = ['COMMENCED', 'COMPLETED'];
 const administrationTimeSequences = ['CANCELLED', 'CONFIRMED', 'DENIED', 'REQUESTED', 'REQUEST_RECEIVED'];
 // if neither of above, assume LocationState
 
+const initialPortCallXml =  `<?xml version="1.0" encoding="UFT-8"?>\n
+                             <portCallMessage xmlns="urn:mrn:stm:schema:port-call-message:0.6.1"
+                                              xmlns:ns2="urn:mrn:stm:schema:port-call-message:0.6.1:payload"
+                                              xmlns:ns3="urn:mrn:stm:schema:port-call-message:0.6.1:entity">\n`;
+let pcmAsXml =
+pcmAsXml += ``;
 
 export function createPortCallMessageAsObject(params, stateDefinition) {
   const { vesselId, portCallId, atLocation, fromLocation, toLocation, selectedDate, selectedTimeType, comment } = params;
@@ -92,13 +98,7 @@ export function createPortCallMessageAsObject(params, stateDefinition) {
 
 export function objectToXml(pcm, stateType) {
   const preMessageId = 'urn:mrn:stm:portcdm:message:';  
-
-  let pcmAsXml = `<?xml version="1.0" encoding="UFT-8"?>\n`;
-  pcmAsXml += `<portCallMessage xmlns="urn:mrn:stm:schema:port-call-message:0.6"
-                                xmlns:ns2="urn:mrn:stm:schema:port-call-message:0.6:payload"
-                                xmlns:ns3="urn:mrn:stm:schema:port-call-message:0.6:entity">\n`;
-
-
+  let pcmAsXml = initialPortCallXml;
   
   // portCallId, vesselId, messageId, have to be in that order in the xml for some reason
   pcmAsXml += pcm.portCallId ? `\t<portCallId>${pcm.portCallId}</portCallId>\n` : '';
@@ -170,4 +170,19 @@ const parsePayload = (payload, stateType) => {
   }
 
   return asXml;
+}
+
+export function createWithdrawXml(messageIdToWithdraw, portCallId, vesselId) {
+    let pcmAsXml = initialPortCallXml;
+
+    pcmAsXml += `<portCallId>${portCallId}</portCallId>\n`;
+    pcmAsXml += `\t<vesselId>${vesselId}</vesselId>\n`;
+    pcmAsXml += `\t<messageId>urn:mrn:stm:portcdm:message:${uuid()}</messageId>\n`;
+    pcmAsXml += `\t<payload xsi:type="ns2:MessageOperation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n`;
+    pcmAsXml += `\t\t<ns2:operation>WITHDRAW</ns2:operation>\n`;
+    pcmAsXml += `\t\t<ns2:messageId>${messageIdToWithdraw}</ns2:messageId>\n`
+    pcmAsXml += `\t</payload>\n`;
+    pcmAsXml += `</portCallMessage>`;
+
+    return pcmAsXml;
 }
