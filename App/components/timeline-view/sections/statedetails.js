@@ -23,6 +23,7 @@ import {
 import Collapsible from 'react-native-collapsible';
 
 import colorScheme from '../../../config/colors';
+import { isWithdrawSupported } from '../../../config/instances';
 import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
 
@@ -56,8 +57,10 @@ class StateDetails extends Component {
 
     render () {
         const { operation, statements } = this.state;
-        const { vessel, portCall, getStateDefinition } = this.props;
+        const { vessel, portCall, getStateDefinition, currentHost } = this.props;
         const stateDef = getStateDefinition(statements[0].stateDefinition);
+
+        const withdrawSupported = isWithdrawSupported(currentHost);
 
         return(
             
@@ -92,63 +95,67 @@ class StateDetails extends Component {
 
                 {/*StateView*/}
                 {statements.map( statement => {
+                    const withdrawn = (withdrawSupported && statement.isWithdrawn);
+                    const additionalStyles = withdrawn ? styles.withdrawn : {};
+                    // let additionalStyles = {};
+                    
                     return(
-                        <View style={styles.stateContainer}
+                        <View style={[styles.stateContainer, additionalStyles]}
                             key={statement.messageId}> 
                             {/*TitleView*/}
-                            <View style={styles.titleContainer}> 
+                            <View style={[styles.titleContainer, additionalStyles]}> 
                                 {stateDef && <Text style={styles.stateTitleText}> {stateDef.Name} </Text>  }
                                 {!stateDef && <Text style={styles.stateTitleText}> {statement.stateDefinition} </Text>  }
                             </View>
 
                             {/*Dividers that change colors*/}
                             {statement.timeType === 'ACTUAL' && 
-                                <Divider style={{height: 5 , backgroundColor: colorScheme.actualColor}}/> }
+                                <Divider style={{height: 5 , backgroundColor: withdrawn ? 'grey' : colorScheme.actualColor}}/> }
                             {statement.timeType === 'ESTIMATED' &&  
-                                <Divider style={{height: 5, backgroundColor: colorScheme.estimateColor}}/> } 
+                                <Divider style={{height: 5, backgroundColor: withdrawn ? 'grey' : colorScheme.estimateColor}}/> } 
                             {!statement.timeType &&
-                                <Divider style={{height: 5 , backgroundColor: colorScheme.secondaryColor}}/>}
+                                <Divider style={{height: 5 , backgroundColor: withdrawn ? 'grey' : colorScheme.secondaryColor}}/>}
 
                             {/*DetailContainer*/}
-                            <View style={styles.detailContainer}>
-                                <View style={styles.detailView}> 
+                            <View style={[styles.detailContainer, additionalStyles]}>
+                                <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>TIME: </Text> 
                                     <Text style={styles.detailText}>{getDateTimeString(new Date(statement.time))}  </Text>
                                     {statement.timeType === 'ACTUAL' && 
-                                        <View style={styles.actualContainer}>
+                                        <View style={[styles.actualContainer, additionalStyles]}>
                                             <Text style={styles.actualText}>A</Text>
                                         </View>  }
                                     {statement.timeType === 'ESTIMATED' && 
-                                        <View style={styles.estimateContainer}>
+                                        <View style={[styles.estimateContainer, additionalStyles]}>
                                             <Text style={styles.estimateText}>E</Text>
                                         </View>}
                                 </View>
 
                                 {operation.atLocation && 
-                                <View style={styles.detailView}> 
+                                <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>AT: </Text>
                                     <Text style={styles.detailText}>{operation.atLocation.name}</Text>
                                 </View>}
                                 {operation.fromLocation && 
-                                <View style={styles.detailView}> 
+                                <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>FROM: </Text>
                                     <Text style={styles.detailText}>{operation.fromLocation.name}</Text>        
                                 </View>}
                                 {operation.toLocation && 
-                                <View style={styles.detailView}> 
+                                <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>TO: </Text>
                                     <Text style={styles.detailText}>{operation.toLocation.name}</Text>        
                                 </View>}
                                 
-                                <View style={styles.detailView}> 
+                                <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>REPORTED BY: </Text>
                                     <Text style={styles.detailText}>{removeStringReportedBy(statement.reportedBy)} </Text>  
                                 </View>
-                                <View style={styles.detailView}> 
+                                <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>REPORTED AT: </Text>  
                                     <Text style={styles.detailText}>{getDateTimeString(new Date(statement.reportedAt))}</Text>        
                                 </View>
-                                {!!statement.comment && <View style={styles.detailView}> 
+                                {!!statement.comment && <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>COMMENT: </Text>  
                                     <Text style={styles.detailText}>{statement.comment}</Text>        
                                 </View>
@@ -156,7 +163,7 @@ class StateDetails extends Component {
                                 
                                 {/* Reliability for the message, and reliability changes  */}
                                 {!!statement.reliabilityChanges &&
-                                <View style={styles.detailView}> 
+                                <View style={[styles.detailView, additionalStyles]}> 
                                     <Text style={styles.stateSubTitleText}>RELIABILITY: </Text>  
                                     <Text style={styles.detailText}>{statement.reliability}%</Text>        
                                 </View>
@@ -171,6 +178,11 @@ class StateDetails extends Component {
                                                 {Math.floor(change.reliability*100)}% : {change.reason}
                                             </Text>
                                 ))}
+                                {!!withdrawn && <View style={[styles.detailView, additionalStyles]}>
+                                        <Text style={[styles.stateSubTitleText, styles.withdrawnText]}>Withdrawn</Text>
+                                    </View>
+                                }
+
                             </View>     
                         </View>
                     )
@@ -311,6 +323,12 @@ const styles = StyleSheet.create({
     reliabilityChangeText: {
         fontSize: 10,
         marginLeft: 10
+    },
+    withdrawn: {
+        backgroundColor: 'darkgrey'
+    },
+    withdrawnText: {
+        color: 'red'        
     }
 
 });
@@ -319,7 +337,8 @@ function mapStateToProps (state) {
     return {
         vessel: state.portCalls.vessel,
         portCall: state.portCalls.selectedPortCall,
-        getStateDefinition: state.states.stateById
+        getStateDefinition: state.states.stateById,
+        currentHost: state.settings.connection.host,
     }
 }
 

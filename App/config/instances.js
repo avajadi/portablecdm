@@ -3,6 +3,10 @@ export const noSummary = [
     'prod.portcdm',
 ]
 
+const hasWithdraw = [
+    'dev.portcdm.eu',
+];
+
 export const hasEvents = [
     'qa.segot',
     'qa.portcdm.eu',
@@ -25,3 +29,5 @@ export const hasComment = [
 ]
 
 export const contentTypeBug = hasEvents;
+
+export const isWithdrawSupported = currentHost => hasWithdraw.some(instance => currentHost.includes(instance));
