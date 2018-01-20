@@ -77,7 +77,9 @@ class StateDetails extends Component {
                                 Alert.alert(
                                     'Statement withdrawn',
                                     null,
-                                    [{text: 'Ok'}]
+                                    [{text: 'Ok', onPress: () => {
+                                        this.props.navigation.goBack();
+                                    }}]
                                 )
                             }
                         })
