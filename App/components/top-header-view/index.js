@@ -21,7 +21,7 @@ export default class TopHeader extends Component {
   render() {
     const {title, firstPage, rightIconFunction, backArrowFunction, leftIcons, selectorIcon, modal} = this.props;
 
-    const topPadding = Platform.OS === 'android' && modal ? 20-StatusBar.currentHeight : 30;
+    const topPadding = Platform.OS === 'android' && modal ? 30-StatusBar.currentHeight : 30;
     // const topPadding = 30;
 
     return(
