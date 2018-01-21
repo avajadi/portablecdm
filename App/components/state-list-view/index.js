@@ -5,7 +5,6 @@ import {
   FlatList,
   StyleSheet,
   Button,
-  Modal,
   ScrollView
 } from 'react-native';
 

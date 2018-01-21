@@ -23,7 +23,8 @@ export const selectPortCall = (portCall) => {
 
 export const bufferPortCalls = () => {
     return (dispatch, getState) => {
-        const { limit, portCalls } = getState().cache;
+        const { portCalls } = getState().cache;
+        const limit = getState().settings.cacheLimit;
 
         const beforeFetching = portCalls.length;
         if (portCalls.length < limit && portCalls.length > 0) {

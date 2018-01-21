@@ -214,7 +214,7 @@ class LoginKeyCloakView extends Component {
                         visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
                         onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
                         >
-                        <TopHeader title="Legacy Login" navigation={this.props.navigation} backArrowFunction={() => this.setState({legacyLogin: {enabled: false}})} />
+                        <TopHeader modal title="Legacy Login" navigation={this.props.navigation} backArrowFunction={() => this.setState({legacyLogin: {enabled: false}})} />
                         
                         <View style={styles.containers.centralizer}>
                             <View style={styles.containers.blank}/>

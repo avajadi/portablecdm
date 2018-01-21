@@ -200,7 +200,7 @@ function mapStateToProps(state) {
     return {
         fetchReliability: state.settings.fetchReliability,
         connection: state.settings.connection,
-        limitCache: state.cache.limit,
+        limitCache: state.settings.cacheLimit,
     };
 }
 

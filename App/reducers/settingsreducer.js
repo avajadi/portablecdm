@@ -16,6 +16,7 @@ import {
   SETTINGS_CHANGE_CACHE_LIMIT,
   SETTINGS_UPDATE_VERSION,
   SETTINGS_CLEAR,
+  CACHE_CHANGE_LIMIT,
 } from '../actions/types';
 
 import{ APP_VERSION } from '../config/version';
@@ -26,7 +27,8 @@ const INITIAL_STATE = {
     port: '8080',
     username: '',
     password: '',
-    unlocode: ''
+    unlocode: '',
+    cacheLimit: 100,
   },
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
@@ -84,6 +86,8 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, appVersion: action.payload };
     case SETTINGS_CLEAR:
       return INITIAL_STATE;
+    case CACHE_CHANGE_LIMIT:
+      return { ...state, cacheLimit: action.payload };
     default:
       return state;
   }

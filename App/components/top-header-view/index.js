@@ -3,6 +3,7 @@ import {
   View,
   Platform,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 
 import {
@@ -18,11 +19,14 @@ import colorScheme from '../../config/colors';
 export default class TopHeader extends Component {
 
   render() {
-    const {title, firstPage, rightIconFunction, backArrowFunction, leftIcons, selectorIcon} = this.props;
+    const {title, firstPage, rightIconFunction, backArrowFunction, leftIcons, selectorIcon, modal} = this.props;
+
+    const topPadding = Platform.OS === 'android' && modal ? 20-StatusBar.currentHeight : 30;
+    // const topPadding = 30;
 
     return(
       <View >
-        <View style={styles.container}>
+        <View style={[styles.container, {paddingTop: topPadding}]}>
           {/* On the landing page on IOS, and all pages on android we want to show a meny icon */}
           {(firstPage) &&
           <Icon

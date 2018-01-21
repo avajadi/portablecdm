@@ -37,7 +37,7 @@ export default class AboutView extends Component {
             visible={this.state.showChangeLog}
             onRequestClose={() => this.setState({showChangeLog: false})}
         >
-            <TopHeader title="Change log" backArrowFunction={() => this.setState({showChangeLog: false})}/>
+            <TopHeader modal title="Change log" backArrowFunction={() => this.setState({showChangeLog: false})}/>
             <ScrollView style={{padding: 10}}>
                 <Text h4>Version 1.5</Text>
                 <View style={{padding: 5}}>
