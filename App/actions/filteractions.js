@@ -54,10 +54,3 @@ export const filterChangeOnlyFuturePortCalls = (show) => {
         payload: show
     };
 };
-
-export const filterChangeStages = (stages) => {
-    return {
-        type: types.FILTER_CHANGE_STAGES,
-        payload: stages,
-    }
-}

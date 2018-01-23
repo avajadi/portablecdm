@@ -139,7 +139,7 @@ class PortCallList extends Component {
                                     titleStyle={styles.titleStyle}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
                                     subtitleStyle={styles.subTitleStyle}
-                                    rightTitle={portCall.stage.replace(/_/g, ' ')}
+                                    rightTitle={portCall.stage ? portCall.stage.replace(/_/g, ' ') : undefined}
                                     rightTitleStyle={[styles.subTitleStyle, {fontSize: 9}]}
                                     onPress={() => {
                                         //console.log(JSON.stringify(portCall.vessel));
@@ -221,10 +221,13 @@ class PortCallList extends Component {
     }
 
     search(portCalls, searchTerm) {
+        let { filters } = this.props;
+
         return portCalls.filter(portCall => {
-            return portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
+            return (portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
-            portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
+            portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm)) &&
+            (!portCall.stage || filters.stages.includes(portCall.stage));
         }).sort((a,b) => this.sortFilters(a,b))
         .slice(0, this.state.numLoadedPortCalls);
     }

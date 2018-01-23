@@ -5,6 +5,8 @@ import { noSummary, hasEvents } from '../config/instances';
 import { Alert } from 'react-native';
 import pinch from 'react-native-pinch';
 import { appendPortCallIds, updatePortCallIds } from './eventactions';
+import colors from '../config/colors';
+import { filterChangeArrivingWithin } from './index';
 
 const APPENDING_PORTCALLS_TIMEOUT_MS = 1000;
 
@@ -390,9 +392,20 @@ function createFilterString(filters, getState) {
             continue;
         }
 
+        if (filter === 'stages') {
+            let stages = filters[filter];
+            for (let i = 0, stage; stage = stages[i]; i++) {
+                filterString += getFilterString('stage', stage, count);
+                count++;
+            }
+            
+            continue;
+        }
+
         filterString += getFilterString(filter, filters[filter], count);
         count++;
     }
+    console.log('Filterstring: ' + filterString);
     return filterString;
 }
 
