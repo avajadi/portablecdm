@@ -139,7 +139,7 @@ class PortCallList extends Component {
                                     titleStyle={styles.titleStyle}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
                                     subtitleStyle={styles.subTitleStyle}
-                                    rightTitle={portCall.stage}
+                                    rightTitle={portCall.stage.replace(/_/g, ' ')}
                                     rightTitleStyle={[styles.subTitleStyle, {fontSize: 9}]}
                                     onPress={() => {
                                         //console.log(JSON.stringify(portCall.vessel));
