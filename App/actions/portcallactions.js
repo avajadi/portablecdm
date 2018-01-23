@@ -373,6 +373,8 @@ function createFilterString(filters, getState) {
             after.setMonth(nowDate.getMonth() - 1); // Assume portcalls dont last more than a month
             let before = new Date();
             before.setHours(nowDate.getHours() + departingFilter);
+            filterString += getFilterString('after', after.toISOString(), count);
+            filterString += getFilterString('before', before.toISOString(), count);
 
             count++;
             continue;
