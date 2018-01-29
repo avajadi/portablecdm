@@ -15,6 +15,7 @@ import {
   SETTINGS_CHANGE_TOKEN,
   SETTINGS_CHANGE_CACHE_LIMIT,
   SETTINGS_UPDATE_VERSION,
+  SETTINGS_FETCH_INSTANCE,
   SETTINGS_CLEAR,
   CACHE_CHANGE_LIMIT,
 } from '../actions/types';
@@ -48,6 +49,7 @@ const INITIAL_STATE = {
     tokenType: 'bearer',
   },
   appVersion: APP_VERSION,  
+  instance: undefined,
 }
 
 const settingsReducer = (state = INITIAL_STATE, action) => {
@@ -84,6 +86,8 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, vesselLists: {...state.vesselLists, [action.payload.listName]: vesselRemoved}}
     case SETTINGS_UPDATE_VERSION:
       return { ...state, appVersion: action.payload };
+    case SETTINGS_FETCH_INSTANCE: 
+      return { ...state, instance: action.payload };
     case SETTINGS_CLEAR:
       return INITIAL_STATE;
     case CACHE_CHANGE_LIMIT:

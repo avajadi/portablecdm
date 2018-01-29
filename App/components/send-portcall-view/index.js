@@ -42,7 +42,6 @@ import LocationSelection from './sections/locationselection';
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
 import { getDateTimeString } from '../../util/timeservices';
-import { hasComment } from '../../config/instances';
 
 
 let navBackTimer      = null;
@@ -263,7 +262,7 @@ class SendPortcall extends Component {
     const { atLocation, fromLocation, toLocation } = sendingState;
     const { stateId, mostRelevantStatement, newVessel } = this.props.navigation.state.params; 
     const state = getState(stateId);
-    const enableComment = hasComment.some((x) => host.includes(x));
+    const enableComment = this.props.instanceInfo.hasComment;
     const initializeNew = !!newVessel;
  
     return(
@@ -729,6 +728,7 @@ function mapStateToProps(state) {
     sendingState: state.sending,
     newVessel: state.vessel.vessel,
     error: state.error,
+    instanceInfo: state.settings.instance,
   }
 }
 

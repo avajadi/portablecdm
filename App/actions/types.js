@@ -50,6 +50,7 @@ export const SETTINGS_CHANGE_USER = 'settings_change_user';
 export const SETTINGS_CHANGE_TOKEN = 'settings_change_token';
 export const SETTINGS_CHANGE_FETCH_RELIABILITY = 'settings_change_fetch_reliability';
 export const SETTINGS_CHANGE_FAVORITE_STATE_LIST = 'settings_change_favorite_state_list';
+export const SETTINGS_FETCH_INSTANCE = 'settings_fetch_instance';
 export const SETTINGS_UPDATE_VERSION = 'settings_update_version';
 export const SETTINGS_CLEAR = 'settings_clear';
 export const FETCH_VESSEL = 'fetch_vessel';

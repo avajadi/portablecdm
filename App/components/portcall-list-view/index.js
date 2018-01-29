@@ -7,6 +7,7 @@ import {
     toggleFavoriteVessel,
     appendPortCalls,
     bufferPortCalls,
+    setError,
  } from '../../actions';
 
 import {
@@ -44,10 +45,6 @@ class PortCallList extends Component {
             .then(this.props.bufferPortCalls);
     }
 
-    componentDidMount() {
-
-    }
-
     loadPortCalls() {
         return this.props.updatePortCalls().then(() => {
             if(this.props.error.hasError) {
@@ -83,6 +80,11 @@ class PortCallList extends Component {
         const {navigation, showLoadingIcon, portCalls, selectPortCall} = this.props;
         const {navigate} = navigation;
         const {searchTerm} = this.state;
+
+        // Quick fix for having 1 element with null value
+        if (portCalls.length === 1) {
+            portCalls.splice(0,1);
+        }
 
         return(
             <View style={styles.container}>
@@ -290,5 +292,6 @@ export default connect(mapStateToProps, {
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
-    bufferPortCalls
+    bufferPortCalls,
+    setError,
 })(PortCallList);

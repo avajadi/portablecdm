@@ -1,2 +1,2 @@
-export const APP_VERSION = '1.5-stagesFilter';
+export const APP_VERSION = '1.5-instances';
 export const STAGING = true;

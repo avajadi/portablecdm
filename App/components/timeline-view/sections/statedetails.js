@@ -24,7 +24,6 @@ import {
 import Collapsible from 'react-native-collapsible';
 
 import colorScheme from '../../../config/colors';
-import { isWithdrawSupported } from '../../../config/instances';
 import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
 import { withdrawStatement } from '../../../actions';
@@ -98,7 +97,7 @@ class StateDetails extends Component {
         const { vessel, portCall, getStateDefinition, currentHost } = this.props;
         const stateDef = getStateDefinition(statements[0].stateDefinition);
 
-        const withdrawSupported = isWithdrawSupported(currentHost);
+        const withdrawSupported = this.props.instanceInfo.hasWithdraw;
 
         return(
             
@@ -394,7 +393,8 @@ function mapStateToProps (state) {
         portCall: state.portCalls.selectedPortCall,
         getStateDefinition: state.states.stateById,
         currentHost: state.settings.connection.host,
-        loggedinUserName: state.settings.connection.username
+        loggedinUserName: state.settings.connection.username,
+        instanceInfo: state.settings.instance,
     }
 }
 

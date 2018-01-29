@@ -1,13 +1,12 @@
-export const noSummary = [
-    'seume',
-    'prod.portcdm',
-]
+import colors from "./colors";
 
-const hasWithdraw = [
-    'dev.portcdm.eu',
-];
 
-export const hasEvents = [
+/* Lowest supported build nummer */
+const hasWithdraw = {
+    pcb: 505,
+}
+
+export const hasEventsLegacy = [
     'qa.segot',
     'qa.portcdm.eu',
     'seume.portcdm',
@@ -20,14 +19,38 @@ export const hasEvents = [
     'esbcn.portcdm.eu',
 ]
 
+const hasEvents = {
+    pcb: 454,
+}
+
 export const isStaging = [
     'dev.portcdm.eu',
 ]
 
-export const hasComment = [
-    'dev.portcdm.eu',
-]
+const hasComment = {
+    pcb: 486,
+}
 
-export const contentTypeBug = hasEvents;
+export default createInstanceInfo = (instanceInfo, host) => {
+    
+    let pcbBuild = parseInt(instanceInfo.pcb.buildNumber);
+    if (!pcbBuild) {
+        pcbBuild = 493;
+    }
 
-export const isWithdrawSupported = currentHost => hasWithdraw.some(instance => currentHost.includes(instance));
+    let withdraw = parseInt(pcbBuild) >= hasWithdraw.pcb;
+    let portCallEndPoint = pcbBuild >= hasEvents.pcb ? '/events' : '/operations';
+    let contentType = pcbBuild >= hasEvents.pcb ? 'application/json' : 'application/xml';
+    let staging = isStaging.some(x => host.includes(x));
+    let comment = pcbBuild >= hasComment.pcb;
+
+    console.log('Has stag   ? ' + staging);
+
+    return {
+        hasWithdraw: withdraw,
+        portCallEndPoint,
+        contentType,
+        hasComment: comment,
+        isStaging: staging,
+    };
+}

@@ -1,13 +1,11 @@
 import * as types from './types';
 import constants from '../config/constants';
 import { Alert, Platform } from 'react-native';
-//import StaticServer from 'react-native-static-server';
-//import RNFS from 'react-native-fs';
 import { isStaging } from '../config/instances';
 
 export const loginKeycloak = (code) => {
     return (dispatch, getState) => { 
-        let consts = constants(isStaging.some((x) => getState().settings.connection.host.includes(x)));
+        let consts = constants(isStaging.some(x => getState().settings.connection.host.includes(x)));
         console.log('Authenticating...');
 
         let params = {
@@ -79,7 +77,7 @@ export const loginKeycloak = (code) => {
 
 export const logoutKeycloak = () => {
     return (dispatch, getState) => {
-        let consts = constants(isStaging.some((x) => getState().settings.host.includes(x)));
+        let consts = constants(isStaging.some(x => getState().settings.connection.host.includes(x)));
         return fetch(consts.MaritimeLogoutURI, {
             method: 'GET',
         }).then((result) => {

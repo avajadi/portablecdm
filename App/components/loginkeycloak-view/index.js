@@ -35,6 +35,7 @@ import {
     changeUser,
     loginKeycloak,
     removeError,
+    fetchInstance,
   } from '../../actions';
 
 import TopHeader from '../top-header-view';
@@ -114,6 +115,15 @@ class LoginKeyCloakView extends Component {
     }
 
     async loginConfirmed() {
+        if (!this.state.legacyLogin.enabled) {
+            this.setState({
+                legacyLogin: {
+                    username: '',
+                    password: ''
+                }
+            });
+        }
+
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
@@ -123,6 +133,8 @@ class LoginKeyCloakView extends Component {
         this.setState({host: this.reformatHostHttp(this.state.host)});
 
         if(!this.validateForms()) return;
+
+        await this.props.fetchInstance();
 
         this.props.fetchLocations().then(() => {
             console.log('fetched locations');
@@ -318,4 +330,5 @@ export default connect(mapStateToProps, {
         changeUser,
         changePortUnlocode,
         checkNewVersion,
+        fetchInstance,
     })(LoginKeyCloakView);
