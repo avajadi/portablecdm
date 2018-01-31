@@ -8,7 +8,6 @@ import {
     StyleSheet,
     ScrollView,
     ActivityIndicator,
-
 } from 'react-native';
 
 import {
@@ -83,8 +82,8 @@ class LocationSelection extends Component {
                                     subtitle={`${location.locationType.replace(/_/g, " ")}`}
                                     subtitleStyle={styles.subtitle}
                                     onPress={() => {
-                                        selectLocation(selectLocationFor, location);
-                                        onBackPress();
+                                        console.log('pressing the button')
+                                        this.props.navigation.navigate('BerthTimeLine');
                                     }}
                                 />
                             );
@@ -112,7 +111,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state, ownProps) {
-    console.log(JSON.stringify(ownProps.selectForState));
     return {
         locations: locationsByLocationType (state, 'BERTH'),
         loading: state.location.loading,
@@ -120,4 +118,4 @@ function mapStateToProps(state, ownProps) {
     }
 }
 
-export default connect(mapStateToProps, { locationsByLocationType })(LocationSelection);
+export default connect(mapStateToProps, { })(LocationSelection);

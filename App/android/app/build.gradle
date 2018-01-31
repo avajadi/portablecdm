@@ -176,6 +176,7 @@ dependencies {
 
 
   compile project(path: ':react-native-pinch')
+    compile project(path: ':react-native-orientation')
 }
 
 // This has to be down here for some reason

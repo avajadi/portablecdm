@@ -17,10 +17,12 @@ import SideMenu             from '../components/side-menu-view';
 import AboutView            from '../components/about-view';
 import ErrorView            from '../components/error-view';
 import BearthList           from '../components/berth-list-view';
-import BerthList from '../components/berth-list-view';
+import BerthList            from '../components/berth-list-view';
+import BerthTimeLine        from '../components/berth-timeline-view';
 
 const BerthViewNavigator = StackNavigator({
-    BerthList: {screen: BearthList},
+    BerthList: { screen: BearthList },
+    BerthTimeLine: { screen: BerthTimeLine }
 }, {
     headerMode: 'none'
 });
@@ -60,7 +62,7 @@ const InitiatePortCallNavigator = StackNavigator({
 
 const MainNavigator = DrawerNavigator({
   PortCalls: { screen: PortCallListNavigator },
-  Berths: { screen: BerthList },
+  Berths: { screen: BerthViewNavigator },
   TimeLine: {screen: TimeLineNavigator},
   FavoriteStatesSideMenu: { screen: StateList },
   FavoriteStatesInit: { screen: InitiatePortCallNavigator },
