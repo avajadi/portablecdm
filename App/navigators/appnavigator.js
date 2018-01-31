@@ -16,6 +16,14 @@ import VesselLists          from '../components/vessel-lists-view';
 import SideMenu             from '../components/side-menu-view';
 import AboutView            from '../components/about-view';
 import ErrorView            from '../components/error-view';
+import BearthList           from '../components/berth-list-view';
+import BerthList from '../components/berth-list-view';
+
+const BerthViewNavigator = StackNavigator({
+    BerthList: {screen: BearthList},
+}, {
+    headerMode: 'none'
+});
 
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
@@ -52,6 +60,7 @@ const InitiatePortCallNavigator = StackNavigator({
 
 const MainNavigator = DrawerNavigator({
   PortCalls: { screen: PortCallListNavigator },
+  Berths: { screen: BerthList },
   TimeLine: {screen: TimeLineNavigator},
   FavoriteStatesSideMenu: { screen: StateList },
   FavoriteStatesInit: { screen: InitiatePortCallNavigator },

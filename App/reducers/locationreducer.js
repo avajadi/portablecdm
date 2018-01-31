@@ -30,5 +30,9 @@ const locationsByStateDef = (state, stateDef) => {
     return state.location.locations;
 };
 
+const locationsByLocationType = (state, locationType) => {
+    return state.location.locations.filter(l => l.locationType === locationType);
+};
+
 export default locationReducer;
-export { locationsByStateDef };
+export { locationsByStateDef, locationsByLocationType };
