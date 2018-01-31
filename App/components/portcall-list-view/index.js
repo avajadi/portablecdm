@@ -141,8 +141,8 @@ class PortCallList extends Component {
                                     titleStyle={styles.titleStyle}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
                                     subtitleStyle={styles.subTitleStyle}
-                                    rightTitle={portCall.stage ? portCall.stage.replace(/_/g, ' ') : undefined}
-                                    rightTitleStyle={[styles.subTitleStyle, {fontSize: 9}]}
+                                    // rightTitle={portCall.stage ? portCall.stage.replace(/_/g, ' ') : undefined}
+                                    // rightTitleStyle={[styles.subTitleStyle, {fontSize: 9}]}
                                     onPress={() => {
                                         //console.log(JSON.stringify(portCall.vessel));
                                         selectPortCall(portCall);
@@ -193,6 +193,9 @@ class PortCallList extends Component {
                         name='directions-boat'
                         color='lightblue'
                     />}
+                    {!!portCall.stage && <Text style={[styles.subTitleStyle, {fontSize: 9, marginLeft: 4}]}>
+                        {portCall.stage.replace(/_/g, ' ')}
+                    </Text>}
                 </View>
         );
     }
