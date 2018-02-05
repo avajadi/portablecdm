@@ -51,8 +51,9 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             throw new Error('dispatched');
         })
         .then(events => {
+            // Array of arrays, each inner array holds a row with none-intersected events
             let structure = [];
-            const defaultEventLength = 15;
+            const defaultEventLength = 15; // If we have no start/endtime, use 15 minutes length
                         
             if(events.length > 0) {
                 let firstEvent = events.shift();
@@ -75,17 +76,18 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
                             let jkEndTime = structure[j][k].displayEndTime;
                             let nextStartTime = structure[j][k+1] ? structure[j][k+1].displayStartTime : null
 
+                            // Can we fit in here?
                             if(iStartTime > jkEndTime && (!nextStartTime || iEndTime < nextStartTime)) {
                                 structure[j].splice(k + 1, 0, events[i]);
                                 foundSlot = true;
                                 break;
                             }
                         }
-                        if(foundSlot) break;
+                        if(foundSlot) break; // no need to look further
                     }
 
                     if(!foundSlot) {
-                        structure.push([events[i]]);
+                        structure.push([events[i]]); // didn't find a slot where we can fit in, add a new row
                     }
                 }
             }
@@ -93,7 +95,7 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             return structure;
         })
         .then(structure => {
-            structure.sort((a, b) => b.length - a.length);
+            structure.sort((a, b) => b.length - a.length); // Want the rows to be denser at the top
             // console.log(JSON.stringify(structure));
             dispatch({type: BERTH_FETCHING_EVENTS_SUCCESS, payload: structure});
         })
