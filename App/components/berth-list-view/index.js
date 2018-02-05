@@ -17,6 +17,8 @@ import {
     ListItem
 } from 'react-native-elements';
 
+import { selectBerthLocation } from '../../actions';
+
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 
@@ -83,6 +85,7 @@ class LocationSelection extends Component {
                                     subtitleStyle={styles.subtitle}
                                     onPress={() => {
                                         console.log('pressing the button')
+                                        this.props.selectBerthLocation(location);
                                         this.props.navigation.navigate('BerthTimeLine');
                                     }}
                                 />
@@ -118,4 +121,4 @@ function mapStateToProps(state, ownProps) {
     }
 }
 
-export default connect(mapStateToProps, { })(LocationSelection);
+export default connect(mapStateToProps, { selectBerthLocation })(LocationSelection);

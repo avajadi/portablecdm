@@ -21,8 +21,8 @@ import BerthList            from '../components/berth-list-view';
 import BerthTimeLine        from '../components/berth-timeline-view';
 
 const BerthViewNavigator = StackNavigator({
-    BerthList: { screen: BearthList },
-    BerthTimeLine: { screen: BerthTimeLine }
+    BerthTimeLine: { screen: BerthTimeLine },
+    BerthList: { screen: BearthList }, // THIS SHOULD BE FIRST!!
 }, {
     headerMode: 'none'
 });
@@ -61,24 +61,24 @@ const InitiatePortCallNavigator = StackNavigator({
 });
 
 const MainNavigator = DrawerNavigator({
-  PortCalls: { screen: PortCallListNavigator },
-  Berths: { screen: BerthViewNavigator },
-  TimeLine: {screen: TimeLineNavigator},
-  FavoriteStatesSideMenu: { screen: StateList },
-  FavoriteStatesInit: { screen: InitiatePortCallNavigator },
-  VesselInfo: { screen: VesselInfo },
-  Settings: { screen: SettingsNavigator },
-  About: { screen: AboutView },
-  Error: { screen: ErrorView },
+    Berths: { screen: BerthViewNavigator }, 
+    PortCalls: { screen: PortCallListNavigator }, // THIS SHOULD BE FIRST!!
+    TimeLine: {screen: TimeLineNavigator},
+    FavoriteStatesSideMenu: { screen: StateList },
+    FavoriteStatesInit: { screen: InitiatePortCallNavigator },
+    VesselInfo: { screen: VesselInfo },
+    Settings: { screen: SettingsNavigator },
+    About: { screen: AboutView },
+    Error: { screen: ErrorView },
 }, {
-  headerMode: 'none',
-  drawerWidth: 3*Dimensions.get('window').width/4, 
-  contentComponent: SideMenu,
+    headerMode: 'none',
+    drawerWidth: 3*Dimensions.get('window').width/4, 
+    contentComponent: SideMenu,
 });
 
 export const AppNavigator  = StackNavigator({
-  LoginKeyCloak: { screen: LoginKeyCloakView },
-  Application: { screen: MainNavigator}
+    Application: { screen: MainNavigator},
+    LoginKeyCloak: { screen: LoginKeyCloakView }, // THIS SHOULD BE FIRST!!
 }, {
-  headerMode: 'none',
+    headerMode: 'none',
 });

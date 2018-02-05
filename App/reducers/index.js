@@ -12,6 +12,7 @@ import errorReducer from './errorreducer';
 import serverReducer from './serverreducer';
 import favoritesReducer from './favoritesreducer';
 import cacheReducer from './cachereducer';
+import berthReduder from './berthreducer';
 
 export default persistCombineReducers(
   { 
@@ -30,4 +31,5 @@ export default persistCombineReducers(
   server: serverReducer,
   favorites: favoritesReducer,
   cache: cacheReducer,
+  berths: berthReduder
 });

@@ -62,6 +62,12 @@ export const UPDATE_PROGRESS = 'update_progress';
 export const SERVER_START = 'server_start';
 export const SERVER_STOP = 'server_stop';
 
+/** BERTH VIEW */
+export const BERTH_SELECT_BERTH = 'berth_select_berth';
+export const BERTH_FETCHING_EVENTS = 'berth_fetching_events';
+export const BERTH_FETCHING_EVENTS_SUCCESS = 'berth_fetching_events_success';
+export const BERTH_FETCHING_EVENTS_FAILURE = 'berth_fetching_events_failure';
+
 /** FAVORITES */
 export const ADD_FAVORITE_PORTCALL = 'add_favorite_portcall';
 export const REMOVE_FAVORITE_PORTCALL = 'remove_favorite_portcall';

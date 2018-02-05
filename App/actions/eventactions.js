@@ -102,3 +102,4 @@ function getLocationParameters(locations) {
 
     return parameters;
 }
+
