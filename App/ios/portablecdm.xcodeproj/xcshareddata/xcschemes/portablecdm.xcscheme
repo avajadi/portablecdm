@@ -14,10 +14,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1D40B8BCE57518105CD238E01AB51E65"
+               BlueprintIdentifier = "24E82352890F3E4C8DF378E52F07F056"
                BuildableName = "libReact.a"
                BlueprintName = "React"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DA08C4A91DAF39C600714E34"
+               BuildableName = "libRNPinch.a"
+               BlueprintName = "RNPinch"
+               ReferencedContainer = "container:../node_modules/react-native-pinch/RNPinch.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
