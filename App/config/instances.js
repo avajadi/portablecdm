@@ -44,7 +44,7 @@ export default createInstanceInfo = (instanceInfo, host) => {
     let staging = isStaging.some(x => host.includes(x));
     let comment = pcbBuild >= hasComment.pcb;
 
-    console.log('Has stag   ? ' + staging);
+    console.log('Content type: ' + contentType);
 
     return {
         hasWithdraw: withdraw,
