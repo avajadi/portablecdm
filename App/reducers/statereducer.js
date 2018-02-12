@@ -1,5 +1,5 @@
 import { ADD_FAVORITE_STATE, REMOVE_FAVORITE_STATE, REPLACE_FAVORITE_STATES } from '../actions/types';
-import { REHYDRATE } from 'redux-persist/constants';
+import { REHYDRATE } from 'redux-persist';
 import stateCatalogue from './state_catalogue.json';
 
 const INITIAL_STATE = { 

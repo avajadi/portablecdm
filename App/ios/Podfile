@@ -4,7 +4,7 @@ platform :ios, '9.0'
 target 'portablecdm' do
   pod 'ExpoKit',
     :git => "http://github.com/expo/expo.git",
-    :tag => "ios/1.17.0",
+    :tag => "ios/2.2.1",
     :subspecs => [
       "Core",
       "CPP"
@@ -28,7 +28,7 @@ target 'portablecdm' do
       "DevSupport",
       "BatchedBridge"
     ]
-  pod 'Yoga',
+  pod 'yoga',
     :path => "../node_modules/react-native/ReactCommon/yoga"
 
 

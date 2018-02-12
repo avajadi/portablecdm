@@ -1,25 +1,17 @@
 import * as types from './types';
 import constants from '../config/constants';
 import { Alert, Platform } from 'react-native';
-import StaticServer from 'react-native-static-server';
-import RNFS from 'react-native-fs';
+//import StaticServer from 'react-native-static-server';
+//import RNFS from 'react-native-fs';
 import { isStaging } from '../config/instances';
 
-export const loginKeycloak = (urlPayload) => {
+export const loginKeycloak = (code) => {
     return (dispatch, getState) => { 
         let consts = constants(isStaging.some((x) => getState().settings.connection.host.includes(x)));
         console.log('Authenticating...');
-        const [, queryString] = urlPayload.split('#');
-        const responseObj = queryString.split('&').reduce((map, pair) => {
-            const [key, value] = pair.split('=');
-            map[key] = value;
-            return map;
-        }, {});
-
-        console.log(responseObj.code);
 
         let params = {
-            code: responseObj.code,
+            code: code,
             grant_type: 'authorization_code',
             client_id: consts.ClientID,
             redirect_uri: consts.RedirectURI
@@ -34,7 +26,7 @@ export const loginKeycloak = (urlPayload) => {
         }
         formBody = formBody.join('&');
 
-        console.log(formBody);
+        console.log(JSON.stringify(formBody));
         console.log(consts.MaritimeTokenURI);
 
         return fetch(consts.MaritimeTokenURI, {

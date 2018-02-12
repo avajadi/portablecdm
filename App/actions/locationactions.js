@@ -22,6 +22,8 @@ export const fetchLocations = (locationType) => {
                     return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
+                console.log('Response from locations: ');
+                console.log(JSON.stringify(result));
             
                 throw new Error(types.ERR_DISPATCHED);
             })

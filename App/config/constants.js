@@ -4,8 +4,8 @@ const baseURI = 'https://maritimeid.maritimecloud.net/auth';
 
 /**STAGING */
 const staging = {
-    redirectURI: 'http://localhost:1337/authing.html',
-    clientID: '0.1-urn:mrn:stm:service:instance:viktoria:portablecdm',
+    redirectURI: 'https://auth.expo.io/@rise_viktoria/portcdm-app',
+    clientID: '1.5-urn:mrn:stm:service:instance:viktoria:portablecdmstaging',
     baseURI: 'https://staging-maritimeid.maritimecloud.net/auth',
 }
 

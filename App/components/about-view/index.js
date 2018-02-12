@@ -39,6 +39,10 @@ export default class AboutView extends Component {
         >
             <TopHeader title="Change log" backArrowFunction={() => this.setState({showChangeLog: false})}/>
             <ScrollView style={{padding: 10}}>
+                <Text h4>Version 1.5</Text>
+                <View style={{padding: 5}}>
+                    <Text>{BULLET} Big performance update </Text>
+                </View>
                 <Text h4>Version 1.4</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Users can now filter on locations from the filter menu </Text>

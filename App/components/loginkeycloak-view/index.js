@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Constants, WebBrowser } from 'expo';
+import { Constants, AuthSession } from 'expo';
 import { connect } from 'react-redux';
 
 import {
@@ -35,8 +35,6 @@ import {
     changeUser,
     loginKeycloak,
     removeError,
-    startLocalServer,
-    stopLocalServer,
   } from '../../actions';
 
 import TopHeader from '../top-header-view';
@@ -85,12 +83,9 @@ class LoginKeyCloakView extends Component {
             return;
         }
 
-        if (__DEV__ && !!this.state.legacyLogin.username) {
+        if (false && __DEV__ && !!this.state.legacyLogin.username) {
             this.loginConfirmed();
         }
-
-
-        Linking.addEventListener('url', this.handleMaritimeRedirect);
 
         if (this.props.checkNewVersion()) {
             Alert.alert(
@@ -100,25 +95,22 @@ class LoginKeyCloakView extends Component {
         }
     }
 
-    onLoginPress() {
+    async onLoginPress() {
         // This is for the keycloak login
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
-        this.props.startLocalServer().then(() =>
-            WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI));
-    }
+        console.log('Redirect: ' + AuthSession.getRedirectUrl());
+        const redirectUrl = AuthSession.getRedirectUrl();
+        const consts = constants(true);
+        const result = await AuthSession.startAsync({
+            authUrl: consts.MaritimeAuthURI
+        });
 
-    handleMaritimeRedirect = async event => {
-        if(!event.url.includes('/redirect')){
-            return;
-        }
-        WebBrowser.dismissBrowser();
-        Linking.removeEventListener('url', this.handleMaritimeRedirect);
-        this.props.loginKeycloak(event.url).then((result) => {
-            if(result) {
-                this.props.stopLocalServer();
+        if(result.type == 'success') {
+            const authenticated = await this.props.loginKeycloak(result.params.code);
+            if(authenticated) {
                 this.loginConfirmed();
             }
-        });
+        }
     }
 
     async loginConfirmed() {
@@ -317,8 +309,6 @@ function mapStateToProps(state) {
   }
 
 export default connect(mapStateToProps, {
-        stopLocalServer,
-        startLocalServer,
         removeError,
         loginKeycloak,
         changeFetchReliability,
