@@ -5,21 +5,29 @@ import {
   SETTINGS_ADD_VESSEL_TO_LIST,
   SETTINGS_REMOVE_VESSEL_FROM_LIST,
   SETTINGS_REMOVE_VESSEL_LIST,
+  SETTINGS_ADD_PORTCALL_LIST,
+  SETTINGS_ADD_PORTCALL_TO_LIST,
+  SETTINGS_REMOVE_PORTCALL_FROM_LIST,
+  SETTINGS_REMOVE_PORTCALL_LIST,
   SETTINGS_CHANGE_USER,
   SETTINGS_CHANGE_FETCH_RELIABILITY,
   SETTINGS_CHANGE_PORT_UNLOCODE,
   SETTINGS_CHANGE_TOKEN,
+  SETTINGS_CHANGE_CACHE_LIMIT,
+  SETTINGS_UPDATE_VERSION,
+  SETTINGS_CLEAR,
 } from '../actions/types';
+
+import{ APP_VERSION } from '../config/version';
 
 const INITIAL_STATE = {
   connection: {
-    host: 'https://',
-    port: '8443',
+    host: 'http://',
+    port: '8080',
     username: '',
     password: '',
     unlocode: ''
   },
-  maxPortCallsFetched: 10001,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*
@@ -31,12 +39,13 @@ const INITIAL_STATE = {
   vesselLists: {},
   fetchReliability: false,
   token: {
-    accessToken: '1234',
+    accessToken: '',
     idToken: '',
     refreshExpiresIn: 0,
     refreshToken: '',
     tokenType: 'bearer',
-  }
+  },
+  appVersion: APP_VERSION,  
 }
 
 const settingsReducer = (state = INITIAL_STATE, action) => {
@@ -71,6 +80,10 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
     case SETTINGS_REMOVE_VESSEL_FROM_LIST:
       const vesselRemoved = [...state.vesselLists[action.payload.listName]].filter(vessel => vessel.imo !== action.payload.vessel.imo)
       return { ...state, vesselLists: {...state.vesselLists, [action.payload.listName]: vesselRemoved}}
+    case SETTINGS_UPDATE_VERSION:
+      return { ...state, appVersion: action.payload };
+    case SETTINGS_CLEAR:
+      return INITIAL_STATE;
     default:
       return state;
   }

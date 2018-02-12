@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { WebBrowser } from 'expo';
 import {
   View,
   StyleSheet,
@@ -21,16 +20,27 @@ import {
 } from 'react-native-elements';
 
 import colorScheme from '../../config/colors';
-import constants from '../../config/constants';
+import consts from '../../config/constants';
+import { changeUser, logoutKeycloak, initiatePortCall, } from '../../actions';
 
 class SideMenu extends Component {
 
-  logout = async() => {
-      console.log('Logging out...');
-      //TODO
-      await WebBrowser.openBrowserAsync('https://exp.host/@avajadi/portcdm-app');
-      //await WebBrowser.openBrowserAsync(constants.MaritimeLogoutURI);
-      WebBrowser.dismissBrowser();
+  constructor(props) {
+    super(props);
+
+    this._logout = this._logout.bind(this);
+  }
+
+  _logout() {
+      const { navigation, connection, changeUser, logoutKeycloak } = this.props;
+      if(!!connection.username) {
+        changeUser('', '');
+        console.log('Logging out legacy user...');
+        navigation.navigate('LoginKeyCloak');
+      } else {
+        console.log('Logging out keycloak user...');
+        logoutKeycloak().then(() => navigation.navigate('LoginKeyCloak'));
+      }
   }
 
 
@@ -85,6 +95,31 @@ class SideMenu extends Component {
                             if(activeItemKey !== 'Login') navigate('PortCalls')}
                         }
                     />
+
+                    {true &&<ListItem
+                        containerStyle={activeItemKey === 'FavoriteStatesSideMenu' /* TODO: Change color when selected */ ? [containerStyle, styles.selectedContainer] : containerStyle}
+                          leftIcon={{
+                          name: 'add',
+                          color: 'white'
+                        }}
+                        hideChevron
+                        underlayColor={colorScheme.secondaryColor}
+                        title={
+                            <View style={styles.textContainer}>
+                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Create new port call</Text>     
+                            </View>
+                        }
+                        onPress={() => {
+                            if (activeItemKey !== 'StateList') {
+                                // Only to pass params to the children of the stack navigator
+                                navigate('FavoriteStatesInit', {}, {
+                                    type: "Navigation/NAVIGATE",
+                                    routeName: "FavoriteStatesInit",
+                                    params: { initNew: true }
+                                  });
+                            }
+                        }}
+                    />}
      
                     <ListItem
                         containerStyle={activeItemKey === 'FavoriteStatesSideMenu' ? [containerStyle, styles.selectedContainer] : containerStyle}
@@ -104,8 +139,6 @@ class SideMenu extends Component {
                                 navigate('FavoriteStatesSideMenu');
                         }}
                     />
-    
-                    
 
                     <ListItem
                         containerStyle={activeItemKey === 'TimeLine' ? [containerStyle, styles.selectedContainer] : containerStyle}
@@ -193,7 +226,7 @@ class SideMenu extends Component {
                             </View>
                         }
                         onPress={() => {
-                                if(activeItemKey !== 'Login') this.logout();
+                                if(activeItemKey !== 'Login') this._logout();
                             }
                         }
                     />
@@ -261,7 +294,8 @@ function mapStateToProps(state) {
     return {
         selectedPortCall: state.portCalls.selectedPortCall,
         vessel: state.portCalls.vessel,
+        connection: state.settings.connection,
     }
 }
 
-export default connect(mapStateToProps)(SideMenu);
+export default connect(mapStateToProps, {initiatePortCall, changeUser, logoutKeycloak})(SideMenu);

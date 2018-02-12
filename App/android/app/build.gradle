@@ -12,17 +12,17 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "com.viktoria.portcdmapp"
+        applicationId "se.viktoria.portablecdm"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.2"
         multiDexEnabled true
         ndk {
             abiFilters 'armeabi-v7a', 'x86'
         }
         manifestPlaceholders = [
-                'appAuthRedirectScheme': 'com.viktoria.portcdmapp'
+                'appAuthRedirectScheme': 'se.viktoria.portablecdm'
         ]
         signingConfig signingConfigs.debugrelease
     }

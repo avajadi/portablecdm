@@ -42,7 +42,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Pokračovat jako %1$s</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Potvrďte přihlášení</string>
     <string gender="unknown" name="com_facebook_tooltip_default">Je to jen na vás – nastavte si, které informace chcete s aplikacemi sdílet.</string>
-    <string name="messenger_send_button_text">Odeslat</string>
     <string msgid="146198913615257606" name="search_menu_title">"Hledat"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

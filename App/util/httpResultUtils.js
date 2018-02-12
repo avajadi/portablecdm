@@ -37,11 +37,22 @@ function checkAuthorized(result) {
     if(result.status === 401) {
         return {
            title: 'Unauthorized',
-           description: 'Access denied.'
+           description: 'Access denied. Invalid username or password.'
         };
     }
 
     return null;
+}
+
+function checkNotFound(result) {
+  if(result.status === 404) {
+    return {
+      title: 'Not found',
+      description: 'Have you checked host settings and internet connection?',
+    };  
+  }
+
+  return null;
 }
 
 export function catchError(error) {
@@ -56,11 +67,13 @@ export function checkResponse(result) {
     let serverLiveError = checkServerLive(result);
     let badResultError = checkBadRequest(result);
     let authorizedError = checkAuthorized(result);
+    let notFoundError = checkNotFound(result);
 
     if(!!roleError) return roleError;
     if(!!serverLiveError) return serverLiveError;
     if(!!badResultError) return badResultError;
     if(!!authorizedError) return authorizedError;
+    if(!!notFoundError) return notFoundError;
 
     return null;
 }

@@ -23,5 +23,4 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$sగా కొనసాగండి</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">లాగిన్‌ను నిర్ధారించండి</string>
     <string gender="unknown" name="com_facebook_tooltip_default">మీరు నియంత్రణలో ఉన్నారు - మీరు ఏ సమాచారాన్ని అనువర్తనాలతో పంచుకోవాలనుకుంటున్నారో ఎంచుకోండి.</string>
-    <string name="messenger_send_button_text">పంపు</string>
 </resources>

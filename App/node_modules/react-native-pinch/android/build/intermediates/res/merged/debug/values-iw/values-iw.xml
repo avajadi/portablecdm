@@ -23,10 +23,10 @@
     <string gender="unknown" name="com_facebook_image_download_unknown_error">שגיאה לא צפויה במהלך הורדת תמונה.</string>
     <string gender="unknown" name="com_facebook_internet_permission_error_message">התחברות WebView דורשת הרשאת אינטרנט</string>
     <string gender="unknown" name="com_facebook_internet_permission_error_title">שגיאת AndroidManifest</string>
-    <string gender="unknown" name="com_facebook_like_button_liked">אהבתי</string>
-    <string gender="unknown" name="com_facebook_like_button_not_liked">אהבתי</string>
+    <string gender="unknown" name="com_facebook_like_button_liked">סימנת בלייק</string>
+    <string gender="unknown" name="com_facebook_like_button_not_liked">לייק</string>
     <string gender="unknown" name="com_facebook_loading">טוען...</string>
-    <string gender="unknown" name="com_facebook_loginview_cancel_action">בטל</string>
+    <string gender="unknown" name="com_facebook_loginview_cancel_action">ביטול</string>
     <string gender="unknown" name="com_facebook_loginview_log_in_button">התחבר</string>
     <string gender="unknown" name="com_facebook_loginview_log_in_button_continue">המשך/המשיכי עם פייסבוק</string>
     <string gender="unknown" name="com_facebook_loginview_log_in_button_long">התחברות באמצעות פייסבוק</string>

@@ -7,8 +7,10 @@ export * from './portcallactions';
 export * from './locationactions';
 export * from './sendingactions';
 export * from './erroractions';
-
-
+export * from './authactions';
+export * from './favoriteactions';
+export * from './cacheactions';
+export * from './vesselactions';
 
 
 

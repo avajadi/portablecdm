@@ -21,6 +21,23 @@ import Collapsible from 'react-native-collapsible';
 import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
 import colorScheme from '../../../config/colors';
 
+function removeStringReportedBy(string) {
+    let splitString = string.split(/:/g);
+    return splitString[splitString.length - 1]
+}
+
+function getWarningText(warning) {
+    let result;
+    if(warning.warningType) {
+        let noUnderscore = warning.warningType.replace(/_/g, ' ');
+        result = noUnderscore.charAt(0).toUpperCase() + noUnderscore.slice(1).toLowerCase();
+    } else {
+        result = warning.message;
+    }
+
+    return result;
+}
+
 class OperationView extends Component {
 
   constructor(props) {
@@ -33,7 +50,10 @@ class OperationView extends Component {
       operation: operation,
       reportedStates: reportedStates,
       isCollapsed: operation.endTimeType === 'ACTUAL',
-
+      dimensions: {
+          operation: undefined,
+          timeContainer: undefined,
+      },
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this);
@@ -81,22 +101,49 @@ class OperationView extends Component {
       endTimeDisplayStyle = styles.timeDisplay;
     }
 
+    /* THIS IS A DEVIATION FROM BACKEND */
+    let firstStatement = Object.keys(reportedStates)
+    .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
+    .sort((a,b) => a.time < b.time ? -1 : 1)[0];
+
+    let lastStatement = Object.keys(reportedStates)
+    .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
+    .sort((a, b) => a.time > b.time ? -1 : 1)[0];
+
+
+    let startTime = new Date(!!operation.startTime ? firstStatement.time : null);
+    let endTime = new Date(!!operation.endTime ? lastStatement.time : null);
+
+    
+    let currentTime = new Date();
+    let renderRedLine = startTime > 0 && currentTime >= startTime && currentTime <= endTime;
+    let redlineStyle = this._calculateRedline(startTime, endTime);
+
     return (
-      <View style={styles.container}>
-        
+      <View style={styles.container} onLayout={(event) => {
+            if(renderRedLine) {
+                this.setState({dimensions: {...this.state.dimensions, operation: event.nativeEvent.layout}});
+            }
+          }}>
         {/* Time Display */}
         <View style={styles.timeContainer}>
           {/*Start Time*/}
-          <View style={styles.timeDisplayContainer}>
-            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.startTime))}</Text>
-            <Text style={startTimeDisplayStyle}>{getTimeString(new Date(operation.startTime))}</Text>
+          <View style={styles.timeDisplayContainer} onLayout={(event) => {
+            if(renderRedLine)
+                this.setState({dimensions: {...this.state.dimensions, timeContainer: event.nativeEvent.layout}});
+        }}>
+            <Text style={styles.dateDisplay}>{getDateString(startTime)}</Text>
+            <Text style={startTimeDisplayStyle}>{getTimeString(startTime).slice(0,5)}</Text>
           </View>
           {/*End Time*/}
           <View style={[styles.timeDisplayContainer, {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colorScheme.tertiaryColor}]}>
-            <Text style={styles.dateDisplay}>{getDateString(new Date(operation.endTime))}</Text>
-            <Text style={endTimeDisplayStyle }>{getTimeString(new Date(operation.endTime))}</Text>
+            <Text style={styles.dateDisplay}>{getDateString(endTime)}</Text>
+            <Text style={endTimeDisplayStyle }>{getTimeString(endTime).slice(0,5)}</Text>
           </View>
         </View>
+
+        {/* Red line indicating current time */}
+        {(!!this.state.dimensions && renderRedLine) && <View style={this._calculateRedline(startTime, endTime)}/>}
 
         {/* Line and dots */}
         <View style={styles.timeline}>
@@ -118,7 +165,7 @@ class OperationView extends Component {
             onPress={this._toggleCollapsed}>
             <View>
               <View style={{flexDirection: 'row'}}>
-                <Text style={styles.operationHeader}>{operation.definitionId.replace('_', ' ')}</Text>
+                <Text style={styles.operationHeader}>{operation.definitionId.replace(/_/g, ' ')}</Text>
                 {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
               </View>
               {operation.reliability >= 0 && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>RELIABILITY </Text>{operation.reliability}%</Text>}
@@ -137,7 +184,7 @@ class OperationView extends Component {
               return (
                 <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10,}} key={index}>
                   <Icon name='warning' color={colorScheme.warningColor} size={14} paddingRight={10} />
-                  <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{warning.message}</Text>
+                  <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{getWarningText(warning)}</Text>
                 </View>
               );
             })}
@@ -146,15 +193,7 @@ class OperationView extends Component {
               {
                 Object.keys(reportedStates)
                   .map((stateDef) => this.findMostRelevantStatement(reportedStates[stateDef]))
-                  .sort((a, b) => {
-                    const aTime = new Date(a.time);
-                    const bTime = new Date(b.time);
-
-                    if(aTime < bTime) return -1;
-                    if(aTime > bTime) return 1;
-                    else return 0;
-
-                  }) 
+                  .sort((a, b) => a.time < b.time ? -1 : 1) 
                   .map((mostRelevantStatement) => this.renderStateRow(operation, 
                                                         mostRelevantStatement, 
                                                         reportedStates[mostRelevantStatement.stateDefinition],
@@ -168,6 +207,32 @@ class OperationView extends Component {
         
       </View>
     );
+  }
+
+  _calculateRedline(startTime, endTime) {
+        if(!this.state.dimensions.operation || !this.state.dimensions.timeContainer) return null;
+        
+        //console.log(JSON.stringify(this.state.dimensions));
+        let { operation, timeContainer } = this.state.dimensions;
+        let currentTime = new Date();    
+        let top = 100;
+        if(this.state.isCollapsed) {
+            top = operation.height / 2;
+        } else {
+            let passedTime = currentTime - startTime;
+            let totalTime = endTime - startTime;
+            let allowedOpHeight = operation.height - timeContainer.height * 2;
+            top = (passedTime/totalTime) * allowedOpHeight + timeContainer.height;
+            // TODO: Adjustments according to user input
+        }
+        return {
+            position: 'absolute',
+            top: top,
+            left: 0,
+            width: 85,
+            borderBottomColor: 'red',
+            borderBottomWidth: 3,
+        }
   }
 
   renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, stateDef) {
@@ -221,7 +286,7 @@ class OperationView extends Component {
                     {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
                   </View>
                   <View style= {{flexDirection: 'row'}} >
-                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{new Date(stateToDisplay.time).toTimeString().slice(0, 5)} </Text>
+                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{getTimeString(new Date(stateToDisplay.time))} </Text>
                       {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
                                                                     <Text style={styles.actualText}>A</Text>
                                                                </View>
@@ -229,6 +294,14 @@ class OperationView extends Component {
                       {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
                                                                       <Text style={styles.estimateText}>E</Text>
                                                                   </View>
+                      }
+                      {stateToDisplay.timeType === 'TARGET' && <View style={styles.targetContainer}>
+                                                                    <Text style={styles.estimateText}>T</Text>
+                                                               </View>
+                      }
+                      {stateToDisplay.timeType === 'RECOMMENDED' && <View style={styles.recommendedContainer}>
+                                                                    <Text style={styles.estimateText}>R</Text>
+                                                               </View>
                       }
                   </View>
               </View>
@@ -244,7 +317,7 @@ class OperationView extends Component {
                   <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{stateToDisplay.reportedBy.replace('urn:mrn:stm:user:legacy:', '')} 
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{removeStringReportedBy(stateToDisplay.reportedBy)} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
@@ -450,6 +523,24 @@ const styles = StyleSheet.create({
   },
   estimateContainer: {
     backgroundColor: colorScheme.estimateColor,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    alignItems: 'center',
+  },  
+  targetContainer: {
+    backgroundColor: colorScheme.targetColor,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    alignItems: 'center',
+  },  
+  recommendedContainer: {
+    backgroundColor: colorScheme.recommendedColor,
     borderRadius: 10,
     width: 20,
     height: 20,

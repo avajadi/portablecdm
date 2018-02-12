@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     View,
@@ -24,9 +24,11 @@ import {
 import MiniHeader from '../../mini-header-view';
 
 import {
-    fetchPortCalls,
+    updatePortCalls,
+    clearCache,
+    bufferPortCalls,
     filterChangeLimit,
-    filterChangeSortBy,  
+    filterChangeSortBy,
     filterChangeOrder,
     filterChangeVesselList,
     filterChangeArrivingWithin,
@@ -39,221 +41,233 @@ import colorScheme from '../../../config/colors';
 
 class FilterMenu extends Component {
 
-constructor(props){
-    super(props)
+    constructor(props) {
+        super(props)
 
-    let timeFilterIndex = 2;
-    if(props.filters.arrivingWithin === 0 && props.filters.departingWithin === 0) {
-        timeFilterIndex = 2;
-    } else if(props.filters.arrivingWithin > 0) {
-        timeFilterIndex = 0;
-    } else if(props.filters.departingWithin > 0) {
-        timeFilterIndex = 1;
+        let timeFilterIndex = 2;
+        if (props.filters.arrivingWithin === 0 && props.filters.departingWithin === 0) {
+            timeFilterIndex = 2;
+        } else if (props.filters.arrivingWithin > 0) {
+            timeFilterIndex = 0;
+        } else if (props.filters.departingWithin > 0) {
+            timeFilterIndex = 1;
+        }
+
+        let withinValue = 0;
+        if (timeFilterIndex === 0) {
+            withinValue = props.filters.arrivingWithin;
+        } else if (timeFilterIndex === 1) {
+            withinValue = props.filters.departingWithin;
+        }
+
+        this.state = {
+            selectedSortByIndex: props.filters.sort_by === 'ARRIVAL_DATE' ? 0 : 1,
+            selectedOrderByIndex: props.filters.order === 'DESCENDING' ? 0 : 1,
+            selectedTimeIndex: timeFilterIndex,
+            modalStagesVisible: false,
+            checked: false,
+            limitFilter: props.filters.limit,
+            vesselListFilter: props.filters.vesselList,
+            withinValue: withinValue,
+            onlyFetchActivePortCalls: props.filters.onlyFetchActivePortCalls,
+        }
+
+        this.onBackIconPressed = this.onBackIconPressed.bind(this);
+        this.onDoneIconPressed = this.onDoneIconPressed.bind(this);
+    }
+    setModalStagesVisible(visible) {
+        this.setState({ modalStagesVisible: visible });
     }
 
-    let withinValue = 0;
-    if(timeFilterIndex === 0) {
-        withinValue = props.filters.arrivingWithin;
-    } else if(timeFilterIndex === 1) {
-        withinValue = props.filters.departingWithin;
+    onBackIconPressed() {
+        this.props.navigation.goBack();
     }
 
-    this.state = {
-        selectedSortByIndex: props.filters.sort_by === 'ARRIVAL_DATE' ? 0 : 1,
-        selectedOrderByIndex: props.filters.order === 'DESCENDING' ? 0 : 1,
-        selectedTimeIndex: timeFilterIndex,
-        modalStagesVisible: false,
-        checked: false,
-        limitFilter: props.filters.limit,
-        vesselListFilter: props.filters.vesselList,
-        withinValue: withinValue,
-        onlyFetchActivePortCalls: props.filters.onlyFetchActivePortCalls,
-    }
-
-  this.onBackIconPressed = this.onBackIconPressed.bind(this);
-  this.onDoneIconPressed = this.onDoneIconPressed.bind(this);
-}
-setModalStagesVisible(visible){
-    this.setState({modalStagesVisible: visible});
-}
-
-onBackIconPressed() {
-    this.props.navigation.goBack();
-}
-
-onDoneIconPressed() {
-    const { 
-        limitFilter, 
-        selectedSortByIndex, 
-        selectedOrderByIndex, 
-        withinValue, 
-        selectedTimeIndex,
-        onlyFetchActivePortCalls
+    onDoneIconPressed() {
+        const {
+        limitFilter,
+            selectedSortByIndex,
+            selectedOrderByIndex,
+            withinValue,
+            selectedTimeIndex,
+            onlyFetchActivePortCalls
     } = this.state;
-    const { 
-        filters, 
-        fetchPortCalls, 
-        filterChangeLimit, 
-        filterChangeSortBy, 
-        filterChangeOrder,
-        filterChangeVesselList,
-        filterChangeArrivingWithin,
-        filterChangeDepartingWithin,
-        filterClearArrivingDepartureTime,
-        filterChangeOnlyFuturePortCalls
+        const {
+        filters,
+            updatePortCalls,
+            bufferPortCalls,
+            clearCache,
+            filterChangeLimit,
+            filterChangeSortBy,
+            filterChangeOrder,
+            filterChangeVesselList,
+            filterChangeArrivingWithin,
+            filterChangeDepartingWithin,
+            filterClearArrivingDepartureTime,
+            filterChangeOnlyFuturePortCalls
     } = this.props;
 
-    // Limit
-    filterChangeLimit(limitFilter);
+        // Limit
+        filterChangeLimit(limitFilter);
 
-    // Sort By (ARRIVAL_DATE | LAST_UPDATE)
-    if(selectedSortByIndex == 0) filterChangeSortBy('ARRIVAL_DATE');   
-    if(selectedSortByIndex == 1) filterChangeSortBy('LAST_UPDATE');
+        // Sort By (ARRIVAL_DATE | LAST_UPDATE)
+        if (selectedSortByIndex == 0) filterChangeSortBy('ARRIVAL_DATE');
+        if (selectedSortByIndex == 1) filterChangeSortBy('LAST_UPDATE');
 
-    // Order
-    if(selectedOrderByIndex === 0) filterChangeOrder('DESCENDING');
-    if(selectedOrderByIndex === 1) filterChangeOrder('ASCENDING');
+        // Order
+        if (selectedOrderByIndex === 0) filterChangeOrder('DESCENDING');
+        if (selectedOrderByIndex === 1) filterChangeOrder('ASCENDING');
 
-    // Arrival time/Departure time
-    if(selectedTimeIndex === 2 || withinValue === 0) { // Don't filter in departure/arrival time
-        filterClearArrivingDepartureTime();
-    } else if(selectedTimeIndex === 1) { // departing from
-        filterChangeDepartingWithin(withinValue);
-    } else if(selectedTimeIndex === 0) { // arriving within
-        filterChangeArrivingWithin(withinValue);
-    } else {
-        
+        // Arrival time/Departure time
+        if (selectedTimeIndex === 2 || withinValue === 0) { // Don't filter in departure/arrival time
+            filterClearArrivingDepartureTime();
+        } else if (selectedTimeIndex === 1) { // departing from
+            filterChangeDepartingWithin(withinValue);
+        } else if (selectedTimeIndex === 0) { // arriving within
+            filterChangeArrivingWithin(withinValue);
+        } else {
+
+        }
+
+        // Filter for not showing old PortCalls
+        filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
+
+        // Vessel List
+        filterChangeVesselList(this.state.vesselListFilter);
+
+        clearCache();
+        updatePortCalls()
+            .then(bufferPortCalls);
+        this.props.navigation.goBack();
     }
-    
-    // Filter for not showing old PortCalls
-    filterChangeOnlyFuturePortCalls(onlyFetchActivePortCalls);
 
-    // Vessel List
-    filterChangeVesselList(this.state.vesselListFilter);
+    render() {
+        const buttonsSortBy = ['Arrival Date', 'Last Update']
+        const buttonsOrderBy = ['Descending', 'Ascending']
+        const buttonsTime = ['Arrival Time', 'Departure Time', 'All']
+        const { selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex } = this.state
 
-    fetchPortCalls();
-    this.props.navigation.goBack();
-}
+        return (
+            <View style={{ flex: 1 }}>
+                <MiniHeader
+                    navigation={this.props.navigation} title="Filter"
+                    leftIconFunction={this.onBackIconPressed}
+                    rightIconFunction={this.onDoneIconPressed}
+                />
+                <ScrollView style={styles.container} >
 
-render() {
-const buttonsSortBy = ['Arrival Date', 'Last Update']
-const buttonsOrderBy = ['Descending', 'Ascending']
-const buttonsTime = ['Arrival Time', 'Departure Time', 'All']
-const {selectedSortByIndex, selectedOrderByIndex, selectedTimeIndex} =this.state
-
-    return(
-        <View style={{flex: 1}}>
-            <MiniHeader 
-                navigation={this.props.navigation} title="Filter"
-                leftIconFunction={this.onBackIconPressed}
-                rightIconFunction={this.onDoneIconPressed}
-            />
-            <ScrollView style= {styles.container} >
-
-                <View style={styles.smallContainer}> 
-                    <Text style={styles.textTitle}> Sort by </Text>
+                    <View style={styles.smallContainer}>
+                        <Text style={styles.textTitle}> Sort by </Text>
                         <ButtonGroup
                             buttons={buttonsSortBy}
                             selectedIndex={selectedSortByIndex}
                             containerStyle={styles.buttonStyle}
-                            textStyle={{color: colorScheme.quaternaryTextColor, textAlign: 'center'}}
-                            underlayColor= {colorScheme.secondaryColor}
-                            selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                            textStyle={{ color: colorScheme.quaternaryTextColor, textAlign: 'center' }}
+                            underlayColor={colorScheme.secondaryColor}
+                            selectedTextStyle={{ color: colorScheme.primaryTextColor }}
                             selectedBackgroundColor={colorScheme.primaryColor}
-                            onPress={(index) => this.setState({selectedSortByIndex: index})}
+                            onPress={(index) => this.setState({ selectedSortByIndex: index })}
 
                         />
-                </View>
+                    </View>
 
-                <View style={styles.smallContainer}> 
-                    <Text style={styles.textTitle}> Order by </Text>
+                    <View style={styles.smallContainer}>
+                        <Text style={styles.textTitle}> Order by </Text>
                         <ButtonGroup
                             buttons={buttonsOrderBy}
                             selectedIndex={selectedOrderByIndex}
                             containerStyle={styles.buttonStyle}
-                            textStyle={{color: colorScheme.quaternaryTextColor}}
-                            underlayColor= {colorScheme.secondaryColor}
-                            selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                            textStyle={{ color: colorScheme.quaternaryTextColor }}
+                            underlayColor={colorScheme.secondaryColor}
+                            selectedTextStyle={{ color: colorScheme.primaryTextColor }}
                             selectedBackgroundColor={colorScheme.primaryColor}
-                            onPress={(index) => this.setState({selectedOrderByIndex: index})}
+                            onPress={(index) => this.setState({ selectedOrderByIndex: index })}
                         />
-                </View>
+                    </View>
 
-                {/* Button group for arriving/departing within filter  */}
-                <View style={styles.smallTimeContainer}> 
-                    <Text style={styles.textTitle}> Time </Text>
+                    {/* Button group for arriving/departing within filter  */}
+                    <View style={styles.smallTimeContainer}>
+                        <Text style={styles.textTitle}> Time </Text>
                         <ButtonGroup
                             buttons={buttonsTime}
                             selectedIndex={selectedTimeIndex}
                             containerStyle={styles.buttonStyle}
-                            textStyle={{color: colorScheme.quaternaryTextColor}}
-                            underlayColor= {colorScheme.secondaryColor}
-                            selectedTextStyle={{color: colorScheme.primaryTextColor}}
+                            textStyle={{ color: colorScheme.quaternaryTextColor }}
+                            underlayColor={colorScheme.secondaryColor}
+                            selectedTextStyle={{ color: colorScheme.primaryTextColor }}
                             selectedBackgroundColor={colorScheme.primaryColor}
-                            onPress={(index) => this.setState({selectedTimeIndex: index})}
+                            onPress={(index) => this.setState({ selectedTimeIndex: index })}
                         />
-                    <Slider
-                        value={this.state.withinValue}
-                        minimumValue={0}
-                        maximumValue={72}
-                        step={1}
-                        onValueChange={(value) => this.setState({withinValue: value})}  
-                        thumbTintColor={colorScheme.primaryColor}
-                    />
-                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}>Time Within: {this.state.withinValue} hours</Text>
-                    <CheckBox
-                        title="Don't display departed Port Calls"
-                        iconRight
-                        right
-                        checked={this.state.onlyFetchActivePortCalls}
-                        onPress={() => this.setState({onlyFetchActivePortCalls: !this.state.onlyFetchActivePortCalls})}
-                    />
-                </View>
+                        {selectedTimeIndex !== 2 && <Slider
+                            value={this.state.withinValue}
+                            style={{ marginLeft: 10, marginRight: 10 }}
+                            minimumValue={0}
+                            maximumValue={72}
+                            step={1}
+                            onValueChange={(value) => this.setState({ withinValue: value })}
+                            thumbTintColor={colorScheme.primaryColor}
+                        />}
+                        {selectedTimeIndex !== 2 &&
+                            <Text style={{ fontWeight: 'bold', paddingLeft: 10, marginBottom: 10, }}>
+                                Port calls {selectedTimeIndex == 0 ? 'arrived' : 'departured'} within {this.state.withinValue} hours
+                    </Text>
+                        }
+                        <CheckBox
+                            title="Don't display departed Port Calls"
+                            inputStyle={{ marginTop: 20 }}
+                            iconRight
+                            center
+                            checked={this.state.onlyFetchActivePortCalls}
+                            onPress={() => this.setState({ onlyFetchActivePortCalls: !this.state.onlyFetchActivePortCalls })}
+                        />
+                    </View>
 
-                {/* Picker for Vessel List */}
-                <View style={styles.smallContainer}>
-                    <Text style={styles.textTitle}>Vessel list</Text>
-                    <Picker style={{marginTop: 20, marginLeft: 10, marginRight: 10, borderRadius: 20,backgroundColor: colorScheme.primaryTextColor}}
-                        selectedValue={this.state.vesselListFilter}
-                        onValueChange={(itemValue, itemIndex) => this.setState({vesselListFilter: itemValue})}
-                    >
-                        <Picker.Item label="All vessels" value='all' />
-                        {Object.keys(this.props.vesselLists).map(vesselListName => (
-                            <Picker.Item key={vesselListName} label={vesselListName} value={vesselListName} />
-                        ))}
-                    </Picker>
-                </View>
+                    {/* Picker for Vessel List */}
+                    {false && (
+                        <View style={styles.smallContainer}>
+                            <Text style={styles.textTitle}>Vessel list</Text>
+                            <Picker style={{ marginTop: 20, marginLeft: 10, marginRight: 10, borderRadius: 20, backgroundColor: colorScheme.primaryTextColor }}
+                                selectedValue={this.state.vesselListFilter}
+                                onValueChange={(itemValue, itemIndex) => this.setState({ vesselListFilter: itemValue })}
+                            >
+                                <Picker.Item label="All vessels" value='all' />
+                                {Object.keys(this.props.vesselLists).map(vesselListName => (
+                                    <Picker.Item key={vesselListName} label={vesselListName} value={vesselListName} />
+                                ))}
+                            </Picker>
+                        </View>)
+                    }
 
-                {/*Limit View with title and slider*/}
-                <View style={styles.smallTimeContainer}> 
-                    <Text style={styles.textTitle}> Limit </Text>
-                    {/* List first then sliding bar */}
-                    <Slider
-                        minimumValue={30}
-                        /* maximumValue={this.props.maxPortLimitPortCalls}  TODO*/
-                        maximumValue={10000}
-                        step={50}
-                        value={this.state.limitFilter}
-                        onValueChange={(value) => this.setState({limitFilter: value})}  
-                        thumbTintColor={colorScheme.primaryColor}
-                    />
-                    <Text style={{fontWeight: 'bold', paddingLeft: 10,}}> Limit: {this.state.limitFilter} portcalls retrieved </Text>
-                </View>
-            
-                {/*Button - SHOW RESULTS*/}
-                <View style={{backgroundColor: colorScheme.primaryColor, marginTop: 10, paddingVertical: 5,}}>
-                    <Button 
-                        title="Show Results"
-                        textStyle={{color: colorScheme.primaryTextColor}}
-                        buttonStyle={{backgroundColor: colorScheme.primaryColor}}
-                        onPress={this.onDoneIconPressed}
-                    />
-                </View>
+                    {/*Limit View with title and slider*/}
+                    {false && <View style={styles.smallTimeContainer}>
+                        <Text style={styles.textTitle}> Limit </Text>
+                        {/* List first then sliding bar */}
+                        <Slider
+                            minimumValue={30}
+                            /* maximumValue={this.props.maxPortLimitPortCalls}  TODO*/
+                            maximumValue={300}
+                            step={50}
+                            value={this.state.limitFilter}
+                            onValueChange={(value) => this.setState({ limitFilter: value })}
+                            thumbTintColor={colorScheme.primaryColor}
+                        />
+                        <Text style={{ fontWeight: 'bold', paddingLeft: 10, }}> Limit: {this.state.limitFilter} portcalls retrieved </Text>
+                    </View>}
 
-            </ScrollView>
-        </View>
-    ); //Return
-} //Render
+                    {/*Button - SHOW RESULTS*/}
+                    <View style={{ backgroundColor: colorScheme.primaryColor, marginTop: 10, paddingVertical: 5, }}>
+                        <Button
+                            title="Show Results"
+                            textStyle={{ color: colorScheme.primaryTextColor }}
+                            buttonStyle={{ backgroundColor: colorScheme.primaryColor }}
+                            onPress={this.onDoneIconPressed}
+                        />
+                    </View>
+
+                </ScrollView>
+            </View>
+        ); //Return
+    } //Render
 }; //Class FilterMenu 
 
 const styles = StyleSheet.create({
@@ -265,13 +279,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: colorScheme.quaternaryTextColor,
         fontWeight: 'bold',
-        paddingBottom: 10 ,
+        paddingBottom: 10,
     },
     smallContainer: {
         backgroundColor: colorScheme.backgroundColor,
         flexDirection: 'column',
         paddingTop: 15,
-       // paddingBottom: 15,
+        // paddingBottom: 15,
         alignItems: 'stretch',
     },
     smallTimeContainer: {
@@ -280,7 +294,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         marginTop: 15,
         paddingBottom: 15,
-       // paddingBottom: 15,
+        // paddingBottom: 15,
         alignItems: 'stretch',
         borderWidth: 1,
         borderColor: colorScheme.secondaryContainerColor,
@@ -290,23 +304,23 @@ const styles = StyleSheet.create({
         backgroundColor: colorScheme.backgroundColor,
         flexDirection: 'row',
         flex: 1,
-         justifyContent: 'center',
+        justifyContent: 'center',
     },
     // Bara för ButtonGroup
-    buttonStyle: { 
-       // borderRadius: 2,
+    buttonStyle: {
+        // borderRadius: 2,
         backgroundColor: colorScheme.primaryContainerColor,
         height: 50,
-     //   paddingLeft: 50,
+        //   paddingLeft: 50,
     },
     // MODAL
     modalContainerStyle: {
-        backgroundColor: colorScheme.primaryContainerColor ,
+        backgroundColor: colorScheme.primaryContainerColor,
         flex: 1,
     },
     modalHeaderStyle: {
         backgroundColor: colorScheme.primaryContainerColor,
-        flexDirection:'row',
+        flexDirection: 'row',
         marginTop: 27,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -326,7 +340,7 @@ const styles = StyleSheet.create({
         backgroundColor: colorScheme.backgroundColor,
         flex: 1,
         borderColor: colorScheme.secondaryContainerColor,
-        borderTopWidth: 1,        
+        borderTopWidth: 1,
     },
 }); //styles
 
@@ -341,7 +355,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    fetchPortCalls,
+    updatePortCalls,
+    clearCache,
     filterChangeLimit,
     filterChangeSortBy,
     filterChangeOrder,
@@ -350,4 +365,5 @@ export default connect(mapStateToProps, {
     filterChangeDepartingWithin,
     filterClearArrivingDepartureTime,
     filterChangeOnlyFuturePortCalls,
+    bufferPortCalls,
 })(FilterMenu);

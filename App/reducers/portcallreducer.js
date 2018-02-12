@@ -60,6 +60,8 @@ const portCallReducer = (state = INITIAL_STATE, action) => {
     case types.SELECT_PORTCALL:
       const {vessel, ...portCall} = action.payload;
       return { ... state, vessel: vessel, selectedPortCall: portCall }
+    case types.SELECT_VESSEL: 
+      return { ...state, vessel: action.payload };
     case types.CLEAR_PORTCALL_SELECTION:
       return { ... state, vessel: {}, selectedPortCall: {}}
     case types.FETCH_PORTCALLS:

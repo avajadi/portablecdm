@@ -1,20 +1,34 @@
 # Frontend, multiplatform mobile application
 Contributors: 
-Johan Berndtsson
-Pontus Stjernström
-Nicole Ascard
+Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
-## Current issues:
+### Important links
+* https://www.bis.doc.gov/index.php/policy-guidance/encryption
+* https://support.google.com/googleplay/android-developer/answer/113770
 
-* Fetch reliability checkbox not always correct
-* Return from error not working correctly
-* Maritime Cloud not working in staging environment
-* Error when timestamp cannot be sent is not very clear, also when "at" is missing etc
+# Developer info
+## Build version
+### iOS
+0. Change Expo account in .plist
+1. Targets->Build Settings->Packaging->Product Bundle Idenfifier = SET
+2. Targets->Build Settings->Packaging->Product Name = SET
+3. Targets->Info->Bundle name = SET
+4. Targets->Info->Bundle Identifier = SET
+5. Targets->Info->Bundle display name
+6. Archive
+### For ad hoc
+7. Export->Select Ad-Hoc->Manual sign->Select correct provisioning profile->Export
 
+### Android
+0. Change Expo account in MainActivity
+1. Change applicationId to choice in build.gradle
 
-## Future updates
+## Expo info
+* Production username: avajadi
+* Staging username: pontusstjerna
 
-* Recommended and target time types support
-* Show where the current time is on the timeline
-* Search on vessel name in Favorite Vessels
-* Search on IMO in Port Call view
+## Deployment checklist
+* Check config/version.js
+* Check components/about-view/index.js and append Changelog
+* ALWAYS publish on staging (pontusstjerna) before production (avajadi)
+* Push to git :)

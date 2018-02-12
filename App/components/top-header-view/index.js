@@ -5,7 +5,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { 
+import {
   Text,
   Icon,
   Button,
@@ -14,42 +14,82 @@ import {
 
 import colorScheme from '../../config/colors';
 
-// Class showing the first header. The header should later adjust to other pages. 
+// Class showing the first header. The header should later adjust to other pages.
 export default class TopHeader extends Component {
 
   render() {
-    const {title, firstPage, rightIconFunction} = this.props;
+    const {title, firstPage, rightIconFunction, backArrowFunction, leftIcons, selectorIcon} = this.props;
 
-    
     return(
       <View >
         <View style={styles.container}>
           {/* On the landing page on IOS, and all pages on android we want to show a meny icon */}
-          {(firstPage || Platform.OS === 'android') && 
+          {(firstPage) &&
           <Icon
             name= 'menu'
             color= {colorScheme.primaryContainerColor}
             size= {50}
             underlayColor='transparent'
             onPress={() => this.props.navigation.navigate('DrawerOpen')}
-          /> 
+          />
           }
           {/* But on all other pages on IOS, we want to show a back button  */}
-          {(!firstPage && Platform.OS === 'ios') &&
+          {(!firstPage) &&
           <Icon
             name= 'arrow-back'
             color= {colorScheme.primaryContainerColor}
             size= {50}
             underlayColor='transparent'
-            onPress={() => { this.props.navigation.goBack()}}
-          /> 
+            onPress={() => { 
+              if(!!backArrowFunction) {
+                backArrowFunction();
+              } else {
+                this.props.navigation.goBack();
+              }
+            }}
+          />
           }
-          <Text 
-            style= {styles.headerText} 
-            h4 
+          {(!!leftIcons && !!leftIcons.first) &&
+            <Icon
+                name={leftIcons.first.name}
+                color={leftIcons.first.color}
+                onPress={leftIcons.first.onPress}
+                size={30}
+            />}
+          {(!!leftIcons && !!leftIcons.second) &&
+            <Icon
+                name={leftIcons.second.name}
+                color={leftIcons.second.color}
+                onPress={leftIcons.second.onPress}
+                size={30}
+            />}
+          <Text
+            style= {styles.headerText}
+            h4
           >
-            {title}
+          {title}
           </Text>
+          {/* Compensate for the two icons to the left of the title */}
+          {(!!leftIcons && !!leftIcons.first && !selectorIcon) &&
+            <View style={{width: 30}}/>
+          }
+          {(!!leftIcons && !!leftIcons.second && !selectorIcon) &&
+            <View style={{width: 30}}/>
+          }
+          {(!!leftIcons && !!leftIcons.first && !!leftIcons.second && !!selectorIcon) &&
+            <View style={{width:15}}/>
+          }
+          {!!selectorIcon &&
+            <Icon
+            name={selectorIcon.name}
+            color={selectorIcon.color}
+            onPress={selectorIcon.onPress}
+            size={30}
+            />
+          }
+          {!!selectorIcon &&
+           <View style={{width:15}}/>
+          }
           {/* Only render the + icon if we have functionality for it on this view  */}
           {!!rightIconFunction &&
             <Icon
@@ -70,7 +110,7 @@ export default class TopHeader extends Component {
     );
   }
 }
-// 
+//
 const styles = StyleSheet.create({
   container: {
     paddingTop: 30,

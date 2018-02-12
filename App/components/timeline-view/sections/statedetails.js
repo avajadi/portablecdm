@@ -27,7 +27,8 @@ import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
 
 function removeStringReportedBy(string) {
-    return string.replace('urn:mrn:legacy:user:', '')
+    let splitString = string.split(/:/g);
+    return splitString[splitString.length - 1]
 }
 
 class StateDetails extends Component {
@@ -69,9 +70,9 @@ class StateDetails extends Component {
                         <Text style={styles.headerTitleText}> {vessel.name} </Text>
                     </View>
                     {/* Operation subtitle */}
-                        { operation.atLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} at {operation.atLocation.name}</Text>}
-                        { operation.fromLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} from {operation.fromLocation.name}</Text>}
-                        { operation.toLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace('_',' ')} to {operation.toLocation.name}</Text>}
+                        { operation.atLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace(/_/g,' ')} at {operation.atLocation.name}</Text>}
+                        { operation.fromLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace(/_/g,' ')} from {operation.fromLocation.name}</Text>}
+                        { operation.toLocation &&  <Text style={styles.headerSubText}> {operation.definitionId.replace(/_/g,' ')} to {operation.toLocation.name}</Text>}
                         
                 </View>
             {/* State List of this state */}
@@ -147,14 +148,20 @@ class StateDetails extends Component {
                                     <Text style={styles.stateSubTitleText}>REPORTED AT: </Text>  
                                     <Text style={styles.detailText}>{getDateTimeString(new Date(statement.reportedAt))}</Text>        
                                 </View>
+                                {!!statement.comment && <View style={styles.detailView}> 
+                                    <Text style={styles.stateSubTitleText}>COMMENT: </Text>  
+                                    <Text style={styles.detailText}>{statement.comment}</Text>        
+                                </View>
+                                }
                                 
                                 {/* Reliability for the message, and reliability changes  */}
+                                {!!statement.reliabilityChanges &&
                                 <View style={styles.detailView}> 
                                     <Text style={styles.stateSubTitleText}>RELIABILITY: </Text>  
                                     <Text style={styles.detailText}>{statement.reliability}%</Text>        
                                 </View>
-                                {!!statement.reliabilityChanges && 
-                                    statement.reliabilityChanges
+                                }
+                                {!!statement.reliabilityChanges && statement.reliabilityChanges
                                         .sort((a, b) => a.reliability - b.reliability)
                                         .map((change, i) => (
                                             <Text 
@@ -164,7 +171,6 @@ class StateDetails extends Component {
                                                 {Math.floor(change.reliability*100)}% : {change.reason}
                                             </Text>
                                 ))}
-                                
                             </View>     
                         </View>
                     )

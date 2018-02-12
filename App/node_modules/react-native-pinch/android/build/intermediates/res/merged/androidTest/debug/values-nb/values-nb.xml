@@ -41,7 +41,6 @@
     <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Fortsett som %1$s</string>
     <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Bekreft innlogging</string>
     <string gender="unknown" name="com_facebook_tooltip_default">Du bestemmer – velg hvilke opplysninger du vil dele med apper.</string>
-    <string name="messenger_send_button_text">Send</string>
     <string msgid="146198913615257606" name="search_menu_title">"Søk"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

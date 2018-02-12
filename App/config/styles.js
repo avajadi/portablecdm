@@ -33,6 +33,18 @@ const styles = {
             borderWidth: 0.3,
             borderRadius: 3,
         },
+        info: {
+            backgroundColor: colorScheme.primaryContainerColor,
+            marginTop: 10,
+            marginBottom: 10,
+            marginLeft: 10,
+            marginRight: 10,
+            paddingTop: 10,
+            paddingBottom: 10,
+            paddingLeft: 10,
+            flexDirection: 'column',
+            borderRadius: 5,
+          },
     },
     fonts: {
         white: {
@@ -58,6 +70,20 @@ const styles = {
           },
       }  
     },
+    texts: {
+        infoText: {
+            marginLeft: 10, 
+            marginRight: 10, 
+            color: colorScheme.quaternaryTextColor, 
+            marginTop: 4
+          },
+          headerText: {
+            textAlign: 'center',
+            color: colorScheme.quaternaryTextColor,
+            fontSize: 18,
+            fontWeight: 'bold',
+          },
+    }
 }
 
 export default styles;
