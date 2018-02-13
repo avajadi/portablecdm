@@ -14,6 +14,14 @@ export const hasEvents = [
     '192.168.56.101',
     'qa.sebro.portcdm.eu',
     'esbcn.portcdm.eu',
+    'fivaa.portcdm.eu',
+]
+
+export const promptOpposite = [
+    'fivaa.portcdm.eu',
+    'qa.fivaa.portcdm.eu',
+    'qa.seume.portcdm.eu',
+    'seume.portcdm.eu',
 ]
 
 export const isStaging = [

@@ -39,7 +39,7 @@ import LocationSelection from './sections/locationselection';
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
 import { getDateTimeString } from '../../util/timeservices';
-import { hasComment } from '../../config/instances';
+import { hasComment, promptOpposite } from '../../config/instances';
 
 
 let navBackTimer = null;
@@ -109,7 +109,7 @@ class SendPortcall extends Component {
                         );
                     } else { // Success
                         // If the timestamp has reported the start of something, we want to suggest also reporting the end of it
-                        if(state.TimeSequence === 'COMMENCED' || state.TimeSequence == 'ARRIVAL_TO') {
+                        if((state.TimeSequence === 'COMMENCED' || state.TimeSequence == 'ARRIVAL_TO') && promptOpposite.some(x => this.props.host.includes(x))) {
                             let oppositeStateId;
                             if(state.TimeSequence === 'COMMENCED') {
                                 oppositeStateId = state.StateId.replace('Commenced', 'Completed');
