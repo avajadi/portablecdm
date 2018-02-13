@@ -107,12 +107,46 @@ class SendPortcall extends Component {
                             'Error',
                             'Unable to send message!'
                         );
-                    } else {
-                        this.refs._scrollView.scrollToEnd();
-                        navBackTimer = setTimeout(() => {
-                            this.props.clearReportResult();
-                            navigate('TimeLineDetails');
-                        }, 1000);
+                    } else { // Success
+                        // If the timestamp has reported the start of something, we want to suggest also reporting the end of it
+                        if(state.TimeSequence === 'COMMENCED' || state.TimeSequence == 'ARRIVAL_TO') {
+                            let oppositeStateId;
+                            if(state.TimeSequence === 'COMMENCED') {
+                                oppositeStateId = state.StateId.replace('Commenced', 'Completed');
+                            } else {
+                                oppositeStateId = state.StateId.replace('Arrival', 'Departure')
+                            }
+                            const oppositeState = getState(oppositeStateId);
+                            Alert.alert(
+                                'Send completed?',
+                                `Timestamp was successfully sent!\nWould you like to also report ${oppositeState.Name}?`,
+                                [
+                                    {text: 'No', onPress: () => { // No button, just navigate back to TimeLine
+                                        this.props.clearReportResult();
+                                        navigate('TimeLineDetails');
+                                    }},
+                                    {text: 'Yes', onPress: () => {
+                                        this.props.clearReportResult();
+                                        navigate('SendPortCall', {
+                                            stateId: oppositeState.StateId, 
+                                            newVessel: false,
+                                            fromLocation: fromLocation, 
+                                            toLocation: toLocation, 
+                                            atLocation: atLocation,
+                                        });
+                                    }}
+                                ],
+                                {
+                                    cancelable: false
+                                }
+                            );
+                        } else {
+                            this.refs._scrollView.scrollToEnd();
+                            navBackTimer = setTimeout(() => {
+                                this.props.clearReportResult();
+                                navigate('TimeLineDetails');
+                            }, 1000);
+                        } 
                     }
                 });          
             }}
