@@ -8,27 +8,65 @@ import {
     ScrollView,
     ActivityIndicator,
     Text,
+    InteractionManager,
+    Button,
+    Dimensions
 } from 'react-native';
 
 import Orientation from 'react-native-orientation';
+
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import BerthSideMenu from './sections/BerthSideMenu';
 import EventView from './sections/EventView';
 import BerthHeader from './sections/BerthHeader';
 
-import { fetchEventsForLocation } from '../../actions';
+import { 
+    fetchEventsForLocation,
+    selectNewDate,
+} from '../../actions';
 import colorScheme from '../../config/colors';
 
 class BerthTimeLine extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showDateTimePicker: false,
+        }
+    }
+
+    scrollToRedLine = () => {
+        const windowWidth = Dimensions.get('screen').width;
+        InteractionManager.runAfterInteractions(() => {
+            setTimeout(() => { // Fattar inte varför man behöver en timeout här??
+                this.horizontalScroll.scrollTo({
+                    x: (this.props.date - this.props.events.earliestStartTime) * this.props.displayRatio + 50 - windowWidth/2, // the +50 is a little arbitrary...
+                    y: 0,
+                    animated: true
+                });
+            });
+        }, 5); 
+    };
+
     componentDidMount() {
         Orientation.lockToLandscape();
         this.props.fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", this.props.date)
-            .then(() => {
-                if(this.props.error.hasError) {
-                    this.props.navigation.navigate('Error');
-                }
-            });
+        .then(() => {
+            if(this.props.error.hasError) {
+                this.props.navigation.navigate('Error');
+            }
+        })
+        .then(() => {
+            this.scrollToRedLine();
+        });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.events !== this.props.events && this.horizontalScroll) {
+            this.scrollToRedLine();
+        }
     }
 
     componentWillUnmount() {
@@ -37,38 +75,63 @@ class BerthTimeLine extends Component {
 
     render() {
 
-        const { berth, events, fetchingEvents, date } = this.props;
-
-        // console.log(JSON.stringify(events));
-        console.log(JSON.stringify(berth));
+        const { berth, events, fetchingEvents, date, displayRatio } = this.props;
         
         return(
             <View style={styles.container}>
-                <BerthSideMenu 
-                
+                <BerthSideMenu
+                    onMenuPress={this._onMenuPress}
+                    onSearchPress={this._onSearchPress}
                 />
-                { fetchingEvents && 
-                    <ActivityIndicator
-                        animating = {fetchingEvents}
-                        size = 'large'
-                        style={{alignSelf: 'center', marginHorizontal: 50}}
-                    />
-                }
+                
                 <View style={styles.rightSideContainer}>
-                    {/* <BerthHeader location={berth}/> */}
+                    <BerthHeader location={berth}/>
+                    { fetchingEvents &&
+                        <ActivityIndicator
+                            animating={fetchingEvents}
+                            large
+                            color={colorScheme.primaryColor}
+                            style={{alignSelf: 'center'}}
+                        />
+                    }
                     { !fetchingEvents &&
-                        <ScrollView horizontal style={{alignSelf: 'center',}}>
-                            <ScrollView>
+                        <ScrollView>
+                            <ScrollView
+                                horizontal
+                                ref={(ref) => this.horizontalScroll = ref}
+                            >
                                 <EventView 
                                     events={events}
-                                    startTime={date}
+                                    date={date}
+                                    displayRatio={displayRatio}
                                 />
                             </ScrollView>
                         </ScrollView>
                     }
+                    <DateTimePicker
+                        isVisible={this.state.showDateTimePicker}
+                        onConfirm={this._handleDateTimePicked}
+                        onCancel={this._hideDateTimePicker}
+                        mode="datetime"
+                    />
                 </View>
             </View>
         );
+    }
+
+    _onMenuPress = () => {
+        this.props.navigation.navigate('DrawerOpen');
+    }
+
+    _onSearchPress = () => {
+        this._showDateTimePicker();
+    }
+
+    _showDateTimePicker = () => this.setState({showDateTimePicker: true});
+    _hideDateTimePicker = () => this.setState({showDateTimePicker: false});
+    _handleDateTimePicked = (date) => {
+      this.props.selectNewDate(date)
+      this._hideDateTimePicker();
     }
 }
 
@@ -81,6 +144,15 @@ const styles = StyleSheet.create({
     rightSideContainer: {
         flex: 1,
         flexDirection: 'column'
+    },
+    timeIndicatorLine: {
+        alignItems: 'stretch',
+        position: 'absolute',
+        borderWidth: 1,
+        borderColor: 'red',
+        top: -40,
+        backgroundColor: 'red',
+        zIndex: 10,
     }
 });
 
@@ -91,7 +163,8 @@ function mapStateToProps (state) {
         fetchingEvents: state.berths.fetchingEvents,
         date: state.berths.fetchForDate,
         error: state.error,
+        displayRatio: state.berths.displayRatio,
     };
 }
 
-export default connect(mapStateToProps, { fetchEventsForLocation })(BerthTimeLine);
+export default connect(mapStateToProps, { fetchEventsForLocation, selectNewDate })(BerthTimeLine);

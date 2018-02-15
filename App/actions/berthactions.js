@@ -5,6 +5,7 @@ import {
     BERTH_FETCHING_EVENTS,
     BERTH_FETCHING_EVENTS_FAILURE,
     BERTH_FETCHING_EVENTS_SUCCESS,
+    BERTH_CHANGE_INSPECTION_DATE,
     SET_ERROR
 } from './types';
 
@@ -14,7 +15,14 @@ import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcd
 import { noSummary, hasEvents } from '../config/instances';
 
 export const selectBerthLocation = (location) => {
-    return {type: BERTH_SELECT_BERTH, payload: location}
+    return {type: BERTH_SELECT_BERTH, payload: location};
+}
+
+export const selectNewDate = (date) => (dispatch, getState) => {
+    dispatch({type: BERTH_CHANGE_INSPECTION_DATE, payload: date});
+
+    // return dispatch(fetchEventsForLocation(getState().berths.selectedLocation, date));
+    return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
 }
 
 export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState) => {
@@ -41,7 +49,7 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             sslPinning: getCert(connection),
         })
         .then(result => {
-            // console.log(JSON.stringify(result));
+            console.log(result.url);
             let err = checkResponse(result);
             if (!err) {
                 return JSON.parse(result.bodyString);

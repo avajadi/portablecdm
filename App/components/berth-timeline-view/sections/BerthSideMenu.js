@@ -15,11 +15,25 @@ import colorScheme from '../../../config/colors';
 
 const BerthSideMenu = (props) => (
     <View style={styles.container}>
+        <Icon
+            name= 'menu'
+            color= {colorScheme.primaryContainerColor}
+            size= {40}
+            underlayColor='transparent'
+            onPress={props.onMenuPress}
+        />
+        <Icon
+            name='search'
+            color={colorScheme.primaryTextColor}
+            size={40}
+            onPress={props.onSearchPress}
+        />
     </View>
 );
 
 BerthSideMenu.propTypes = {
-
+    onMenuPress: PropTypes.func.isRequired,
+    onSearchPress: PropTypes.func.isRequired,
 }
 
 export default BerthSideMenu;
@@ -29,6 +43,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         backgroundColor: colorScheme.primaryColor,
-        width: 40,
+        width: 60,
+        justifyContent: 'center'
     }
 });
