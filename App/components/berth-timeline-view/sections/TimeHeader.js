@@ -7,16 +7,11 @@ import {
     StyleSheet,
 } from 'react-native';
 
-// import {
-//     Icon,
-// } from 'react-native-elements';
-
 import colorScheme from '../../../config/colors';
 
 const BerthHeader = (props) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Events for LOCATION HERE</Text>
         </View>
     );
 };
@@ -30,9 +25,9 @@ export default BerthHeader;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colorScheme.primaryColor,
-        paddingTop: 30,
         alignItems: 'center',
         justifyContent: 'center',
+        height: 20,
     },
     text: {
         color: colorScheme.primaryTextColor,

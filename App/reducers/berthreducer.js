@@ -2,15 +2,16 @@ import {
     BERTH_SELECT_BERTH,
     BERTH_FETCHING_EVENTS,
     BERTH_FETCHING_EVENTS_FAILURE,
-    BERTH_FETCHING_EVENTS_SUCCESS
+    BERTH_FETCHING_EVENTS_SUCCESS,
+    BERTH_CHANGE_INSPECTION_DATE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
     selectedLocation: undefined, // Location object
     fetchingEvents: false,
-    viewingTime: undefined, // DateTime for when in the timeline we are wieving
     fetchForDate: new Date(), // default to center the searching around NOW
-    events: []
+    events: [],
+    displayRatio: 1/(1000 * 60 * 5)
 };
 
 const berthReducer = (state = INITIAL_STATE, action) => {
@@ -23,6 +24,8 @@ const berthReducer = (state = INITIAL_STATE, action) => {
             return { ...state, fetchingEvents: false, events: action.payload };
         case BERTH_FETCHING_EVENTS_FAILURE:
             return { ...state, fetchingEvents: false, events: [] };
+        case BERTH_CHANGE_INSPECTION_DATE:
+            return { ...state, fetchForDate: action.payload };
         default:
             return state;
     }

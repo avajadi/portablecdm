@@ -67,6 +67,7 @@ export const BERTH_SELECT_BERTH = 'berth_select_berth';
 export const BERTH_FETCHING_EVENTS = 'berth_fetching_events';
 export const BERTH_FETCHING_EVENTS_SUCCESS = 'berth_fetching_events_success';
 export const BERTH_FETCHING_EVENTS_FAILURE = 'berth_fetching_events_failure';
+export const BERTH_CHANGE_INSPECTION_DATE = 'berth_change_inspection_date';
 
 /** FAVORITES */
 export const ADD_FAVORITE_PORTCALL = 'add_favorite_portcall';

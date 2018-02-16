@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {
     StyleSheet,
     View,
-    Text
+    Text,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import {
@@ -49,17 +50,23 @@ function renderEndIndicator(event) {
 const EventBar = (props) => {
     const { event, prevEndTime } = props;
 
-    const width = (event.displayEndTime - event.displayStartTime) / 1000 / 60 / 5; // Each pixel is a minute
-    const marginLeft = prevEndTime ? (event.displayStartTime - prevEndTime)/1000/60 / 10 : 0;
+    const width = (event.displayEndTime - event.displayStartTime) * props.displayRatio; // Each pixel is 1/5th of a minute
+    const marginLeft = prevEndTime ? (event.displayStartTime - prevEndTime) * props.displayRatio : 0;
 
     return (
-        <View style={[styles.bar, {width: width, marginLeft: marginLeft}]}>
-            {renderStartIndicator(event)}
-            <Text style={styles.infoText}>{event.definitionId.toLowerCase().replace(/_/g, ' ')}</Text>
-            {/* <Text style={styles.infoText}>{event.defaultedStartTime.toString()} - {event.defaultedEndTime.toString()}</Text> */}
-            {renderEndIndicator(event)}
+        <TouchableWithoutFeedback
+            onPress={() => {
+                console.log("Event ID: " + event.eventId);
+            }}
+        >
+            <View style={[styles.bar, {width: width, marginLeft: marginLeft}]}>
+                {renderStartIndicator(event)}
+                <Text style={styles.infoText}>{event.definitionId.toLowerCase().replace(/_/g, ' ')}</Text>
+                {/* <Text style={styles.infoText}>{event.defaultedStartTime.toString()} - {event.defaultedEndTime.toString()}</Text> */}
+                {renderEndIndicator(event)}
 
-        </View>
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -82,6 +89,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        borderRadius: 10,
     },
     infoText: {
         fontSize: 9,
@@ -95,41 +103,28 @@ const styles = StyleSheet.create({
     },
     actualContainer: {
         backgroundColor: colorScheme.actualColor,
-        width: 18,
-        justifyContent: 'center',
-        overflow: 'hidden',
-        alignItems: 'center',
-        marginRight: 2,
-    },
-    estimateText: {
-        color: colorScheme.primaryTextColor,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 12,
-    },
-    estimateContainer: {
-        backgroundColor: colorScheme.estimateColor,
-        borderRadius: 9,
-        width: 18,
-        height: 18,
-        justifyContent: 'center',
-        overflow: 'hidden',
-        alignItems: 'center',
-    },  
-    estimateText: {
-        color: colorScheme.primaryTextColor,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 12,
-    },
-    estimateContainer: {
-        backgroundColor: colorScheme.estimateColor,
-        width: 18,
+        width: 20,
         height: 20,
         justifyContent: 'center',
         overflow: 'hidden',
         alignItems: 'center',
-        marginLeft: 2
+        borderRadius: 8,       
+    },
+    estimateText: {
+        color: colorScheme.primaryTextColor,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 12,
+    },
+    estimateContainer: {
+        backgroundColor: colorScheme.estimateColor,
+        width: 20,
+        height: 20,
+        justifyContent: 'center',
+        overflow: 'hidden',
+        alignItems: 'center',
+        borderRadius: 8,
+        
     }, 
     missingText: {
         color: colorScheme.primaryTextColor,
@@ -139,11 +134,11 @@ const styles = StyleSheet.create({
     },
     missingContainer: {
         backgroundColor: colorScheme.warningColor,
-        width: 18,
+        width: 20,
         height: 20,
         justifyContent: 'center',
         overflow: 'hidden',
         alignItems: 'center',
-        marginLeft: 2
+        borderRadius: 8,
     }, 
 });
