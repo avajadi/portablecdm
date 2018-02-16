@@ -4,7 +4,7 @@
     "icon": "./assets/portablecdm_app_icon.png",
     "version": "1.0.2",
     "slug": "portcdm-app",
-    "sdkVersion": "24.0.0",
+    "sdkVersion": "25.0.0",
     "orientation": "portrait",
     "scheme": "pacdm",
     "ios": {
