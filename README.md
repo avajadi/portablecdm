@@ -22,6 +22,7 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 ### Android
 0. Change Expo account in MainActivity
 1. Change applicationId to choice in build.gradle
+2. Change app_name value in strings.xml
 
 ## Expo info
 * Production username: avajadi

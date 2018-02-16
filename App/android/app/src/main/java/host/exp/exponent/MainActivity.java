@@ -18,7 +18,7 @@ public class MainActivity extends DetachActivity {
 
   @Override
   public String publishedUrl() {
-    return "exp://exp.host/@rise_viktoria/portcdm-app";
+    return "exp://exp.host/@rise_viktoria/portcdm-app?release-channel=staging";
   }
 
   @Override

@@ -5,3 +5,4 @@ npm-debug.*
 android/.gradle
 android/.idea
 ios/.DS_Store
+*.DS_Store
