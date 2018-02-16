@@ -4,7 +4,7 @@ platform :ios, '9.0'
 target 'portablecdm' do
   pod 'ExpoKit',
     :git => "http://github.com/expo/expo.git",
-    :tag => "ios/2.2.1",
+    :tag => "ios/2.3.3",
     :subspecs => [
       "Core",
       "CPP"
