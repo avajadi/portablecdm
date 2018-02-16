@@ -15,6 +15,7 @@ export const hasEvents = [
     'qa.sebro.portcdm.eu',
     'esbcn.portcdm.eu',
     'fivaa.portcdm.eu',
+    'portcdm.cut.ac.cy',
 ]
 
 export const promptOpposite = [
