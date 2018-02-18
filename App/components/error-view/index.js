@@ -34,7 +34,11 @@ class ErrorView extends Component {
   }
 
   returnFromError() {
-    this.props.navigation.navigate('LoginView');
+    this.props.navigation.navigate('LoginView', {}, {
+        type: "Navigation/NAVIGATE",
+        routeName: "LoginView",
+        params: { fromError: true }
+      });
   }
 
 
@@ -44,13 +48,13 @@ class ErrorView extends Component {
         <Text h2 style={{color: colorScheme.primaryColor}}>We're sorry :(</Text>
         <Text h3 style={{marginTop: 100, marginLeft: 20, marginRight: 20, textAlign: 'center'}}>{this.props.error.error.title}</Text>
         <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20, textAlign: 'center'}}>{Platform.Version === 24 && this.props.host.startsWith('https')
-          ? unsupportedAndroidMessage : this.props.error.error.description}</Text>
+        ? unsupportedAndroidMessage : this.props.error.error.description}</Text>
         <TouchableHighlight onPress={() => this.returnFromError()}>
-        <View style={styles.containers.subContainer}>
-            <Text h4 style={styles.fonts.white}>RETURN</Text>
-        </View>
+            <View style={styles.containers.subContainer}>
+                <Text h4 style={styles.fonts.white}>RETURN</Text>
+            </View>
         </TouchableHighlight>
-        </View>
+    </View>
     );
   }
 }

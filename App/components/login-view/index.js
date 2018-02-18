@@ -13,6 +13,7 @@ import {
     Dimensions,
     TouchableHighlight,
     ActivityIndicator,
+    Alert,
 } from 'react-native';
 
 import {
@@ -22,6 +23,7 @@ import {
 } from 'react-native-elements';
 
 import LegacyLogin from './legacyLogin';
+import Logos from './logos';
 
 import { 
     changeHostSetting, 
@@ -29,6 +31,8 @@ import {
     fetchInstance,
     changeUser,
     fetchLocations,
+    removeError,
+    checkNewVersion,
 } from '../../actions';
 
 import { APP_VERSION, STAGING } from '../../config/version';
@@ -37,9 +41,6 @@ import constants from '../../config/constants';
 import colorScheme from '../../config/colors';
 
 import logo from '../../assets/login-view.png';
-import riseLogo from '../../assets/riseLogo.png';
-import euCoFinanceLogo from '../../assets/euCoFinance.png';
-import stmLogo from '../../assets/stmLogo.jpg';
 
 const dimensions = Dimensions.get('window');
 
@@ -58,9 +59,33 @@ class LoginView extends Component {
         };
     }
 
+
     componentDidMount() {
         console.log('PortableCDM started. Width: ' + 
             dimensions.width + 'px, height: ' + dimensions.height + 'px');
+
+        if (this.props.checkNewVersion()) {
+            Alert.alert(
+                'New version',
+                'Updated to new version ' + APP_VERSION + '. See changes in change log from About view.'
+            );
+        }
+
+        if(this.props.error.hasError) { // Return from error
+            this.props.navigation.dispatch({
+                type: 'Navigation/RESET',
+                index: 0,
+                actions: [
+                    {
+                        type: 'Navigate',
+                        routeName: 'LoginView',
+                    }
+                ],
+            });
+
+            this.props.removeError();
+            return;
+        }
 
         if (this.props.rememberLogin) {
             this.login();
@@ -69,10 +94,11 @@ class LoginView extends Component {
 
     addHostPress() {
         if (this.state.addHostVisible) {
-            this.props.changeHostSetting(this.state.host);
+            this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
             this.setState({
                 addHostVisible: false,
                 addHostIconName: 'add-circle',
+                host: this.reformatHostHttp(this.state.host),
             })
         } else {
             this.setState({
@@ -90,19 +116,15 @@ class LoginView extends Component {
         })
     }
 
-    renderHosts(hosts) {
-        return hosts.map(host => <Picker.Item key={host} label={host} value={host} />);
-    }
-
     loginLegacy({ username, password, remember }) {
-        this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
+        this.props.changeHostSetting(this.state.host);
         this.props.changeUser(username, password, remember);
-        this.setState({host: this.reformatHostHttp(this.state.host)});
         this.login();
     }
 
     async loginKeycloak() {
-        this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
+        this.props.changeHostSetting(this.state.host);
+        this.props.changeUser('', '', false);
         console.log('Redirect: ' + AuthSession.getRedirectUrl());
         const redirectUrl = AuthSession.getRedirectUrl();
         const consts = constants(true);
@@ -124,17 +146,16 @@ class LoginView extends Component {
         await this.props.fetchInstance();
         if (this.props.error.hasError) {
             navigate('Error');
+        } else {
+            this.props.fetchLocations().then(() => {
+                console.log('fetched locations');
+                if(this.props.error.hasError) {
+                    navigate('Error');
+                }
+            });
+    
+            navigate('Application');
         }
-
-        this.props.fetchLocations().then(() => {
-            console.log('fetched locations');
-            if(this.props.error.hasError) {
-                console.log('Inside if');
-                navigate('Error');
-            }
-        });
-
-        navigate('Application');
     }
 
     reformatHostHttp(host) {
@@ -146,7 +167,7 @@ class LoginView extends Component {
     }
 
     render() {
-        if (this.props.rememberLogin) {
+        if (this.props.rememberLogin || this.props.navigation.state.params) {
             return (
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <ActivityIndicator color={colorScheme.primaryColor} size='large' />
@@ -157,7 +178,6 @@ class LoginView extends Component {
         const { hosts, rememberLogin } = this.props;
         const { addHostVisible } = this.state;
         const keycloak = hasKeycloak.includes(this.state.host) && !this.state.forceLegacy;
-        console.log('Hosts: ' + JSON.stringify(hosts));
 
         return (
             <View style={styles.mainContainer}>
@@ -174,39 +194,41 @@ class LoginView extends Component {
                 </View>
                 
                 <View style={styles.contentContainer}>
-                    <FormLabel>Host</FormLabel>
-                    <View style={styles.hostContainer}>
-                        {(hosts.length > 0 && !addHostVisible) &&
-                        <ModalDropdown
-                            style={styles.dropdownHost}
-                            textStyle={styles.dropdownHostText}
-                            dropdownStyle={styles.dropdownHost}
-                            dropdownTextStyle={{fontSize: 15,}}
-                            options={hosts}
-                            defaultValue={this.state.host}
-                            accessible={false}
-                            onSelect={(index, value) => this.setState({host: value})}
-                        />
-                        }
-                        {addHostVisible && 
-                        <View>
-                            <FormInput 
-                                containerStyle={styles.hostTxtContainer}
-                                onChangeText={text => this.setState({host: text})} 
-                                autoCorrect={false}
-                                placeholder={'example.com'}
-                                autoCapitalize={'none'}
-                                onBlur={() => this.abortHostPress()}
-                                />
+                    <View>
+                        <FormLabel>Host</FormLabel>
+                        <View style={styles.hostContainer}>
+                            {(hosts.length > 0 && !addHostVisible) &&
+                            <ModalDropdown
+                                style={styles.dropdownHost}
+                                textStyle={styles.dropdownHostText}
+                                dropdownStyle={styles.dropdownHost}
+                                dropdownTextStyle={{fontSize: 15,}}
+                                options={hosts}
+                                defaultValue={this.state.host}
+                                accessible={false}
+                                onSelect={(index, value) => this.setState({host: value})}
+                            />
+                            }
+                            {addHostVisible && 
+                            <View>
+                                <FormInput 
+                                    containerStyle={styles.hostTxtContainer}
+                                    onChangeText={text => this.setState({host: text})} 
+                                    autoCorrect={false}
+                                    placeholder={'example.com'}
+                                    autoCapitalize={'none'}
+                                    onBlur={() => this.abortHostPress()}
+                                    />
+                            </View>
+                            }
+                            <Icon 
+                            color={colorScheme.primaryColor}
+                            name={this.state.addHostIconName}
+                            size={35}
+                            iconStyle={styles.btnAddHost}
+                            onPress={() => this.addHostPress()}
+                            />
                         </View>
-                        }
-                        <Icon 
-                        color={colorScheme.primaryColor}
-                        name={this.state.addHostIconName}
-                        size={35}
-                        iconStyle={styles.btnAddHost}
-                        onPress={() => this.addHostPress()}
-                        />
                     </View>
                     {keycloak &&
                         <View style={styles.loginContainer}>
@@ -225,6 +247,7 @@ class LoginView extends Component {
                         rememberLogin={rememberLogin} 
                     />
                     }
+                    <Logos />
                 </View>
             </View>
         );
@@ -235,7 +258,7 @@ const styles = StyleSheet.create({
     logo: {
         width: dimensions.width,
         //height: dimensions.width * 0.6669,
-        height: dimensions.width * 0.8,
+        height: dimensions.height * 0.4,
         backgroundColor: colorScheme.primaryColor,
     },
     mainContainer: {
@@ -247,7 +270,8 @@ const styles = StyleSheet.create({
     contentContainer: {
         paddingLeft: 20,
         paddingRight: 20,
-        justifyContent: 'center',
+        height: dimensions.height * 0.6,
+        justifyContent: 'space-between',
         elevation: 50,
         backgroundColor: 'white',
         shadowColor: '#000000',
@@ -313,4 +337,6 @@ export default connect(mapStateToProps, {
     changeUser,
     loginKeycloak,
     fetchLocations,
+    removeError,
+    checkNewVersion,
     })(LoginView);
