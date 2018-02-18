@@ -4,6 +4,14 @@ import { connect } from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
 //import LegacyLogin from './legacyLogin';
 
+/*
+TODO::
+Update about-view
+Add scheme to setting (view it)
+CHECK OUT UNLOCODE!
+Test!
+*/
+
 import {
     View,
     Text,
