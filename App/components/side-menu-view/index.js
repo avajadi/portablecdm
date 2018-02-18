@@ -34,7 +34,7 @@ class SideMenu extends Component {
   _logout() {
       const { navigation, connection, changeUser, logoutKeycloak } = this.props;
       if(!!connection.username) {
-        changeUser('', '');
+        changeUser('', '', false);
         console.log('Logging out legacy user...');
         navigation.navigate('LoginView');
       } else {

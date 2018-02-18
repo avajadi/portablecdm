@@ -12,6 +12,7 @@ import {
     Picker,
     Dimensions,
     TouchableHighlight,
+    ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -47,18 +48,23 @@ class LoginView extends Component {
     constructor(props) {
         super(props);
 
-        const { hosts } = props;
+        const { hosts, connection } = props;
 
         this.state = {
-            host: hosts.length > 0 ? hosts[hosts.length - 1] : '',
+            host: connection.host,
             addHostVisible: hosts.length === 0,
             addHostIconName: 'add-circle',
+            forceLegacy: false,
         };
     }
 
     componentDidMount() {
         console.log('PortableCDM started. Width: ' + 
             dimensions.width + 'px, height: ' + dimensions.height + 'px');
+
+        if (this.props.rememberLogin) {
+            this.login();
+        }
     }
 
     addHostPress() {
@@ -140,12 +146,18 @@ class LoginView extends Component {
     }
 
     render() {
+        if (this.props.rememberLogin) {
+            return (
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator color={colorScheme.primaryColor} size='large' />
+                </View>
+            );
+        }
+
         const { hosts, rememberLogin } = this.props;
         const { addHostVisible } = this.state;
-        const keycloak = hasKeycloak.includes(this.state.host);
+        const keycloak = hasKeycloak.includes(this.state.host) && !this.state.forceLegacy;
         console.log('Hosts: ' + JSON.stringify(hosts));
-
-
 
         return (
             <View style={styles.mainContainer}>
@@ -200,7 +212,9 @@ class LoginView extends Component {
                         <View style={styles.loginContainer}>
                             <TouchableHighlight 
                                 style={styles.btnLogin} 
-                                onPress={() => this.loginKeycloak()}>
+                                onPress={() => this.loginKeycloak()}
+                                onLongPress={() => this.setState({forceLegacy: true})}
+                                >
                                 <Text h3 style={styles.btnLoginTxt}>SEASWIM LOGIN</Text>
                             </TouchableHighlight>
                         </View>
