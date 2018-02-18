@@ -107,7 +107,6 @@ class BerthTimeLine extends Component {
                         />
                     }
                     { !fetchingEvents &&
-                        <ScrollView style={{alignSelf: 'stretch'}}>
                         <ScrollView
                             horizontal
                             ref={(ref) => this.horizontalScroll = ref}
@@ -119,7 +118,6 @@ class BerthTimeLine extends Component {
                                 displayRatio={displayRatio}
                                 showExpired={this.state.showExpiredEvents}
                             />
-                        </ScrollView>
                         </ScrollView>
                     }
                     <DateTimePicker
