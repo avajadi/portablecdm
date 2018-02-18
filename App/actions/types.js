@@ -23,6 +23,9 @@ export const SEND_PORTCALL_FAILURE = 'send_portcall_failure';
 export const SEND_PORTCALL_CLEAR_RESULT = 'send_portcall_clear_result';
 export const SEND_PORTCALL_SELECT_LOCATION = 'send_portcall_select_location';
 export const SEND_PORTCALL_CLEAR_LOCATIONS = 'send_portcall_clear_locations';
+export const WITHDRAW_TIMESTAMP_BEGIN = 'withdraw_timestamp_begin';
+export const WITHDRAW_TIMESTAMP_SUCCESS = 'withdraw_timestamp_success';
+export const WITHDRAW_TIMESTAMP_FAILURE = 'withdraw_timestamp_failure';
 export const FETCH_LOCATIONS = 'fetch_locations';
 export const FETCH_LOCATIONS_SUCCESS = 'fetch_locations_success';
 export const FETCH_LOCATIONS_FAILURE = 'fetch_locations_failure';
@@ -47,6 +50,7 @@ export const SETTINGS_CHANGE_USER = 'settings_change_user';
 export const SETTINGS_CHANGE_TOKEN = 'settings_change_token';
 export const SETTINGS_CHANGE_FETCH_RELIABILITY = 'settings_change_fetch_reliability';
 export const SETTINGS_CHANGE_FAVORITE_STATE_LIST = 'settings_change_favorite_state_list';
+export const SETTINGS_FETCH_INSTANCE = 'settings_fetch_instance';
 export const SETTINGS_UPDATE_VERSION = 'settings_update_version';
 export const SETTINGS_CLEAR = 'settings_clear';
 export const FETCH_VESSEL = 'fetch_vessel';
@@ -57,6 +61,13 @@ export const REMOVE_ERROR = 'remove_error';
 export const UPDATE_PROGRESS = 'update_progress';
 export const SERVER_START = 'server_start';
 export const SERVER_STOP = 'server_stop';
+
+/** BERTH VIEW */
+export const BERTH_SELECT_BERTH = 'berth_select_berth';
+export const BERTH_FETCHING_EVENTS = 'berth_fetching_events';
+export const BERTH_FETCHING_EVENTS_SUCCESS = 'berth_fetching_events_success';
+export const BERTH_FETCHING_EVENTS_FAILURE = 'berth_fetching_events_failure';
+export const BERTH_CHANGE_INSPECTION_DATE = 'berth_change_inspection_date';
 
 /** FAVORITES */
 export const ADD_FAVORITE_PORTCALL = 'add_favorite_portcall';

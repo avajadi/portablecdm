@@ -17,13 +17,13 @@ repositories {
 
 android {
   compileSdkVersion 26
-  buildToolsVersion '26.0.2'
+  buildToolsVersion '26.0.1'
 
   defaultConfig {
     applicationId 'se.viktoria.portablecdm'
     targetSdkVersion 25
-    versionCode 1
-    versionName '1.0.2'
+    versionCode 2
+    versionName '1.2.0'
     ndk {
       abiFilters 'armeabi-v7a', 'x86'
     }
@@ -35,7 +35,7 @@ android {
     ]
   }
   dexOptions {
-    javaMaxHeapSize System.getenv("DISABLE_DEX_MAX_HEAP") ? null : "8g"
+    javaMaxHeapSize System.getenv("DISABLE_DEX_MAX_HEAP") ? null : "12g"
   }
   productFlavors {
 
@@ -103,6 +103,7 @@ preBuild.dependsOn exponentPrebuildStep
 
 
 dependencies {
+    compile project(':react-native-orientation')
     compile project(':react-native-pinch')
   compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -170,12 +171,14 @@ dependencies {
 
 
 
-  compile('host.exp.exponent:expoview:24.0.0@aar') {
+
+
+  compile('host.exp.exponent:expoview:25.0.0@aar') {
     transitive = true
   }
 
-
   compile project(path: ':react-native-pinch')
+    compile project(path: ':react-native-orientation')
 }
 
 // This has to be down here for some reason

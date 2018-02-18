@@ -40,6 +40,15 @@ import {
 
 import colorScheme from '../../../config/colors';
 
+const STAGES = [
+    'PLANNED',
+    'ARRIVED',
+    'BERTHED',
+    'ANCHORED',
+    'UNDER_WAY',
+    'SAILED',
+];
+
 class FilterMenu extends Component {
 
     constructor(props) {
@@ -72,7 +81,10 @@ class FilterMenu extends Component {
             withinValue: withinValue,
             onlyFetchActivePortCalls: props.filters.onlyFetchActivePortCalls,
             showLocationModal: false,
+            stages: this.props.filters.stages,
         }
+
+        console.log(JSON.stringify(this.props.cache));
 
         this.onBackIconPressed = this.onBackIconPressed.bind(this);
         this.onDoneIconPressed = this.onDoneIconPressed.bind(this);
@@ -146,6 +158,9 @@ class FilterMenu extends Component {
 
         // Vessel List
         filterChangeVesselList(this.state.vesselListFilter);
+
+        // Stages
+
 
         clearCache();
         updatePortCalls()
@@ -266,6 +281,34 @@ class FilterMenu extends Component {
                         <Text style={{ fontWeight: 'bold', paddingLeft: 10, }}> Limit: {this.state.limitFilter} portcalls retrieved </Text>
                     </View>}
 
+                    {/* Stage filter - ONLY DISPLAY IF STAGE PROP CAN BE FOUND */}
+                    {this.props.hasStages && <View style={styles.smallContainer}>
+                        <Text style={styles.textTitle}>Stages</Text>
+                        <View style={styles.stageList}>
+                            {STAGES.map(stage => {
+                                return (
+                                    <CheckBox
+                                        containerStyle={styles.stage}
+                                        key={stage}
+                                        title={stage.replace(/_/g, ' ')}
+                                        checkedColor={colorScheme.primaryColor}
+                                        checked={this.state.stages.includes(stage)}
+                                        onPress={() => {
+                                            let prev = this.state.stages;
+                                            if (prev.includes(stage)) {
+                                                prev.splice(prev.indexOf(stage), 1);
+                                            } else {
+                                                prev.push(stage);
+                                            }
+
+                                            this.setState({stages: prev});
+                                        }}
+                                        />
+                                );
+                            })}
+                        </View>
+                    </View>}
+
                     {/* Location filter */}
                     <Button
                         title="Filter on locations"
@@ -372,6 +415,17 @@ const styles = StyleSheet.create({
         borderColor: colorScheme.secondaryContainerColor,
         borderTopWidth: 1,
     },
+    stage: {
+        width: '43%',
+        backgroundColor: colorScheme.primaryTextColor, 
+        borderColor: colorScheme.primaryTextColor,
+    },
+    stageList: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+    }
 }); //styles
 
 function mapStateToProps(state) {
@@ -379,6 +433,7 @@ function mapStateToProps(state) {
         maxPortLimitPortCalls: state.settings.maxPortCallsFetched,
         maxHoursTimeDifference: state.settings.maxHoursTimeDifference,
         filters: state.filters,
+        hasStages: (state.cache.portCalls[0] ? !!state.cache.portCalls[0].stage : false),
         vesselLists: state.settings.vesselLists,
 
     };

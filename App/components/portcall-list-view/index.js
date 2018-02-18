@@ -7,6 +7,7 @@ import {
     toggleFavoriteVessel,
     appendPortCalls,
     bufferPortCalls,
+    setError,
  } from '../../actions';
 
 import {
@@ -44,10 +45,6 @@ class PortCallList extends Component {
             .then(this.props.bufferPortCalls);
     }
 
-    componentDidMount() {
-
-    }
-
     loadPortCalls() {
         return this.props.updatePortCalls().then(() => {
             if(this.props.error.hasError) {
@@ -83,6 +80,11 @@ class PortCallList extends Component {
         const {navigation, showLoadingIcon, portCalls, selectPortCall} = this.props;
         const {navigate} = navigation;
         const {searchTerm} = this.state;
+
+        // Quick fix for having 1 element with null value
+        if (portCalls.length === 1) {
+            portCalls.splice(0,1);
+        }
 
         return(
             <View style={styles.container}>
@@ -139,6 +141,8 @@ class PortCallList extends Component {
                                     titleStyle={styles.titleStyle}
                                     subtitle={getDateTimeString(new Date(portCall.startTime))}
                                     subtitleStyle={styles.subTitleStyle}
+                                    // rightTitle={portCall.stage ? portCall.stage.replace(/_/g, ' ') : undefined}
+                                    // rightTitleStyle={[styles.subTitleStyle, {fontSize: 9}]}
                                     onPress={() => {
                                         //console.log(JSON.stringify(portCall.vessel));
                                         selectPortCall(portCall);
@@ -189,6 +193,9 @@ class PortCallList extends Component {
                         name='directions-boat'
                         color='lightblue'
                     />}
+                    {!!portCall.stage && <Text style={[styles.subTitleStyle, {fontSize: 9, marginLeft: 4}]}>
+                        {portCall.stage.replace(/_/g, ' ')}
+                    </Text>}
                 </View>
         );
     }
@@ -219,10 +226,13 @@ class PortCallList extends Component {
     }
 
     search(portCalls, searchTerm) {
+        let { filters } = this.props;
+
         return portCalls.filter(portCall => {
-            return portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
+            return (portCall.vessel.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
-            portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm);
+            portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm)) &&
+            (!portCall.stage || filters.stages.includes(portCall.stage));
         }).sort((a,b) => this.sortFilters(a,b))
         .slice(0, this.state.numLoadedPortCalls);
     }
@@ -285,5 +295,6 @@ export default connect(mapStateToProps, {
     selectPortCall,
     toggleFavoritePortCall,
     toggleFavoriteVessel,
-    bufferPortCalls
+    bufferPortCalls,
+    setError,
 })(PortCallList);

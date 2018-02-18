@@ -3,6 +3,7 @@ import {
   View,
   Platform,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 
 import {
@@ -14,9 +15,11 @@ import colorScheme from '../../config/colors';
 
 export default class MiniHeader extends Component {
   render() {
-    const {navigation, title, rightIconFunction, leftIconFunction, hideRightIcon} = this.props;
+    const {navigation, title, rightIconFunction, leftIconFunction, hideRightIcon, modal} = this.props;
+    const paddingTop = Platform.OS === 'android' && modal ? 30 - StatusBar.currentHeight : 30;
+
     return(
-      <View style={styles.container}>
+      <View style={[styles.container, {paddingTop}]}>
         <Icon
           name= 'close'
           color= {colorScheme.primaryContainerColor}

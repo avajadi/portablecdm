@@ -1,18 +1,16 @@
-import { contentTypeBug } from '../config/instances';
-
-export function createTokenHeaders(token, host) {
+export function createTokenHeaders(token, contentType) {
     return {
         'Authorization': `${token.tokenType} ${token.accessToken}`,
-        'Content-Type': contentTypeBug.some((x) => host.includes(x)) ? 'application/json' : 'application/xml',
+        'Content-Type': contentType,
     }
 }
 
-export function createLegacyHeaders(connection) {
+export function createLegacyHeaders(connection, contentType) {
     return {
         'X-PortCDM-UserId': connection.username,
         'X-PortCDM-Password': connection.password,
         'X-PortCDM-APIKey': 'PortableCDM',
-        'Content-Type': contentTypeBug.some((x) => connection.host.includes(x)) ? 'application/json' : 'application/xml',
+        'Content-Type': contentType,
     }
 }
 

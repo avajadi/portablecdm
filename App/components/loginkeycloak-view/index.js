@@ -35,6 +35,7 @@ import {
     changeUser,
     loginKeycloak,
     removeError,
+    fetchInstance,
   } from '../../actions';
 
 import TopHeader from '../top-header-view';
@@ -114,6 +115,15 @@ class LoginKeyCloakView extends Component {
     }
 
     async loginConfirmed() {
+        if (!this.state.legacyLogin.enabled) {
+            this.setState({
+                legacyLogin: {
+                    username: '',
+                    password: ''
+                }
+            });
+        }
+
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
@@ -123,6 +133,11 @@ class LoginKeyCloakView extends Component {
         this.setState({host: this.reformatHostHttp(this.state.host)});
 
         if(!this.validateForms()) return;
+
+        await this.props.fetchInstance();
+        if (this.props.error.hasError) {
+            navigate('Error');
+        }
 
         this.props.fetchLocations().then(() => {
             console.log('fetched locations');
@@ -214,7 +229,7 @@ class LoginKeyCloakView extends Component {
                         visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
                         onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
                         >
-                        <TopHeader title="Legacy Login" navigation={this.props.navigation} backArrowFunction={() => this.setState({legacyLogin: {enabled: false}})} />
+                        <TopHeader modal title="Legacy Login" navigation={this.props.navigation} backArrowFunction={() => this.setState({legacyLogin: {enabled: false}})} />
                         
                         <View style={styles.containers.centralizer}>
                             <View style={styles.containers.blank}/>
@@ -318,4 +333,5 @@ export default connect(mapStateToProps, {
         changeUser,
         changePortUnlocode,
         checkNewVersion,
+        fetchInstance,
     })(LoginKeyCloakView);

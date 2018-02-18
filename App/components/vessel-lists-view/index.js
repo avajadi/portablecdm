@@ -120,6 +120,7 @@ class VesselList extends Component {
         >
           <View style={styles.modalContainer}>
           <MiniHeader
+            modal
             navigation={this.props.navigation}
             title={`Vessels`}
             leftIconFunction={this.closeModal}

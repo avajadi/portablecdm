@@ -37,11 +37,15 @@ export default class AboutView extends Component {
             visible={this.state.showChangeLog}
             onRequestClose={() => this.setState({showChangeLog: false})}
         >
-            <TopHeader title="Change log" backArrowFunction={() => this.setState({showChangeLog: false})}/>
+            <TopHeader modal title="Change log" backArrowFunction={() => this.setState({showChangeLog: false})}/>
             <ScrollView style={{padding: 10}}>
                 <Text h4>Version 1.5</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Big performance update </Text>
+                    <Text>{BULLET} Added feature to withdraw own messages </Text>
+                    <Text>{BULLET} Added filter on stage (for supporting instances)</Text>
+                    <Text>{BULLET} Added port call stage in port call list </Text>
+                    <Text>{BULLET} Added visualization for withdrawn messages </Text>
                 </View>
                 <Text h4>Version 1.4</Text>
                 <View style={{padding: 5}}>

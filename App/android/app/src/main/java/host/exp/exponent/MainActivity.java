@@ -11,11 +11,14 @@ import java.util.List;
 import host.exp.exponent.generated.DetachBuildConstants;
 import host.exp.exponent.experience.DetachActivity;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+
 public class MainActivity extends DetachActivity {
 
   @Override
   public String publishedUrl() {
-    return "exp://exp.host/@rise_viktoria/portcdm-app";
+    return "exp://exp.host/@rise_viktoria/portcdm-app?release-channel=staging";
   }
 
   @Override
@@ -25,7 +28,7 @@ public class MainActivity extends DetachActivity {
 
   @Override
   public List<String> sdkVersions() {
-    return new ArrayList<>(Arrays.asList("24.0.0"));
+    return new ArrayList<>(Arrays.asList("25.0.0"));
   }
 
   @Override
@@ -42,5 +45,13 @@ public class MainActivity extends DetachActivity {
   public Bundle initialProps(Bundle expBundle) {
     // Add extra initialProps here
     return expBundle;
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    Intent intent = new Intent("onConfigurationChanged");
+    intent.putExtra("newConfig", newConfig);
+    this.sendBroadcast(intent);
   }
 }

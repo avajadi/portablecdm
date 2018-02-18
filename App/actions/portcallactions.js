@@ -1,10 +1,11 @@
 import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
-import { noSummary, hasEvents } from '../config/instances';
 import { Alert } from 'react-native';
 import pinch from 'react-native-pinch';
 import { appendPortCallIds, updatePortCallIds } from './eventactions';
+import colors from '../config/colors';
+import { filterChangeArrivingWithin } from './index';
 
 const APPENDING_PORTCALLS_TIMEOUT_MS = 1000;
 
@@ -23,7 +24,8 @@ export const selectPortCall = (portCall) => {
 
 export const bufferPortCalls = () => {
     return (dispatch, getState) => {
-        const { limit, portCalls } = getState().cache;
+        const { portCalls } = getState().cache;
+        const limit = getState().settings.cacheLimit;
 
         const beforeFetching = portCalls.length;
         if (portCalls.length < limit && portCalls.length > 0) {
@@ -63,7 +65,7 @@ export const appendPortCalls = (lastPortCall) => {
             filterString = `${beforeOrAfter}=${new Date(filters.order === 'DESCENDING' ? lastPortCall.startTime : lastPortCall.endTime).toISOString()}`;
         }
 
-        return fetchPortCalls(dispatch, getState, filterString).then(() => 
+        return dispatch(fetchPortCalls(filterString)).then(() => 
             dispatch(appendFetchedPortCalls(cache, getState().portCalls.foundPortCalls)));
     }
 }
@@ -95,6 +97,7 @@ export const updatePortCalls = () => {
         // Maybe TODO: Instead use after/before when updating on filter Arrival_Date
         let updatedAfter = 'updated_after=' + new Date(lastUpdated).toISOString();
 
+        /* Favorite locations? */
         if (getState().favorites.locations.length > 0) {
             return dispatch(updatePortCallIds(lastUpdated)).then(ids =>
                 Promise.all(ids.map(id =>
@@ -104,7 +107,7 @@ export const updatePortCalls = () => {
             );
         }
 
-        return fetchPortCalls(dispatch, getState, updatedAfter).then(() => 
+        return dispatch(fetchPortCalls(updatedAfter)).then(() => 
             dispatch(updateFetchedPortCalls(cache, getState().portCalls.foundPortCalls)));
     };
 }
@@ -152,11 +155,12 @@ export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const favorites = getState().favorites;
+    const contentType = getState().settings.instance.contentType;
 
     return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
             sslPinning: getCert(connection)
         })
         .then(result => {
@@ -169,7 +173,7 @@ export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
             throw new Error('dispatched');
 
         })
-        .then(portCall => fetchVesselForPortCall(connection, token, portCall, favorites))
+        .then(portCall => dispatch(fetchVesselForPortCall(portCall)))
         .then(portCall => {
             dispatch({type: types.FETCH_PORTCALLS_SUCCESS});
             return portCall;
@@ -186,50 +190,57 @@ export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
         });
 }
 
-export const fetchPortCalls = (dispatch, getState, additionalFilterString) => {
-    dispatch({ type: types.FETCH_PORTCALLS });
-    const connection = getState().settings.connection;
-    const token = getState().settings.token;
-    const filters = getState().filters;
-    const filterString = createFilterString(filters, getState) + (!!filters ? '&' : '?') + additionalFilterString;
-    const favorites = getState().favorites;
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
-        {
-            method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
-            sslPinning: getCert(connection),
-        })
-        .then(result => {
-            console.log('Got response from port calls!');
-            let err = checkResponse(result);
-            if (!err)
-                return JSON.parse(result.bodyString);
+export const fetchPortCalls = (additionalFilterString) => {
+    return (dispatch, getState) => {
+        dispatch({ type: types.FETCH_PORTCALLS });
+        const connection = getState().settings.connection;
+        const token = getState().settings.token;
+        const filters = getState().filters;
+        const filterString = createFilterString(filters, getState) + (!!filters ? '&' : '?') + additionalFilterString;
+        const favorites = getState().favorites;
+        const contentType = getState().settings.instance.contentType;
+        const headers = !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
+        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,{
+                method: 'GET',
+                headers,
+                sslPinning: getCert(connection),
+            })
+            .then(result => {
+                let err = checkResponse(result);
+                if (!err)
+                    return JSON.parse(result.bodyString);
 
-            dispatch({ type: types.SET_ERROR, payload: err });
-            throw new Error('dispatched');
-        }).then(portCalls => applyFilters(portCalls, filters))
-        .then(portCalls => Promise.all(portCalls.map(portCall => {
-            return fetchVesselForPortCall(connection, token, portCall, favorites);
-        })))
-        .then(portCalls => {
-            dispatch({ type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls });
-        }).catch(err => {
-            if (err.message != 'dispatched') {
-                dispatch({
-                    type: types.SET_ERROR, payload: {
-                        description: err.message,
-                        title: 'Unable to connect to the server!'
-                    }
+                dispatch({ type: types.SET_ERROR, payload: err });
+                throw new Error('dispatched');
+            }).then(portCalls => applyFilters(portCalls, filters))
+            .then(portCalls => Promise.all(portCalls.map(portCall => {
+                return dispatch(fetchVesselForPortCall(portCall));
+            })))
+            .then(portCalls => {
+                dispatch({ type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls });
+            }).catch(err => {
+                if (err.message != 'dispatched') {
+                    dispatch({
+                        type: types.SET_ERROR, payload: {
+                            description: err.message,
+                            title: 'Unable to connect to the server!'
+                        }
                 });
             }
-        });
+        });    
+    }
 }
 
-function fetchVesselForPortCall(connection, token, portCall, favorites) {
-    return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+const fetchVesselForPortCall = (portCall) =>  {
+    return (dispatch, getState) => {
+        const connection = getState().settings.connection;
+        const token = getState().settings.token;
+        const favorites = getState().favorites;
+        const contentType = getState().settings.instance.contentType;
+        return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
             sslPinning: getCert(connection),
         })
         .then(result => {
@@ -246,20 +257,22 @@ function fetchVesselForPortCall(connection, token, portCall, favorites) {
             vessel.favorite = favorites.vessels.includes(vessel.imo);
             return portCall;
         });
+    }
 }
 
 function fetchFavoritePortCalls(dispatch, getState) {
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const favorites = getState().favorites;
+    const contentType = getState().settings.instance.contentType;
+    const headers = !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
     console.log('Fetching favorite port calls...');
     return Promise.all(favorites.portCalls.map(favorite => {
         console.log('Favorite: ' + favorite);
-        if (noSummary.some((x) => connection.host.includes(x))) return undefined;
         return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${favorite}`,
             {
                 method: 'GET',
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+                headers,
                 sslPinning: getCert(connection),
             }).then(result => {
                 let err = checkResponse(result);
@@ -268,8 +281,9 @@ function fetchFavoritePortCalls(dispatch, getState) {
 
                 return undefined;
             }).then(portCall => {
-                if (!!portCall)
-                    return fetchVesselForPortCall(connection, token, portCall, favorites);
+                if (!!portCall) {
+                    return dispatch(fetchVesselForPortCall(portCall));
+                }
             });
     })).then(favoritePortCalls => {
 
@@ -286,7 +300,7 @@ function fetchFavoritePortCalls(dispatch, getState) {
         return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
             {
                 method: 'GET',
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+                headers,
                 sslPinning: getCert(connection),
             })
             .then(result => {
@@ -297,8 +311,7 @@ function fetchFavoritePortCalls(dispatch, getState) {
                 dispatch({ type: types.SET_ERROR, payload: err });
                 throw new Error('dispatched');
             }).then(favoriteVessels =>
-                Promise.all(favoriteVessels.map(favoriteVessel =>
-                    fetchVesselForPortCall(connection, token, favoriteVessel, favorites)
+                Promise.all(favoriteVessels.map(favoriteVessel => dispatch(fetchVesselForPortCall(favoriteVessel))
                 )).then(favoriteVessels => {
                     return favoriteVessels
                         .filter(favoriteVessel => !favoritePortCalls.some(favoritePortCall => favoritePortCall.portCallId === favoriteVessel.portCallId))
@@ -372,6 +385,8 @@ function createFilterString(filters, getState) {
             after.setMonth(nowDate.getMonth() - 1); // Assume portcalls dont last more than a month
             let before = new Date();
             before.setHours(nowDate.getHours() + departingFilter);
+            filterString += getFilterString('after', after.toISOString(), count);
+            filterString += getFilterString('before', before.toISOString(), count);
 
             count++;
             continue;
@@ -387,9 +402,20 @@ function createFilterString(filters, getState) {
             continue;
         }
 
+        if (filter === 'stages') {
+            let stages = filters[filter];
+            for (let i = 0, stage; stage = stages[i]; i++) {
+                filterString += getFilterString('stage', stage, count);
+                count++;
+            }
+            
+            continue;
+        }
+
         filterString += getFilterString(filter, filters[filter], count);
         count++;
     }
+    console.log('Filterstring: ' + filterString);
     return filterString;
 }
 
@@ -454,12 +480,10 @@ export const fetchPortCallOperations = (portCallId) => {
         const connection = getState().settings.connection;
         const token = getState().settings.token;
         const getReliability = getState().settings.fetchReliability;
-        const headers = !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
+        const contentType = getState().settings.instance.contentType;
+        const headers = !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
         console.log('Fetching operations for port call ' + portCallId);
-        let newUpdate = hasEvents.some((x) => connection.host.includes(x));
-        let ending = 'operations';
-        if (newUpdate) ending = 'events';
-        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}/${ending}`,
+        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}${getState().settings.instance.portCallEndPoint}`,
             {
                 method: 'GET',
                 headers: headers,

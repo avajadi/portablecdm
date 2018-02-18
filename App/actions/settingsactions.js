@@ -1,5 +1,9 @@
 import * as types from './types';   
 import { APP_VERSION } from '../config/version';
+import pinch from 'react-native-pinch';
+import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
+import { checkResponse } from '../util/httpResultUtils';
+import createInstanceInfo from '../config/instances';
 
 export const changeFetchReliability = (fetchReliability) => {
     return {
@@ -110,4 +114,41 @@ export const checkNewVersion = () => {
     }
 
     return false;
+}
+
+export const fetchInstance = () => {
+    return (dispatch, getState) => {
+        let connection = getState().settings.connection;
+        const token = getState().settings.token;
+        console.log('Fetching instance info...');
+        return pinch.fetch(`${connection.host}:${connection.port}/application-info/version`, {
+                method: 'GET',
+                headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
+                sslPinning: getCert(connection),
+            })
+            .then(result => {
+                let err = checkResponse(result);
+                if(!err)
+                    return JSON.parse(result.bodyString);
+                
+                dispatch({type: types.SET_ERROR, payload: err});
+                throw new Error(types.ERR_DISPATCHED);
+            }).then(instanceInfo => {
+                const host = getState().settings.connection.host;
+                let generatedInfo = createInstanceInfo(instanceInfo, host);
+                console.log('Generated info: ' + JSON.stringify(generatedInfo));
+                dispatch({
+                    type: types.SETTINGS_FETCH_INSTANCE,
+                    payload: generatedInfo,
+                });
+            }).catch(err => {
+                if (err.message !== types.ERR_DISPATCHED) {
+                    dispatch({type: types.SET_ERROR, payload: {
+                        title: 'Unable to fetch instance info!', 
+                        description: 
+                          !err.description ? 'Please check your internet connection.' 
+                                            : err.description}});
+                }
+            });
+    }
 }

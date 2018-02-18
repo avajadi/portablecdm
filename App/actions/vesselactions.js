@@ -1,7 +1,6 @@
 import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
-import { noSummary, hasEvents } from '../config/instances';
 import {Alert} from 'react-native';
 import pinch from 'react-native-pinch';
 
@@ -21,11 +20,12 @@ export const fetchVessel = (vesselUrn) => {
     
         const connection = getState().settings.connection;
         const token = getState().settings.token;
+        const contentType = getState().settings.instance.contentType;
         
         return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
             sslPinning: getCert(connection),
         })
         .then(result => {

@@ -61,6 +61,7 @@ class LocationSelection extends Component {
         return (
             <View style={styles.container}>
                 <MiniHeader
+                    modal
                     navigation={navigation}
                     title="Select Location"
                     leftIconFunction={onBackPress}
@@ -69,7 +70,7 @@ class LocationSelection extends Component {
                     containerStyle={styles.searchBarContainer}
                     inputStyle={{ backgroundColor: colorScheme.primaryContainerColor }}
                     lightTheme
-                    placeholder='Search'
+                    placeholder='Search by location name or type'
                     placeholderTextColor={colorScheme.tertiaryTextColor}
                     onChangeText={text => this.setState({ searchTerm: text })}
                     textInputRef='textInput'
