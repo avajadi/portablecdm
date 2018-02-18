@@ -34,8 +34,11 @@ class BerthTimeLine extends Component {
 
         this.state = {
             showDateTimePicker: false,
+            showExpiredEvents: false,
         }
     }
+
+    
 
     scrollToRedLine = () => {
         const windowWidth = Dimensions.get('screen').width;
@@ -49,6 +52,14 @@ class BerthTimeLine extends Component {
             });
         }, 5); 
     };
+
+    createShowHideExpiredIcon() {
+        return {
+            name: this.state.showExpiredEvents ? 'remove-red-eye' : 'visibility-off',
+            color: 'white',
+            onPress: this._onExpiredPress
+        };
+    }
 
     componentDidMount() {
         Orientation.lockToLandscape();
@@ -82,6 +93,7 @@ class BerthTimeLine extends Component {
                 <BerthSideMenu
                     onMenuPress={this._onMenuPress}
                     onSearchPress={this._onSearchPress}
+                    selectorIcon={this.createShowHideExpiredIcon()}
                 />
                 
                 <View style={styles.rightSideContainer}>
@@ -95,24 +107,26 @@ class BerthTimeLine extends Component {
                         />
                     }
                     { !fetchingEvents &&
-                        <ScrollView>
-                            <ScrollView
-                                horizontal
-                                ref={(ref) => this.horizontalScroll = ref}
-                            >
-                                <EventView 
-                                    events={events}
-                                    date={date}
-                                    displayRatio={displayRatio}
-                                />
-                            </ScrollView>
+                        <ScrollView style={{alignSelf: 'stretch'}}>
+                        <ScrollView
+                            horizontal
+                            ref={(ref) => this.horizontalScroll = ref}
+                            style={{alignSelf: 'stretch'}}
+                        >
+                            <EventView 
+                                events={events}
+                                date={date}
+                                displayRatio={displayRatio}
+                                showExpired={this.state.showExpiredEvents}
+                            />
+                        </ScrollView>
                         </ScrollView>
                     }
                     <DateTimePicker
                         isVisible={this.state.showDateTimePicker}
                         onConfirm={this._handleDateTimePicked}
                         onCancel={this._hideDateTimePicker}
-                        mode="datetime"
+                        mode="date"
                     />
                 </View>
             </View>
@@ -127,12 +141,19 @@ class BerthTimeLine extends Component {
         this._showDateTimePicker();
     }
 
+    _onExpiredPress = () => {
+        this.setState({showExpiredEvents: !this.state.showExpiredEvents})
+    }
+
     _showDateTimePicker = () => this.setState({showDateTimePicker: true});
     _hideDateTimePicker = () => this.setState({showDateTimePicker: false});
     _handleDateTimePicked = (date) => {
-      this.props.selectNewDate(date)
-      this._hideDateTimePicker();
+        date.setHours(0, 0, 0, 0);
+        this.props.selectNewDate(date)
+        this._hideDateTimePicker();
     }
+
+
 }
 
 const styles = StyleSheet.create({
@@ -143,7 +164,8 @@ const styles = StyleSheet.create({
     },
     rightSideContainer: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
     },
     timeIndicatorLine: {
         alignItems: 'stretch',

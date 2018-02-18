@@ -12,6 +12,7 @@ import {
     Icon
 } from 'react-native-elements';
 
+import { getTimeString } from '../../../util/timeservices';
 import colorScheme from '../../../config/colors';
 
 
@@ -48,10 +49,10 @@ function renderEndIndicator(event) {
 }
 
 const EventBar = (props) => {
-    const { event, prevEndTime } = props;
+    const { event, earliestTime } = props;
 
-    const width = (event.displayEndTime - event.displayStartTime) * props.displayRatio; // Each pixel is 1/5th of a minute
-    const marginLeft = prevEndTime ? (event.displayStartTime - prevEndTime) * props.displayRatio : 0;
+    const width = Math.max((event.displayEndTime - event.displayStartTime) * props.displayRatio, 0); 
+    const marginLeft = earliestTime ? (event.displayStartTime - earliestTime) * props.displayRatio : 0;
 
     return (
         <TouchableWithoutFeedback
@@ -59,11 +60,17 @@ const EventBar = (props) => {
                 console.log("Event ID: " + event.eventId);
             }}
         >
-            <View style={[styles.bar, {width: width, marginLeft: marginLeft}]}>
-                {renderStartIndicator(event)}
-                <Text style={styles.infoText}>{event.definitionId.toLowerCase().replace(/_/g, ' ')}</Text>
+            <View style={[styles.bar, {width: width, left: marginLeft}]}>
+                <View style={styles.startEndContainer}>
+                    {renderStartIndicator(event)}
+                    <Text style={styles.timeText}>{getTimeString(new Date(event.startTime))}</Text>
+                </View>
+                <Text style={styles.infoText}>{event.vessel.name} - {event.isExpired ? "true" : "false"}</Text>
                 {/* <Text style={styles.infoText}>{event.defaultedStartTime.toString()} - {event.defaultedEndTime.toString()}</Text> */}
-                {renderEndIndicator(event)}
+                <View style={styles.startEndContainer}>
+                    <Text style={styles.timeText}>{getTimeString(new Date(event.endTime))}</Text>
+                    {renderEndIndicator(event)}
+                </View>
 
             </View>
         </TouchableWithoutFeedback>
@@ -79,17 +86,27 @@ export default EventBar;
 
 const styles = StyleSheet.create({
     bar: {
+        position: 'absolute',
+        top: 0,
         borderWidth: 1,
-        // backgroundColor: 'white',
-        backgroundColor: colorScheme.primaryColor,
+        backgroundColor: colorScheme.tertiaryColor,
         alignSelf: 'center',
-        height: 20,
+        height: 60,
         borderRadius: 1,
         alignItems: 'center',
         overflow: 'hidden',
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderRadius: 10,
+    },
+    timeText: {
+        fontSize: 8,
+        fontWeight: 'bold',
+        color: colorScheme.primaryTextColor
+    },
+    startEndContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
     },
     infoText: {
         fontSize: 9,

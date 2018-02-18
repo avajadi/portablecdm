@@ -4,12 +4,16 @@ import {
     BERTH_FETCHING_EVENTS_FAILURE,
     BERTH_FETCHING_EVENTS_SUCCESS,
     BERTH_CHANGE_INSPECTION_DATE,
+    BERTH_CHANGE_LOOKAHEAD_DAYS,
+    BERTH_CHANGE_LOOKBEHIND_DAYS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
     selectedLocation: undefined, // Location object
-    fetchingEvents: false,
-    fetchForDate: new Date(), // default to center the searching around NOW
+    fetchingEvents: true,
+    fetchForDate: new Date(new Date().setHours(0, 0, 0, 0)), // default to center the searching around today (at midnight),
+    lookBehindDays: 7,
+    lookAheadDays: 14,
     events: [],
     displayRatio: 1/(1000 * 60 * 5)
 };
@@ -26,6 +30,10 @@ const berthReducer = (state = INITIAL_STATE, action) => {
             return { ...state, fetchingEvents: false, events: [] };
         case BERTH_CHANGE_INSPECTION_DATE:
             return { ...state, fetchForDate: action.payload };
+        case BERTH_CHANGE_LOOKAHEAD_DAYS:
+            return { ...state, lookAheadDays: action.payload };
+        case BERTH_CHANGE_LOOKBEHIND_DAYS:
+            return { ...state, lookBehindDays: action.payload };
         default:
             return state;
     }
