@@ -48,6 +48,30 @@ export const changeHostSetting = (host) => {
     }
 };
 
+export const changeScheme = (useSSL) => {
+    return (dispatch, getState) => {
+        if (useSSL) {
+            dispatch({
+                type: types.SETTINGS_CHANGE_SCHEME,
+                payload: 'https://'
+            });
+            dispatch({
+                type: types.SETTINGS_CHANGE_PORT,
+                payload: 8443,
+            })
+        } else {
+            dispatch({
+                type: types.SETTINGS_CHANGE_SCHEME,
+                payload: 'http://'
+            });
+            dispatch({
+                type: types.SETTINGS_CHANGE_PORT,
+                payload: 8080,
+            });
+        }
+    }
+}
+
 export const createVesselList = (vesselListName) => {
     return {
         type: types.SETTINGS_ADD_VESSEL_LIST,
@@ -85,13 +109,6 @@ export const removeVesselFromList = (vessel, listName) => {
             vessel: vessel,
             listName: listName
         }
-    };
-};
-
-export const changePortSetting = (port) => {
-    return {
-        type: types.SETTINGS_CHANGE_PORT,
-        payload: port
     };
 };
 

@@ -56,6 +56,7 @@ class LoginView extends Component {
             addHostVisible: hosts.length === 0,
             addHostIconName: 'add-circle',
             forceLegacy: false,
+            loggingIn: false,
         };
     }
 
@@ -142,6 +143,7 @@ class LoginView extends Component {
 
     async login() {
         const { navigate, dispatch } = this.props.navigation;
+        this.setState({loggingIn: true});
 
         await this.props.fetchInstance();
         if (this.props.error.hasError) {
@@ -167,7 +169,9 @@ class LoginView extends Component {
     }
 
     render() {
-        if (this.props.rememberLogin || this.props.navigation.state.params) {
+        if (this.props.rememberLogin || 
+            this.props.navigation.state.params || 
+            this.state.loggingIn) {
             return (
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <ActivityIndicator color={colorScheme.primaryColor} size='large' />

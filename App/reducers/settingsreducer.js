@@ -10,6 +10,7 @@ import {
   SETTINGS_REMOVE_PORTCALL_FROM_LIST,
   SETTINGS_REMOVE_PORTCALL_LIST,
   SETTINGS_CHANGE_USER,
+  SETTINGS_CHANGE_SCHEME,
   SETTINGS_CHANGE_FETCH_RELIABILITY,
   SETTINGS_CHANGE_PORT_UNLOCODE,
   SETTINGS_CHANGE_TOKEN,
@@ -81,6 +82,8 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, connection: { ...state.connection, host: action.payload}, hosts }
     case SETTINGS_CHANGE_PORT:
       return { ...state, connection: { ...state.connection, port: action.payload} }
+    case SETTINGS_CHANGE_SCHEME:
+      return { ...state, connection: { ...state.connection, scheme: action.payload }};
     case SETTINGS_CHANGE_TOKEN:
       return {...state, token: action.payload}
     case SETTINGS_ADD_VESSEL_LIST:

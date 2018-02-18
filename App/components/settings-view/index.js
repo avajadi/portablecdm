@@ -33,6 +33,7 @@ import {
     changePortSetting,
     changePortUnlocode,
     changeFetchReliability,
+    changeScheme,
     clearCache,
     changeCacheLimit,
 } from '../../actions';
@@ -44,16 +45,23 @@ class Settings extends Component {
 
         this.state = {
             fetchReliability: props.fetchReliability,
+            useSSL: false,
             limitCache: props.limitCache,
             currentTimeZone: null
         }
 
         this.updateFetchReliability = this.updateFetchReliability.bind(this);
+        this.updateUseSSL = this.updateUseSSL.bind(this);
     }
 
     updateFetchReliability() {
         this.props.changeFetchReliability(!this.state.fetchReliability);
         this.setState({ fetchReliability: !this.state.fetchReliability });
+    }
+
+    updateUseSSL() {
+        this.props.changeScheme(!this.state.useSSL);
+        this.setState({useSSL: !this.state.useSSL});
     }
 
     componentWillMount() {
@@ -125,6 +133,11 @@ class Settings extends Component {
                         title='Fetch reliabilities'
                         checked={this.state.fetchReliability}
                         onPress={this.updateFetchReliability}
+                    />
+                    <CheckBox
+                        title='Use SSL'
+                        checked={this.state.useSSL}
+                        onPress={this.updateUseSSL}
                     />
                     <View style={styles.containers.info}>
                         <Text style={styles.texts.headerText} h3>
@@ -232,4 +245,5 @@ export default connect(mapStateToProps, {
     changeFetchReliability,
     clearCache,
     changeCacheLimit,
+    changeScheme,
 })(Settings);
