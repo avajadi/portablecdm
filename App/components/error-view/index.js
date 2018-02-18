@@ -34,7 +34,7 @@ class ErrorView extends Component {
   }
 
   returnFromError() {
-    this.props.navigation.navigate('LoginKeyCloak');
+    this.props.navigation.navigate('LoginView');
   }
 
 

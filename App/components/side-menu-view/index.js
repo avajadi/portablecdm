@@ -36,10 +36,10 @@ class SideMenu extends Component {
       if(!!connection.username) {
         changeUser('', '');
         console.log('Logging out legacy user...');
-        navigation.navigate('LoginKeyCloak');
+        navigation.navigate('LoginView');
       } else {
         console.log('Logging out keycloak user...');
-        logoutKeycloak().then(() => navigation.navigate('LoginKeyCloak'));
+        logoutKeycloak().then(() => navigation.navigate('LoginView'));
       }
   }
 

@@ -33,6 +33,7 @@ const INITIAL_STATE = {
     scheme: 'http://',
   },
   hosts: [],
+  rememberLogin: false,
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*
@@ -62,7 +63,15 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
     case SETTINGS_CHANGE_FETCH_RELIABILITY:
       return { ...state, fetchReliability: action.payload }
     case SETTINGS_CHANGE_USER: {
-      return { ...state, connection: { ...state.connection, username: action.payload.username, password: action.payload.password } }
+      return { 
+          ...state, 
+          connection: { 
+              ...state.connection, 
+              username: action.payload.username, 
+              password: action.payload.password 
+            },
+          rememberLogin: action.payload.remember,
+        };
     }
     case SETTINGS_CHANGE_HOST:
       let hosts = state.hosts;

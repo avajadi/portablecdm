@@ -12,12 +12,13 @@ export const changeFetchReliability = (fetchReliability) => {
     }
 }
 
-export const changeUser = (username, password) => {
+export const changeUser = (username, password, remember) => {
     return {
         type: types.SETTINGS_CHANGE_USER,
         payload: {
-            username: username,
-            password: password
+            username,
+            password,
+            remember,
         }
     }
 };
