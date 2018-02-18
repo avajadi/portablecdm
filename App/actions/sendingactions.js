@@ -23,7 +23,7 @@ export const sendPortCall = (pcmAsObject, stateType) => {
         const { connection, token } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
       
-        return pinch.fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/amss/state_update/`, {
             method: 'POST',
             headers: {
               ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host)), 
@@ -53,7 +53,7 @@ export const initPortCall = (pcmAsObject, stateType) => {
         const { connection, token } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
 
-        return pinch.fetch(`${connection.host}:${connection.port}/pcr/port_call/`, {
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcr/port_call/`, {
             method: 'POST',
             headers: {
               ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host)), 
@@ -87,7 +87,7 @@ export const withdrawStatement = (statement) => (dispatch, getState) => {
 
     dispatch({type: types.WITHDRAW_TIMESTAMP_BEGIN});
 
-    return pinch.fetch(`${connection.host}:${connection.port}/amss/state_update/`, {
+    return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/amss/state_update/`, {
         method: 'POST',
         headers: {
           ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host)), 

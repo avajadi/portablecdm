@@ -11,7 +11,7 @@ export const fetchLocations = (locationType) => {
         const token = getState().settings.token;
         const contentType = getState().settings.instance.contentType;
         console.log('Requesting locations...');
-        return pinch.fetch(`${connection.host}:${connection.port}/location-registry/locations`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/location-registry/locations`,
             {
                 method: 'GET',
                 headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),

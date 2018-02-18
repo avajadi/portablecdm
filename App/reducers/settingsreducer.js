@@ -24,13 +24,15 @@ import{ APP_VERSION } from '../config/version';
 
 const INITIAL_STATE = {
   connection: {
-    host: 'http://',
+    host: '',
     port: '8080',
     username: '',
     password: '',
     unlocode: '',
     cacheLimit: 100,
+    scheme: 'http://',
   },
+  hosts: [],
   maxHoursTimeDifference: 72,
   displayOnTimeProbabilityTreshold: 50,
   /*
@@ -63,7 +65,11 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, connection: { ...state.connection, username: action.payload.username, password: action.payload.password } }
     }
     case SETTINGS_CHANGE_HOST:
-      return { ...state, connection: { ...state.connection, host: action.payload} }
+      let hosts = state.hosts;
+      if (!hosts.includes(action.payload)) {
+          hosts.push(action.payload);
+      }
+      return { ...state, connection: { ...state.connection, host: action.payload}, hosts }
     case SETTINGS_CHANGE_PORT:
       return { ...state, connection: { ...state.connection, port: action.payload} }
     case SETTINGS_CHANGE_TOKEN:

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Text, Dimensions} from 'react-native';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
+import LoginView            from '../components/login-view';
 import SendPortCall         from '../components/send-portcall-view';
 import StateList            from '../components/state-list-view';
 import TimeLineView         from '../components/timeline-view';
@@ -77,7 +78,8 @@ const MainNavigator = DrawerNavigator({
 });
 
 export const AppNavigator  = StackNavigator({
-    LoginKeyCloak: { screen: LoginKeyCloakView }, // THIS SHOULD BE FIRST!!
+    LoginView: { screen: LoginView },
+    //LoginKeyCloak: { screen: LoginKeyCloakView }, 
     Application: { screen: MainNavigator},
 }, {
     headerMode: 'none',

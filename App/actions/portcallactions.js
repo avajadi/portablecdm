@@ -157,7 +157,7 @@ export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
     const favorites = getState().favorites;
     const contentType = getState().settings.instance.contentType;
 
-    return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}`,
+    return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcb/port_call/${portCallId}`,
         {
             method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
@@ -200,7 +200,7 @@ export const fetchPortCalls = (additionalFilterString) => {
         const favorites = getState().favorites;
         const contentType = getState().settings.instance.contentType;
         const headers = !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
-        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,{
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcb/port_call${filterString}`,{
                 method: 'GET',
                 headers,
                 sslPinning: getCert(connection),
@@ -237,7 +237,7 @@ const fetchVesselForPortCall = (portCall) =>  {
         const token = getState().settings.token;
         const favorites = getState().favorites;
         const contentType = getState().settings.instance.contentType;
-        return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
         {
             method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
@@ -269,7 +269,7 @@ function fetchFavoritePortCalls(dispatch, getState) {
     console.log('Fetching favorite port calls...');
     return Promise.all(favorites.portCalls.map(favorite => {
         console.log('Favorite: ' + favorite);
-        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${favorite}`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcb/port_call/${favorite}`,
             {
                 method: 'GET',
                 headers,
@@ -297,7 +297,7 @@ function fetchFavoritePortCalls(dispatch, getState) {
 
         if (favorites.vessels.length === 0) return favoritePortCalls;
 
-        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call${filterString}`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcb/port_call${filterString}`,
             {
                 method: 'GET',
                 headers,
@@ -483,7 +483,7 @@ export const fetchPortCallOperations = (portCallId) => {
         const contentType = getState().settings.instance.contentType;
         const headers = !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
         console.log('Fetching operations for port call ' + portCallId);
-        return pinch.fetch(`${connection.host}:${connection.port}/pcb/port_call/${portCallId}${getState().settings.instance.portCallEndPoint}`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcb/port_call/${portCallId}${getState().settings.instance.portCallEndPoint}`,
             {
                 method: 'GET',
                 headers: headers,
@@ -548,7 +548,7 @@ export const fetchPortCallOperations = (portCallId) => {
 // HELPER FUNCTIONS
 async function fetchReliability(operations, headers, connection, portCallId) {
     if (operations.length <= 0) return operations;
-    await pinch.fetch(`${connection.host}:${connection.port}/dqa/reliability/${portCallId}`,
+    await pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/dqa/reliability/${portCallId}`,
         {
             method: 'GET',
             headers: headers,
