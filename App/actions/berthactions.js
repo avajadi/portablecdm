@@ -48,18 +48,17 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
     const fromTime = earliestTime.toISOString();
     const endTime = latestTime.toISOString();
 
-    const url = `${connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
-
+    const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
+    console.log(url);
     dispatch({type: BERTH_FETCHING_EVENTS});
 
     return pinch.fetch(url,
         {
             method: 'GET',
-            headers: connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
             sslPinning: getCert(connection),
         })
         .then(result => {
-            console.log(result.url);
             let err = checkResponse(result);
             if (!err) {
                 return JSON.parse(result.bodyString);
@@ -69,9 +68,11 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             throw new Error('dispatched');
         })
         .then(events => {
+            console.log('FETCHING VESSELS')
             return Promise.all(events.map(event => dispatch(fetchVessel(event))))
         })
         .then(events => {
+            console.log('STRUCTURING THINGS');
             // Array of arrays, each inner array holds a row with none-intersected events
             let structure = [];
             const defaultEventLength = 15; // If we have no start/endtime, use 15 minutes length
@@ -144,7 +145,7 @@ const fetchVessel = (event) =>  {
         const token = getState().settings.token;
         const favorites = getState().favorites;
         const contentType = getState().settings.instance.contentType;
-        return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${event.vesselId}`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${event.vesselId}`,
         {
             method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),

@@ -40,7 +40,7 @@ import { hasKeycloak } from '../../config/instances';
 import constants from '../../config/constants';
 import colorScheme from '../../config/colors';
 
-import logo from '../../assets/login-view.png';
+// import logo from '../../assets/login-view.png';
 
 const dimensions = Dimensions.get('window');
 
@@ -207,13 +207,13 @@ class LoginView extends Component {
                         <Text style={{color: 'white', alignSelf: 'center'}}>DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV</Text>
                     </View>
                 }
-                {this.state.showLogo && 
+                {/* {this.state.showLogo && 
                 <View style={{backgroundColor: colorScheme.primaryColor, elevation: 16}}>
                     <Image 
                         style={styles.logo} 
                         source={logo} />
                 </View>
-                }
+                } */}
                 
                 <View style={styles.contentContainer}>
                     <View>
