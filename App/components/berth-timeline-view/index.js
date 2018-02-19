@@ -24,6 +24,8 @@ import BerthHeader from './sections/BerthHeader';
 import { 
     fetchEventsForLocation,
     selectNewDate,
+    fetchSinglePortCall,
+    selectPortCall,
 } from '../../actions';
 import colorScheme from '../../config/colors';
 
@@ -117,6 +119,7 @@ class BerthTimeLine extends Component {
                                 date={date}
                                 displayRatio={displayRatio}
                                 showExpired={this.state.showExpiredEvents}
+                                onViewPortCall={this._onViewPortCall}
                             />
                         </ScrollView>
                     }
@@ -141,6 +144,12 @@ class BerthTimeLine extends Component {
 
     _onExpiredPress = () => {
         this.setState({showExpiredEvents: !this.state.showExpiredEvents})
+    }
+
+    _onViewPortCall = (portCallId) => {
+        this.props.fetchSinglePortCall(portCallId)
+            .then(this.props.selectPortCall)
+            .then(() => this.props.navigation.navigate('TimeLine'))
     }
 
     _showDateTimePicker = () => this.setState({showDateTimePicker: true});
@@ -187,4 +196,9 @@ function mapStateToProps (state) {
     };
 }
 
-export default connect(mapStateToProps, { fetchEventsForLocation, selectNewDate })(BerthTimeLine);
+export default connect(mapStateToProps, { 
+    fetchEventsForLocation, 
+    selectNewDate,
+    fetchSinglePortCall,
+    selectPortCall, 
+})(BerthTimeLine);

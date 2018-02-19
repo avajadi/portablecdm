@@ -56,17 +56,14 @@ const EventBar = (props) => {
 
     return (
         <TouchableWithoutFeedback
-            onPress={() => {
-                console.log("Event ID: " + event.eventId);
-            }}
+            onPress={props.onClick}
         >
             <View style={[styles.bar, {width: width, left: marginLeft}]}>
                 <View style={styles.startEndContainer}>
                     {renderStartIndicator(event)}
                     <Text style={styles.timeText}>{getTimeString(new Date(event.startTime))}</Text>
                 </View>
-                <Text style={styles.infoText}>{event.vessel.name} - {event.isExpired ? "true" : "false"}</Text>
-                {/* <Text style={styles.infoText}>{event.defaultedStartTime.toString()} - {event.defaultedEndTime.toString()}</Text> */}
+                <Text style={styles.infoText}>{event.vessel.name}</Text>
                 <View style={styles.startEndContainer}>
                     <Text style={styles.timeText}>{getTimeString(new Date(event.endTime))}</Text>
                     {renderEndIndicator(event)}
@@ -80,6 +77,7 @@ const EventBar = (props) => {
 EventBar.propTypes = {
     event: PropTypes.object.isRequired,
     prevEndTime: PropTypes.object, // The time that the previous event ended, or the first event started, for the first event in each row
+    onClick: PropTypes.func,
 }
 
 export default EventBar;

@@ -18,82 +18,108 @@ import colorScheme from '../../../config/colors';
 
 import EventBar from './EventBar';
 import TimeHeader from './TimeHeader';
+import EventDetails from './EventDetails';
 
-const renderDayLines = (events, displayRatio, chosenDate) => {
-    const days = [];
 
-    const firstDay = new Date(events.earliestTime);
-    firstDay.setDate(firstDay.getDate() + 1);
-    firstDay.setHours(0, 0, 0, 0);
 
-    const lastDay = new Date(events.latestTime);
-    lastDay.setHours(0, 0, 0, 0);
+class EventView extends Component {
 
-    days.push(firstDay);
-    let i = 1;
-    let newDay = new Date(days[i-1]);
-    newDay.setDate(newDay.getDate() + 1);
-
-    while((lastDay - newDay) > 0) {
-        newDay = new Date(days[i-1]);
-        newDay.setDate(newDay.getDate() + 1);
-        days.push(newDay);
-        i++;
+    state = {
+        showEventDetailsModal: false,
+        eventDetails: {}
     }
 
-    return (
-        <View style={[styles.dayLinesContainer]}>
-            {days.map((day, index) => {
-                const leftOffset = (day - events.earliestTime) * displayRatio;
-                let color = 'black';
+    render() {
 
-                if(day.getTime() === chosenDate.getTime()) {
-                    color = 'red';
-                }
-                
-                return (
-                    <View key={index} style={styles.dayLinesContainer}>
-                        <View style={[styles.dayLine, {left: leftOffset, borderColor: color}]} />
-                        <Text style={[styles.dayText, {left: leftOffset + 4}]}>{getDateString(day)}</Text>
+        const { events, displayRatio, date, showExpired } = this.props;
+
+
+        return <View style={[styles.container]}>
+                    <TimeHeader startTime={events.earliestTime} endTime={events.latestTime} displayRatio={displayRatio}/>
+                    {this.renderDayLines(events, displayRatio, date)}
+                    <View style={[styles.ganttContainer]}>
+                        {events.map((row, index) => {
+                            return <View key={index} style={[styles.rowContainer]}>
+                                        {row.map((event, index2) => {
+                                            if(!showExpired && event.isExpired) {
+                                                return undefined;
+                                            }
+                                            let prevEnd = row[index2-1] ? row[index2-1].displayEndTime : events.earliestTime;
+                                            return (<EventBar 
+                                                        key={index2} 
+                                                        event={event} 
+                                                        prevEndTime={prevEnd} 
+                                                        displayRatio={displayRatio}
+                                                        earliestTime={events.earliestTime}
+                                                        onClick={() => {
+                                                            this.setState({showEventDetailsModal: !this.state.showEventDetailsModal, eventDetails: event})
+                                                        }}
+                                            />);
+                                        })}
+                            </View>
+                        })}
                     </View>
-                );
-            })}
+                    {this.state.showEventDetailsModal && <EventDetails
+                        isVisible={this.state.showEventDetailsModal}
+                        event={this.state.eventDetails}
+                        onClose={() => this.setState({showEventDetailsModal: false, eventDetails: {}})}
+                        onViewPortCall={this.props.onViewPortCall}
+                    />}
+                       
         </View>
-    );
+    }
 
-};
-
-const EventView = (props) => {
-    return <View style={[styles.container]}>
-                <TimeHeader startTime={props.events.earliestTime} endTime={props.events.latestTime} displayRatio={props.displayRatio}/>
-                {renderDayLines(props.events, props.displayRatio, props.date)}
-                <View style={[styles.ganttContainer]}>
-                    {props.events.map((row, index) => {
-                        return <View key={index} style={[styles.rowContainer]}>
-                                    {row.map((event, index2) => {
-                                        if(!props.showExpired && event.isExpired) {
-                                            return undefined;
-                                        }
-                                        let prevEnd = row[index2-1] ? row[index2-1].displayEndTime : props.events.earliestTime;
-                                        return (<EventBar 
-                                                    key={index2} 
-                                                    event={event} 
-                                                    prevEndTime={prevEnd} 
-                                                    displayRatio={props.displayRatio}
-                                                    earliestTime={props.events.earliestTime}
-                                        />);
-                                    })}
+    renderDayLines = (events, displayRatio, chosenDate) => {
+        const days = [];
+    
+        const firstDay = new Date(events.earliestTime);
+        firstDay.setDate(firstDay.getDate() + 1);
+        firstDay.setHours(0, 0, 0, 0);
+    
+        const lastDay = new Date(events.latestTime);
+        lastDay.setHours(0, 0, 0, 0);
+    
+        days.push(firstDay);
+        let i = 1;
+        let newDay = new Date(days[i-1]);
+        newDay.setDate(newDay.getDate() + 1);
+    
+        while((lastDay - newDay) > 0) {
+            newDay = new Date(days[i-1]);
+            newDay.setDate(newDay.getDate() + 1);
+            days.push(newDay);
+            i++;
+        }
+    
+        return (
+            <View style={[styles.dayLinesContainer]}>
+                {days.map((day, index) => {
+                    const leftOffset = (day - events.earliestTime) * displayRatio;
+                    let color = 'black';
+    
+                    if(day.getTime() === chosenDate.getTime()) {
+                        color = 'red';
+                    }
+                    
+                    return (
+                        <View key={index} style={styles.dayLinesContainer}>
+                            <View style={[styles.dayLine, {left: leftOffset, borderColor: color}]} />
+                            <Text style={[styles.dayText, {left: leftOffset + 4}]}>{getDateString(day)}</Text>
                         </View>
-                    })}
-                </View>   
-    </View>
-};
+                    );
+                })}
+            </View>
+        );
+    
+    };
+}
 
 EventView.propTypes = {
     events: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
     date: PropTypes.object.isRequired,
     displayRatio: PropTypes.number,
     showExpired: PropTypes.any,
+    onViewPortCall: PropTypes.func,
 }
 
 export default EventView;
