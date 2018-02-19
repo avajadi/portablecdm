@@ -17,6 +17,8 @@ import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
+import { changeUser } from '../../actions';
+
 const unsupportedAndroidMessage = 'You are running on Android version 7.0.0 which is currently not supported. Please update to at least 7.1.1 to use https.'
 
 class ErrorView extends Component {
@@ -34,7 +36,12 @@ class ErrorView extends Component {
   }
 
   returnFromError() {
-    this.props.navigation.navigate('LoginKeyCloak');
+    this.props.changeUser('','', false);
+    this.props.navigation.navigate('LoginView', {}, {
+        type: "Navigation/NAVIGATE",
+        routeName: "LoginView",
+        params: { fromError: true }
+      });
   }
 
 
@@ -44,13 +51,13 @@ class ErrorView extends Component {
         <Text h2 style={{color: colorScheme.primaryColor}}>We're sorry :(</Text>
         <Text h3 style={{marginTop: 100, marginLeft: 20, marginRight: 20, textAlign: 'center'}}>{this.props.error.error.title}</Text>
         <Text style={{marginTop: 30, marginBottom: 70, marginLeft: 20, marginRight: 20, textAlign: 'center'}}>{Platform.Version === 24 && this.props.host.startsWith('https')
-          ? unsupportedAndroidMessage : this.props.error.error.description}</Text>
+        ? unsupportedAndroidMessage : this.props.error.error.description}</Text>
         <TouchableHighlight onPress={() => this.returnFromError()}>
-        <View style={styles.containers.subContainer}>
-            <Text h4 style={styles.fonts.white}>RETURN</Text>
-        </View>
+            <View style={styles.containers.subContainer}>
+                <Text h4 style={styles.fonts.white}>RETURN</Text>
+            </View>
         </TouchableHighlight>
-        </View>
+    </View>
     );
   }
 }
@@ -62,4 +69,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect (mapStateToProps)(ErrorView);
+export default connect (mapStateToProps, { changeUser })(ErrorView);
