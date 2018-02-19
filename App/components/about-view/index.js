@@ -41,6 +41,9 @@ export default class AboutView extends Component {
             <ScrollView style={{padding: 10}}>
                 <Text h4>Version 1.5</Text>
                 <View style={{padding: 5}}>
+                    <Text>{BULLET} Complete revisit of login view </Text>
+                    <Text>{BULLET} Allows for remembering user settings in legacy login </Text>
+                    <Text>{BULLET} Added setting for using SSL rather than specifying scheme and port </Text>
                     <Text>{BULLET} Big performance update </Text>
                     <Text>{BULLET} Added feature to withdraw own messages </Text>
                     <Text>{BULLET} Added filter on stage (for supporting instances)</Text>
@@ -53,6 +56,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Now suggest ending timestamps when a commenced/arrival to timestamp is reported </Text>
                     <Text>{BULLET} For timestamps that has a location type, it is only possible to select a location of that type when reporting timestamps</Text>
                     <Text>{BULLET} Redirecting when sending in a timestamp or created a new port call </Text>
+                    <Text>{BULLET} Now display the device's current timezone in settings</Text>
                     <Text>{BULLET} A few visual improvements </Text>
                 </View>
                 <Text style={{fontWeight: 'bold', paddingTop: 10, paddingBottom: 5}}>Version 1.3.2</Text>

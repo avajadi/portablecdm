@@ -45,12 +45,16 @@ class BerthTimeLine extends Component {
     scrollToRedLine = () => {
         const windowWidth = Dimensions.get('screen').width;
         InteractionManager.runAfterInteractions(() => {
-            setTimeout(() => { // Fattar inte varför man behöver en timeout här??
-                this.horizontalScroll.scrollTo({
-                    x: (this.props.date - this.props.events.earliestStartTime) * this.props.displayRatio + 50 - windowWidth/2, // the +50 is a little arbitrary...
-                    y: 0,
-                    animated: true
-                });
+            setTimeout(() => { // Fattar inte varför man behöver en timeout här?? Inte jag heller! // P
+                if (this.horizontalScroll) {
+                    this.horizontalScroll.scrollTo({
+                        x: (this.props.date - this.props.events.earliestStartTime) * this.props.displayRatio + 50 - windowWidth/2, // the +50 is a little arbitrary...
+                        y: 0,
+                        animated: true
+                    });
+                } else {
+                    console.log('Johan needs to solve this. :>');
+                }
             });
         }, 5); 
     };

@@ -49,7 +49,7 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
     const endTime = latestTime.toISOString();
 
     const url = `${connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
-    
+
     dispatch({type: BERTH_FETCHING_EVENTS});
 
     return pinch.fetch(url,

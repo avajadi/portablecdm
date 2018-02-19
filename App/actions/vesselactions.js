@@ -22,7 +22,7 @@ export const fetchVessel = (vesselUrn) => {
         const token = getState().settings.token;
         const contentType = getState().settings.instance.contentType;
         
-        return pinch.fetch(`${connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${vesselUrn}`,
         {
             method: 'GET',
             headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),

@@ -4,7 +4,7 @@
     "icon": "./assets/portablecdm_app_icon.png",
     "version": "1.0.2",
     "slug": "portcdm-app",
-    "sdkVersion": "24.0.0",
+    "sdkVersion": "25.0.0",
     "orientation": "portrait",
     "scheme": "pacdm",
     "ios": {
@@ -22,8 +22,8 @@
     "isDetached": true,
     "detach": {
       "scheme": "exp432e0186c47243658eeef37602b6c1c4",
-      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.2.1-sdk24.0.0-36ff2264-629d-44df-a819-8c982454e5e8.tar.gz",
-      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.2.0-sdk24.0.0-16620828-4df4-4e2d-b0af-5dc1352b82cb.tar.gz"
+      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.3.3-sdk25.0.0-e7a4361a-631d-4caf-9692-1880d71c394a.tar.gz",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.3.0-sdk25.0.0-0c32461b-a7c6-4ddc-b85b-32a80c4f18d9.tar.gz"
     }
   }
 }
