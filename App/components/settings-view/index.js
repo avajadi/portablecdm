@@ -152,6 +152,14 @@ class Settings extends Component {
                             </Text>
                         </Text>
                         <Text style={styles.texts.infoText}>
+                            <Text style={{fontWeight: 'bold' }}>
+                                Scheme:
+                            </Text>
+                            <Text style={{fontWeight: 'normal'}}>
+                                {' ' + connection.scheme}
+                            </Text>
+                        </Text>
+                        <Text style={styles.texts.infoText}>
                             <Text style={{ fontWeight: 'bold' }}>
                                 Host:
                             </Text>

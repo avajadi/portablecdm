@@ -6,7 +6,6 @@ import ModalDropdown from 'react-native-modal-dropdown';
 /*
 TODO::
 Update about-view
-Add scheme to setting (view it)
 CHECK OUT UNLOCODE!
 Test!
 */
@@ -104,7 +103,7 @@ class LoginView extends Component {
     }
 
     addHostPress() {
-        if (this.state.addHostVisible) {
+        if (this.state.addHostVisible && this.state.host) {
             if (this.state.host.length > 0) {
                 this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
                 this.setState({
@@ -255,7 +254,7 @@ class LoginView extends Component {
                             {addHostVisible && 
                             <FormInput 
                                 ref={hostTxt => {
-                                    if (hostTxt) {
+                                    if (hostTxt && hosts.length > 0) {
                                         hostTxt.focus();
                                     }
                                 }}

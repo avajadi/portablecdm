@@ -14,6 +14,8 @@ import {
 
 import colorScheme from '../../config/colors';
 
+let hideLogoDelay;
+
 class LegacyLogin extends Component {
 
     constructor(props) {
@@ -37,7 +39,7 @@ class LegacyLogin extends Component {
                     autoCapitalize={'none'}
                     style={styles.input}
                     onFocus={() => this.props.showLogo(false)}
-                    onBlur={() => this.props.showLogo(true)}
+                    onBlur={() => hideLogoDelay = setTimeout(() => this.props.showLogo(true), 50)}
                     />
                 <FormInput
                     style={styles.input}
@@ -45,7 +47,12 @@ class LegacyLogin extends Component {
                     onChangeText={(password) => this.setState({password})}
                     value={this.state.password}
                     secureTextEntry
-                    onFocus={() => this.props.showLogo(false)}
+                    onFocus={() => {
+                        if (hideLogoDelay) {
+                            clearTimeout(hideLogoDelay);
+                        }
+                        this.props.showLogo(false);
+                    }}
                     onBlur={() => this.props.showLogo(true)}
                     />
                 <CheckBox

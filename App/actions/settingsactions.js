@@ -139,6 +139,7 @@ export const fetchInstance = () => {
         let connection = getState().settings.connection;
         const token = getState().settings.token;
         console.log('Fetching instance info...');
+        console.log(JSON.stringify(connection));
         return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/application-info/version`, {
                 method: 'GET',
                 headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
