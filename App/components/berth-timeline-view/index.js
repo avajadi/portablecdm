@@ -24,6 +24,8 @@ import BerthHeader from './sections/BerthHeader';
 import { 
     fetchEventsForLocation,
     selectNewDate,
+    fetchSinglePortCall,
+    selectPortCall,
 } from '../../actions';
 import colorScheme from '../../config/colors';
 
@@ -34,8 +36,11 @@ class BerthTimeLine extends Component {
 
         this.state = {
             showDateTimePicker: false,
+            showExpiredEvents: false,
         }
     }
+
+    
 
     scrollToRedLine = () => {
         const windowWidth = Dimensions.get('screen').width;
@@ -54,9 +59,17 @@ class BerthTimeLine extends Component {
         }, 5); 
     };
 
+    createShowHideExpiredIcon() {
+        return {
+            name: this.state.showExpiredEvents ? 'remove-red-eye' : 'visibility-off',
+            color: 'white',
+            onPress: this._onExpiredPress
+        };
+    }
+
     componentDidMount() {
         Orientation.lockToLandscape();
-        this.props.fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", this.props.date)
+        this.props.fetchEventsForLocation(this.props.berth.URN, this.props.date)
         .then(() => {
             if(this.props.error.hasError) {
                 this.props.navigation.navigate('Error');
@@ -84,8 +97,9 @@ class BerthTimeLine extends Component {
         return(
             <View style={styles.container}>
                 <BerthSideMenu
-                    onMenuPress={this._onMenuPress}
+                    onBackPress={this._onBackPress}
                     onSearchPress={this._onSearchPress}
+                    selectorIcon={this.createShowHideExpiredIcon()}
                 />
                 
                 <View style={styles.rightSideContainer}>
@@ -99,44 +113,58 @@ class BerthTimeLine extends Component {
                         />
                     }
                     { !fetchingEvents &&
-                        <ScrollView>
-                            <ScrollView
-                                horizontal
-                                ref={(ref) => this.horizontalScroll = ref}
-                            >
-                                <EventView 
-                                    events={events}
-                                    date={date}
-                                    displayRatio={displayRatio}
-                                />
-                            </ScrollView>
+                        <ScrollView
+                            horizontal
+                            ref={(ref) => this.horizontalScroll = ref}
+                            style={{alignSelf: 'stretch'}}
+                        >
+                            <EventView 
+                                events={events}
+                                date={date}
+                                displayRatio={displayRatio}
+                                showExpired={this.state.showExpiredEvents}
+                                onViewPortCall={this._onViewPortCall}
+                            />
                         </ScrollView>
                     }
                     <DateTimePicker
                         isVisible={this.state.showDateTimePicker}
                         onConfirm={this._handleDateTimePicked}
                         onCancel={this._hideDateTimePicker}
-                        mode="datetime"
+                        mode="date"
                     />
                 </View>
             </View>
         );
     }
 
-    _onMenuPress = () => {
-        this.props.navigation.navigate('DrawerOpen');
+    _onBackPress = () => {
+        this.props.navigation.goBack();
     }
 
     _onSearchPress = () => {
         this._showDateTimePicker();
     }
 
+    _onExpiredPress = () => {
+        this.setState({showExpiredEvents: !this.state.showExpiredEvents})
+    }
+
+    _onViewPortCall = (portCallId) => {
+        this.props.fetchSinglePortCall(portCallId)
+            .then(this.props.selectPortCall)
+            .then(() => this.props.navigation.navigate('TimeLine'))
+    }
+
     _showDateTimePicker = () => this.setState({showDateTimePicker: true});
     _hideDateTimePicker = () => this.setState({showDateTimePicker: false});
     _handleDateTimePicked = (date) => {
-      this.props.selectNewDate(date)
-      this._hideDateTimePicker();
+        date.setHours(0, 0, 0, 0);
+        this.props.selectNewDate(date)
+        this._hideDateTimePicker();
     }
+
+
 }
 
 const styles = StyleSheet.create({
@@ -147,7 +175,8 @@ const styles = StyleSheet.create({
     },
     rightSideContainer: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
     },
     timeIndicatorLine: {
         alignItems: 'stretch',
@@ -171,4 +200,9 @@ function mapStateToProps (state) {
     };
 }
 
-export default connect(mapStateToProps, { fetchEventsForLocation, selectNewDate })(BerthTimeLine);
+export default connect(mapStateToProps, { 
+    fetchEventsForLocation, 
+    selectNewDate,
+    fetchSinglePortCall,
+    selectPortCall, 
+})(BerthTimeLine);
