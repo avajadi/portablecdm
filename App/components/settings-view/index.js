@@ -8,6 +8,7 @@ import {
     ScrollView,
     Alert,
     ActivityIndicator,
+    Platform,
 } from 'react-native';
 
 import {
@@ -45,7 +46,7 @@ class Settings extends Component {
 
         this.state = {
             fetchReliability: props.fetchReliability,
-            useSSL: false,
+            useSSL: props.useSSL,
             limitCache: props.limitCache,
             currentTimeZone: null
         }
@@ -134,23 +135,26 @@ class Settings extends Component {
                         checked={this.state.fetchReliability}
                         onPress={this.updateFetchReliability}
                     />
-                    <CheckBox
+                    {Platform.Version !== 24 && // Android SDK 24 doesn't handle https well
+                        <CheckBox
                         title='Use SSL'
                         checked={this.state.useSSL}
                         onPress={this.updateUseSSL}
-                    />
+                    />    
+                    }
+            
                     <View style={styles.containers.info}>
                         <Text style={styles.texts.headerText} h3>
                             PortCDM connection information
                         </Text>
-                        <Text style={styles.texts.infoText}>
+                        {/* <Text style={styles.texts.infoText}>
                             <Text style={{ fontWeight: 'bold' }}>
                                 UN/LOCODE:
                         </Text>
                             <Text style={{ fontWeight: 'normal' }}>
                                 {' ' + connection.unlocode}
                             </Text>
-                        </Text>
+                        </Text> */}
                         <Text style={styles.texts.infoText}>
                             <Text style={{fontWeight: 'bold' }}>
                                 Scheme:
@@ -243,6 +247,7 @@ function mapStateToProps(state) {
         fetchReliability: state.settings.fetchReliability,
         connection: state.settings.connection,
         limitCache: state.settings.cacheLimit,
+        useSSL: state.settings.connection.scheme === 'https://'
     };
 }
 

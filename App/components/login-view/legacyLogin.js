@@ -47,6 +47,7 @@ class LegacyLogin extends Component {
                     onChangeText={(password) => this.setState({password})}
                     value={this.state.password}
                     secureTextEntry
+                    autoCapitalize={'none'}
                     onFocus={() => {
                         if (hideLogoDelay) {
                             clearTimeout(hideLogoDelay);
@@ -84,12 +85,9 @@ const styles = StyleSheet.create({
     },
     btnLogin: {
         backgroundColor: colorScheme.primaryColor,
-        paddingLeft: 30,
-        paddingRight: 30,
     },
     btnLoginTxt: {
-        marginTop: 10,
-        marginBottom: 10,
+        margin: 10,
         fontSize: 22,
         color: 'white',      
         fontWeight: 'bold',  

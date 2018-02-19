@@ -215,7 +215,7 @@ class LoginView extends Component {
                     </View>
                 }
                 {this.state.showLogo && 
-                <View style={{backgroundColor: colorScheme.primaryColor}}>
+                <View style={{backgroundColor: colorScheme.primaryColor, elevation: 16}}>
                     <Image 
                         style={styles.logo} 
                         source={logo} />
@@ -312,7 +312,6 @@ const styles = StyleSheet.create({
         paddingRight: 30,
         height: dimensions.height * 0.6,
         justifyContent: 'space-between',
-        elevation: 1,
         backgroundColor: 'white',
         shadowColor: '#000000',
         shadowOffset: {
