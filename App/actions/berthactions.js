@@ -68,11 +68,9 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             throw new Error('dispatched');
         })
         .then(events => {
-            console.log('FETCHING VESSELS')
             return Promise.all(events.map(event => dispatch(fetchVessel(event))))
         })
         .then(events => {
-            console.log('STRUCTURING THINGS');
             // Array of arrays, each inner array holds a row with none-intersected events
             let structure = [];
             const defaultEventLength = 15; // If we have no start/endtime, use 15 minutes length
