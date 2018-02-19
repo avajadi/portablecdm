@@ -17,6 +17,8 @@ import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
 
+import { changeUser } from '../../actions';
+
 const unsupportedAndroidMessage = 'You are running on Android version 7.0.0 which is currently not supported. Please update to at least 7.1.1 to use https.'
 
 class ErrorView extends Component {
@@ -34,6 +36,7 @@ class ErrorView extends Component {
   }
 
   returnFromError() {
+    this.props.changeUser('','', false);
     this.props.navigation.navigate('LoginView', {}, {
         type: "Navigation/NAVIGATE",
         routeName: "LoginView",
@@ -66,4 +69,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect (mapStateToProps)(ErrorView);
+export default connect (mapStateToProps, { changeUser })(ErrorView);

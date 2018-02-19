@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Constants, AuthSession } from 'expo';
 import { connect } from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
-//import LegacyLogin from './legacyLogin';
 
 /*
 TODO::
@@ -22,6 +21,7 @@ import {
     TouchableHighlight,
     ActivityIndicator,
     Alert,
+    Platform,
 } from 'react-native';
 
 import {
@@ -62,9 +62,11 @@ class LoginView extends Component {
         this.state = {
             host: connection.host,
             addHostVisible: hosts.length === 0,
-            addHostIconName: 'add-circle',
+            addHostIconName: 'keyboard-arrow-down',
             forceLegacy: false,
             loggingIn: false,
+            showLogo: true,
+            showDropdown: false,
         };
     }
 
@@ -96,33 +98,45 @@ class LoginView extends Component {
             return;
         }
 
-        if (this.props.rememberLogin) {
+        if (this.props.rememberLogin && !this.props.error.hasError) {
             this.login();
         }
     }
 
     addHostPress() {
         if (this.state.addHostVisible) {
-            this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
-            this.setState({
-                addHostVisible: false,
-                addHostIconName: 'add-circle',
-                host: this.reformatHostHttp(this.state.host),
-            })
+            if (this.state.host.length > 0) {
+                this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
+                this.setState({
+                    addHostVisible: false,
+                    host: this.reformatHostHttp(this.state.host),
+                });
+            } else {
+                this.setState({
+                    addHostVisible: false,
+                    host: this.props.connection.host,
+                })
+            }
         } else {
             this.setState({
                 addHostVisible: true,
-                addHostIconName: 'done'
             });
         }
     }
 
-    abortHostPress() {
-        this.setState({
-            host: '',
-            addHostVisible: false,
-            addHostIconName: 'add-circle',
-        })
+    toggleDropdown() {
+        if (this.state.addHostIconName === 'keyboard-arrow-down') {
+            if (this.state.showDropdown) {
+                this.dropdown.hide();
+            } else {
+                this.dropdown.show();
+            }
+            this.setState({showDropdown: !this.state.showDropdown});
+        }
+    }
+
+    showLogo(showLogo) {
+        this.setState({showLogo});
     }
 
     loginLegacy({ username, password, remember }) {
@@ -189,7 +203,10 @@ class LoginView extends Component {
 
         const { hosts, rememberLogin } = this.props;
         const { addHostVisible } = this.state;
-        const keycloak = hasKeycloak.includes(this.state.host) && !this.state.forceLegacy;
+        const keycloak = 
+            hasKeycloak.includes(this.state.host) && 
+            !this.state.forceLegacy &&
+            Platform.OS === 'ios'; // TODO: Fix!
 
         return (
             <View style={styles.mainContainer}>
@@ -198,48 +215,58 @@ class LoginView extends Component {
                         <Text style={{color: 'white', alignSelf: 'center'}}>DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV</Text>
                     </View>
                 }
+                {this.state.showLogo && 
                 <View style={{backgroundColor: colorScheme.primaryColor}}>
                     <Image 
-                        resizeMode="contain" 
                         style={styles.logo} 
                         source={logo} />
                 </View>
+                }
                 
                 <View style={styles.contentContainer}>
                     <View>
-                        <FormLabel>Host</FormLabel>
                         <View style={styles.hostContainer}>
                             {(hosts.length > 0 && !addHostVisible) &&
-                            <ModalDropdown
-                                style={styles.dropdownHost}
-                                textStyle={styles.dropdownHostText}
-                                dropdownStyle={styles.dropdownHost}
-                                dropdownTextStyle={{fontSize: 15,}}
-                                options={hosts}
-                                defaultValue={this.state.host}
-                                accessible={false}
-                                onSelect={(index, value) => this.setState({host: value})}
-                            />
-                            }
-                            {addHostVisible && 
-                            <View>
-                                <FormInput 
-                                    containerStyle={styles.hostTxtContainer}
-                                    onChangeText={text => this.setState({host: text})} 
-                                    autoCorrect={false}
-                                    placeholder={'example.com'}
-                                    autoCapitalize={'none'}
-                                    onBlur={() => this.abortHostPress()}
-                                    />
+                            <View style={{flexDirection: 'row'}}>
+                                <ModalDropdown
+                                    ref={dropdwn => this.dropdown = dropdwn}
+                                    style={styles.dropdownHost}
+                                    textStyle={styles.dropdownHostText}
+                                    dropdownStyle={styles.dropdownHost}
+                                    dropdownTextStyle={{fontSize: 15,}}
+                                    options={hosts}
+                                    defaultValue={this.state.host}
+                                    accessible={false}
+                                    onSelect={(index, value) => this.setState({
+                                        host: value,
+                                        forceLegacy: false,
+                                    })}
+                                    onDropdownWillShow={() => this.addHostPress()}
+                                />
+                                <Icon 
+                                color={colorScheme.primaryColor}
+                                name={'keyboard-arrow-down'}
+                                size={35}
+                                iconStyle={styles.btnAddHost}
+                                onPress={() => this.toggleDropdown()}
+                                />
                             </View>
                             }
-                            <Icon 
-                            color={colorScheme.primaryColor}
-                            name={this.state.addHostIconName}
-                            size={35}
-                            iconStyle={styles.btnAddHost}
-                            onPress={() => this.addHostPress()}
-                            />
+                            {addHostVisible && 
+                            <FormInput 
+                                ref={hostTxt => {
+                                    if (hostTxt) {
+                                        hostTxt.focus();
+                                    }
+                                }}
+                                containerStyle={styles.hostTxtContainer}
+                                onChangeText={text => this.setState({host: text})} 
+                                autoCorrect={false}
+                                placeholder={'Enter a host'}
+                                autoCapitalize={'none'}
+                                onBlur={() => this.addHostPress()}
+                                />
+                            }
                         </View>
                     </View>
                     {keycloak &&
@@ -256,11 +283,13 @@ class LoginView extends Component {
                     {!keycloak &&
                         <LegacyLogin 
                         login={(username, password) => this.loginLegacy(username, password)}
+                        showLogo={(val) => this.showLogo(val)}
                         rememberLogin={rememberLogin} 
                     />
                     }
                     <Logos />
                 </View>
+                <View style={{backgroundColor: 'white', height: 3000}} />
             </View>
         );
     }
@@ -280,11 +309,11 @@ const styles = StyleSheet.create({
         backgroundColor: colorScheme.primaryColor,
     },
     contentContainer: {
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 30,
+        paddingRight: 30,
         height: dimensions.height * 0.6,
         justifyContent: 'space-between',
-        elevation: 50,
+        elevation: 1,
         backgroundColor: 'white',
         shadowColor: '#000000',
         shadowOffset: {
@@ -295,11 +324,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 1.0,
     },
     hostContainer: {
-        paddingLeft: 10,
+        paddingTop: 20,
         paddingRight: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         
     },
     btnAddHost: {
@@ -309,7 +338,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     dropdownHostText: {
-        fontSize: 20,
+        fontSize: 22,
     },
     hostTxtContainer: {
         width: dimensions.width / 2,

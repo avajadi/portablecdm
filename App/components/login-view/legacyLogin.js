@@ -29,18 +29,24 @@ class LegacyLogin extends Component {
     render() {
         return (
             <View>
-                <FormLabel>Username</FormLabel>
                 <FormInput
+                    placeholder="Username"
                     onChangeText={(username) => this.setState({username})}
                     value={this.state.username}
                     autoCorrect={false}
                     autoCapitalize={'none'}
+                    style={styles.input}
+                    onFocus={() => this.props.showLogo(false)}
+                    onBlur={() => this.props.showLogo(true)}
                     />
-                <FormLabel>Password</FormLabel>
                 <FormInput
+                    style={styles.input}
+                    placeholder="Password"
                     onChangeText={(password) => this.setState({password})}
                     value={this.state.password}
                     secureTextEntry
+                    onFocus={() => this.props.showLogo(false)}
+                    onBlur={() => this.props.showLogo(true)}
                     />
                 <CheckBox
                     title="Remember me"
@@ -71,15 +77,18 @@ const styles = StyleSheet.create({
     },
     btnLogin: {
         backgroundColor: colorScheme.primaryColor,
+        paddingLeft: 30,
+        paddingRight: 30,
     },
     btnLoginTxt: {
-        marginLeft: 30,
-        marginRight: 30,
         marginTop: 10,
         marginBottom: 10,
         fontSize: 22,
         color: 'white',      
         fontWeight: 'bold',  
+    },
+    input: {
+        marginBottom: 20,   
     }
 });
 
