@@ -3,13 +3,6 @@ import { Constants, AuthSession } from 'expo';
 import { connect } from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
 
-/*
-TODO::
-Update about-view
-CHECK OUT UNLOCODE!
-Test!
-*/
-
 import {
     View,
     Text,
