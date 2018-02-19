@@ -76,8 +76,7 @@ const EventBar = (props) => {
 
 EventBar.propTypes = {
     event: PropTypes.object.isRequired,
-    prevEndTime: PropTypes.object, // The time that the previous event ended, or the first event started, for the first event in each row
-    onClick: PropTypes.func,
+    onClick: PropTypes.func.isRequired,
 }
 
 export default EventBar;

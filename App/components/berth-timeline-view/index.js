@@ -65,7 +65,7 @@ class BerthTimeLine extends Component {
 
     componentDidMount() {
         Orientation.lockToLandscape();
-        this.props.fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", this.props.date)
+        this.props.fetchEventsForLocation(this.props.berth.URN, this.props.date)
         .then(() => {
             if(this.props.error.hasError) {
                 this.props.navigation.navigate('Error');
@@ -93,7 +93,7 @@ class BerthTimeLine extends Component {
         return(
             <View style={styles.container}>
                 <BerthSideMenu
-                    onMenuPress={this._onMenuPress}
+                    onBackPress={this._onBackPress}
                     onSearchPress={this._onSearchPress}
                     selectorIcon={this.createShowHideExpiredIcon()}
                 />
@@ -134,8 +134,8 @@ class BerthTimeLine extends Component {
         );
     }
 
-    _onMenuPress = () => {
-        this.props.navigation.navigate('DrawerOpen');
+    _onBackPress = () => {
+        this.props.navigation.goBack();
     }
 
     _onSearchPress = () => {

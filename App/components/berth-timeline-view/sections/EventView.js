@@ -13,7 +13,7 @@ import {
 } from 'react-native-elements';
 
 
-import { getDateString } from '../../../util/timeservices';
+import { getDateString, getTimeString } from '../../../util/timeservices';
 import colorScheme from '../../../config/colors';
 
 import EventBar from './EventBar';
@@ -48,7 +48,6 @@ class EventView extends Component {
                                             return (<EventBar 
                                                         key={index2} 
                                                         event={event} 
-                                                        prevEndTime={prevEnd} 
                                                         displayRatio={displayRatio}
                                                         earliestTime={events.earliestTime}
                                                         onClick={() => {
@@ -90,6 +89,11 @@ class EventView extends Component {
             days.push(newDay);
             i++;
         }
+
+        const now = new Date();
+        if(now.getTime() > firstDay.getTime() && now.getTime() < lastDay.getTime()) { // do we want to draw a line for right now?
+            days.push(now);
+        }
     
         return (
             <View style={[styles.dayLinesContainer]}>
@@ -97,14 +101,17 @@ class EventView extends Component {
                     const leftOffset = (day - events.earliestTime) * displayRatio;
                     let color = 'black';
     
-                    if(day.getTime() === chosenDate.getTime()) {
+                    const isNow = day === now;
+                    if(isNow){
                         color = 'red';
+                    } else if(day.getTime() === chosenDate.getTime()) {
+                        color = 'green';
                     }
                     
                     return (
                         <View key={index} style={styles.dayLinesContainer}>
                             <View style={[styles.dayLine, {left: leftOffset, borderColor: color}]} />
-                            <Text style={[styles.dayText, {left: leftOffset + 4}]}>{getDateString(day)}</Text>
+                            <Text style={[styles.dayText, {left: leftOffset + 6}]}>{isNow ? getTimeString(day) : getDateString(day)}</Text>
                         </View>
                     );
                 })}
@@ -117,9 +124,9 @@ class EventView extends Component {
 EventView.propTypes = {
     events: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
     date: PropTypes.object.isRequired,
-    displayRatio: PropTypes.number,
-    showExpired: PropTypes.any,
-    onViewPortCall: PropTypes.func,
+    displayRatio: PropTypes.number.isRequired,
+    showExpired: PropTypes.any.isRequired,
+    onViewPortCall: PropTypes.func.isRequired,
 }
 
 export default EventView;

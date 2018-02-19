@@ -56,10 +56,10 @@ const EventDetails = (props) => {
 };
 
 EventDetails.propTypes = {
-    event: PropTypes.object,
-    isVisible: PropTypes.bool,
-    onClose: PropTypes.func,
-    onViewPortCall: PropTypes.func,
+    event: PropTypes.object.isRequired,
+    isVisible: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onViewPortCall: PropTypes.func.isRequired,
 }
 
 export default EventDetails;
@@ -82,9 +82,11 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         alignSelf: 'stretch',
+        height: 30,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         backgroundColor: colorScheme.primaryColor,
+        justifyContent: 'center',
     },
     headerText: {
         alignSelf: 'center',

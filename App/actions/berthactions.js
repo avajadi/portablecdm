@@ -31,8 +31,8 @@ export const changeLookBehindDays = (lookBehindDays) => {
 export const selectNewDate = (date) => (dispatch, getState) => {
     dispatch({type: BERTH_CHANGE_INSPECTION_DATE, payload: date});
 
-    // return dispatch(fetchEventsForLocation(getState().berths.selectedLocation, date));
-    return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
+    return dispatch(fetchEventsForLocation(getState().berths.selectedLocation, date));
+    // return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
 }
 
 export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState) => {

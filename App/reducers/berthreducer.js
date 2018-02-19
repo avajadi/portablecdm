@@ -12,8 +12,8 @@ const INITIAL_STATE = {
     selectedLocation: undefined, // Location object
     fetchingEvents: true,
     fetchForDate: new Date(new Date().setHours(0, 0, 0, 0)), // default to center the searching around today (at midnight),
-    lookBehindDays: 7,
-    lookAheadDays: 14,
+    lookBehindDays: 4,
+    lookAheadDays: 7,
     events: [],
     displayRatio: 1/(1000 * 60 * 5)
 };

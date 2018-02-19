@@ -17,16 +17,16 @@ class BerthSideMenu extends Component {
 
     render() {
 
-        const { selectorIcon, onSearchPress, onMenuPress} = this.props;
+        const { selectorIcon, onSearchPress, onBackPress} = this.props;
 
         return (
             <View style={styles.container}>
                 <Icon
-                    name= 'menu'
+                    name= 'arrow-back'
                     color= {colorScheme.primaryContainerColor}
                     size= {40}
                     underlayColor='transparent'
-                    onPress={onMenuPress}
+                    onPress={onBackPress}
                 />
                 <Icon
                     name='search'
@@ -50,9 +50,9 @@ class BerthSideMenu extends Component {
 
 
 BerthSideMenu.propTypes = {
-    onMenuPress: PropTypes.func.isRequired,
+    onBackPress: PropTypes.func.isRequired,
     onSearchPress: PropTypes.func.isRequired,
-    selectorIcon: PropTypes.object,
+    selectorIcon: PropTypes.object.isRequired,
 }
 
 export default BerthSideMenu;
