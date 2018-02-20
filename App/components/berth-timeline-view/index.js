@@ -69,6 +69,7 @@ class BerthTimeLine extends Component {
 
     componentDidMount() {
         Orientation.lockToLandscape();
+        console.log('from componentdidmount: ' + this.props.berth.URN);
         this.props.fetchEventsForLocation(this.props.berth.URN, this.props.date)
         .then(() => {
             if(this.props.error.hasError) {

@@ -31,7 +31,7 @@ export const changeLookBehindDays = (lookBehindDays) => {
 export const selectNewDate = (date) => (dispatch, getState) => {
     dispatch({type: BERTH_CHANGE_INSPECTION_DATE, payload: date});
 
-    return dispatch(fetchEventsForLocation(getState().berths.selectedLocation, date));
+    return dispatch(fetchEventsForLocation(getState().berths.selectedLocation.URN, date));
     // return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
 }
 
@@ -47,6 +47,8 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
     latestTime.setDate(latestTime.getDate() + lookAheadDays);
     const fromTime = earliestTime.toISOString();
     const endTime = latestTime.toISOString();
+
+    console.log(JSON.stringify(locationURN))
 
     const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
     console.log(url);
