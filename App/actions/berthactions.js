@@ -6,6 +6,8 @@ import {
     BERTH_FETCHING_EVENTS_FAILURE,
     BERTH_FETCHING_EVENTS_SUCCESS,
     BERTH_CHANGE_INSPECTION_DATE,
+    BERTH_CHANGE_LOOKAHEAD_DAYS,
+    BERTH_CHANGE_LOOKBEHIND_DAYS,
     SET_ERROR
 } from './types';
 
@@ -15,21 +17,29 @@ import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcd
 import { noSummary, hasEvents } from '../config/instances';
 
 export const selectBerthLocation = (location) => {
-    return {type: BERTH_SELECT_BERTH, payload: location};
+    return { type: BERTH_SELECT_BERTH, payload: location };
 }
+
+export const changeLookAheadDays = (lookAheadDays) => {
+    return { type: BERTH_CHANGE_LOOKAHEAD_DAYS, payload: lookAheadDays };
+};
+
+export const changeLookBehindDays = (lookBehindDays) => {
+    return { type: BERTH_CHANGE_LOOKBEHIND_DAYS, payload: lookBehindDays };
+};
 
 export const selectNewDate = (date) => (dispatch, getState) => {
     dispatch({type: BERTH_CHANGE_INSPECTION_DATE, payload: date});
 
-    // return dispatch(fetchEventsForLocation(getState().berths.selectedLocation, date));
-    return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
+    return dispatch(fetchEventsForLocation(getState().berths.selectedLocation, date));
+    // return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
 }
 
 export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState) => {
     const { connection, token } = getState().settings;
 
-    const lookBehindDays = 7;
-    const lookAheadDays = 14;
+    const { lookBehindDays, lookAheadDays } = getState().berths;
+    
 
     const earliestTime = new Date(time);
     earliestTime.setDate(earliestTime.getDate() - lookBehindDays);
@@ -38,18 +48,17 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
     const fromTime = earliestTime.toISOString();
     const endTime = latestTime.toISOString();
 
-    const url = `${connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}`;
-    
+    const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
+    console.log(url);
     dispatch({type: BERTH_FETCHING_EVENTS});
 
     return pinch.fetch(url,
         {
             method: 'GET',
-            headers: connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+            headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
             sslPinning: getCert(connection),
         })
         .then(result => {
-            console.log(result.url);
             let err = checkResponse(result);
             if (!err) {
                 return JSON.parse(result.bodyString);
@@ -59,10 +68,14 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             throw new Error('dispatched');
         })
         .then(events => {
+            return Promise.all(events.map(event => dispatch(fetchVessel(event))))
+        })
+        .then(events => {
             // Array of arrays, each inner array holds a row with none-intersected events
             let structure = [];
             const defaultEventLength = 15; // If we have no start/endtime, use 15 minutes length
-                        
+            structure.earliestTime = earliestTime;
+            structure.latestTime = latestTime;                        
             if(events.length > 0) {
                 let firstEvent = events.shift();
                 setDisplayTime(firstEvent, defaultEventLength);
@@ -122,6 +135,33 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
                 });
             }
         })
+}
+
+const fetchVessel = (event) =>  {
+    return (dispatch, getState) => {
+        const connection = getState().settings.connection;
+        const token = getState().settings.token;
+        const favorites = getState().favorites;
+        const contentType = getState().settings.instance.contentType;
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${event.vesselId}`,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
+            sslPinning: getCert(connection),
+        })
+        .then(result => {
+            let err = checkResponse(result);
+            if (!err)
+                return JSON.parse(result.bodyString);
+
+            dispatch({ type: types.SET_ERROR, payload: err });
+            throw new Error('dispatched');
+        })
+        .then(vessel => {
+            event.vessel = vessel;
+            return event;
+        });
+    }
 }
 
 // **** Helpers

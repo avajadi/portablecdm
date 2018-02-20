@@ -8,6 +8,7 @@ import {
     ScrollView,
     Alert,
     ActivityIndicator,
+    Platform,
 } from 'react-native';
 
 import {
@@ -33,6 +34,7 @@ import {
     changePortSetting,
     changePortUnlocode,
     changeFetchReliability,
+    changeScheme,
     clearCache,
     changeCacheLimit,
 } from '../../actions';
@@ -44,16 +46,23 @@ class Settings extends Component {
 
         this.state = {
             fetchReliability: props.fetchReliability,
+            useSSL: props.useSSL,
             limitCache: props.limitCache,
             currentTimeZone: null
         }
 
         this.updateFetchReliability = this.updateFetchReliability.bind(this);
+        this.updateUseSSL = this.updateUseSSL.bind(this);
     }
 
     updateFetchReliability() {
         this.props.changeFetchReliability(!this.state.fetchReliability);
         this.setState({ fetchReliability: !this.state.fetchReliability });
+    }
+
+    updateUseSSL() {
+        this.props.changeScheme(!this.state.useSSL);
+        this.setState({useSSL: !this.state.useSSL});
     }
 
     componentWillMount() {
@@ -126,16 +135,32 @@ class Settings extends Component {
                         checked={this.state.fetchReliability}
                         onPress={this.updateFetchReliability}
                     />
+                    {Platform.Version !== 24 && // Android SDK 24 doesn't handle https well
+                        <CheckBox
+                        title='Use SSL'
+                        checked={this.state.useSSL}
+                        onPress={this.updateUseSSL}
+                    />    
+                    }
+            
                     <View style={styles.containers.info}>
                         <Text style={styles.texts.headerText} h3>
                             PortCDM connection information
                         </Text>
-                        <Text style={styles.texts.infoText}>
+                        {/* <Text style={styles.texts.infoText}>
                             <Text style={{ fontWeight: 'bold' }}>
                                 UN/LOCODE:
                         </Text>
                             <Text style={{ fontWeight: 'normal' }}>
                                 {' ' + connection.unlocode}
+                            </Text>
+                        </Text> */}
+                        <Text style={styles.texts.infoText}>
+                            <Text style={{fontWeight: 'bold' }}>
+                                Scheme:
+                            </Text>
+                            <Text style={{fontWeight: 'normal'}}>
+                                {' ' + connection.scheme}
                             </Text>
                         </Text>
                         <Text style={styles.texts.infoText}>
@@ -222,6 +247,7 @@ function mapStateToProps(state) {
         fetchReliability: state.settings.fetchReliability,
         connection: state.settings.connection,
         limitCache: state.settings.cacheLimit,
+        useSSL: state.settings.connection.scheme === 'https://'
     };
 }
 
@@ -232,4 +258,5 @@ export default connect(mapStateToProps, {
     changeFetchReliability,
     clearCache,
     changeCacheLimit,
+    changeScheme,
 })(Settings);

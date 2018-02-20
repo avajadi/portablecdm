@@ -6,6 +6,12 @@ const hasWithdraw = {
     pcb: 505,
 }
 
+export const hasKeycloak = [
+    'dev.portcdm.eu',
+    'segot.portcdm.eu',
+    'qa.portcdm.eu',
+];
+
 export const hasEventsLegacy = [
     'qa.segot',
     'qa.portcdm.eu',

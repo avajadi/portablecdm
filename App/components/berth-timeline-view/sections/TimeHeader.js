@@ -9,18 +9,20 @@ import {
 
 import colorScheme from '../../../config/colors';
 
-const BerthHeader = (props) => {
+const TimeHeader = (props) => {
+    const width = (props.endTime - props.startTime) * props.displayRatio;
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {width: width}]}>
         </View>
     );
 };
 
-BerthHeader.propTypes = {
-    location: PropTypes.object,
+TimeHeader.propTypes = {
+    startTime: PropTypes.object,
+    endTime: PropTypes.object,
 }
 
-export default BerthHeader;
+export default TimeHeader;
 
 const styles = StyleSheet.create({
     container: {

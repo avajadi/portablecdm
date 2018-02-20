@@ -48,6 +48,7 @@ export const SETTINGS_ADD_VESSEL_TO_LIST = 'settings_add_vessel_to_list';
 export const SETTINGS_REMOVE_VESSEL_FROM_LIST = 'settings_remove_vessel_from_list';
 export const SETTINGS_CHANGE_USER = 'settings_change_user';
 export const SETTINGS_CHANGE_TOKEN = 'settings_change_token';
+export const SETTINGS_CHANGE_SCHEME = 'settings_change_scheme';
 export const SETTINGS_CHANGE_FETCH_RELIABILITY = 'settings_change_fetch_reliability';
 export const SETTINGS_CHANGE_FAVORITE_STATE_LIST = 'settings_change_favorite_state_list';
 export const SETTINGS_FETCH_INSTANCE = 'settings_fetch_instance';
@@ -68,6 +69,8 @@ export const BERTH_FETCHING_EVENTS = 'berth_fetching_events';
 export const BERTH_FETCHING_EVENTS_SUCCESS = 'berth_fetching_events_success';
 export const BERTH_FETCHING_EVENTS_FAILURE = 'berth_fetching_events_failure';
 export const BERTH_CHANGE_INSPECTION_DATE = 'berth_change_inspection_date';
+export const BERTH_CHANGE_LOOKAHEAD_DAYS = 'berth_change_lookahead_days';
+export const BERTH_CHANGE_LOOKBEHIND_DAYS = 'berth_change_lookbehind_days';
 
 /** FAVORITES */
 export const ADD_FAVORITE_PORTCALL = 'add_favorite_portcall';

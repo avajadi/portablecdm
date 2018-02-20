@@ -12,12 +12,13 @@ export const changeFetchReliability = (fetchReliability) => {
     }
 }
 
-export const changeUser = (username, password) => {
+export const changeUser = (username, password, remember) => {
     return {
         type: types.SETTINGS_CHANGE_USER,
         payload: {
-            username: username,
-            password: password
+            username,
+            password,
+            remember,
         }
     }
 };
@@ -46,6 +47,30 @@ export const changeHostSetting = (host) => {
         }
     }
 };
+
+export const changeScheme = (useSSL) => {
+    return (dispatch, getState) => {
+        if (useSSL) {
+            dispatch({
+                type: types.SETTINGS_CHANGE_SCHEME,
+                payload: 'https://'
+            });
+            dispatch({
+                type: types.SETTINGS_CHANGE_PORT,
+                payload: 8443,
+            })
+        } else {
+            dispatch({
+                type: types.SETTINGS_CHANGE_SCHEME,
+                payload: 'http://'
+            });
+            dispatch({
+                type: types.SETTINGS_CHANGE_PORT,
+                payload: 8080,
+            });
+        }
+    }
+}
 
 export const createVesselList = (vesselListName) => {
     return {
@@ -87,13 +112,6 @@ export const removeVesselFromList = (vessel, listName) => {
     };
 };
 
-export const changePortSetting = (port) => {
-    return {
-        type: types.SETTINGS_CHANGE_PORT,
-        payload: port
-    };
-};
-
 export const checkNewVersion = () => {
     return (dispatch, getState) => {
         console.log('Current version: ' + APP_VERSION);
@@ -121,7 +139,9 @@ export const fetchInstance = () => {
         let connection = getState().settings.connection;
         const token = getState().settings.token;
         console.log('Fetching instance info...');
-        return pinch.fetch(`${connection.host}:${connection.port}/application-info/version`, {
+        console.log(JSON.stringify(connection));
+        console.log(`${connection.scheme + connection.host}:${connection.port}/application-info/version`);
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/application-info/version`, {
                 method: 'GET',
                 headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
                 sslPinning: getCert(connection),

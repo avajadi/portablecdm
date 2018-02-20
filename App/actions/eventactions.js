@@ -28,7 +28,7 @@ export const fetchPortCallIds = (filterString) => {
         const { arrivingWithin, departingWithin } = getState().filters;
         const timeParameters = getTimeParameters(arrivingWithin, departingWithin);
         const locationParams = getLocationParameters(locations);
-        const url = `${connection.host}:${connection.port}/pcb/event?${timeParameters}${locationParams}${filterString ? filterString : ''}`;
+        const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event?${timeParameters}${locationParams}${filterString ? filterString : ''}`;
 
         console.log('Fetching events: ' + url);
 
