@@ -11,6 +11,7 @@ import java.util.List;
 // import com.facebook.react.ReactApplication;
 import com.github.yamill.orientation.OrientationPackage;
 
+
 public class MainApplication extends ExpoApplication {
 
   @Override
@@ -25,7 +26,7 @@ public class MainApplication extends ExpoApplication {
         // TODO: add native modules!
 
         // Needed for `react-native link`
-        // new MainReactPackage(),
+            //new MainReactPackage(),
             new OrientationPackage(),
             new PinchPackage()
     );
