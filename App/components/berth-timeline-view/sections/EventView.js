@@ -110,6 +110,7 @@ class EventView extends Component {
                     
                     return (
                         <View key={index} style={styles.dayLinesContainer}>
+                            <View style={[styles.dot, {left: leftOffset - 2, backgroundColor: color}]} />
                             <View style={[styles.dayLine, {left: leftOffset, borderColor: color}]} />
                             <Text style={[styles.dayText, {left: leftOffset + 6}]}>{isNow ? getTimeString(day) : getDateString(day)}</Text>
                         </View>
@@ -167,6 +168,15 @@ const styles = StyleSheet.create({
     },
     ganttContainer: {
         marginTop: 30
+    },
+    dot: {
+        position: 'absolute',
+        width: 6,
+        height: 6,
+        top: 0,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
 
