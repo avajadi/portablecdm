@@ -49,6 +49,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Added filter on stage (for supporting instances)</Text>
                     <Text>{BULLET} Added port call stage in port call list </Text>
                     <Text>{BULLET} Added visualization for withdrawn messages </Text>
+                    <Text>{BULLET} Added more vessel info </Text>
                 </View>
                 <Text h4>Version 1.4</Text>
                 <View style={{padding: 5}}>

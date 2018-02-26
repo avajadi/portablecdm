@@ -58,6 +58,54 @@ export const fetchVessel = (vesselUrn) => {
     }
 };
 
+export const fetchVesselFromIMO = (imo) => {
+    return (dispatch, getState) => {
+        
+        return fetch(`http://segot.portcdm.eu:8080/SeaTrafficManagement/vessel-registry/vessel?imo=${imo}`, {
+            method: 'GET',
+        }).then((result) => {
+            if(result.status === 404) {
+                dispatch({
+                    type: types.SET_ERROR, 
+                    payload: {
+                        title: 'Vessel not found',
+                        description: 'No vessel with imo' + imo + ' found!',
+                    }
+                });
+                throw new Error('dispatched');
+            }
+
+            let err = checkResponse(result);
+            if(!err)
+                return result.json();
+
+            dispatch({type: types.SET_ERROR, payload: err});
+            throw new Error('dispatched');
+        }).then((json) => {
+            console.log('Fetched vessel: ' + JSON.stringify(json));
+            dispatch({
+                type: types.FETCH_VESSEL_SUCCESS,
+                payload: {
+                    imo: `urn:mrn:stm:vessel:IMO:${json.imo}`,
+                    mmsi: `urn:mrn:stm:vessel:MMSI:${json.mmsi}`,
+                    name: json.name,
+                    vesselType: json.vesselType,
+                    callSign: json.callSign,
+                    photoURL: json.photoURL,
+                    flag: json.flag,
+                    builtYear: json.builtYear,
+                }
+            });
+        }).catch((error) => {
+            if(error.message !== 'dispatched') {
+                dispatch({type: types.SET_ERROR, payload: {
+                    description: error.message, 
+                    title: 'Unable to connect to the server!'}});
+            }
+        });
+    }
+}
+
 export const fetchVesselByName = (vesselName) => {
     return (dispatch, getState) => {
         
@@ -91,6 +139,8 @@ export const fetchVesselByName = (vesselName) => {
                     vesselType: json.vesselType,
                     callSign: json.callSign,
                     photoURL: json.photoURL,
+                    flag: json.flag,
+                    builtYear: json.builtYear,
                 }
             });
         }).catch((error) => {
