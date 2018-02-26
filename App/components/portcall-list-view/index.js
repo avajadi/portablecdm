@@ -129,10 +129,12 @@ class PortCallList extends Component {
                     <List>
                         {
                             
-                            this.search(portCalls, searchTerm).map( (portCall) => ( 
-                                <ListItem
+                            this.search(portCalls, searchTerm).map(portCall => {
+                                //console.log(JSON.stringify(portCall.vessel));
+                                return (
+                                    <ListItem
                                     roundAvatar
-                                    avatar={{uri: portCall.vessel.photoURL}}
+                                    avatar={portCall.vessel.photoURL ? {uri: portCall.vessel.photoURL} : null}
                                     key={portCall.portCallId}
                                     title={portCall.vessel.name}
                                     badge={{element: this.renderFavorites(portCall)}}
@@ -168,7 +170,8 @@ class PortCallList extends Component {
                                         );
                                     }}
                                 />
-                            ))
+                                );}
+                            )
                         }                    
                     </List>
                 </ScrollView>
