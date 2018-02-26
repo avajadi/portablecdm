@@ -72,6 +72,7 @@ class LocationSelection extends Component {
                     lightTheme
                     placeholder='Search by location name or type'
                     placeholderTextColor={colorScheme.tertiaryTextColor}
+                    autoCorrect={false}
                     onChangeText={text => this.setState({ searchTerm: text })}
                     textInputRef='textInput'
                 />
