@@ -73,7 +73,7 @@ function createLocation(unlocode, locationType, name, shortName) {
         area: null,
         position: null,
         locationType: locationType,
-        URN: `urn:mrn:stm:location:${unlocode}:${locationType}`
+        URN: `urn:mrn:stm:location:${(unlocode ? unlocode : 'aaaaa')}:${locationType}`
     }
 }
 
