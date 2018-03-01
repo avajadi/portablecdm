@@ -233,7 +233,7 @@ class PortCallList extends Component {
             portCall.vessel.imo.split('IMO:')[1].startsWith(searchTerm) ||
             portCall.vessel.mmsi.split('MMSI:')[1].startsWith(searchTerm)) &&
             (!portCall.stage || filters.stages.includes(portCall.stage));
-        }).sort((a,b) => this.sortFilters(a,b))
+        }).sort((a,b) => this.sortFilters(a,b)).sort((a,b) => a.status !== 'OK'? -1 : 1)
         .slice(0, this.state.numLoadedPortCalls);
     }
 }

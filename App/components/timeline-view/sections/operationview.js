@@ -28,9 +28,16 @@ function removeStringReportedBy(string) {
 
 function getWarningText(warning) {
     let result;
-    if(warning.warningType) {
+    if(warning.warningType) { // New version
         let noUnderscore = warning.warningType.replace(/_/g, ' ');
+        
         result = noUnderscore.charAt(0).toUpperCase() + noUnderscore.slice(1).toLowerCase();
+
+        result += warning.indicatorValues.map(indicatorValue => {
+            if (indicatorValue.type === 'STATE_ID') {
+                return ' for ' + indicatorValue.value.replace(/_/g, ' ') + ' ';
+            } 
+        });
     } else {
         result = warning.message;
     }

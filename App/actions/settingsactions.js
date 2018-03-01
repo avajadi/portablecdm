@@ -163,11 +163,16 @@ export const fetchInstance = () => {
                 });
             }).catch(err => {
                 if (err.message !== types.ERR_DISPATCHED) {
-                    dispatch({type: types.SET_ERROR, payload: {
-                        title: 'Unable to fetch instance info!', 
-                        description: 
-                          !err.description ? 'Please check your internet connection.' 
-                                            : err.description}});
+                    if (connection.scheme === 'https://') { // Try again without https
+                        dispatch(changeScheme(false));
+                        dispatch(fetchInstance());
+                    } else {
+                        dispatch({type: types.SET_ERROR, payload: {
+                            title: 'Unable to fetch instance info!', 
+                            description: 
+                              !err.description ? 'Please check your internet connection.' 
+                                                : err.description}});
+                    }
                 }
             });
     }
