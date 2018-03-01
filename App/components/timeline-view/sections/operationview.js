@@ -16,6 +16,8 @@ import {
   Badge
 } from 'react-native-elements';
 
+import WarningView from './warningview';
+
 import Collapsible from 'react-native-collapsible';
 
 import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
@@ -32,12 +34,6 @@ function getWarningText(warning) {
         let noUnderscore = warning.warningType.replace(/_/g, ' ');
         
         result = noUnderscore.charAt(0).toUpperCase() + noUnderscore.slice(1).toLowerCase();
-
-        result += warning.indicatorValues.map(indicatorValue => {
-            if (indicatorValue.type === 'STATE_ID') {
-                return ' for ' + indicatorValue.value.replace(/_/g, ' ') + ' ';
-            } 
-        });
     } else {
         result = warning.message;
     }
@@ -61,10 +57,12 @@ class OperationView extends Component {
           operation: undefined,
           timeContainer: undefined,
       },
+      selectedWarning: undefined,
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this);
     this.renderStateRow = this.renderStateRow.bind(this);
+    this.addStatement = this.addStatement.bind(this);
   }
   
   _toggleCollapsed() {
@@ -192,10 +190,17 @@ class OperationView extends Component {
             {/* Render warnings */}
             {operation.warnings.map((warning, index) => {
               return (
-                <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10,}} key={index}>
-                  <Icon name='warning' color={colorScheme.warningColor} size={14} paddingRight={10} />
-                  <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{getWarningText(warning)}</Text>
-                </View>
+                <TouchableWithoutFeedback
+                onPress={() => this.setState({selectedWarning: warning})}
+                key={index}
+                >
+                    <View  
+                        style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10,}} 
+                        >
+                        <Icon name='warning' color={colorScheme.warningColor} size={14} paddingRight={10} />
+                        <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{getWarningText(warning)}</Text>
+                    </View>
+                </TouchableWithoutFeedback>
               );
             })}
 
@@ -214,7 +219,11 @@ class OperationView extends Component {
             </List>
           </Collapsible>
         </View>
-        
+        <WarningView 
+            warning={this.state.selectedWarning}
+            onClose={() => this.setState({selectedWarning: undefined})}
+            addStatement={(stateId, mostRelevantStatement) => this.addStatement(stateId, mostRelevantStatement)}
+        />
       </View>
     );
   }
@@ -274,14 +283,8 @@ class OperationView extends Component {
                         color = {colorScheme.primaryColor}
                         name='add-circle'
                         size={35}
-                        onPress={() => navigate('SendPortCall', {
-                            stateId: stateToDisplay.stateDefinition, 
-                            fromLocation: operation.fromLocation, 
-                            toLocation: operation.toLocation, 
-                            atLocation: operation.atLocation,
-                            mostRelevantStatement: stateToDisplay
-                          })
-                        } />
+                        onPress={() => this.addStatement(stateToDisplay.stateDefinition, stateToDisplay)}
+                        />
         }
         title = {
             <TouchableWithoutFeedback 
@@ -365,7 +368,16 @@ class OperationView extends Component {
       )
   }
 
-  
+  addStatement(stateDef, mostRelevantStatement) {
+    const { operation } = this.state;
+    this.props.navigation.navigate('SendPortCall', {
+        stateId: stateDef, 
+        fromLocation: operation.fromLocation, 
+        toLocation: operation.toLocation, 
+        atLocation: operation.atLocation,
+        mostRelevantStatement: mostRelevantStatement
+    });
+  }
 
   /**
    * Finds the most relevant statement, i.e the latest Estimate or the latest Actual. 
