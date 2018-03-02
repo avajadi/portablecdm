@@ -42,13 +42,16 @@ class BerthTimeLine extends Component {
 
     
 
-    scrollToRedLine = () => {
+    scrollToSelectedTime = () => {
         const windowWidth = Dimensions.get('screen').width;
         InteractionManager.runAfterInteractions(() => {
             setTimeout(() => { // Fattar inte varför man behöver en timeout här?? Inte jag heller! // P
                 if (this.horizontalScroll) {
+                    let earliestStartDate = new Date(this.props.date.getTime());
+                    earliestStartDate.setDate(earliestStartDate.getDate() - this.props.lookBehindDays);
+                    const x = (this.props.date - earliestStartDate) * this.props.displayRatio - windowWidth/2 + 140;
                     this.horizontalScroll.scrollTo({
-                        x: (this.props.date - this.props.events.earliestStartTime) * this.props.displayRatio + 50 - windowWidth/2, // the +50 is a little arbitrary...
+                        x: x,
                         y: 0,
                         animated: true
                     });
@@ -69,21 +72,20 @@ class BerthTimeLine extends Component {
 
     componentDidMount() {
         Orientation.lockToLandscape();
-        this.props.fetchEventsForLocation('urn:mrn:stm:location:SEGOT:BERTH:skarvik520', this.props.date)
-        // this.props.fetchEventsForLocation(this.props.berth.URN, this.props.date)
+        this.props.fetchEventsForLocation(this.props.berth.URN, this.props.date)
         .then(() => {
             if(this.props.error.hasError) {
                 this.props.navigation.navigate('Error');
             }
         })
         .then(() => {
-            this.scrollToRedLine();
+            this.scrollToSelectedTime();
         });
     }
 
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.events !== this.props.events && this.horizontalScroll) {
-            this.scrollToRedLine();
+            this.scrollToSelectedTime();
         }
     }
 
@@ -198,6 +200,8 @@ function mapStateToProps (state) {
         date: state.berths.fetchForDate,
         error: state.error,
         displayRatio: state.berths.displayRatio,
+        lookBehindDays: state.berths.lookBehindDays,
+        lookAheadDays: state.berths.lookAheadDays,
     };
 }
 

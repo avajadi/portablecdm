@@ -12,8 +12,7 @@ import colorScheme from '../../../config/colors';
 const BerthHeader = (props) => {
     return (
         <View style={styles.container}>
-            {/* <Text style={styles.text}>Events for {props.location.name}</Text> */}
-            <Text style={styles.text}>Events for NAME HERE</Text>
+            <Text style={styles.text}>Events for {props.location.name}</Text>
         </View>
     );
 };

@@ -27,11 +27,8 @@ import colorScheme from '../../../config/colors';
 import TopHeader from '../../top-header-view';
 import {getDateTimeString} from '../../../util/timeservices';
 import { withdrawStatement } from '../../../actions';
+import { removeStringReportedBy } from '../../../util/stringUtils';
 
-function removeStringReportedBy(string) {
-    let splitString = string.split(/:/g);
-    return splitString[splitString.length - 1]
-}
 
 class StateDetails extends Component {
     constructor(props) {

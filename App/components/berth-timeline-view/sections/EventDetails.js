@@ -6,13 +6,16 @@ import {
     View,
     Text,
     TouchableWithoutFeedback,
-    Modal
+    Modal,
+    ScrollView,
 } from 'react-native';
 
 import {
     Icon,
     Button
 } from 'react-native-elements';
+
+import StatementDetails from './StatementDetails';
 
 import { getTimeString } from '../../../util/timeservices';
 import colorScheme from '../../../config/colors';
@@ -28,11 +31,35 @@ const EventDetails = (props) => {
             animationType='fade'
             transparent={true}
         >
+            {/* Fix the background stuff */}
             <View style={styles.outerContainer}>
+                {/* The actual modal window */}
                 <View style={styles.innerContainer}>
+                    {/* Header */}
                     <View style={styles.headerContainer}>
                         <Text style={styles.headerText}>{event.vessel.name}</Text>
                     </View>
+                    {/* Main view */}
+                    <ScrollView>
+                        <Text key={-1} style={[styles.statementHeaderText, {textAlign: 'left'}]}>Arrival Vessel Berth</Text>
+                        {event.arrivalStatements.map((statement, index) => {
+                            if('arrival_vessel_berth' !== statement.stateDefinition.toLowerCase()) {
+                                console.log('wrong state definition in arrivalStatements!');
+                            }
+                            return <StatementDetails key={index} statement={statement} />;
+                        })}
+
+                        <Text key={-2} style={[styles.statementHeaderText, {textAlign: 'right'}]}>Departure Vessel Berth</Text>
+                        {event.departureStatements.map((statement, index) => {
+                            if('departure_vessel_berth' !== statement.stateDefinition.toLowerCase()) {
+                                console.log('wrong state definition in departureStatements!');
+                            }
+                            return <StatementDetails key={index} statement={statement} />;
+                        })}
+                    </ScrollView>
+
+
+                    {/* Bottom row, with buttons */}
                     <View style={styles.buttonsContainer}>
                         <TouchableWithoutFeedback
                             onPress={() => props.onViewPortCall(event.portCallId)}
@@ -75,7 +102,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         flexDirection: 'column',
         borderRadius: 10,
-        width: 300,
+        width: 400,
         height: 300,
         backgroundColor: colorScheme.primaryContainerColor,
         justifyContent: 'space-between',
@@ -101,6 +128,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 40,
         backgroundColor: colorScheme.primaryColor,
-    }
+    },
+    statementHeaderText: {
+        fontSize: 15,
+        fontStyle: 'italic',
+        flex: 1,
+        marginHorizontal: 10,
+        borderBottomWidth: 1,
+        borderColor: 'black'
+    },
 
 });

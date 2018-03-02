@@ -99,20 +99,22 @@ class EventView extends Component {
             <View style={[styles.dayLinesContainer]}>
                 {days.map((day, index) => {
                     const leftOffset = (day - events.earliestTime) * displayRatio;
-                    let color = 'black';
+                    let color = 'darkgrey';
     
                     const isNow = day === now;
+                    let additionalStyles = {};
                     if(isNow){
-                        color = 'red';
+                        color = 'darkred';
+                        additionalStyles = styles.nowText;
                     } else if(day.getTime() === chosenDate.getTime()) {
-                        color = 'green';
+                        color = 'black';
                     }
                     
                     return (
                         <View key={index} style={styles.dayLinesContainer}>
                             <View style={[styles.dot, {left: leftOffset - 2, backgroundColor: color}]} />
                             <View style={[styles.dayLine, {left: leftOffset, borderColor: color}]} />
-                            <Text style={[styles.dayText, {left: leftOffset + 6}]}>{isNow ? getTimeString(day) : getDateString(day)}</Text>
+                            <Text style={[styles.dayText, additionalStyles, {left: leftOffset + 6}]}>{isNow ? getTimeString(day) : getDateString(day)}</Text>
                         </View>
                     );
                 })}
@@ -163,8 +165,14 @@ const styles = StyleSheet.create({
         position: 'absolute',
         color: colorScheme.primaryTextColor,
         top: 4,
-        fontSize: 9,
+        fontSize: 12,
         fontWeight: 'bold',
+        zIndex: 15,
+    },
+    nowText: {
+        color: 'darkred',
+        top: 18,
+
     },
     ganttContainer: {
         marginTop: 30

@@ -70,7 +70,10 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             throw new Error('dispatched');
         })
         .then(events => {
-            return Promise.all(events.map(event => dispatch(fetchVessel(event))))
+            return Promise.all(events.map(event => dispatch(fetchVessel(event))));
+        })
+        .then(events => {
+            return Promise.all(events.map(event => dispatch(fetchStatements(event))));
         })
         .then(events => {
             // Array of arrays, each inner array holds a row with none-intersected events
@@ -165,6 +168,66 @@ const fetchVessel = (event) =>  {
         });
     }
 }
+
+const fetchStatements = (event) => (dispatch, getState) => {
+    const { connection, token } = getState().settings;
+
+    const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event/${event.eventId}`;
+    console.log(url);
+    dispatch({type: BERTH_FETCHING_EVENTS});
+
+    return pinch.fetch(url,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
+            sslPinning: getCert(connection),
+        })
+        .then(result => {
+            let err = checkResponse(result);
+            if (!err) {
+                return JSON.parse(result.bodyString);
+            }
+
+            dispatch({type: SET_ERROR, payload: err});
+            throw new Error('dispatched');
+        })
+        .then(eventDetails => {
+            const arrivalStatements = [];
+            const departureStatements = [];
+            // Assuming there are only arrival_vessel_berth and departure_vessel_berth
+            for(let statement of eventDetails.statements) {
+                if(statement.stateDefinition.toLowerCase() === 'arrival_vessel_berth') {
+                    arrivalStatements.push(statement)
+                } else {
+                    departureStatements.push(statement);
+                }
+            }
+            
+            event.arrivalStatements = arrivalStatements;
+            event.departureStatements = departureStatements;
+            event.overlappingEvents = eventDetails.overlappingEvents;
+
+            return event;
+        })
+        .catch(err => {
+            console.log('something went wrong in fetchStatements');
+            console.log(JSON.stringify(err));
+            if (!err.message != 'dispatched') {
+                dispatch({
+                    type: SET_ERROR,
+                    payload: {
+                        description: err.message,
+                        title: `Unable to fetch event details for event ${event.eventId}`
+                    }
+                });
+
+                dispatch({
+                    type: BERTH_FETCHING_EVENTS_FAILURE,
+                });
+            }
+        });
+        
+};
 
 // **** Helpers
 
