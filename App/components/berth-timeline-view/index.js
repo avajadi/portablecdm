@@ -20,12 +20,15 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import BerthSideMenu from './sections/BerthSideMenu';
 import EventView from './sections/EventView';
 import BerthHeader from './sections/BerthHeader';
+import BerthSettings from './sections/BerthSettings';
 
 import { 
     fetchEventsForLocation,
     selectNewDate,
     fetchSinglePortCall,
     selectPortCall,
+    changeLookAheadDays,
+    changeLookBehindDays,
 } from '../../actions';
 import colorScheme from '../../config/colors';
 
@@ -34,9 +37,16 @@ class BerthTimeLine extends Component {
     constructor(props) {
         super(props);
 
+        this.initialSettings = {
+            lookBehindDays: props.lookBehindDays,
+            lookAheadDays: props.lookAheadDays,
+        }
+
         this.state = {
             showDateTimePicker: false,
             showExpiredEvents: false,
+            showSettingsModal: false,
+            settings: this.initialSettings,
         }
     }
 
@@ -56,22 +66,13 @@ class BerthTimeLine extends Component {
                         animated: true
                     });
                 } else {
-                    console.log('Johan needs to solve this. :>');
+                    console.log('This should never happend, unless there is a server problem (scrollToSelectedTime in berth-timeline-view)');
                 }
             });
         }, 5); 
     };
 
-    createShowHideExpiredIcon() {
-        return {
-            name: this.state.showExpiredEvents ? 'remove-red-eye' : 'visibility-off',
-            color: 'white',
-            onPress: this._onExpiredPress
-        };
-    }
-
-    componentDidMount() {
-        Orientation.lockToLandscape();
+    fetchEvents() {
         this.props.fetchEventsForLocation(this.props.berth.URN, this.props.date)
         .then(() => {
             if(this.props.error.hasError) {
@@ -83,7 +84,25 @@ class BerthTimeLine extends Component {
         });
     }
 
+    createShowHideExpiredIcon() {
+        return {
+            name: this.state.showExpiredEvents ? 'remove-red-eye' : 'visibility-off',
+            color: 'white',
+            onPress: this._onExpiredPress
+        };
+    }
+
+    componentDidMount() {
+        Orientation.lockToLandscape();
+        this.fetchEvents();
+    }
+
     componentDidUpdate(prevProps, prevState) {
+
+        if(prevProps.lookAheadDays !== this.props.lookAheadDays || prevProps.lookBehindDays !== this.props.lookBehindDays) {
+            this.fetchEvents();
+        }
+
         if(prevProps.events !== this.props.events && this.horizontalScroll) {
             this.scrollToSelectedTime();
         }
@@ -102,6 +121,7 @@ class BerthTimeLine extends Component {
                 <BerthSideMenu
                     onBackPress={this._onBackPress}
                     onSearchPress={this._onSearchPress}
+                    onSettingsPress={this._toggleSettings}
                     selectorIcon={this.createShowHideExpiredIcon()}
                 />
                 
@@ -130,6 +150,17 @@ class BerthTimeLine extends Component {
                             />
                         </ScrollView>
                     }
+                    { this.state.showSettingsModal &&
+                        <BerthSettings
+                            onClose={this._onCloseSettings}
+                            isVisible={this.state.showSettingsModal}
+                            onLookAheadDaysChange={this._onLookAheadDaysChange}
+                            onLookBehindDaysChange={this._onLookBehindDaysChange}
+                            settings={this.state.settings}
+                        />
+
+                    }
+
                     <DateTimePicker
                         isVisible={this.state.showDateTimePicker}
                         onConfirm={this._handleDateTimePicked}
@@ -141,12 +172,33 @@ class BerthTimeLine extends Component {
         );
     }
 
+    _onLookAheadDaysChange = (days) => {
+        this.setState({settings: {...this.state.settings, lookAheadDays: days}});
+    }
+
+    _onLookBehindDaysChange = (days) => {
+        this.setState({settings: {...this.state.settings, lookBehindDays: days}});
+    }
+
     _onBackPress = () => {
         this.props.navigation.goBack();
     }
 
     _onSearchPress = () => {
         this._showDateTimePicker();
+    }
+
+    _toggleSettings = () => {
+        this.setState({showSettingsModal: !this.state.showSettingsModal});
+    }
+
+    _onCloseSettings = (shouldWeSave) => {
+        if(shouldWeSave) {
+            this.props.changeLookAheadDays(this.state.settings.lookAheadDays);
+            this.props.changeLookBehindDays(this.state.settings.lookBehindDays);
+        }
+
+        this._toggleSettings();
     }
 
     _onExpiredPress = () => {
@@ -209,5 +261,7 @@ export default connect(mapStateToProps, {
     fetchEventsForLocation, 
     selectNewDate,
     fetchSinglePortCall,
-    selectPortCall, 
+    selectPortCall,
+    changeLookAheadDays,
+    changeLookBehindDays, 
 })(BerthTimeLine);

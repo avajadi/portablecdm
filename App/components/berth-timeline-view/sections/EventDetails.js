@@ -41,21 +41,11 @@ const EventDetails = (props) => {
                     </View>
                     {/* Main view */}
                     <ScrollView>
-                        <Text key={-1} style={[styles.statementHeaderText, {textAlign: 'left'}]}>Arrival Vessel Berth</Text>
-                        {event.arrivalStatements.map((statement, index) => {
-                            if('arrival_vessel_berth' !== statement.stateDefinition.toLowerCase()) {
-                                console.log('wrong state definition in arrivalStatements!');
-                            }
-                            return <StatementDetails key={index} statement={statement} />;
-                        })}
+                        <Text key={-1} style={[styles.statementHeaderText, {textAlign: 'left', paddingLeft: 10}]}>Arrival Vessel Berth</Text>
+                        {event.arrivalStatements.map((statement, index) => <StatementDetails key={index} statement={statement} /> )}
 
-                        <Text key={-2} style={[styles.statementHeaderText, {textAlign: 'right'}]}>Departure Vessel Berth</Text>
-                        {event.departureStatements.map((statement, index) => {
-                            if('departure_vessel_berth' !== statement.stateDefinition.toLowerCase()) {
-                                console.log('wrong state definition in departureStatements!');
-                            }
-                            return <StatementDetails key={index} statement={statement} />;
-                        })}
+                        <Text key={-2} style={[styles.statementHeaderText, {textAlign: 'right', marginRight: 10}]}>Departure Vessel Berth</Text>
+                        {event.departureStatements.map((statement, index) => <StatementDetails key={index} statement={statement} /> )}
                     </ScrollView>
 
 
