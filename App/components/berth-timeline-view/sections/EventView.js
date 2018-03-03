@@ -14,6 +14,7 @@ import {
 
 
 import { getDateString, getTimeString } from '../../../util/timeservices';
+import { removeStringReportedBy } from '../../../util/stringUtils';
 import colorScheme from '../../../config/colors';
 
 import EventBar from './EventBar';
@@ -29,6 +30,30 @@ class EventView extends Component {
         eventDetails: {}
     }
 
+    isValidSource(event, acceptedSources) {
+        // Empty accepted sources means accept all
+        if(acceptedSources.length <= 0) {
+            return true;
+        }
+        else {
+            const { arrivalStatements, departureStatements } = event;
+
+            const arrival = arrivalStatements
+                .filter(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+                .filter(statement => statement.time === event.startTime)
+                .filter(statement => statement.timeType === event.startTimeType)
+                .length > 0;
+
+            const departure = departureStatements
+                .filter(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+                .filter(statement => statement.time === event.endTime)
+                .filter(statement => statement.timeType === event.endTimeType)
+                .length > 0;
+
+            return arrival && departure;
+        }
+    }
+
     render() {
 
         const { events, displayRatio, date, showExpired } = this.props;
@@ -41,7 +66,7 @@ class EventView extends Component {
                         {events.map((row, index) => {
                             return <View key={index} style={[styles.rowContainer]}>
                                         {row.map((event, index2) => {
-                                            if(!showExpired && event.isExpired) {
+                                            if((!showExpired && event.isExpired) || !this.isValidSource(event, this.props.acceptSources)) {
                                                 return undefined;
                                             }
                                             let prevEnd = row[index2-1] ? row[index2-1].displayEndTime : events.earliestTime;
@@ -130,6 +155,7 @@ EventView.propTypes = {
     displayRatio: PropTypes.number.isRequired,
     showExpired: PropTypes.any.isRequired,
     onViewPortCall: PropTypes.func.isRequired,
+    acceptSources: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default EventView;

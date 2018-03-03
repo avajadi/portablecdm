@@ -6,6 +6,7 @@ import {
     BERTH_CHANGE_INSPECTION_DATE,
     BERTH_CHANGE_LOOKAHEAD_DAYS,
     BERTH_CHANGE_LOOKBEHIND_DAYS,
+    BERTH_SET_FILTER_ON_SOURCES,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -15,6 +16,8 @@ const INITIAL_STATE = {
     lookBehindDays: 4,
     lookAheadDays: 7,
     events: [],
+    filterOnSources: [],
+    previousFilters: ["johan", "bengtarne", "fulifan"],
     displayRatio: 1/(1000 * 60 * 5)
 };
 
@@ -34,6 +37,15 @@ const berthReducer = (state = INITIAL_STATE, action) => {
             return { ...state, lookAheadDays: action.payload };
         case BERTH_CHANGE_LOOKBEHIND_DAYS:
             return { ...state, lookBehindDays: action.payload };
+        case BERTH_SET_FILTER_ON_SOURCES:
+            console.log('changing filterOnSources: ' + JSON.stringify(action.payload));
+            previousFilters = JSON.parse(JSON.stringify(state.previousFilters));
+            for(let username of action.payload) {
+                previousFilters.push(username);
+                previousFilters.shift();
+            }
+            
+            return { ...state, filterOnSources: action.payload };
         default:
             return state;
     }

@@ -8,6 +8,7 @@ import {
     BERTH_CHANGE_INSPECTION_DATE,
     BERTH_CHANGE_LOOKAHEAD_DAYS,
     BERTH_CHANGE_LOOKBEHIND_DAYS,
+    BERTH_SET_FILTER_ON_SOURCES,
     SET_ERROR
 } from './types';
 
@@ -15,6 +16,10 @@ import {
 import { checkResponse } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
 import { noSummary, hasEvents } from '../config/instances';
+
+export const setFilterOnSources = (sources) => {
+    return { type: BERTH_SET_FILTER_ON_SOURCES, payload: sources.map(source => source.toLowerCase()) }
+}
 
 export const selectBerthLocation = (location) => {
     return { type: BERTH_SELECT_BERTH, payload: location };
@@ -48,10 +53,7 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
     const fromTime = earliestTime.toISOString();
     const endTime = latestTime.toISOString();
 
-    console.log(JSON.stringify(locationURN))
-
     const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
-    console.log(url);
     dispatch({type: BERTH_FETCHING_EVENTS});
 
     return pinch.fetch(url,
@@ -173,7 +175,6 @@ const fetchStatements = (event) => (dispatch, getState) => {
     const { connection, token } = getState().settings;
 
     const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event/${event.eventId}`;
-    console.log(url);
     dispatch({type: BERTH_FETCHING_EVENTS});
 
     return pinch.fetch(url,

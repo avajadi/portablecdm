@@ -29,6 +29,7 @@ import {
     selectPortCall,
     changeLookAheadDays,
     changeLookBehindDays,
+    setFilterOnSources,
 } from '../../actions';
 import colorScheme from '../../config/colors';
 
@@ -40,6 +41,8 @@ class BerthTimeLine extends Component {
         this.initialSettings = {
             lookBehindDays: props.lookBehindDays,
             lookAheadDays: props.lookAheadDays,
+            filterOnSources: props.filterOnSources,
+            previousFilters: props.previousFilters,
         }
 
         this.state = {
@@ -147,6 +150,7 @@ class BerthTimeLine extends Component {
                                 displayRatio={displayRatio}
                                 showExpired={this.state.showExpiredEvents}
                                 onViewPortCall={this._onViewPortCall}
+                                acceptSources={this.props.filterOnSources}
                             />
                         </ScrollView>
                     }
@@ -156,6 +160,7 @@ class BerthTimeLine extends Component {
                             isVisible={this.state.showSettingsModal}
                             onLookAheadDaysChange={this._onLookAheadDaysChange}
                             onLookBehindDaysChange={this._onLookBehindDaysChange}
+                            onFilterOnSourceChange={this._onFilterOnSourceChange}
                             settings={this.state.settings}
                         />
 
@@ -170,6 +175,14 @@ class BerthTimeLine extends Component {
                 </View>
             </View>
         );
+    }
+
+    _onFilterOnSourceChange = (filterOnSource) => {
+        if(filterOnSource !== "") {
+            this.setState({settings: {...this.state.settings, filterOnSources: [filterOnSource]}});
+        } else {
+            this.setState({settings: { ...this.state.settings, filterOnSources: []}});
+        }
     }
 
     _onLookAheadDaysChange = (days) => {
@@ -194,8 +207,12 @@ class BerthTimeLine extends Component {
 
     _onCloseSettings = (shouldWeSave) => {
         if(shouldWeSave) {
+            this.initialSettings = this.state.settings;
             this.props.changeLookAheadDays(this.state.settings.lookAheadDays);
             this.props.changeLookBehindDays(this.state.settings.lookBehindDays);
+            this.props.setFilterOnSources(this.state.settings.filterOnSources);
+        } else {
+            this.setState({settings: this.initialSettings});
         }
 
         this._toggleSettings();
@@ -254,6 +271,8 @@ function mapStateToProps (state) {
         displayRatio: state.berths.displayRatio,
         lookBehindDays: state.berths.lookBehindDays,
         lookAheadDays: state.berths.lookAheadDays,
+        filterOnSources: state.berths.filterOnSources,
+        previousFilters: state.berths.previousFilters,
     };
 }
 
@@ -263,5 +282,6 @@ export default connect(mapStateToProps, {
     fetchSinglePortCall,
     selectPortCall,
     changeLookAheadDays,
-    changeLookBehindDays, 
+    changeLookBehindDays,
+    setFilterOnSources, 
 })(BerthTimeLine);

@@ -159,7 +159,7 @@ class LoginView extends Component {
         const { navigate, dispatch } = this.props.navigation;
         this.setState({loggingIn: true});
 
-        await this.props.fetchInstance();
+        // await this.props.fetchInstance();
         if (this.props.error.hasError) {
             navigate('Error');
         } else {
