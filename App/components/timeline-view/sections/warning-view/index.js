@@ -15,6 +15,7 @@ import {
 import MultipleActualsView from './multipleActualsView';
 import MultipleVesselsAtBerthView from './multipleVesselsAtBerthView';
 import MissingDataView from './missingDataView';
+import MultipleLocationsView from './multipleLocationsView';
 import MiniHeader from '../../../mini-header-view';
 import StateDetails from '../statedetails';
 
@@ -65,6 +66,8 @@ class WarningView extends Component {
                 );
             case WARNING_TYPES.MULTIPLE_ACTUALS:
                 return <MultipleActualsView operation={this.props.operation} warning={warning} /> 
+            case WARNING_TYPES.VESSEL_AT_MULTIPLE_LOCATIONS:
+                return <MultipleLocationsView operation={this.props.operation} warning={warning} allLocations={this.props.allLocations} />
             default:
             return null;
         }
@@ -136,6 +139,7 @@ const descriptions = {
 function mapStateToProps(state) {
     return {
       portCalls: state.cache.portCalls,
+      allLocations: state.location.locations,
     }
   }
 

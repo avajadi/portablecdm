@@ -4,6 +4,7 @@ import {
     View,
     Text,
     StyleSheet,
+    ScrollView,
 } from 'react-native';
 
 import {
@@ -22,32 +23,13 @@ class MultipleActualsView extends Component {
         const statements = operation.statements.filter(statement => warning.references.some(ref => ref.refId === statement.messageId));
         return (
             <View>
-            <Text style={styles.header}>
-                States without data
-            </Text>
-            <List>
-                {
-                    warning.indicatorValues.filter(({value, type}) => type === 'STATE_ID').map(({value}, index) => {
-                        return (
-                            <ListItem
-                                key={index}
-                                title={formatStateId(value)}
-                                titleStyle={styles.listItem}
-                                rightIcon = { <Icon
-                                    color = {colorScheme.primaryColor}
-                                    name='add-circle'
-                                    size={35}
-                                    onPress={() => {
-                                        addStatement(value, null);
-                                        onClose();
-                                    }}
-                                />}
-                            />
-                        );
-                    })
-                }
-            </List>
-        </View>
+                <Text style={styles.header}>
+                        Conflicting statements for {statements[0].stateDefinition.replace(/_/g, ' ')}
+                </Text>
+                <ScrollView>
+                    {statements.map(statement => <StateView key={statement.messageId} statement={statement} />)}
+                </ScrollView>
+            </View>
         );
     }
 }
@@ -55,7 +37,7 @@ class MultipleActualsView extends Component {
 const styles = StyleSheet.create({
     header: {
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 22,
     },
 });
 

@@ -74,7 +74,7 @@ class StateView extends Component {
 
     render() {
         const withdrawSupported = this.props.instanceInfo.hasWithdraw;
-        const { operation, statement, stateDef } = this.props;
+        const { statement, stateDef } = this.props;
         const withdrawn = (withdrawSupported && statement.isWithdrawn);
         const additionalStyles = withdrawn ? styles.withdrawn : {};
         // let additionalStyles = {};
@@ -113,20 +113,20 @@ class StateView extends Component {
                                 </View>}
                         </View>
 
-                        {operation.atLocation && 
+                        {statement.atLocation && 
                         <View style={[styles.detailView, additionalStyles]}> 
                             <Text style={styles.stateSubTitleText}>AT: </Text>
-                            <Text style={styles.detailText}>{operation.atLocation.name}</Text>
+                            <Text style={styles.detailText}>{statement.atLocation.name}</Text>
                         </View>}
-                        {operation.fromLocation && 
+                        {statement.fromLocation && 
                         <View style={[styles.detailView, additionalStyles]}> 
                             <Text style={styles.stateSubTitleText}>FROM: </Text>
-                            <Text style={styles.detailText}>{operation.fromLocation.name}</Text>        
+                            <Text style={styles.detailText}>{statement.fromLocation.name}</Text>        
                         </View>}
-                        {operation.toLocation && 
+                        {statement.toLocation && 
                         <View style={[styles.detailView, additionalStyles]}> 
                             <Text style={styles.stateSubTitleText}>TO: </Text>
-                            <Text style={styles.detailText}>{operation.toLocation.name}</Text>        
+                            <Text style={styles.detailText}>{statement.toLocation.name}</Text>        
                         </View>}
                         
                         <View style={[styles.detailView, additionalStyles]}> 
@@ -183,9 +183,8 @@ class StateView extends Component {
 }
 
 StateView.propTypes = {
-    operation: PropTypes.object.isRequired,
     statement: PropTypes.object.isRequired,
-    stateDef: PropTypes.string.isRequired,
+    stateDef: PropTypes.object,
 }
 
             /*

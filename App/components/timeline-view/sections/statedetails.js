@@ -82,7 +82,7 @@ class StateDetails extends Component {
 
                 {/*StateView*/}
                 {statements.map( statement => {
-                    return <StateView key={statement.messageId} operation={operation} statement={statement} stateDef={stateDef} />
+                    return <StateView key={statement.messageId} statement={statement} stateDef={stateDef} />
                 } )} 
             </ScrollView>
         </View>

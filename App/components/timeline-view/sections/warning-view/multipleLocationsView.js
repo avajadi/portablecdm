@@ -17,18 +17,45 @@ import colorScheme from '../../../../config/colors';
 
 class MultipleLocationsView extends Component {
 
-    
+    constructor(props) {
+        super(props);
+
+        this.getSweetLocationName = this.getSweetExpensiveLocationName.bind(this);
+    }
+
+    getSweetExpensiveLocationName(urn) {
+        return this.props.allLocations.find(location => location.URN.toLowerCase() === urn.toLowerCase()).name;
+    }
+
     render() {
         const { operation, warning } = this.props;
-        const statements = operation.statements.filter(statement => warning.references.some(ref => ref.refId === statement.messageId));
+
+        const location = operation.fromLocation || operation.toLocation || operation.atLocation;
+
         return (
             <View>
                 <Text style={styles.header}>
-                        Conflicting statements for {statements[0].stateDefinition.replace(/_/g, ' ')}
+                    Locations reported
                 </Text>
-                <ScrollView>
-                    {statements.map(statement => <StateView key={statement.messageId} operation={operation} statement={statement} stateDef={statement.stateDefinition} />)}
-                </ScrollView>
+                <List>
+                    <ListItem
+                        title={location.name}
+                        titleStyle={styles.listItem}
+                        hideChevron
+                    />
+                    {
+                        warning.references.filter(({refId, refType}) => refType === 'LOCATION').map(({refId}, index) => {
+                            return (
+                                <ListItem
+                                    key={index}
+                                    title={this.getSweetExpensiveLocationName(refId)}
+                                    titleStyle={styles.listItem}
+                                    hideChevron
+                                />
+                            );
+                        })
+                    }
+                </List>
             </View>
         );
     }
@@ -37,7 +64,10 @@ class MultipleLocationsView extends Component {
 const styles = StyleSheet.create({
     header: {
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 22,
+    },
+    listItem: {
+        color: colorScheme.quaternaryTextColor,
     },
 });
 

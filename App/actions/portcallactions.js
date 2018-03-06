@@ -515,6 +515,19 @@ export const fetchPortCallOperations = (portCallId) => {
                     if (operation.to) {
                         operation.toLocation = locations.find(location => location.URN.toUpperCase() === operation.to.toUpperCase());
                     }
+                    
+                    operation.statements.map(statement => {
+                        if (statement.at) {
+                            // Actually case sensitive, so keep in mind
+                            statement.atLocation = locations.find(location => location.URN.toUpperCase() === statement.at.toUpperCase());
+                        }
+                        if (statement.from) {
+                            statement.fromLocation = locations.find(location => location.URN.toUpperCase() === statement.from.toUpperCase());
+                        }
+                        if (statement.to) {
+                            statement.toLocation = locations.find(location => location.URN.toUpperCase() === statement.to.toUpperCase());
+                        }
+                    });
 
                     return operation;
                 });

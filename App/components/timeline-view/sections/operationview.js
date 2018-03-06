@@ -322,12 +322,12 @@ class OperationView extends Component {
         }
         subtitle = {
             <View style={{flexDirection: 'column'}} >
-                {operation.atLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{operation.atLocation.name}</Text>}
-                {operation.fromLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{operation.fromLocation.name}</Text>}
-                {operation.toLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
+                {stateToDisplay.atLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{stateToDisplay.atLocation.name}</Text>}
+                {stateToDisplay.fromLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{stateToDisplay.fromLocation.name}</Text>}
+                {stateToDisplay.toLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{stateToDisplay.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
                   <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{removeStringReportedBy(stateToDisplay.reportedBy)} 
