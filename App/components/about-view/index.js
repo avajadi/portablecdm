@@ -43,6 +43,7 @@ export default class AboutView extends Component {
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Complete revisit of login view </Text>
                     <Text>{BULLET} Allows for remembering user settings in legacy login </Text>
+                    <Text>{BULLET} Tapping a warning from the Timeline now shows details </Text>
                     <Text>{BULLET} Added setting for using SSL rather than specifying scheme and port </Text>
                     <Text>{BULLET} Big performance update </Text>
                     <Text>{BULLET} Added feature to withdraw own messages </Text>
