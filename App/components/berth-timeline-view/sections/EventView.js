@@ -14,6 +14,7 @@ import {
 
 
 import { getDateString, getTimeString } from '../../../util/timeservices';
+import { removeStringReportedBy } from '../../../util/stringUtils';
 import colorScheme from '../../../config/colors';
 
 import EventBar from './EventBar';
@@ -29,6 +30,21 @@ class EventView extends Component {
         eventDetails: {}
     }
 
+    isValidSource(event, acceptedSources) {
+        // Empty accepted sources means accept all
+        if(acceptedSources.length <= 0) {
+            return true;
+        }
+        else {
+            const { arrivalStatements, departureStatements } = event;
+
+            const arrival = arrivalStatements.some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+            const departure = departureStatements.some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+                
+            return arrival && departure;
+        }
+    }
+
     render() {
 
         const { events, displayRatio, date, showExpired } = this.props;
@@ -41,7 +57,7 @@ class EventView extends Component {
                         {events.map((row, index) => {
                             return <View key={index} style={[styles.rowContainer]}>
                                         {row.map((event, index2) => {
-                                            if(!showExpired && event.isExpired) {
+                                            if((!showExpired && event.isExpired) || !this.isValidSource(event, this.props.acceptSources)) {
                                                 return undefined;
                                             }
                                             let prevEnd = row[index2-1] ? row[index2-1].displayEndTime : events.earliestTime;
@@ -72,7 +88,7 @@ class EventView extends Component {
         const days = [];
     
         const firstDay = new Date(events.earliestTime);
-        firstDay.setDate(firstDay.getDate() + 1);
+        firstDay.setDate(firstDay.getDate());
         firstDay.setHours(0, 0, 0, 0);
     
         const lastDay = new Date(events.latestTime);
@@ -99,19 +115,22 @@ class EventView extends Component {
             <View style={[styles.dayLinesContainer]}>
                 {days.map((day, index) => {
                     const leftOffset = (day - events.earliestTime) * displayRatio;
-                    let color = 'black';
+                    let color = 'darkgrey';
     
                     const isNow = day === now;
+                    let additionalStyles = {};
                     if(isNow){
-                        color = 'red';
+                        color = 'darkred';
+                        additionalStyles = styles.nowText;
                     } else if(day.getTime() === chosenDate.getTime()) {
-                        color = 'green';
+                        color = 'black';
                     }
                     
                     return (
                         <View key={index} style={styles.dayLinesContainer}>
+                            <View style={[styles.dot, {left: leftOffset - 2, backgroundColor: color}]} />
                             <View style={[styles.dayLine, {left: leftOffset, borderColor: color}]} />
-                            <Text style={[styles.dayText, {left: leftOffset + 6}]}>{isNow ? getTimeString(day) : getDateString(day)}</Text>
+                            <Text style={[styles.dayText, additionalStyles, {left: leftOffset + 6}]}>{isNow ? getTimeString(day) : getDateString(day)}</Text>
                         </View>
                     );
                 })}
@@ -127,6 +146,7 @@ EventView.propTypes = {
     displayRatio: PropTypes.number.isRequired,
     showExpired: PropTypes.any.isRequired,
     onViewPortCall: PropTypes.func.isRequired,
+    acceptSources: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default EventView;
@@ -162,11 +182,26 @@ const styles = StyleSheet.create({
         position: 'absolute',
         color: colorScheme.primaryTextColor,
         top: 4,
-        fontSize: 9,
+        fontSize: 12,
         fontWeight: 'bold',
+        zIndex: 15,
+    },
+    nowText: {
+        color: 'darkred',
+        top: 18,
+
     },
     ganttContainer: {
         marginTop: 30
+    },
+    dot: {
+        position: 'absolute',
+        width: 6,
+        height: 6,
+        top: 0,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
 

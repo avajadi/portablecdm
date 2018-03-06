@@ -21,12 +21,8 @@ import WarningView from './warning-view';
 import Collapsible from 'react-native-collapsible';
 
 import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
+import { removeStringReportedBy } from '../../../util/stringUtils';
 import colorScheme from '../../../config/colors';
-
-function removeStringReportedBy(string) {
-    let splitString = string.split(/:/g);
-    return splitString[splitString.length - 1]
-}
 
 function getWarningText(warning) {
     let result;

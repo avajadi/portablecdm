@@ -25,7 +25,7 @@ export default BerthHeader;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colorScheme.primaryColor,
+        backgroundColor: '#1a3047',
         paddingTop: 30,
         alignItems: 'center',
         justifyContent: 'center',

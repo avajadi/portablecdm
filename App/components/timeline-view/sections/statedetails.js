@@ -20,6 +20,8 @@ import TopHeader from '../../top-header-view';
 import StateView from './stateview';
 
 import { withdrawStatement } from '../../../actions';
+import { removeStringReportedBy } from '../../../util/stringUtils';
+
 
 class StateDetails extends Component {
     constructor(props) {

@@ -8,6 +8,7 @@ import {
     BERTH_CHANGE_INSPECTION_DATE,
     BERTH_CHANGE_LOOKAHEAD_DAYS,
     BERTH_CHANGE_LOOKBEHIND_DAYS,
+    BERTH_SET_FILTER_ON_SOURCES,
     SET_ERROR
 } from './types';
 
@@ -15,6 +16,10 @@ import {
 import { checkResponse } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
 import { noSummary, hasEvents } from '../config/instances';
+
+export const setFilterOnSources = (sources) => {
+    return { type: BERTH_SET_FILTER_ON_SOURCES, payload: sources.map(source => source.toLowerCase()) }
+}
 
 export const selectBerthLocation = (location) => {
     return { type: BERTH_SELECT_BERTH, payload: location };
@@ -32,7 +37,6 @@ export const selectNewDate = (date) => (dispatch, getState) => {
     dispatch({type: BERTH_CHANGE_INSPECTION_DATE, payload: date});
 
     return dispatch(fetchEventsForLocation(getState().berths.selectedLocation.URN, date));
-    // return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
 }
 
 export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState) => {
@@ -48,11 +52,10 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
     const fromTime = earliestTime.toISOString();
     const endTime = latestTime.toISOString();
 
-    console.log(JSON.stringify(locationURN))
-
     const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
-    console.log(url);
     dispatch({type: BERTH_FETCHING_EVENTS});
+
+    console.log(url);
 
     return pinch.fetch(url,
         {
@@ -70,7 +73,10 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
             throw new Error('dispatched');
         })
         .then(events => {
-            return Promise.all(events.map(event => dispatch(fetchVessel(event))))
+            return Promise.all(events.map(event => dispatch(fetchVessel(event))));
+        })
+        .then(events => {
+            return Promise.all(events.map(event => dispatch(fetchStatements(event))));
         })
         .then(events => {
             // Array of arrays, each inner array holds a row with none-intersected events
@@ -119,7 +125,6 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
         })
         .then(structure => {
             structure.sort((a, b) => b.length - a.length); // Want the rows to be denser at the top
-            // console.log(JSON.stringify(structure));
             dispatch({type: BERTH_FETCHING_EVENTS_SUCCESS, payload: structure});
         })
         .catch(err => {
@@ -128,7 +133,7 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
                     type: SET_ERROR,
                     payload: {
                         description: err.message,
-                        title: 'Unable to fetch events for location!',
+                        title: 'Unable to fetch events for location: ' + err.message,
                     }
                 });
 
@@ -143,12 +148,10 @@ const fetchVessel = (event) =>  {
     return (dispatch, getState) => {
         const connection = getState().settings.connection;
         const token = getState().settings.token;
-        const favorites = getState().favorites;
-        const contentType = getState().settings.instance.contentType;
         return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${event.vesselId}`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
+            headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, contentType),
             sslPinning: getCert(connection),
         })
         .then(result => {
@@ -156,7 +159,7 @@ const fetchVessel = (event) =>  {
             if (!err)
                 return JSON.parse(result.bodyString);
 
-            dispatch({ type: types.SET_ERROR, payload: err });
+            dispatch({ type: SET_ERROR, payload: err });
             throw new Error('dispatched');
         })
         .then(vessel => {
@@ -165,6 +168,67 @@ const fetchVessel = (event) =>  {
         });
     }
 }
+
+const fetchStatements = (event) => (dispatch, getState) => {
+    const { connection, token } = getState().settings;
+
+    const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event/${event.eventId}`;
+    dispatch({type: BERTH_FETCHING_EVENTS});
+
+    // console.log(url);
+
+    return pinch.fetch(url,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
+            sslPinning: getCert(connection),
+        })
+        .then(result => {
+            let err = checkResponse(result);
+            if (!err) {
+                return JSON.parse(result.bodyString);
+            }
+
+            dispatch({type: SET_ERROR, payload: err});
+            throw new Error('dispatched');
+        })
+        .then(eventDetails => {
+            const arrivalStatements = [];
+            const departureStatements = [];
+            // Assuming there are only arrival_vessel_berth and departure_vessel_berth
+            for(let statement of eventDetails.statements) {
+                if(statement.stateDefinition.toLowerCase() === 'arrival_vessel_berth') {
+                    arrivalStatements.push(statement)
+                } else {
+                    departureStatements.push(statement);
+                }
+            }
+            
+            event.arrivalStatements = arrivalStatements;
+            event.departureStatements = departureStatements;
+            event.overlappingEvents = eventDetails.overlappingEvents;
+
+            return event;
+        })
+        .catch(err => {
+            console.log('something went wrong in fetchStatements');
+            console.log(JSON.stringify(err));
+            if (!err.message != 'dispatched') {
+                dispatch({
+                    type: SET_ERROR,
+                    payload: {
+                        description: err.message,
+                        title: `Unable to fetch event details for event ${event.eventId}`
+                    }
+                });
+
+                dispatch({
+                    type: BERTH_FETCHING_EVENTS_FAILURE,
+                });
+            }
+        });
+        
+};
 
 // **** Helpers
 
