@@ -71,6 +71,7 @@ export const BERTH_FETCHING_EVENTS_FAILURE = 'berth_fetching_events_failure';
 export const BERTH_CHANGE_INSPECTION_DATE = 'berth_change_inspection_date';
 export const BERTH_CHANGE_LOOKAHEAD_DAYS = 'berth_change_lookahead_days';
 export const BERTH_CHANGE_LOOKBEHIND_DAYS = 'berth_change_lookbehind_days';
+export const BERTH_SET_FILTER_ON_SOURCES = 'berth_set_filter_on_sources';
 
 /** FAVORITES */
 export const ADD_FAVORITE_PORTCALL = 'add_favorite_portcall';

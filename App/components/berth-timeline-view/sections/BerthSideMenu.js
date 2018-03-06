@@ -17,7 +17,7 @@ class BerthSideMenu extends Component {
 
     render() {
 
-        const { selectorIcon, onSearchPress, onBackPress} = this.props;
+        const { selectorIcon, onSearchPress, onBackPress, onSettingsPress} = this.props;
 
         return (
             <View style={styles.container}>
@@ -28,12 +28,20 @@ class BerthSideMenu extends Component {
                     underlayColor='transparent'
                     onPress={onBackPress}
                 />
-                <Icon
-                    name='search'
-                    color={colorScheme.primaryTextColor}
-                    size={40}
-                    onPress={onSearchPress}
-                />
+                <View>
+                    <Icon
+                        name='search'
+                        color={colorScheme.primaryTextColor}
+                        size={40}
+                        onPress={onSearchPress}
+                    />
+                    <Icon
+                        name='settings'
+                        color='white'
+                        size={40}
+                        onPress={onSettingsPress}
+                    />
+                </View>
                 {!!selectorIcon &&
                     <Icon
                         name={selectorIcon.name}
@@ -52,7 +60,8 @@ class BerthSideMenu extends Component {
 BerthSideMenu.propTypes = {
     onBackPress: PropTypes.func.isRequired,
     onSearchPress: PropTypes.func.isRequired,
-    selectorIcon: PropTypes.object.isRequired,
+    onSettingsPress: PropTypes.func.isRequired,
+    selectorIcon: PropTypes.object.isRequired,    
 }
 
 export default BerthSideMenu;
