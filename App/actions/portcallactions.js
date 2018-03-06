@@ -519,7 +519,7 @@ export const fetchPortCallOperations = (portCallId) => {
                     return operation;
                 });
             })
-            .then(extractWarnings)
+            //.then(extractWarnings)
             .then((operations) => {
                 if (!getReliability) return operations;
 

@@ -16,7 +16,7 @@ import {
   Badge
 } from 'react-native-elements';
 
-import WarningView from './warningview';
+import WarningView from './warning-view';
 
 import Collapsible from 'react-native-collapsible';
 
@@ -32,7 +32,6 @@ function getWarningText(warning) {
     let result;
     if(warning.warningType) { // New version
         let noUnderscore = warning.warningType.replace(/_/g, ' ');
-        
         result = noUnderscore.charAt(0).toUpperCase() + noUnderscore.slice(1).toLowerCase();
     } else {
         result = warning.message;
@@ -220,6 +219,7 @@ class OperationView extends Component {
           </Collapsible>
         </View>
         <WarningView 
+            operation={operation}
             warning={this.state.selectedWarning}
             onClose={() => this.setState({selectedWarning: undefined})}
             addStatement={(stateId, mostRelevantStatement) => this.addStatement(stateId, mostRelevantStatement)}
