@@ -37,7 +37,6 @@ export const selectNewDate = (date) => (dispatch, getState) => {
     dispatch({type: BERTH_CHANGE_INSPECTION_DATE, payload: date});
 
     return dispatch(fetchEventsForLocation(getState().berths.selectedLocation.URN, date));
-    // return dispatch(fetchEventsForLocation("urn:mrn:stm:location:SEGOT:BERTH:skarvik520", date)); // GLÖM INTE ATT TA BORT HÅRDKODNING!!
 }
 
 export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState) => {
@@ -55,6 +54,8 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
 
     const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event?from_time=${fromTime}&to_time=${endTime}&location=${locationURN}&event_definition=VESSEL_AT_BERTH`;
     dispatch({type: BERTH_FETCHING_EVENTS});
+
+    console.log(url);
 
     return pinch.fetch(url,
         {
@@ -124,7 +125,6 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
         })
         .then(structure => {
             structure.sort((a, b) => b.length - a.length); // Want the rows to be denser at the top
-            // console.log(JSON.stringify(structure));
             dispatch({type: BERTH_FETCHING_EVENTS_SUCCESS, payload: structure});
         })
         .catch(err => {
@@ -133,7 +133,7 @@ export const fetchEventsForLocation = (locationURN, time) => (dispatch, getState
                     type: SET_ERROR,
                     payload: {
                         description: err.message,
-                        title: 'Unable to fetch events for location!',
+                        title: 'Unable to fetch events for location: ' + err.message,
                     }
                 });
 
@@ -148,12 +148,10 @@ const fetchVessel = (event) =>  {
     return (dispatch, getState) => {
         const connection = getState().settings.connection;
         const token = getState().settings.token;
-        const favorites = getState().favorites;
-        const contentType = getState().settings.instance.contentType;
         return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${event.vesselId}`,
         {
             method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
+            headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, contentType),
             sslPinning: getCert(connection),
         })
         .then(result => {
@@ -177,7 +175,7 @@ const fetchStatements = (event) => (dispatch, getState) => {
     const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event/${event.eventId}`;
     dispatch({type: BERTH_FETCHING_EVENTS});
 
-    console.log(url);
+    // console.log(url);
 
     return pinch.fetch(url,
         {

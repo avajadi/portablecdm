@@ -17,25 +17,52 @@ import {
 
 import StatementDetails from './StatementDetails';
 
-import { getDateTimeString } from '../../../util/timeservices';
+import { getDateTimeString, getDateString, getTimeString } from '../../../util/timeservices';
 import colorScheme from '../../../config/colors';
+
+
+const sortStatements = (statements) => {
+    const statementsCopy = JSON.parse(JSON.stringify(statements)); // kanske ska göra det här?
+
+    // First order by time
+    statementsCopy.sort((a, b) => {
+        let aTime = new Date(a.time);
+        let bTime = new Date(b.time);
+
+        return bTime - aTime;
+    });
+
+    // Then bubble up actuals
+    statementsCopy.sort((a, b) => {
+  
+        if(b.timeType === 'ACTUAL') {
+            return 1;
+        }
+  
+        if(a.timeType === 'ACTUAL') {
+            return -1;
+        }
+
+  
+
+        return 0;
+    });
+
+
+    return statementsCopy;
+}
 
 
 const EventDetails = (props) => {
     const { event } = props;
 
-    const headerStartTimeColor = event.startTimeType === 'ACTUAL' ? colorScheme.actualColor : colorScheme.estimateColor;
-    const headerEndTimeColor = event.endTimeType === 'ACTUAL' ? colorScheme.actualColor : colorScheme.estimateColor;
-
     const actualIcon = (<View style={[styles.actualContainer]}>
-        <Text style={styles.actualText}>A</Text>
-    </View>);
+                            <Text style={styles.actualText}>A</Text>
+                        </View>);
 
     const estimateIcon = (<View style={[styles.estimateContainer]}>
                             <Text style={styles.estimateText}>E</Text>
                           </View>);
-
-
 
     return(
         <Modal
@@ -50,27 +77,23 @@ const EventDetails = (props) => {
                 <View style={styles.innerContainer}>
                     {/* Header */}
                     <View style={styles.headerContainer}>
+                        <View>
+                            <Text>{getDateString(new Date(event.startTime))}</Text>
+                            <Text>{getTimeString(new Date(event.startTime))}</Text>
+                        </View>
                         <Text style={styles.headerText}>{event.vessel.name}</Text>
                     </View>
                     {/* Main view */}
                     <ScrollView>
                         <View style={styles.tableHeaderContainer}>
-                            <Text key={-1} style={[styles.statementHeaderText, {textAlign: 'left', paddingLeft: 10}]}>Arrival Vessel Berth</Text>
-                            <View style={{alignSelf: 'center', flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingRight: 10}}>
-                                {event.startTimeType === 'ACTUAL' ? actualIcon : estimateIcon}
-                                <Text style={[styles.statementHeaderTimeText]}>{getDateTimeString(new Date(event.startTime))}</Text>
-                            </View>
+                            <Text key={-1} style={[styles.statementHeaderText]}>Arrival Vessel Berth</Text>
                         </View>
-                        {event.arrivalStatements.map((statement, index) => <StatementDetails key={index} statement={statement} /> )}
+                        {sortStatements(event.arrivalStatements).map((statement, index) => <StatementDetails key={index} statement={statement} /> )}
 
                         <View style={styles.tableHeaderContainer}>
-                            <View style={{alignSelf: 'center', flex: 1, flexDirection: 'row', justifyContent:'flex-start', alignItems: 'center', paddingLeft: 10}}>
-                                <Text style={[styles.statementHeaderTimeText]}>{getDateTimeString(new Date(event.endTime))}</Text>
-                                {event.startTimeType === 'ACTUAL' ? actualIcon : estimateIcon}
-                            </View>
-                            <Text key={-2} style={[styles.statementHeaderText, {textAlign: 'right', marginRight: 10}]}>Departure Vessel Berth</Text>
+                            <Text key={-2} style={[styles.statementHeaderText]}>Departure Vessel Berth</Text>
                         </View>
-                        {event.departureStatements.map((statement, index) => <StatementDetails key={index} statement={statement} /> )}
+                        {sortStatements(event.departureStatements).map((statement, index) => <StatementDetails key={index} statement={statement} /> )}
                     </ScrollView>
 
 
@@ -151,10 +174,8 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         flex: 1,
         marginHorizontal: 7,
-    },
-    statementHeaderTimeText: {
-        marginHorizontal: 7,
-        fontSize: 10,
+        textAlign: 'left', 
+        marginLeft: 10,
     },
     tableHeaderContainer: {
         flexDirection: 'row',

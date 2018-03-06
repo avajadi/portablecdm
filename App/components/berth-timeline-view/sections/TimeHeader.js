@@ -26,7 +26,7 @@ export default TimeHeader;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colorScheme.primaryColor,
+        backgroundColor: '#1a3047',
         alignItems: 'center',
         justifyContent: 'center',
         height: 20,

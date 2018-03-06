@@ -38,18 +38,9 @@ class EventView extends Component {
         else {
             const { arrivalStatements, departureStatements } = event;
 
-            const arrival = arrivalStatements
-                .some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
-                // .filter(statement => statement.time === event.startTime)
-                // .filter(statement => statement.timeType === event.startTimeType)
-                // .length > 0;
-
-            const departure = departureStatements
-                .some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
-                // .filter(statement => statement.time === event.endTime)
-                // .filter(statement => statement.timeType === event.endTimeType)
-                // .length > 0;
-
+            const arrival = arrivalStatements.some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+            const departure = departureStatements.some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+                
             return arrival && departure;
         }
     }
@@ -97,7 +88,7 @@ class EventView extends Component {
         const days = [];
     
         const firstDay = new Date(events.earliestTime);
-        firstDay.setDate(firstDay.getDate() + 1);
+        firstDay.setDate(firstDay.getDate());
         firstDay.setHours(0, 0, 0, 0);
     
         const lastDay = new Date(events.latestTime);

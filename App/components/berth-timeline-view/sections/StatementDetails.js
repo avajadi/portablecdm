@@ -31,7 +31,7 @@ const StatementDetails = (props) => {
             </View>
             <Text style={styles.text}>{removeStringReportedBy(statement.reportedBy)}</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>        
-                <Text style={styles.text}><Text style={{fontWeight: 'bold', fontSize: 12}}>AT</Text>{getDateTimeString(new Date(statement.reportedAt))}</Text>
+                <Text style={styles.text}><Text style={{fontWeight: 'bold', fontSize: 11}}>at </Text>{getDateTimeString(new Date(statement.reportedAt))}</Text>
             </View>
         </View>
     );
