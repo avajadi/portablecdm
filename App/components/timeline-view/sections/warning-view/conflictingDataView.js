@@ -15,20 +15,25 @@ import {
 import StateView from '../stateview';
 import colorScheme from '../../../../config/colors';
 
-class MultipleActualsView extends Component {
+class ConflictingDataView extends Component {
 
     
     render() {
         const { operation, warning } = this.props;
         const statements = operation.statements.filter(statement => warning.references.some(ref => ref.refId === statement.messageId));
+        const timeDiff = warning.indicatorValues.find(val => val.type === 'TIME_DIFF').value;
         return (
             <View style={styles.mainContainer}>
                 <Text style={styles.header}>
                         Conflicting statements for {statements[0].stateDefinition.replace(/_/g, ' ')}
                 </Text>
+                <Text style={styles.description}>
+                    <Text style={{fontWeight: 'bold'}}>Time difference: </Text>
+                    {timeDiff + ' min'}
+                </Text>
                 <ScrollView>
                     {statements.map(statement => <StateView key={statement.messageId} statement={statement} />)}
-                    <View style={{height: 300}} />
+                    <View style={{height: 300}} /> 
                 </ScrollView>
             </View>
         );
@@ -40,10 +45,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 22,
     },
+    description: {
+        fontSize: 15,
+    },
     mainContainer: {
         flex: 0,
         flexWrap: 'wrap',
     }
 });
 
-export default MultipleActualsView;
+export default ConflictingDataView;

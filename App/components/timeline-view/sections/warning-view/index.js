@@ -20,6 +20,7 @@ import MiniHeader from '../../../mini-header-view';
 import StateDetails from '../statedetails';
 
 import colorScheme from '../../../../config/colors';
+import ConflictingDataView from './conflictingDataView';
 
 const WARNING_TYPES = {
     MULTIPLE_VESSELS_AT_BERTH: 'MULTIPLE_VESSELS_AT_BERTH',
@@ -68,6 +69,8 @@ class WarningView extends Component {
                 return <MultipleActualsView operation={this.props.operation} warning={warning} /> 
             case WARNING_TYPES.VESSEL_AT_MULTIPLE_LOCATIONS:
                 return <MultipleLocationsView operation={this.props.operation} warning={warning} allLocations={this.props.allLocations} />
+            case WARNING_TYPES.CONFLICTING_DATA:
+                return <ConflictingDataView operation={this.props.operation} warning={warning} />
             default:
             return null;
         }
@@ -134,6 +137,7 @@ const descriptions = {
     'MULTIPLE_VESSELS_AT_BERTH': 'There are multiple planned vessels at the same berth at the same time.',
     'MULTIPLE_ACTUALS': 'There exists differing timestamps with type ACTUAL.',
     'VESSEL_AT_MULTIPLE_LOCATIONS': 'The vessel is reported to be at multiple locations at the same time.',
+    'CONFLICTING_DATA': 'There is a difference in time in the reported data.',
 }
 
 function mapStateToProps(state) {
