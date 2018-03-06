@@ -153,15 +153,9 @@ export const fetchInstance = () => {
                 
                 dispatch({type: types.SET_ERROR, payload: err});
                 throw new Error(types.ERR_DISPATCHED);
-            }).then(instanceInfo => {
-                const host = getState().settings.connection.host;
-                let generatedInfo = createInstanceInfo(instanceInfo, host);
-                console.log('Generated info: ' + JSON.stringify(generatedInfo));
-                dispatch({
-                    type: types.SETTINGS_FETCH_INSTANCE,
-                    payload: generatedInfo,
-                });
-            }).catch(err => {
+            }).then(instanceInfo => 
+                dispatchInstanceInfo(instanceInfo, connection.host, dispatch)).catch(err => {
+                dispatchInstanceInfo(null, connection.host, dispatch);
                 if (err.message !== types.ERR_DISPATCHED) {
                     if (connection.scheme === 'https://') { // Try again without https
                         dispatch(changeScheme(false));
@@ -176,4 +170,13 @@ export const fetchInstance = () => {
                 }
             });
     }
+}
+
+function dispatchInstanceInfo(instanceInfo, host, dispatch) {
+    let generatedInfo = createInstanceInfo(instanceInfo, host);
+    console.log('Generated info: ' + JSON.stringify(generatedInfo));
+    dispatch({
+        type: types.SETTINGS_FETCH_INSTANCE,
+        payload: generatedInfo,
+    });
 }
