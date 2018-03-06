@@ -39,16 +39,16 @@ class EventView extends Component {
             const { arrivalStatements, departureStatements } = event;
 
             const arrival = arrivalStatements
-                .filter(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
-                .filter(statement => statement.time === event.startTime)
-                .filter(statement => statement.timeType === event.startTimeType)
-                .length > 0;
+                .some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+                // .filter(statement => statement.time === event.startTime)
+                // .filter(statement => statement.timeType === event.startTimeType)
+                // .length > 0;
 
             const departure = departureStatements
-                .filter(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
-                .filter(statement => statement.time === event.endTime)
-                .filter(statement => statement.timeType === event.endTimeType)
-                .length > 0;
+                .some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+                // .filter(statement => statement.time === event.endTime)
+                // .filter(statement => statement.timeType === event.endTimeType)
+                // .length > 0;
 
             return arrival && departure;
         }

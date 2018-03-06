@@ -96,34 +96,11 @@ class BerthSettings extends Component {
                                     placeholder="User name..."
                                     value={this.props.settings.filterOnSources[0] ? this.props.settings.filterOnSources[0] : ""}
                                     onChangeText={this.props.onFilterOnSourceChange}
-                                    style={{width: 100, backgroundColor: '#3a6ea5C0', borderRadius: 10, marginHorizontal: 10, textAlign: 'center'}}
+                                    containerStyle={{borderBottomColor: colorScheme.primaryColor, width: 280, borderRadius: 10, marginHorizontal: 10}}
                                     autoCorrect={false}
                                     autoCapitalize='none'
                                 />
-                                <ModalDropdown
-                                    ref={dropdwn => this.dropdown = dropdwn}
-                                    style={styles.dropdownHost}
-                                    // textStyle={styles.dropdownHostText}
-                                    dropdownStyle={styles.dropdownHost}
-                                    dropdownTextStyle={{fontSize: 15,}}
-                                    options={this.props.settings.previousFilters}
-                                    defaultValue={""}
-                                    value={""}
-                                    accessible={false}
-                                    onSelect={(index, value) => {
-                                        this.props.onFilterOnSourceChange(value);
-                                        return false;
-                                    }}
-                                    onDropdownWillShow={() => "tjolahej"}
-                                />
-                                <Icon 
-                                    color={colorScheme.primaryColor}
-                                    name={'keyboard-arrow-down'}
-                                    size={35}
-                                    iconStyle={styles.btnAddHost}
-                                    onPress={() => this.toggleDropdown()}
-                                />
-                                <Icon
+                                 <Icon
                                     type='evilicon'
                                     name='close-o'
                                     color='darkred'
@@ -192,6 +169,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         backgroundColor: colorScheme.primaryColor,
         justifyContent: 'center',
+        alignItems: 'center',
     },
     headerText: {
         alignSelf: 'center',
@@ -215,14 +193,5 @@ const styles = StyleSheet.create({
     sectionHeaderText: {
         fontSize: 13, 
         alignSelf: 'center'
-    },    
-    dropdownHost: {
-        padding: 10,
-    },
-    dropdownHostText: {
-        fontSize: 0,
-    },
-    hostTxtContainer: {
-        width: dimensions.width / 2,
     },
 });

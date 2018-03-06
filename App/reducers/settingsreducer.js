@@ -53,7 +53,7 @@ const INITIAL_STATE = {
     tokenType: 'bearer',
   },
   appVersion: APP_VERSION,  
-  instance: undefined,
+  instance: undefined
 }
 
 const settingsReducer = (state = INITIAL_STATE, action) => {

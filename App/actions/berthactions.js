@@ -161,7 +161,7 @@ const fetchVessel = (event) =>  {
             if (!err)
                 return JSON.parse(result.bodyString);
 
-            dispatch({ type: types.SET_ERROR, payload: err });
+            dispatch({ type: SET_ERROR, payload: err });
             throw new Error('dispatched');
         })
         .then(vessel => {
@@ -176,6 +176,8 @@ const fetchStatements = (event) => (dispatch, getState) => {
 
     const url = `${connection.scheme + connection.host}:${connection.port}/pcb/event/${event.eventId}`;
     dispatch({type: BERTH_FETCHING_EVENTS});
+
+    console.log(url);
 
     return pinch.fetch(url,
         {
