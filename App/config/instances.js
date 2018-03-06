@@ -39,14 +39,16 @@ const hasComment = {
 
 export default createInstanceInfo = (instanceInfo, host) => {
     
-    let pcbBuild = parseInt(instanceInfo.pcb.buildNumber);
-    if (!pcbBuild) {
+    let pcbBuild;
+    if (!instanceInfo) {
         pcbBuild = 493;
+    } else {
+        pcbBuild = parseInt(instanceInfo.pcb.buildNumber);
     }
 
     let withdraw = parseInt(pcbBuild) >= hasWithdraw.pcb;
     let portCallEndPoint = pcbBuild >= hasEvents.pcb ? '/events' : '/operations';
-    let contentType = pcbBuild >= hasEvents.pcb ? 'application/json' : 'application/xml';
+    let contentType = pcbBuild >= hasEvents.pcb ? 'application/xml' : 'application/xml';
     let staging = isStaging.some(x => host.includes(x));
     let comment = pcbBuild >= hasComment.pcb;
 

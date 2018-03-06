@@ -40,7 +40,7 @@ import { hasKeycloak } from '../../config/instances';
 import constants from '../../config/constants';
 import colorScheme from '../../config/colors';
 
-// import logo from '../../assets/login-view.png';
+import logo from '../../assets/login-view.png';
 
 const dimensions = Dimensions.get('window');
 
@@ -60,6 +60,8 @@ class LoginView extends Component {
             showLogo: true,
             showDropdown: false,
         };
+
+        this.startApplication = this.startApplication.bind(this);
     }
 
 
@@ -155,22 +157,36 @@ class LoginView extends Component {
         }
     }
 
+    startApplication() {
+        this.props.fetchLocations().then(() => {
+            console.log('fetched locations');
+            if(this.props.error.hasError) {
+                this.props.navigation.navigate('Error');
+            }
+        });
+
+        this.props.navigation.navigate('Application');
+    }
+
     async login() {
         const { navigate, dispatch } = this.props.navigation;
         this.setState({loggingIn: true});
 
         await this.props.fetchInstance();
         if (this.props.error.hasError) {
-            navigate('Error');
+            Alert.alert(
+                'Unable to fetch instance info!', 
+                'Would you like to proceed anyway? Some functionality might not work correctly.',
+                [
+                    {text: 'No', onPress: () => navigate('Error')},
+                    {text: 'Yes', onPress: () => {
+                        this.props.removeError();
+                        this.startApplication();
+                    }}    
+                ]
+            );
         } else {
-            this.props.fetchLocations().then(() => {
-                console.log('fetched locations');
-                if(this.props.error.hasError) {
-                    navigate('Error');
-                }
-            });
-    
-            navigate('Application');
+            this.startApplication();
         }
     }
 
@@ -207,13 +223,13 @@ class LoginView extends Component {
                         <Text style={{color: 'white', alignSelf: 'center'}}>DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV</Text>
                     </View>
                 }
-                {/* {this.state.showLogo && 
+                {this.state.showLogo && 
                 <View style={{backgroundColor: colorScheme.primaryColor, elevation: 16}}>
                     <Image 
                         style={styles.logo} 
                         source={logo} />
                 </View>
-                } */}
+                }
                 
                 <View style={styles.contentContainer}>
                     <View>
