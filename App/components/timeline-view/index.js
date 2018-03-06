@@ -120,6 +120,7 @@ class TimeLineView extends Component {
                                 style={{alignSelf: 'center'}}
                                 animating={loading}
                                 size='large'/>}
+            <ScrollView maximumZoomScale={10} alwaysBounceVertical={false}>
                 {!loading && <ListView
                                 enableEmptySections
                                 dataSource={dataSource} 
@@ -150,6 +151,7 @@ class TimeLineView extends Component {
                                 }
                             />
                 }
+            </ScrollView>
             </View>
         );
     }

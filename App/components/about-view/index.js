@@ -46,6 +46,7 @@ export default class AboutView extends Component {
                     <Text>{BULLET} Tapping a warning from the Timeline now shows details </Text>
                     <Text>{BULLET} Added setting for using SSL rather than specifying scheme and port </Text>
                     <Text>{BULLET} Big performance update </Text>
+                    <Text>{BULLET} Added ability to pinch zoom in some views </Text>
                     <Text>{BULLET} Added feature to withdraw own messages </Text>
                     <Text>{BULLET} Added filter on stage (for supporting instances)</Text>
                     <Text>{BULLET} Added port call stage in port call list </Text>

@@ -20,6 +20,7 @@ import WarningView from './warning-view';
 
 import Collapsible from 'react-native-collapsible';
 
+
 import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
 import { removeStringReportedBy } from '../../../util/stringUtils';
 import colorScheme from '../../../config/colors';
@@ -120,11 +121,13 @@ class OperationView extends Component {
     let redlineStyle = this._calculateRedline(startTime, endTime);
 
     return (
+      
       <View style={styles.container} onLayout={(event) => {
             if(renderRedLine) {
                 this.setState({dimensions: {...this.state.dimensions, operation: event.nativeEvent.layout}});
             }
           }}>
+    
         {/* Time Display */}
         <View style={styles.timeContainer}>
           {/*Start Time*/}
@@ -158,7 +161,7 @@ class OperationView extends Component {
 
         {/*Everything to the right of the line*/}
         <View
-          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0, paddingLeft: 15}}>
+          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0, paddingLeft: 15}}>          
           
           {/*Clickable header to expand information*/}
           <TouchableWithoutFeedback
