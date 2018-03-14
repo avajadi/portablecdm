@@ -16,7 +16,7 @@ import {
   Badge
 } from 'react-native-elements';
 
-import WarningView from './warningview';
+import WarningView from './warning-view';
 
 import Collapsible from 'react-native-collapsible';
 
@@ -28,7 +28,6 @@ function getWarningText(warning) {
     let result;
     if(warning.warningType) { // New version
         let noUnderscore = warning.warningType.replace(/_/g, ' ');
-        
         result = noUnderscore.charAt(0).toUpperCase() + noUnderscore.slice(1).toLowerCase();
     } else {
         result = warning.message;
@@ -216,6 +215,7 @@ class OperationView extends Component {
           </Collapsible>
         </View>
         <WarningView 
+            operation={operation}
             warning={this.state.selectedWarning}
             onClose={() => this.setState({selectedWarning: undefined})}
             addStatement={(stateId, mostRelevantStatement) => this.addStatement(stateId, mostRelevantStatement)}
@@ -318,12 +318,12 @@ class OperationView extends Component {
         }
         subtitle = {
             <View style={{flexDirection: 'column'}} >
-                {operation.atLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{operation.atLocation.name}</Text>}
-                {operation.fromLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{operation.fromLocation.name}</Text>}
-                {operation.toLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
+                {stateToDisplay.atLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{stateToDisplay.atLocation.name}</Text>}
+                {stateToDisplay.fromLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{stateToDisplay.fromLocation.name}</Text>}
+                {stateToDisplay.toLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{stateToDisplay.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
                   <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{removeStringReportedBy(stateToDisplay.reportedBy)} 

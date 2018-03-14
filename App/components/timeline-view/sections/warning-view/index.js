@@ -12,9 +12,23 @@ import {
     ListItem, 
 } from 'react-native-elements';
 
-import MiniHeader from '../../mini-header-view';
+import MultipleActualsView from './multipleActualsView';
+import MultipleVesselsAtBerthView from './multipleVesselsAtBerthView';
+import MissingDataView from './missingDataView';
+import MultipleLocationsView from './multipleLocationsView';
+import MiniHeader from '../../../mini-header-view';
+import StateDetails from '../statedetails';
 
-import colorScheme from '../../../config/colors';
+import colorScheme from '../../../../config/colors';
+import ConflictingDataView from './conflictingDataView';
+
+const WARNING_TYPES = {
+    MULTIPLE_VESSELS_AT_BERTH: 'MULTIPLE_VESSELS_AT_BERTH',
+    MULTIPLE_ACTUALS: 'MULTIPLE_ACTUALS',
+    CONFLICTING_DATA: 'CONFLICTING_DATA',
+    MISSING_DATA: 'MISSING_DATA',
+    VESSEL_AT_MULTIPLE_LOCATIONS: 'VESSEL_AT_MULTIPLE_LOCATIONS',
+};
 
 
 class WarningView extends Component {
@@ -43,68 +57,27 @@ class WarningView extends Component {
 
     renderDetails(warning) {
         switch(warning.warningType) {
-            case 'MISSING_DATA':
+            case WARNING_TYPES.MISSING_DATA:
                 return (
-                    <View>
-                        <Text style={styles.header}>
-                            States without data
-                        </Text>
-                        <List>
-                            {
-                                warning.indicatorValues.filter(({value, type}) => type === 'STATE_ID').map(({value}, index) => {
-                                    return (
-                                        <ListItem
-                                            key={index}
-                                            title={this.formatStateId(value)}
-                                            titleStyle={styles.listItem}
-                                            rightIcon = { <Icon
-                                                color = {colorScheme.primaryColor}
-                                                name='add-circle'
-                                                size={35}
-                                                onPress={() => {
-                                                    this.props.addStatement(value, null);
-                                                    this.props.onClose();
-                                                }}
-                                            />}
-                                        />
-                                    );
-                                })
-                            }
-                        </List>
-                    </View>
+                    <MissingDataView warning={warning} addStatement={this.props.addStatement} onClose={this.props.onClose} formatStateId={this.formatStateId} />
                 )
-            break;
-            case 'MULTIPLE_VESSELS_AT_BERTH':
-                const berth = this.formatLocation(warning.references.find(ref => ref.refType === 'LOCATION').refId.split('berth:')[1]);
+            case WARNING_TYPES.MULTIPLE_VESSELS_AT_BERTH:
                 return (
-                    <View>
-                        <Text style={styles.header}>
-                                {berth}
-                        </Text>
-                        <List>
-                            {warning.references.filter(ref => ref.refType === 'VESSEL').map(ref => {
-                                const vessel = this.getVessel(ref.refId);
-                                return (
-                                    <ListItem
-                                    roundAvatar
-                                    avatar={{uri: vessel.photoURL}}
-                                    key={ref.refId}
-                                    title={vessel.name}
-                                    titleStyle={styles.listItem}
-                                    hideChevron
-                                    />
-                                );
-                            })}
-                        </List>
-                    </View>
+                   <MultipleVesselsAtBerthView warning={warning} getVessel={this.getVessel} formatLocation={this.formatLocation} />
                 );
+            case WARNING_TYPES.MULTIPLE_ACTUALS:
+                return <MultipleActualsView operation={this.props.operation} warning={warning} /> 
+            case WARNING_TYPES.VESSEL_AT_MULTIPLE_LOCATIONS:
+                return <MultipleLocationsView operation={this.props.operation} warning={warning} allLocations={this.props.allLocations} />
+            case WARNING_TYPES.CONFLICTING_DATA:
+                return <ConflictingDataView operation={this.props.operation} warning={warning} />
             default:
             return null;
         }
     }
 
     render() {
-        const { onClose, warning } = this.props;
+        const { onClose, warning, operation } = this.props;
 
         if (!warning) {
             return null;
@@ -154,13 +127,6 @@ const styles = StyleSheet.create({
         margin: 10,
         textAlign: 'center',
     },
-    header: {
-        fontWeight: 'bold',
-        fontSize: 22,
-    },
-    listItem: {
-        color: colorScheme.quaternaryTextColor,
-    },
     centralizer: {
         alignItems: 'center',
     },
@@ -169,11 +135,15 @@ const styles = StyleSheet.create({
 const descriptions = {
     'MISSING_DATA': 'There are important data missing from the event. Tap a state to report a statement.',
     'MULTIPLE_VESSELS_AT_BERTH': 'There are multiple planned vessels at the same berth at the same time.',
+    'MULTIPLE_ACTUALS': 'There exists differing timestamps with type ACTUAL.',
+    'VESSEL_AT_MULTIPLE_LOCATIONS': 'The vessel is reported to be at multiple locations at the same time.',
+    'CONFLICTING_DATA': 'There is a difference in time in the reported data.',
 }
 
 function mapStateToProps(state) {
     return {
       portCalls: state.cache.portCalls,
+      allLocations: state.location.locations,
     }
   }
 
