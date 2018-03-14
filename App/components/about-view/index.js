@@ -42,12 +42,13 @@ export default class AboutView extends Component {
                 <Text h4>Version 1.5</Text>
                 <View style={{padding: 5}}>
                     <Text>{BULLET} Complete revisit of login view </Text>
+                    <Text>{BULLET} Added a Berth View from side menu </Text>
                     <Text>{BULLET} Allows for remembering user settings in legacy login </Text>
                     <Text>{BULLET} Tapping a warning from the Timeline now shows details </Text>
                     <Text>{BULLET} Added setting for using SSL rather than specifying scheme and port </Text>
                     <Text>{BULLET} Big performance update </Text>
                     <Text>{BULLET} Added ability to pinch zoom in some views </Text>
-                    <Text>{BULLET} Added feature to withdraw own messages </Text>
+                    <Text>{BULLET} Added feature to withdraw own messages (with Legacy Login) </Text>
                     <Text>{BULLET} Added filter on stage (for supporting instances)</Text>
                     <Text>{BULLET} Added port call stage in port call list </Text>
                     <Text>{BULLET} Added visualization for withdrawn messages </Text>

@@ -19,6 +19,7 @@ import {
 } from '../../../actions';
 
 import {getDateTimeString} from '../../../util/timeservices';
+import { cleanURN } from '../../../util/stringUtils';
 
 import colorScheme from '../../../config/colors';
 
@@ -31,14 +32,9 @@ class StateView extends Component {
         this.handleWithdrawStatement = this.handleWithdrawStatement.bind(this);
     }
 
-    removeStringReportedBy(string) {
-        let splitString = string.split(/:/g);
-        return splitString[splitString.length - 1]
-    }
-
     // need to be revisited if/when supporting keycloak
     statementReportedByMe = (username) => {
-        return this.props.loggedinUserName === this.removeStringReportedBy(username);
+        return this.props.loggedinUserName === cleanURN(username);
     }
 
     handleWithdrawStatement = (statement) => {
@@ -131,7 +127,7 @@ class StateView extends Component {
                         
                         <View style={[styles.detailView, additionalStyles]}> 
                             <Text style={styles.stateSubTitleText}>REPORTED BY: </Text>
-                            <Text style={styles.detailText}>{this.removeStringReportedBy(statement.reportedBy)} </Text>  
+                            <Text style={styles.detailText}>{cleanURN(statement.reportedBy)} </Text>  
                         </View>
                         <View style={[styles.detailView, additionalStyles]}> 
                             <Text style={styles.stateSubTitleText}>REPORTED AT: </Text>  

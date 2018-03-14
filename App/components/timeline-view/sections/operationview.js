@@ -22,7 +22,7 @@ import Collapsible from 'react-native-collapsible';
 
 
 import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
-import { removeStringReportedBy } from '../../../util/stringUtils';
+import { cleanURN } from '../../../util/stringUtils';
 import colorScheme from '../../../config/colors';
 
 function getWarningText(warning) {
@@ -329,7 +329,7 @@ class OperationView extends Component {
                   <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{stateToDisplay.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{removeStringReportedBy(stateToDisplay.reportedBy)} 
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{cleanURN(stateToDisplay.reportedBy)} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
