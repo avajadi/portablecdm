@@ -40,7 +40,7 @@ const hasComment = {
 export default createInstanceInfo = (instanceInfo, host) => {
     
     let pcbBuild;
-    if (!instanceInfo) {
+    if (isNaN(instanceInfo.pcb)) {
         pcbBuild = 493;
     } else {
         pcbBuild = parseInt(instanceInfo.pcb.buildNumber);

@@ -68,24 +68,26 @@ class StateDetails extends Component {
                         
                 </View>
             {/* State List of this state */}
-            <ScrollView style={styles.container}>
+            <ScrollView maximumZoomScale={10}>
+                <ScrollView style={styles.container}>
 
-                {/*Warnings*/}
-                {statements.warnings &&
-                    statements.warnings.map((warning, index) => {
-                    return (
-                        <View style={styles.warningContainer} key={index}>
-                            <Icon name='warning' color={colorScheme.warningColor} size={24} paddingLeft={0}/>
-                            <Text style={styles.warningText} >Warning: {warning.message}</Text>
-                        </View>
-                    );
-                })} 
+                    {/*Warnings*/}
+                    {statements.warnings &&
+                        statements.warnings.map((warning, index) => {
+                        return (
+                            <View style={styles.warningContainer} key={index}>
+                                <Icon name='warning' color={colorScheme.warningColor} size={24} paddingLeft={0}/>
+                                <Text style={styles.warningText} >Warning: {warning.message}</Text>
+                            </View>
+                        );
+                    })} 
 
 
-                {/*StateView*/}
-                {statements.map( statement => {
-                    return <StateView key={statement.messageId} statement={statement} stateDef={stateDef} />
-                } )} 
+                    {/*StateView*/}
+                    {statements.map( statement => {
+                        return <StateView key={statement.messageId} statement={statement} stateDef={stateDef} />
+                    } )} 
+                </ScrollView>
             </ScrollView>
         </View>
         );
