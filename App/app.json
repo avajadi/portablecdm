@@ -5,7 +5,7 @@
     "version": "1.0.2",
     "slug": "portcdm-app",
     "sdkVersion": "25.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "scheme": "pacdm",
     "ios": {
       "bundleIdentifier": "se.viktoria.portablecdm",

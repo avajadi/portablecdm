@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { ScreenOrientation } from 'expo';
 
 import {
     View,
@@ -12,8 +13,6 @@ import {
     Button,
     Dimensions
 } from 'react-native';
-
-import Orientation from 'react-native-orientation';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
@@ -96,7 +95,7 @@ class BerthTimeLine extends Component {
     }
 
     componentDidMount() {
-        Orientation.lockToLandscape();
+        ScreenOrientation.allow('LANDSCAPE');
         this.fetchEvents();
     }
 
@@ -112,7 +111,7 @@ class BerthTimeLine extends Component {
     }
 
     componentWillUnmount() {
-        Orientation.unlockAllOrientations();
+        ScreenOrientation.allow('ALL');
     }
 
     render() {
