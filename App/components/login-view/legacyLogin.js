@@ -59,6 +59,7 @@ class LegacyLogin extends Component {
                 <CheckBox
                     title="Remember me"
                     checked={this.state.remember}
+                    checkedColor={colorScheme.primaryColor}
                     onPress={() => this.setState({remember: !this.state.remember})}
                     containerStyle={styles.remember}
                     />

@@ -270,6 +270,7 @@ class LoginView extends Component {
                                 containerStyle={styles.hostTxtContainer}
                                 onChangeText={text => this.setState({host: text})} 
                                 autoCorrect={false}
+                                spellCheck={false}
                                 placeholder={'Enter a host'}
                                 autoCapitalize={'none'}
                                 onBlur={() => this.addHostPress()}

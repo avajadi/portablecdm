@@ -41,6 +41,7 @@ import LocationSelection from './sections/locationselection';
 
 import colorScheme from '../../config/colors';
 import { createPortCallMessageAsObject, objectToXml } from '../../util/xmlUtils';
+import { cleanURN } from '../../util/stringUtils';
 import { getDateTimeString } from '../../util/timeservices';
 
 
@@ -497,7 +498,7 @@ class SendPortcall extends Component {
               <Text style={styles.bottomInfoTitleText}>Most Relevant Statement: </Text>{'\n'}
             <Text>{mostRelevantStatement.timeType}{' '}
               {getDateTimeString(new Date(mostRelevantStatement.time))}{'\n'}</Text>
-              <Text style={{fontWeight: 'bold'}}>Reported by: </Text>{mostRelevantStatement.reportedBy}{'\n'}
+              <Text style={{fontWeight: 'bold'}}>Reported by: </Text>{cleanURN(mostRelevantStatement.reportedBy)}{'\n'}
               <Text style={{fontWeight: 'bold'}}>At: </Text>{getDateTimeString(new Date(mostRelevantStatement.reportedAt))}  
             </Text>
           </View>

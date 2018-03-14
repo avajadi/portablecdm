@@ -14,7 +14,7 @@ import {
 
 
 import { getDateString, getTimeString } from '../../../util/timeservices';
-import { removeStringReportedBy } from '../../../util/stringUtils';
+import { cleanURN } from '../../../util/stringUtils';
 import colorScheme from '../../../config/colors';
 
 import EventBar from './EventBar';
@@ -38,8 +38,8 @@ class EventView extends Component {
         else {
             const { arrivalStatements, departureStatements } = event;
 
-            const arrival = arrivalStatements.some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
-            const departure = departureStatements.some(statement => acceptedSources.includes(removeStringReportedBy(statement.reportedBy).toLowerCase()))
+            const arrival = arrivalStatements.some(statement => acceptedSources.includes(cleanURN(statement.reportedBy).toLowerCase()))
+            const departure = departureStatements.some(statement => acceptedSources.includes(cleanURN(statement.reportedBy).toLowerCase()))
                 
             return arrival && departure;
         }

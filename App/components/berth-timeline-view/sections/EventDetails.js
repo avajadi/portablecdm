@@ -77,10 +77,6 @@ const EventDetails = (props) => {
                 <View style={styles.innerContainer}>
                     {/* Header */}
                     <View style={styles.headerContainer}>
-                        <View>
-                            <Text>{getDateString(new Date(event.startTime))}</Text>
-                            <Text>{getTimeString(new Date(event.startTime))}</Text>
-                        </View>
                         <Text style={styles.headerText}>{event.vessel.name}</Text>
                     </View>
                     {/* Main view */}

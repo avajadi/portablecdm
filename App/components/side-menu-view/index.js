@@ -73,10 +73,10 @@ class SideMenu extends Component {
             </View>    
 
 
-<Divider style={{backgroundColor: colorScheme.secondaryContainerColor, height: 0.7,}}/>
+            <Divider style={{backgroundColor: colorScheme.secondaryContainerColor, height: 0.7,}}/>
 
             <View style={styles.listContainer}>
-                <List style={{paddingTop: 0}}>
+                <List style={{paddingTop: 0, backgroundColor: colorScheme.sidebarColor}}>
                     {/* Menu */}
                     <ListItem
                         containerStyle={activeItemKey === 'PortCalls' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
@@ -231,7 +231,7 @@ class SideMenu extends Component {
                     />
 
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={[styles.menuContainer]}
                         leftIcon={{
                           name:'exit-to-app',
                           color: 'white'
@@ -250,6 +250,8 @@ class SideMenu extends Component {
                     />
                 </List>
             </View>
+
+            <View style={{height: 25, backgroundColor: colorScheme.sidebarColor}} />
         </ScrollView>
     );
   }
@@ -283,7 +285,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     backgroundColor: colorScheme.sidebarColor,
     paddingLeft: 10,
-  },  
+  },
   menuText: {
     color: colorScheme.primaryTextColor,
   },

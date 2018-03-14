@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import colorScheme from '../../../config/colors';
-import { removeStringReportedBy } from '../../../util/stringUtils';
+import { cleanURN } from '../../../util/stringUtils';
 import { getDateTimeString } from '../../../util/timeservices';
 
 
@@ -29,7 +29,7 @@ const StatementDetails = (props) => {
                 {statement.timeType === 'ACTUAL' ? actualIcon : estimateIcon}
                 <Text style={styles.text}>{getDateTimeString(new Date(statement.time))}</Text>
             </View>
-            <Text style={styles.text}>{removeStringReportedBy(statement.reportedBy)}</Text>
+            <Text style={styles.text}>{cleanURN(statement.reportedBy)}</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>        
                 <Text style={styles.text}><Text style={{fontWeight: 'bold', fontSize: 11}}>at </Text>{getDateTimeString(new Date(statement.reportedAt))}</Text>
             </View>
