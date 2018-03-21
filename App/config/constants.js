@@ -1,4 +1,4 @@
-const redirectURI = 'http://localhost:1337/authing.html';
+const redirectURI = 'https://auth.expo.io/@rise_viktoria/portcdm-app';
 const clientID = '0.1-urn:mrn:stm:service:instance:viktoria:portablecdm';
 const baseURI = 'https://maritimeid.maritimecloud.net/auth';
 
@@ -18,6 +18,3 @@ export default function constants(isStaging) {
         MaritimeLogoutURI: `${isStaging ? staging.baseURI : baseURI}/realms/MaritimeCloud/protocol/openid-connect/logout?redirect_uri=${encodeURIComponent(isStaging ? staging.redirectURI : redirectURI)}`,
     }
 }
-
-//For testing
-//https://staging-maritimeid.maritimecloud.net/auth/realms/MaritimeCloud/protocol/openid-connect/auth?client_id=0.1-urn:mrn:stm:service:instance:viktoria:portablecdm-app&redirect_uri=http://localhost:1337/redirect/&response_mode=fragment&response_type=code&scope=openid

@@ -12,7 +12,7 @@ import {
     ListItem,
 } from 'react-native-elements';
 
-import StateView from '../stateview';
+import StatementView from '../statementview';
 import colorScheme from '../../../../config/colors';
 
 class MultipleActualsView extends Component {
@@ -27,7 +27,7 @@ class MultipleActualsView extends Component {
                         Conflicting statements for {statements[0].stateDefinition.replace(/_/g, ' ')}
                 </Text>
                 <ScrollView>
-                    {statements.map(statement => <StateView key={statement.messageId} statement={statement} />)}
+                    {statements.map(statement => <StatementView key={statement.messageId} statement={statement} />)}
                     <View style={{height: 300}} />
                 </ScrollView>
             </View>

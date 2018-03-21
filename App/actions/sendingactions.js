@@ -22,11 +22,13 @@ export const sendPortCall = (pcmAsObject, stateType) => {
     return (dispatch, getState) => {
         const { connection, token } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
+
+        const headers = connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
       
         return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/amss/state_update/`, {
             method: 'POST',
             headers: {
-              ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host)), 
+              ...headers, 
               'Content-Type' : 'application/xml'},
             body: objectToXml(pcmAsObject, stateType),
             sslPinning: getCert(connection),
@@ -52,11 +54,12 @@ export const initPortCall = (pcmAsObject, stateType) => {
     return (dispatch, getState) => {
         const { connection, token } = getState().settings;
         dispatch({type: types.SEND_PORTCALL});
+        const headers = connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host);
 
         return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcr/port_call/`, {
             method: 'POST',
             headers: {
-              ...(!!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host)), 
+              ...headers, 
               'Content-Type' : 'application/json'},
             body: createInitParams(pcmAsObject.vesselId),
             sslPinning: getCert(connection),

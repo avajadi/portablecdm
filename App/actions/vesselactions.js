@@ -1,7 +1,6 @@
 import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
-import {Alert} from 'react-native';
 import pinch from 'react-native-pinch';
 
 export const selectVessel = (vessel) => {
@@ -149,6 +148,35 @@ export const fetchVesselByName = (vesselName) => {
                     description: error.message, 
                     title: 'Unable to connect to the server!'}});
             }
+        });
+    }
+}
+
+export const appendVesselToPortCall = (portCall) =>  {
+    return (dispatch, getState) => {
+        const connection = getState().settings.connection;
+        const token = getState().settings.token;
+        const favorites = getState().favorites;
+        const contentType = getState().settings.instance.contentType;
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
+        {
+            method: 'GET',
+            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
+            sslPinning: getCert(connection),
+        })
+        .then(result => {
+            let err = checkResponse(result);
+            if (!err)
+                return JSON.parse(result.bodyString);
+
+            dispatch({ type: types.SET_ERROR, payload: err });
+            throw new Error('dispatched');
+        })
+        .then(vessel => {
+            portCall.vessel = vessel;
+            portCall.favorite = favorites.portCalls.includes(portCall.portCallId);
+            vessel.favorite = favorites.vessels.includes(vessel.imo);
+            return portCall;
         });
     }
 }

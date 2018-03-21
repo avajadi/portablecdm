@@ -1,5 +1,5 @@
 import * as types from './types';
-import { checkResponse, catchError } from '../util/httpResultUtils';
+import { checkResponse, } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
 import pinch from 'react-native-pinch';
 
@@ -94,6 +94,3 @@ export const selectLocation = (locationSort, location) => {
         }
     }
 }
-
-
-// Helper functions

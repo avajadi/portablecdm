@@ -23,7 +23,7 @@ import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
 import { 
-    fetchPortCallOperations, 
+    fetchPortCallEvents, 
     changeFetchReliability, 
     removeError, 
     toggleFavoritePortCall,
@@ -59,7 +59,7 @@ class TimeLineView extends Component {
     }
 
     loadOperations() {
-        this.props.fetchPortCallOperations(portCallId).then(() => {
+        this.props.fetchPortCallEvents(portCallId).then(() => {
             if(this.props.error.hasError) {
                 if(this.props.error.error.title == "RELIABILITY_FAIL") {
                     Alert.alert(
@@ -228,7 +228,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     changeFetchReliability, 
-    fetchPortCallOperations, 
+    fetchPortCallEvents, 
     removeError,
     toggleFavoritePortCall,
     toggleFavoriteVessel,

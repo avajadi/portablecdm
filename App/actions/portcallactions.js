@@ -1,19 +1,11 @@
 import * as types from './types';
 import { checkResponse } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
-import { Alert } from 'react-native';
 import pinch from 'react-native-pinch';
 import { appendPortCallIds, updatePortCallIds } from './eventactions';
-import colors from '../config/colors';
-import { filterChangeArrivingWithin } from './index';
+import { appendVesselToPortCall } from './vesselactions';
 
 const APPENDING_PORTCALLS_TIMEOUT_MS = 1000;
-
-export const clearPortCallSelection = () => {
-    return {
-        type: types.CLEAR_PORTCALL_SELECTION
-    }
-}
 
 export const selectPortCall = (portCall) => {
     return {
@@ -50,7 +42,7 @@ export const appendPortCalls = (lastPortCall) => {
         if (getState().favorites.locations.length > 0) {
             return dispatch(appendPortCallIds(lastPortCall)).then(ids => {
                 return Promise.all(ids.map(id => {
-                    return dispatch(fetchSinglePortCall(id));
+                    return dispatch(fetchPortCall(id));
                 })).then(portCalls => 
                     dispatch(appendFetchedPortCalls(cache, portCalls)));
             });
@@ -101,7 +93,7 @@ export const updatePortCalls = () => {
         if (getState().favorites.locations.length > 0) {
             return dispatch(updatePortCallIds(lastUpdated)).then(ids =>
                 Promise.all(ids.map(id =>
-                    dispatch(fetchSinglePortCall(id))
+                    dispatch(fetchPortCall(id))
                 )).then(portCalls => 
                     dispatch(updateFetchedPortCalls(cache, portCalls)))
             );
@@ -150,7 +142,7 @@ const updateFetchedPortCalls = (cache, newPortCalls) => (dispatch, getState) => 
         });
 }
 
-export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
+export const fetchPortCall = (portCallId) => (dispatch, getState) => {
     dispatch({type: types.FETCH_PORTCALLS});
     const connection = getState().settings.connection;
     const token = getState().settings.token;
@@ -173,7 +165,7 @@ export const fetchSinglePortCall = (portCallId) => (dispatch, getState) => {
             throw new Error('dispatched');
 
         })
-        .then(portCall => dispatch(fetchVesselForPortCall(portCall)))
+        .then(portCall => dispatch(appendVesselToPortCall(portCall)))
         .then(portCall => {
             dispatch({type: types.FETCH_PORTCALLS_SUCCESS});
             return portCall;
@@ -214,7 +206,7 @@ export const fetchPortCalls = (additionalFilterString) => {
                 throw new Error('dispatched');
             }).then(portCalls => applyFilters(portCalls, filters))
             .then(portCalls => Promise.all(portCalls.map(portCall => {
-                return dispatch(fetchVesselForPortCall(portCall));
+                return dispatch(appendVesselToPortCall(portCall));
             })))
             .then(portCalls => {
                 dispatch({ type: types.FETCH_PORTCALLS_SUCCESS, payload: portCalls });
@@ -231,41 +223,12 @@ export const fetchPortCalls = (additionalFilterString) => {
     }
 }
 
-const fetchVesselForPortCall = (portCall) =>  {
-    return (dispatch, getState) => {
-        const connection = getState().settings.connection;
-        const token = getState().settings.token;
-        const favorites = getState().favorites;
-        const contentType = getState().settings.instance.contentType;
-        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/vr/vessel/${portCall.vesselId}`,
-        {
-            method: 'GET',
-            headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
-            sslPinning: getCert(connection),
-        })
-        .then(result => {
-            let err = checkResponse(result);
-            if (!err)
-                return JSON.parse(result.bodyString);
-
-            dispatch({ type: types.SET_ERROR, payload: err });
-            throw new Error('dispatched');
-        })
-        .then(vessel => {
-            portCall.vessel = vessel;
-            portCall.favorite = favorites.portCalls.includes(portCall.portCallId);
-            vessel.favorite = favorites.vessels.includes(vessel.imo);
-            return portCall;
-        });
-    }
-}
-
 function fetchFavoritePortCalls(dispatch, getState) {
     const connection = getState().settings.connection;
     const token = getState().settings.token;
     const favorites = getState().favorites;
     const contentType = getState().settings.instance.contentType;
-    const headers = !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
+    const headers = connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
     console.log('Fetching favorite port calls...');
     return Promise.all(favorites.portCalls.map(favorite => {
         console.log('Favorite: ' + favorite);
@@ -282,7 +245,7 @@ function fetchFavoritePortCalls(dispatch, getState) {
                 return undefined;
             }).then(portCall => {
                 if (!!portCall) {
-                    return dispatch(fetchVesselForPortCall(portCall));
+                    return dispatch(appendVesselToPortCall(portCall));
                 }
             });
     })).then(favoritePortCalls => {
@@ -311,7 +274,7 @@ function fetchFavoritePortCalls(dispatch, getState) {
                 dispatch({ type: types.SET_ERROR, payload: err });
                 throw new Error('dispatched');
             }).then(favoriteVessels =>
-                Promise.all(favoriteVessels.map(favoriteVessel => dispatch(fetchVesselForPortCall(favoriteVessel))
+                Promise.all(favoriteVessels.map(favoriteVessel => dispatch(appendVesselToPortCall(favoriteVessel))
                 )).then(favoriteVessels => {
                     return favoriteVessels
                         .filter(favoriteVessel => !favoritePortCalls.some(favoritePortCall => favoritePortCall.portCallId === favoriteVessel.portCallId))
@@ -469,224 +432,3 @@ function applyFilters(portCalls, filters) {
 }
 // end helper functions
 
-/**
- * Fetches all operations for the port call with the specified id
- *
- * @param {string} portCallId
- */
-export const fetchPortCallOperations = (portCallId) => {
-    return (dispatch, getState) => {
-        dispatch({ type: types.FETCH_PORTCALL_OPERATIONS })
-        const connection = getState().settings.connection;
-        const token = getState().settings.token;
-        const getReliability = getState().settings.fetchReliability;
-        const contentType = getState().settings.instance.contentType;
-        const headers = !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType);
-        console.log('Fetching operations for port call ' + portCallId);
-        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/pcb/port_call/${portCallId}${getState().settings.instance.portCallEndPoint}`,
-            {
-                method: 'GET',
-                headers: headers,
-                sslPinning: getCert(connection),
-            }
-        )
-            .then(result => {
-                console.log('Response for operation in port call');
-                let err = checkResponse(result);
-                if (!err)
-                    return JSON.parse(result.bodyString);
-
-                dispatch({ type: types.SET_ERROR, payload: err });
-                throw new Error('dispatched');
-            })
-            // Sort the operations, port_visits first, then earliest arrival start first
-            .then(sortOperations)
-            .then(filterStatements)
-            .then(operations => {
-                const locations = getState().location.locations;
-                return operations.map(operation => {
-                    if (operation.at) {
-                        // Actually case sensitive, so keep in mind
-                        operation.atLocation = locations.find(location => location.URN.toUpperCase() === operation.at.toUpperCase());
-                    }
-                    if (operation.from) {
-                        operation.fromLocation = locations.find(location => location.URN.toUpperCase() === operation.from.toUpperCase());
-                    }
-                    if (operation.to) {
-                        operation.toLocation = locations.find(location => location.URN.toUpperCase() === operation.to.toUpperCase());
-                    }
-                    
-                    operation.statements.map(statement => {
-                        if (statement.at) {
-                            // Actually case sensitive, so keep in mind
-                            statement.atLocation = locations.find(location => location.URN.toUpperCase() === statement.at.toUpperCase());
-                        }
-                        if (statement.from) {
-                            statement.fromLocation = locations.find(location => location.URN.toUpperCase() === statement.from.toUpperCase());
-                        }
-                        if (statement.to) {
-                            statement.toLocation = locations.find(location => location.URN.toUpperCase() === statement.to.toUpperCase());
-                        }
-                    });
-
-                    return operation;
-                });
-            })
-            //.then(extractWarnings)
-            .then((operations) => {
-                if (!getReliability) return operations;
-
-                return fetchReliability(operations, headers, connection, portCallId);
-            }
-            )
-            .then(maybeOperations => {
-                if (!!maybeOperations)
-                    dispatch({ type: types.FETCH_PORTCALL_OPERATIONS_SUCCESS, payload: maybeOperations })
-                else if (getReliability)
-                    dispatch({ type: types.SET_ERROR, payload: { title: "RELIABILITY_FAIL" } });
-            })
-            .catch(err => {
-                if (err.message !== 'dispatched') {
-                    dispatch({
-                        type: types.SET_ERROR, payload: {
-                            description: err.message,
-                            title: 'Unable to connect to the server!'
-                        }
-                    });
-                }
-            });
-    };
-};
-
-// HELPER FUNCTIONS
-async function fetchReliability(operations, headers, connection, portCallId) {
-    if (operations.length <= 0) return operations;
-    await pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/dqa/reliability/${portCallId}`,
-        {
-            method: 'GET',
-            headers: headers,
-            sslPinning: getCert(connection),
-        }
-    )
-        .then(result => {
-            console.log('Fetching reliabilities.... ' + result.status);
-            if (result.status !== 200) {
-                return null;
-            }
-            else return JSON.parse(result.bodyString);
-        })
-        // Add the reliability for the entire portcall as member of the array
-        .then(result => {
-            operations.reliability = Math.floor(result.reliability * 100);
-
-            return result;
-        })
-        // For every operation in the result
-        .then(result => result.operations.map(resultOperation => {
-            // We need to find the operation in our own data structure and set it's reliability
-            let ourOperation = operations.find(operation => operation.eventId === resultOperation.eventId);
-            ourOperation.reliability = Math.floor(resultOperation.reliability * 100);
-            // Then for each state in the operation
-            resultOperation.states.map(resultState => {
-                // We want the onProbability data
-                ourOperation.reportedStates[resultState.stateId].onTimeProbability = {
-                    probability: Math.floor(resultState.onTimeProbability.probability * 100),
-                    reason: resultState.onTimeProbability.reason,
-                    accuracy: Math.floor(resultState.onTimeProbability.accuracy * 100)
-                }
-
-                // Go through all statements we have stored in our data, and add reliability and reliability changes to the structure.
-                ourOperation.reportedStates[resultState.stateId].forEach(ourStatement => {
-                    for (let i = 0; i < resultState.messages.length; i++) {
-                        if (ourStatement.messageId == resultState.messages[i].messageId) {
-                            // We want the reliability for this statement
-                            ourStatement.reliability = Math.floor(resultState.messages[i].reliability * 100);
-                            // And also all the changes for the statement.
-                            ourStatement.reliabilityChanges = resultState.messages[i].reliabilityChanges;
-                        }
-                    }
-                })
-            });
-        })).catch(err => {
-            console.log('Unable to fetch reliabilities.');
-            console.log("Error: " + err);
-            operations = false;
-        });;
-    return operations;
-}
-
-function filterStatements(operations) {
-    return Promise.all(operations.map(operation => {
-        let reportedStates = {};
-
-        operation.statements.forEach(statement => {
-            let stateDef = statement.stateDefinition;
-            if (!reportedStates[stateDef]) {
-                reportedStates[stateDef] = [statement];
-            } else {
-                reportedStates[stateDef].push(statement);
-            }
-        });
-
-        operation.reportedStates = reportedStates;
-        return operation;
-    }));
-}
-
-function sortOperations(operations) {
-    return operations.sort((a, b) => {
-        // Port visit should be on top!
-        if (a.definitionId === 'PORT_VISIT') return -1;
-        if (b.definitionId === 'PORT_VISIT') return 1;
-
-        let aTime = new Date(a.startTime);
-        let bTime = new Date(b.startTime);
-
-        if (aTime < bTime) return -1;
-        if (aTime > bTime) return 1;
-        else return 0;
-    });
-}
-
-/**
- * Removes warnings from the operation level, and instead assigns it to
- * the reportedState it warns about. Only thing left should be warnings
- * that aren't about a certain state.
- *
- * @param {[Operation]} operations
- *
- * @return
- *  all operations, with warnings that is connected to a certain state
- */
-function extractWarnings(operations) {
-    // Go through all operations
-    return operations.map(operation => {
-        let { warnings, reportedStates } = operation;
-        // And for each warning in each operation
-        for (let i = 0; i < warnings.length; i++) {
-            let found = false;
-            warning = warnings[i];
-            // See if any warning contains the id of any reported state
-            for (let state in reportedStates) {
-                let index = warning.message.indexOf(state);
-                // If it does, add it to the warnings of the reportedState instead
-                if (index >= 0) {
-                    if (!operation.reportedStates[state].warnings) {
-                        operation.reportedStates[state].warnings = [warning];
-                    } else {
-                        operation.reportedStates[state].warnings.push(warning);
-                    }
-
-                    found = true;
-                }
-            }
-            if (found) {
-                warnings[i] = null;
-            }
-        }
-        // And remove the warnings that was connected to a state
-        operation.warnings = warnings.filter(warning => !!warning);
-
-        return operation;
-    });
-}

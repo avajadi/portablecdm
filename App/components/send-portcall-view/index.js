@@ -10,7 +10,7 @@ import {
   fetchVesselByName,
   removeError,
   clearLocations,
-  fetchSinglePortCall,
+  fetchPortCall,
   selectPortCall,
 } from '../../actions';
 
@@ -203,7 +203,7 @@ class SendPortcall extends Component {
                         initRedirectTimer = setInterval(() => {
                             if(!fetching) {
                                 fetching = true;
-                                this.props.fetchSinglePortCall(portCallId)
+                                this.props.fetchPortCall(portCallId)
                                     .then(portCall => {
                                         if(!!portCall) {
                                             this.props.selectPortCall(portCall);
@@ -745,6 +745,6 @@ export default connect(
         selectLocation,
         clearVesselResult,
         clearLocations,
-        fetchSinglePortCall,
+        fetchPortCall,
         selectPortCall,
     })(SendPortcall);

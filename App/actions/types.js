@@ -3,7 +3,6 @@ export const REPLACE_FAVORITE_STATES = 'replace_favorite_states';
 export const REMOVE_FAVORITE_STATE = 'remove_favorite_state';
 export const SELECT_PORTCALL = 'select_portcall';
 export const SELECT_VESSEL = 'select_vessel';
-export const CLEAR_PORTCALL_SELECTION = 'clear_portcall_selection';
 export const FETCH_PORTCALLS = 'fetch_portcalls';
 export const FETCH_PORTCALLS_SUCCESS = 'fetch_portcalls_success';
 export const FETCH_PORTCALL_OPERATIONS = 'fetch_portcalls_operations';
@@ -60,8 +59,6 @@ export const FETCH_VESSEL_CLEAR = 'fetch_vessel_clear';
 export const SET_ERROR = 'set_error';
 export const REMOVE_ERROR = 'remove_error';
 export const UPDATE_PROGRESS = 'update_progress';
-export const SERVER_START = 'server_start';
-export const SERVER_STOP = 'server_stop';
 
 /** BERTH VIEW */
 export const BERTH_SELECT_BERTH = 'berth_select_berth';

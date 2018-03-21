@@ -23,7 +23,7 @@ import { cleanURN } from '../../../util/stringUtils';
 
 import colorScheme from '../../../config/colors';
 
-class StateView extends Component {
+class StatementView extends Component {
 
     constructor(props) {
         super(props);
@@ -80,8 +80,8 @@ class StateView extends Component {
                 key={statement.messageId}> 
                 {/*TitleView*/}
                 <View style={[styles.titleContainer, additionalStyles]}> 
-                    {stateDef && <Text style={styles.stateTitleText}> {stateDef.Name} </Text>  }
-                    {!stateDef && <Text style={styles.stateTitleText}> {statement.stateDefinition} </Text>  }
+                    {stateDef && <Text style={styles.stateTitleText}> {stateDef.Name.replace(/_/g, ' ')} </Text>  }
+                    {!stateDef && <Text style={styles.stateTitleText}> {statement.stateDefinition.replace(/_/g, ' ')} </Text>  }
                 </View>
 
                 {/*Dividers that change colors*/}
@@ -178,7 +178,7 @@ class StateView extends Component {
 
 }
 
-StateView.propTypes = {
+StatementView.propTypes = {
     statement: PropTypes.object.isRequired,
     stateDef: PropTypes.object,
 }
@@ -324,4 +324,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {withdrawStatement})(StateView);
+export default connect(mapStateToProps, {withdrawStatement})(StatementView);

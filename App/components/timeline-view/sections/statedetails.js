@@ -17,7 +17,7 @@ import Collapsible from 'react-native-collapsible';
 
 import colorScheme from '../../../config/colors';
 import TopHeader from '../../top-header-view';
-import StateView from './stateview';
+import StatementView from './statementview';
 
 import { withdrawStatement } from '../../../actions';
 import { cleanURN } from '../../../util/stringUtils';
@@ -83,9 +83,9 @@ class StateDetails extends Component {
                     })} 
 
 
-                    {/*StateView*/}
+                    {/*StatementView*/}
                     {statements.map( statement => {
-                        return <StateView key={statement.messageId} statement={statement} stateDef={stateDef} />
+                        return <StatementView key={statement.messageId} statement={statement} stateDef={stateDef} />
                     } )} 
                 </ScrollView>
             </ScrollView>

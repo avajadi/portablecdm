@@ -9,7 +9,6 @@ import locationReducer from './locationreducer';
 import filterReducer from './filterreducer';
 import vesselReducer from './vesselreducer';
 import errorReducer from './errorreducer';
-import serverReducer from './serverreducer';
 import favoritesReducer from './favoritesreducer';
 import cacheReducer from './cachereducer';
 import berthReduder from './berthreducer';
@@ -28,7 +27,6 @@ export default persistCombineReducers(
   filters: filterReducer,
   vessel: vesselReducer,  
   error: errorReducer,
-  server: serverReducer,
   favorites: favoritesReducer,
   cache: cacheReducer,
   berths: berthReduder

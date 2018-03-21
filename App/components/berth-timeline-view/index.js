@@ -24,7 +24,7 @@ import BerthSettings from './sections/BerthSettings';
 import { 
     fetchEventsForLocation,
     selectNewDate,
-    fetchSinglePortCall,
+    fetchPortCall,
     selectPortCall,
     changeLookAheadDays,
     changeLookBehindDays,
@@ -222,7 +222,7 @@ class BerthTimeLine extends Component {
     }
 
     _onViewPortCall = (portCallId) => {
-        this.props.fetchSinglePortCall(portCallId)
+        this.props.fetchPortCall(portCallId)
             .then(this.props.selectPortCall)
             .then(() => this.props.navigation.navigate('TimeLine'))
     }
@@ -278,7 +278,7 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, { 
     fetchEventsForLocation, 
     selectNewDate,
-    fetchSinglePortCall,
+    fetchPortCall,
     selectPortCall,
     changeLookAheadDays,
     changeLookBehindDays,
