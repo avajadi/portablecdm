@@ -2,6 +2,21 @@
 Contributors: 
 Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 
+# Information for students of the Software Engineering Project Course
+## How to build the Android version of the application from scratch
+### Requirements
+* Nodejs with npm accessible from your terminal (preferably version <= 5)
+* Git installed and accessible from your terminal
+* Android Studio version >= 3.0.1
+
+### Cloning the repo
+1. Use the terminal to CD into your destination folder
+2. Run command: git clone https://github.com/blabla/portcdm-mobile-app
+
+### Installing
+1. CD into the App folder in the repo
+2. Run npm install
+
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
 * https://support.google.com/googleplay/android-developer/answer/113770
