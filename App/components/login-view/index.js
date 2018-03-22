@@ -55,7 +55,7 @@ class LoginView extends Component {
             host: connection.host,
             addHostVisible: hosts.length === 0,
             addHostIconName: 'keyboard-arrow-down',
-            forceLegacy: false,
+            forceLegacy: true,
             loggingIn: false,
             showLogo: true,
             showDropdown: false,
@@ -211,10 +211,7 @@ class LoginView extends Component {
 
         const { hosts, rememberLogin } = this.props;
         const { addHostVisible } = this.state;
-        const keycloak = 
-            hasKeycloak.includes(this.state.host) && 
-            !this.state.forceLegacy &&
-            Platform.OS === 'ios'; // TODO: Fix!
+        const keycloak = false;
 
         return (
             <View style={styles.mainContainer}>

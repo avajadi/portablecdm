@@ -78,7 +78,7 @@ class VesselInfo extends Component {
           <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Built year: </Text>{vessel.builtYear}</Text>
           }
           {(!!extraInfo && !!extraInfo.length) &&
-            <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Width: </Text>{extraInfo.length}m</Text>
+            <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Length: </Text>{extraInfo.length}m</Text>
           }
           {(!!extraInfo && !!extraInfo.beam) &&
             <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Beam: </Text>{extraInfo.beam}m</Text>

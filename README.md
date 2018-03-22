@@ -13,9 +13,15 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 1. Use the terminal to CD into your destination folder
 2. Run command: git clone https://github.com/blabla/portcdm-mobile-app
 
-### Installing
+### Installing EXPO
 1. CD into the App folder in the repo
 2. Run npm install
+3. Install exponent CLI with: npm install -g exp
+4. Run exp start and create an account if you don't have one already. One per application should be enough.
+5. Make sure your development url is visible in terminal.
+
+### Installing and building with Android Studio
+1. 
 
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption

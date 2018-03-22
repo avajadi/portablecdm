@@ -103,7 +103,6 @@ preBuild.dependsOn exponentPrebuildStep
 
 
 dependencies {
-  compile project(':react-native-orientation')
   compile project(':react-native-pinch')
   compile fileTree(include: ['*.jar'], dir: 'libs')
   compile 'com.android.support:multidex:1.0.1'
@@ -169,7 +168,6 @@ dependencies {
     transitive = true
   }
   compile project(path: ':react-native-pinch')
-  compile project(path: ':react-native-orientation')
   implementation 'com.facebook.react:react-native:25.0.0'
 }
 
