@@ -43,11 +43,12 @@ class OperationView extends Component {
     super(props);
 
     const { operation } = this.props;
-    const { reportedStates } = operation;
+    const { reportedStates, syncStates } = operation;
 
     this.state = {
       operation: operation,
       reportedStates: reportedStates,
+      syncStates: syncStates,
       isCollapsed: operation.endTimeType === 'ACTUAL',
       dimensions: {
           operation: undefined,
@@ -66,7 +67,7 @@ class OperationView extends Component {
   }
 
   render() {
-    const { operation, reportedStates, isCollapsed } = this.state;
+    const { operation, reportedStates, syncStates, isCollapsed } = this.state;
     const { rowNumber, navigation, getStateDefinition } = this.props;
 
     // Decide what dot to display
@@ -119,6 +120,9 @@ class OperationView extends Component {
     let currentTime = new Date();
     let renderRedLine = startTime > 0 && currentTime >= startTime && currentTime <= endTime;
     let redlineStyle = this._calculateRedline(startTime, endTime);
+
+
+    // console.log(JSON.stringify(syncStates));
 
     return (
       
@@ -269,94 +273,188 @@ class OperationView extends Component {
     else {
       stateCount = allOfTheseStatements.length;
     }
+
+    if(!!this.state.syncStates[stateDef.StateId]) {
+        console.log('We have a syncState for ' + stateDef.StateId);
+    }
     
-
     return (
-      <ListItem
-        containerStyle = {{
-          borderTopWidth: 0,
-          borderBottomWidth: 0,
-        }}
-        key={stateToDisplay.messageId}
-        rightIcon = { <Icon
-                        color = {colorScheme.primaryColor}
-                        name='add-circle'
-                        size={35}
-                        onPress={() => this.addStatement(stateToDisplay.stateDefinition, stateToDisplay)}
-                        />
-        }
-        title = {
-            <TouchableWithoutFeedback 
-                style={{flexDirection:'column'}}
-                onPress={ () => navigate('StateDetails', {operation: operation, statements: allOfTheseStatements} ) }
-            >
-              <View>  
-                  <View style={{flexDirection: 'row'}}>
-                    {!stateDef && <Text style={styles.stateDisplayTitle} >{stateToDisplay.stateDefinition}</Text>}
-                    {stateDef && <Text style={styles.stateDisplayTitle} >{stateDef.Name}</Text>}
+        <View
+            key={stateToDisplay.messageId}
+        >
+            <ListItem
+                containerStyle = {{
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
+                }}
+                
+                rightIcon = { <Icon
+                                color = {colorScheme.primaryColor}
+                                name='add-circle'
+                                size={35}
+                                onPress={() => this.addStatement(stateToDisplay.stateDefinition, stateToDisplay)}
+                                />
+                }
+                title = {
+                    <TouchableWithoutFeedback 
+                        style={{flexDirection:'column'}}
+                        onPress={ () => navigate('StateDetails', {operation: operation, statements: allOfTheseStatements} ) }
+                    >
+                    <View>  
+                        <View style={{flexDirection: 'row'}}>
+                            {!stateDef && <Text style={styles.stateDisplayTitle} >{stateToDisplay.stateDefinition}</Text>}
+                            {stateDef && <Text style={styles.stateDisplayTitle} >{stateDef.Name}</Text>}
 
-                    {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
-                  </View>
-                  <View style= {{flexDirection: 'row'}} >
-                      <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{getTimeString(new Date(stateToDisplay.time))} </Text>
-                      {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
-                                                                    <Text style={styles.actualText}>A</Text>
-                                                               </View>
-                      }
-                      {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
-                                                                      <Text style={styles.estimateText}>E</Text>
-                                                                  </View>
-                      }
-                      {stateToDisplay.timeType === 'TARGET' && <View style={styles.targetContainer}>
-                                                                    <Text style={styles.estimateText}>T</Text>
-                                                               </View>
-                      }
-                      {stateToDisplay.timeType === 'RECOMMENDED' && <View style={styles.recommendedContainer}>
-                                                                    <Text style={styles.estimateText}>R</Text>
-                                                               </View>
-                      }
-                  </View>
-              </View>
-            </TouchableWithoutFeedback>
-        }
-        subtitle = {
-            <View style={{flexDirection: 'column'}} >
-                {stateToDisplay.atLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{stateToDisplay.atLocation.name}</Text>}
-                {stateToDisplay.fromLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{stateToDisplay.fromLocation.name}</Text>}
-                {stateToDisplay.toLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{stateToDisplay.toLocation.name}</Text>}
-                <Text style={{fontSize: 9}}>
-                  {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{cleanURN(stateToDisplay.reportedBy)} 
-                  <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
-                {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
-                  
-                  {(!!allOfTheseStatements.onTimeProbability && allOfTheseStatements.onTimeProbability.accuracy > displayOnTimeProbabilityTreshold) && 
-                    <View>
-                      <Text style={{fontSize: 9}}>
-                        <Text style = {styles.stateDisplaySubTitle}>ON TIME PROBABILITY: </Text>{allOfTheseStatements.onTimeProbability.probability}%
-                      </Text>
-                      <Text style={{fontSize: 9, marginLeft: 10}}>
-                        <Text style={styles.stateDisplaySubTitle}>REASON: </Text>{allOfTheseStatements.onTimeProbability.reason}
-                      </Text>
-                      <Text style={{fontSize: 9, marginLeft: 10}}>
-                        <Text style={styles.stateDisplaySubTitle}>ACCURACY: </Text>{allOfTheseStatements.onTimeProbability.accuracy}%
-                      </Text>
+                            {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
+                        </View>
+                        <View style= {{flexDirection: 'row'}} >
+                            <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{getTimeString(new Date(stateToDisplay.time))} </Text>
+                            {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
+                                                                            <Text style={styles.actualText}>A</Text>
+                                                                    </View>
+                            }
+                            {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
+                                                                            <Text style={styles.estimateText}>E</Text>
+                                                                        </View>
+                            }
+                            {stateToDisplay.timeType === 'TARGET' && <View style={styles.targetContainer}>
+                                                                            <Text style={styles.estimateText}>T</Text>
+                                                                    </View>
+                            }
+                            {stateToDisplay.timeType === 'RECOMMENDED' && <View style={styles.recommendedContainer}>
+                                                                            <Text style={styles.estimateText}>R</Text>
+                                                                    </View>
+                            }
+                        </View>
                     </View>
-                  }
-                    
-            </View>
-        }
-        badge = {
-          {value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, 
-          containerStyle: {backgroundColor: colorScheme.backgroundColor} , // 30
-          wrapperStyle: {justifyContent: 'center'},
-          }
-        }
-      />
+                    </TouchableWithoutFeedback>
+                }
+                subtitle = {
+                    <View style={{flexDirection: 'column'}} >
+                        {stateToDisplay.atLocation && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{stateToDisplay.atLocation.name}</Text>}
+                        {stateToDisplay.fromLocation && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{stateToDisplay.fromLocation.name}</Text>}
+                        {stateToDisplay.toLocation && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{stateToDisplay.toLocation.name}</Text>}
+                        <Text style={{fontSize: 9}}>
+                        {/*Doesnt work!*/}
+                        <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{cleanURN(stateToDisplay.reportedBy)} 
+                        <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
+                        {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
+                        
+                        {(!!allOfTheseStatements.onTimeProbability && allOfTheseStatements.onTimeProbability.accuracy > displayOnTimeProbabilityTreshold) && 
+                            <View>
+                            <Text style={{fontSize: 9}}>
+                                <Text style = {styles.stateDisplaySubTitle}>ON TIME PROBABILITY: </Text>{allOfTheseStatements.onTimeProbability.probability}%
+                            </Text>
+                            <Text style={{fontSize: 9, marginLeft: 10}}>
+                                <Text style={styles.stateDisplaySubTitle}>REASON: </Text>{allOfTheseStatements.onTimeProbability.reason}
+                            </Text>
+                            <Text style={{fontSize: 9, marginLeft: 10}}>
+                                <Text style={styles.stateDisplaySubTitle}>ACCURACY: </Text>{allOfTheseStatements.onTimeProbability.accuracy}%
+                            </Text>
+                            </View>
+                        }
+                            
+                    </View>
+                }
+                badge = {
+                {value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, 
+                containerStyle: {backgroundColor: colorScheme.backgroundColor} , // 30
+                wrapperStyle: {justifyContent: 'center'},
+                }
+                }
+            />
+            {!!this.state.syncStates[stateDef.StateId] &&
+                <ListItem
+                containerStyle = {{
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
+                }}
+                
+                rightIcon = { <Icon
+                                color = {colorScheme.primaryColor}
+                                name='add-circle'
+                                size={35}
+                                onPress={() => this.addStatement(stateToDisplay.stateDefinition, stateToDisplay)}
+                                />
+                }
+                title = {
+                    <TouchableWithoutFeedback 
+                        style={{flexDirection:'column'}}
+                        onPress={ () => navigate('StateDetails', {operation: operation, statements: allOfTheseStatements} ) }
+                    >
+                    <View>  
+                        <View style={{flexDirection: 'row'}}>
+                            {!stateDef && <Text style={styles.stateDisplayTitle} >{stateToDisplay.stateDefinition}</Text>}
+                            {stateDef && <Text style={styles.stateDisplayTitle} >{stateDef.Name}</Text>}
+
+                            {!!warnings && <Icon name='warning' color={colorScheme.warningColor} size={16} />} 
+                        </View>
+                        <View style= {{flexDirection: 'row'}} >
+                            <Text style = {{color: colorScheme.tertiaryColor, fontWeight: 'bold'}} >{getTimeString(new Date(stateToDisplay.time))} </Text>
+                            {stateToDisplay.timeType === 'ACTUAL' && <View style={styles.actualContainer}>
+                                                                            <Text style={styles.actualText}>A</Text>
+                                                                    </View>
+                            }
+                            {stateToDisplay.timeType === 'ESTIMATED' && <View style={styles.estimateContainer}>
+                                                                            <Text style={styles.estimateText}>E</Text>
+                                                                        </View>
+                            }
+                            {stateToDisplay.timeType === 'TARGET' && <View style={styles.targetContainer}>
+                                                                            <Text style={styles.estimateText}>T</Text>
+                                                                    </View>
+                            }
+                            {stateToDisplay.timeType === 'RECOMMENDED' && <View style={styles.recommendedContainer}>
+                                                                            <Text style={styles.estimateText}>R</Text>
+                                                                    </View>
+                            }
+                        </View>
+                    </View>
+                    </TouchableWithoutFeedback>
+                }
+                subtitle = {
+                    <View style={{flexDirection: 'column'}} >
+                        {stateToDisplay.atLocation && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{stateToDisplay.atLocation.name}</Text>}
+                        {stateToDisplay.fromLocation && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{stateToDisplay.fromLocation.name}</Text>}
+                        {stateToDisplay.toLocation && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{stateToDisplay.toLocation.name}</Text>}
+                        <Text style={{fontSize: 9}}>
+                        {/*Doesnt work!*/}
+                        <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{cleanURN(stateToDisplay.reportedBy)} 
+                        <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
+                        {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
+                        <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
+                        
+                        {(!!allOfTheseStatements.onTimeProbability && allOfTheseStatements.onTimeProbability.accuracy > displayOnTimeProbabilityTreshold) && 
+                            <View>
+                            <Text style={{fontSize: 9}}>
+                                <Text style = {styles.stateDisplaySubTitle}>ON TIME PROBABILITY: </Text>{allOfTheseStatements.onTimeProbability.probability}%
+                            </Text>
+                            <Text style={{fontSize: 9, marginLeft: 10}}>
+                                <Text style={styles.stateDisplaySubTitle}>REASON: </Text>{allOfTheseStatements.onTimeProbability.reason}
+                            </Text>
+                            <Text style={{fontSize: 9, marginLeft: 10}}>
+                                <Text style={styles.stateDisplaySubTitle}>ACCURACY: </Text>{allOfTheseStatements.onTimeProbability.accuracy}%
+                            </Text>
+                            </View>
+                        }
+                            
+                    </View>
+                }
+                badge = {
+                {value: stateCount, textStyle: {color: 'black', fontSize: 10, fontWeight: 'bold'}, 
+                containerStyle: {backgroundColor: colorScheme.backgroundColor} , // 30
+                wrapperStyle: {justifyContent: 'center'},
+                }
+                }
+            /> 
+            }
+      </View>
     ); 
   }
 

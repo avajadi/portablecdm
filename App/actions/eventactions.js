@@ -229,10 +229,19 @@ async function fetchReliability(operations, headers, connection, portCallId) {
 function filterStatements(operations) {
     return Promise.all(operations.map(operation => {
         let reportedStates = {};
+        let syncStates = {};
 
         operation.statements.forEach(statement => {
             let stateDef = statement.stateDefinition;
-            if (!reportedStates[stateDef]) {
+
+
+            if(statement.timeType === 'TARGET' || statement.timeType === 'RECOMMENDED') {
+                if(!syncStates[stateDef]) {
+                    syncStates[stateDef] = [statement];
+                } else {
+                    syncStates[stateDef].push(statement);
+                }
+            } else if (!reportedStates[stateDef]) {
                 reportedStates[stateDef] = [statement];
             } else {
                 reportedStates[stateDef].push(statement);
@@ -240,6 +249,7 @@ function filterStatements(operations) {
         });
 
         operation.reportedStates = reportedStates;
+        operation.syncStates = syncStates;
         return operation;
     }));
 }
