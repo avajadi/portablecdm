@@ -106,7 +106,7 @@ function getLocationParameters(locations) {
 }
 
 /**
- * Fetches all operations for the port call with the specified id
+ * Fetches all events for the port call with the specified id
  *
  * @param {string} portCallId
  */

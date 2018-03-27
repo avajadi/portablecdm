@@ -44,6 +44,9 @@ class RelevantStatementView extends Component {
           stateCount = allOfTheseStatements.length;
         }
 
+        if(stateToDisplay.timeType==='TARGET') {
+            console.log('hejsan svejsan');
+        }
 
         return (
             <ListItem
@@ -180,5 +183,23 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colorScheme.quaternaryTextColor,
         fontSize: 9,
-      }, 
+      },
+      targetContainer: {
+        backgroundColor: colorScheme.targetColor,
+        borderRadius: 10,
+        width: 20,
+        height: 20,
+        justifyContent: 'center',
+        overflow: 'hidden',
+        alignItems: 'center',
+      },  
+      recommendedContainer: {
+        backgroundColor: colorScheme.recommendedColor,
+        borderRadius: 10,
+        width: 20,
+        height: 20,
+        justifyContent: 'center',
+        overflow: 'hidden',
+        alignItems: 'center',
+      },   
 });

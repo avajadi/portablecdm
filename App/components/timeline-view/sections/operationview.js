@@ -106,24 +106,23 @@ class OperationView extends Component {
 
     /* THIS IS A DEVIATION FROM BACKEND */
     let firstStatement = Object.keys(reportedStates)
-    .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
-    .sort((a,b) => a.time < b.time ? -1 : 1)[0];
+        .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
+        .sort((a,b) => a.time < b.time ? -1 : 1)[0];
 
     let lastStatement = Object.keys(reportedStates)
-    .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
-    .sort((a, b) => a.time > b.time ? -1 : 1)[0];
-
-
-    let startTime = new Date(!!operation.startTime ? firstStatement.time : null);
-    let endTime = new Date(!!operation.endTime ? lastStatement.time : null);
-
+        .map(stateDef => this.findMostRelevantStatement(reportedStates[stateDef]))
+        .sort((a, b) => a.time > b.time ? -1 : 1)[0];
+    
+                                                        // Not sure what to do here, but doesn't
+    let startTime = new Date(!!operation.startTime && !!firstStatement ? firstStatement.time : null);
+    let endTime = new Date(!!operation.endTime && !!lastStatement ? lastStatement.time : null);
     
     let currentTime = new Date();
     let renderRedLine = startTime > 0 && currentTime >= startTime && currentTime <= endTime;
     let redlineStyle = this._calculateRedline(startTime, endTime);
 
-
-    // console.log(JSON.stringify(syncStates));
+    console.log('hofsdofsd');
+    console.log(Object.keys(syncStates));
 
     return (
       
@@ -205,9 +204,8 @@ class OperationView extends Component {
                     </View>
                 </TouchableWithoutFeedback>
               );
-            })}
-
-            <List style={{borderTopWidth: 0}}>    
+            })}          
+            <List style={{borderTopWidth: 0}}>
               {
                 Object.keys(reportedStates)
                   .map((stateDef) => this.findMostRelevantStatement(reportedStates[stateDef]))
@@ -219,7 +217,49 @@ class OperationView extends Component {
                                                         getStateDefinition(mostRelevantStatement.stateDefinition)
                                                       ))
               }
+              { !!syncStates &&
+                Object.keys(syncStates)
+                    .map((stateDef) => this.findMostRelevantStatement(syncStates[stateDef]))
+                    .sort((a, b) => a.time < b.time ? -1 : 1) 
+                    .map((mostRelevantStatement) => {
+                        if(reportedStates[mostRelevantStatement.stateDefinition]) {
+                            return null;
+                        }
+
+                        console.log('1');
+
+                        return this.renderStateRow(operation, 
+                                            mostRelevantStatement, 
+                                            syncStates[mostRelevantStatement.stateDefinition],
+                                            this.props.navigation.navigate,
+                                            getStateDefinition(mostRelevantStatement.stateDefinition),
+                                            true,
+                                        )
+                        }
+                    )
+              }
             </List>
+            
+            {/* Render all TTA/RTA's, in case there are no normal statements with the same statedef (if there are, they are rendered below) */}
+            {/* { syncStates &&
+            <List style={{borderTopWidth: 0}}>
+                {Object.keys(syncStates)
+                    .map((stateDef) => this.findMostRelevantStatement(syncStates[stateDef]))
+                    .sort((a, b) => a.time < b.time ? -1 : 1) 
+                    .map((mostRelevantStatement) => {
+                        if(reportedStates[mostRelevantStatement.stateDefinition]) {
+                            return null;
+                        }
+
+                        return this.renderStateRow(operation, 
+                                            mostRelevantStatement, 
+                                            syncStates[mostRelevantStatement.stateDefinition],
+                                            this.props.navigation.navigate,
+                                            getStateDefinition(mostRelevantStatement.stateDefinition))
+                        }
+                    )}
+            </List>
+            } */}
           </Collapsible>
         </View>
         <WarningView 
@@ -258,14 +298,12 @@ class OperationView extends Component {
         }
   }
 
-  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, stateDef) {
+  renderStateRow(operation, mostRelevantStatement, allOfTheseStatements, navigate, stateDef, isSyncStateCatchUp) {
 
     const { displayOnTimeProbabilityTreshold } = this.props;
     const syncStates = this.state.syncStates[stateDef.StateId];
 
-    if(!!syncStates) {
-        console.log('We have a syncState for ' + stateDef.StateId);
-    }
+    let showSyncState = !isSyncStateCatchUp && !!syncStates;
     
     return (
         <View
@@ -283,10 +321,10 @@ class OperationView extends Component {
             />
 
             {/* Stack with TTA/RTA statements */}
-            { syncStates &&
+            { showSyncState &&
                 <RelevantStatementView
                     plusFunction={this.addStatement}
-                    mostRelevantStatement={mostRelevantStatement}
+                    mostRelevantStatement={syncStates[0]}
                     allOfTheseStatements={syncStates}
                     displayOnTimeProbabilityTreshold={displayOnTimeProbabilityTreshold}
                     stateDef={stateDef}
@@ -325,8 +363,12 @@ class OperationView extends Component {
    *   an array of statements, all with the same statedefinition
    */
   findMostRelevantStatement(statements) {
+
+      if(!statements) {
+          return statements;
+      }
+
       // sort statements based on reportedAt, latest reported first
-      // TODO(johan) Kolla upp om listan av statements redan är sorterad efter reportedAt
       statements.sort((a, b) => {
           let aTime = new Date(a.reportedAt);
           let bTime = new Date(b.reportedAt);
@@ -347,10 +389,12 @@ class OperationView extends Component {
       // if no actuals exist, sort again, this time for reliability
       statementsCopy.sort((a, b) => a.reliability - b.reliability);
       for(let j = 0; j < statementsCopy.length; j++) {
-        if(statements[j].timeType !== 'ACTUALL') {
+        if(statements[j].timeType !== 'ACTUAL') {
           return statements[j];
         }
       }
+
+      return statements[0];
   }
 }
 
@@ -460,22 +504,4 @@ const styles = StyleSheet.create({
     color: colorScheme.warningColor,
     fontSize: 9,
   }, 
-  targetContainer: {
-    backgroundColor: colorScheme.targetColor,
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    overflow: 'hidden',
-    alignItems: 'center',
-  },  
-  recommendedContainer: {
-    backgroundColor: colorScheme.recommendedColor,
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    overflow: 'hidden',
-    alignItems: 'center',
-  },  
 });
