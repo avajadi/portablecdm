@@ -217,13 +217,14 @@ class OperationView extends Component {
                                                         getStateDefinition(mostRelevantStatement.stateDefinition)
                                                       ))
               }
+              {/* Need this, so that sync states are shown even if there are no estimate/actual statement reported */}
               { !!syncStates &&
                 Object.keys(syncStates)
                     .map((stateDef) => this.findMostRelevantStatement(syncStates[stateDef]))
                     .sort((a, b) => a.time < b.time ? -1 : 1) 
                     .map((mostRelevantStatement) => {
                         if(reportedStates[mostRelevantStatement.stateDefinition]) {
-                            return null;
+                            return null; // to keep order correct, sync states that share state definition with a reportedState are rendered in renderStateRow
                         }
 
                         console.log('1');
@@ -239,27 +240,7 @@ class OperationView extends Component {
                     )
               }
             </List>
-            
-            {/* Render all TTA/RTA's, in case there are no normal statements with the same statedef (if there are, they are rendered below) */}
-            {/* { syncStates &&
-            <List style={{borderTopWidth: 0}}>
-                {Object.keys(syncStates)
-                    .map((stateDef) => this.findMostRelevantStatement(syncStates[stateDef]))
-                    .sort((a, b) => a.time < b.time ? -1 : 1) 
-                    .map((mostRelevantStatement) => {
-                        if(reportedStates[mostRelevantStatement.stateDefinition]) {
-                            return null;
-                        }
 
-                        return this.renderStateRow(operation, 
-                                            mostRelevantStatement, 
-                                            syncStates[mostRelevantStatement.stateDefinition],
-                                            this.props.navigation.navigate,
-                                            getStateDefinition(mostRelevantStatement.stateDefinition))
-                        }
-                    )}
-            </List>
-            } */}
           </Collapsible>
         </View>
         <WarningView 
@@ -311,7 +292,7 @@ class OperationView extends Component {
         >
             {/* Stack of "normal" statements */}
             <RelevantStatementView
-                plusFunction={this.addStatement}
+                plusFunction={(stateDef, state) => this.addStatement(stateDef, state)}
                 mostRelevantStatement={mostRelevantStatement}
                 allOfTheseStatements={allOfTheseStatements}
                 displayOnTimeProbabilityTreshold={displayOnTimeProbabilityTreshold}
@@ -323,7 +304,7 @@ class OperationView extends Component {
             {/* Stack with TTA/RTA statements */}
             { showSyncState &&
                 <RelevantStatementView
-                    plusFunction={this.addStatement}
+                    plusFunction={(stateDef, state) => this.addStatement(stateDef, state, true)}
                     mostRelevantStatement={syncStates[0]}
                     allOfTheseStatements={syncStates}
                     displayOnTimeProbabilityTreshold={displayOnTimeProbabilityTreshold}
@@ -344,13 +325,14 @@ class OperationView extends Component {
       )
   }
 
-  addStatement(stateDef, mostRelevantStatement) {
+  addStatement(stateDef, mostRelevantStatement, isSyncState) {
     const { operation } = this.state;
     this.props.navigation.navigate('SendPortCall', {
         stateId: stateDef, 
         fromLocation: operation.fromLocation, 
         toLocation: operation.toLocation, 
         atLocation: operation.atLocation,
+        isSyncStatement: isSyncState ? true : false,
         mostRelevantStatement: mostRelevantStatement
     });
   }

@@ -78,7 +78,7 @@ class SendPortcall extends Component {
   _hideLocationSelectionModal = () => this.setState({showLocationSelectionModal: false})
    
   _sendPortCall() {
-    const { stateId } = this.props.navigation.state.params;
+    const { stateId, isSyncStatement } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
     const { vessel, portCall, getState, sendPortCall, sendingState, navigation } = this.props;
     const { navigate } = navigation;
@@ -258,14 +258,29 @@ class SendPortcall extends Component {
                  (!this.props.vessel && !newVessel)));
   }
 
+  getTimeTypeAlternatives(isSyncState) {
+      if(isSyncState) {
+        return <Picker.Item label="Recommended" value="RECOMMENDED" />
+      } else {
+          return [
+                    <Picker.Item key="key_recommended" label="Estimated" value="ESTIMATED" />,
+                    <Picker.Item key="key_actual" label="Actual" value="ACTUAL" />
+                ]
+              
+        
+      }
+  }
+
   render() {
     const { portCallId, getState, sendingState, navigation, vessel, host } = this.props;
     const { atLocation, fromLocation, toLocation } = sendingState;
-    const { stateId, mostRelevantStatement, newVessel } = this.props.navigation.state.params; 
+    const { stateId, mostRelevantStatement, newVessel, isSyncStatement } = this.props.navigation.state.params; 
     const state = getState(stateId);
     const enableComment = this.props.instanceInfo.hasComment;
     const initializeNew = !!newVessel;
  
+    console.log('Is sync statement: ' + isSyncStatement);
+
     return(
       <View style={styles.container}>
         <TopHeader 
@@ -376,9 +391,9 @@ class SendPortcall extends Component {
             selectedValue={this.state.selectedTimeType}
             onValueChange={(itemValue, itemIndex) => this.setState({selectedTimeType: itemValue})}
             style={styles.pickerContainer}
+            enabled={!isSyncStatement}
           >
-            <Picker.Item label="Estimated" value="ESTIMATED" />
-            <Picker.Item label="Actual" value="ACTUAL" />
+            {this.getTimeTypeAlternatives(isSyncStatement)}
           </Picker>
 
           <View style={styles.pickerContainer}> 

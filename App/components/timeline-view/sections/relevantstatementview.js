@@ -51,8 +51,8 @@ class RelevantStatementView extends Component {
         return (
             <ListItem
                 containerStyle = {{
-                borderTopWidth: 0,
-                borderBottomWidth: 0,
+                    borderTopWidth: 0,
+                    borderBottomWidth: 0,
                 }}
                 
                 rightIcon = { <Icon
