@@ -9,6 +9,9 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 * Git installed and accessible from your terminal
 * Android Studio version >= 3.0.1
 
+Might need to add npm or git to your PATH in your operating system in order to access
+them from the terminal. Both can be tested with command 'git --version' or 'npm --version'.
+
 ### Cloning the repo
 1. Use the terminal to CD into your destination folder
 2. Run command: git clone https://github.com/blabla/portcdm-mobile-app
@@ -21,7 +24,10 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 5. Make sure your development url is visible in terminal.
 
 ### Installing and building with Android Studio
-1. 
+1. Start Android Studio and select Open project.
+2. Open the folder 'android' inside App in the repo.
+3. Press OK or the default button all the way.
+4. Follow gradle prompts and install missing SDK platforms and build tools. (there are quite a lot)
 
 ### Important links
 * https://www.bis.doc.gov/index.php/policy-guidance/encryption
