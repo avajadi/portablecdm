@@ -12,9 +12,15 @@ Johan Berndtsson, Pontus Stjernström, Nicole Ascard
 Might need to add npm or git to your PATH in your operating system in order to access
 them from the terminal. Both can be tested with command 'git --version' or 'npm --version'.
 
-### Cloning the repo
+### Forking the base project repo
+1. If you don't have a gihub account, create one 
+2. Go to https://github.com/avajadi/portablecdm
+3. Fork the repository by cklicking the Fork button in the upper right corner
+
+### Cloning your repo
 1. Use the terminal to CD into your destination folder
-2. Run command: git clone https://github.com/blabla/portcdm-mobile-app
+2. Get the clone URL from your repository and use in the git clone command below
+2. Run command: git clone <your repositry URL>
 
 ### Installing EXPO
 1. CD into the App folder in the repo
