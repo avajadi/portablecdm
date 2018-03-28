@@ -1,25 +1,15 @@
 import * as types from './types';
 import constants from '../config/constants';
 import { Alert, Platform } from 'react-native';
-import StaticServer from 'react-native-static-server';
-import RNFS from 'react-native-fs';
 import { isStaging } from '../config/instances';
 
-export const loginKeycloak = (urlPayload) => {
+export const loginKeycloak = (code) => {
     return (dispatch, getState) => { 
-        let consts = constants(isStaging.some((x) => getState().settings.connection.host.includes(x)));
+        let consts = constants(isStaging.some(x => getState().settings.connection.host.includes(x)));
         console.log('Authenticating...');
-        const [, queryString] = urlPayload.split('#');
-        const responseObj = queryString.split('&').reduce((map, pair) => {
-            const [key, value] = pair.split('=');
-            map[key] = value;
-            return map;
-        }, {});
-
-        console.log(responseObj.code);
 
         let params = {
-            code: responseObj.code,
+            code: code,
             grant_type: 'authorization_code',
             client_id: consts.ClientID,
             redirect_uri: consts.RedirectURI
@@ -34,7 +24,7 @@ export const loginKeycloak = (urlPayload) => {
         }
         formBody = formBody.join('&');
 
-        console.log(formBody);
+        console.log(JSON.stringify(formBody));
         console.log(consts.MaritimeTokenURI);
 
         return fetch(consts.MaritimeTokenURI, {
@@ -87,7 +77,7 @@ export const loginKeycloak = (urlPayload) => {
 
 export const logoutKeycloak = () => {
     return (dispatch, getState) => {
-        let consts = constants(isStaging.some((x) => getState().settings.host.includes(x)));
+        let consts = constants(isStaging.some(x => getState().settings.connection.host.includes(x)));
         return fetch(consts.MaritimeLogoutURI, {
             method: 'GET',
         }).then((result) => {
@@ -107,45 +97,6 @@ export const logoutKeycloak = () => {
             });
         }).catch((error) => {
             console.log('Woops! Could not logout: ' + error.message);
-        });
-    }
-}
-
-export const startLocalServer = () => {
-    return (dispatch, getState) => {
-        let path = '';
-        if(Platform.OS === 'ios') {
-            path = RNFS.MainBundlePath + '/www';
-        } else {
-            path = RNFS.DocumentDirectoryPath;
-        }
-
-        let port = 1337;
-        server = new StaticServer(port, path, {localOnly: true});
-
-        dispatch({
-            type: types.SERVER_START,
-            payload: {
-                server: server,
-                port: port,
-                path: path,
-            }
-        });
-
-        return server.start().then((url) => {
-            console.log('Serving at url ' + url + '. Path is ' + path);
-        });
-    }
-}
-
-export const stopLocalServer = () => {
-    return (dispatch, getState) => {
-        console.log(JSON.stringify(getState().server));
-        const server = getState().server.server;
-        if (!!server) 
-            server.stop();
-        dispatch({
-            type: types.SERVER_STOP,
         });
     }
 }

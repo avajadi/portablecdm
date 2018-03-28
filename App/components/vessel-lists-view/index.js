@@ -29,7 +29,7 @@ import {
   deleteVesselList, 
   addVesselToList, 
   removeVesselFromList, 
-  fetchVesselForPortCall,
+  appendVesselToPortCall,
   clearVesselResult,
   filterChangeVesselList,
   fetchVesselByName,
@@ -120,6 +120,7 @@ class VesselList extends Component {
         >
           <View style={styles.modalContainer}>
           <MiniHeader
+            modal
             navigation={this.props.navigation}
             title={`Vessels`}
             leftIconFunction={this.closeModal}
@@ -313,7 +314,7 @@ export default connect(mapStateToProps, {
   createVesselList,
   deleteVesselList,
   removeVesselFromList,
-  fetchVesselForPortCall,
+  appendVesselToPortCall,
   fetchVesselByName,
   addVesselToList,
   clearVesselResult,

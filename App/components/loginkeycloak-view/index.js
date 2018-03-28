@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Constants, WebBrowser } from 'expo';
+import { Constants, AuthSession } from 'expo';
 import { connect } from 'react-redux';
 
 import {
@@ -35,8 +35,7 @@ import {
     changeUser,
     loginKeycloak,
     removeError,
-    startLocalServer,
-    stopLocalServer,
+    fetchInstance,
   } from '../../actions';
 
 import TopHeader from '../top-header-view';
@@ -85,12 +84,9 @@ class LoginKeyCloakView extends Component {
             return;
         }
 
-        // if (__DEV__ && !!this.state.legacyLogin.username) {
-        //     this.loginConfirmed();
-        // }
-
-
-        Linking.addEventListener('url', this.handleMaritimeRedirect);
+        if (false && __DEV__ && !!this.state.legacyLogin.username) {
+            this.loginConfirmed();
+        }
 
         if (this.props.checkNewVersion()) {
             Alert.alert(
@@ -100,28 +96,34 @@ class LoginKeyCloakView extends Component {
         }
     }
 
-    onLoginPress() {
+    async onLoginPress() {
         // This is for the keycloak login
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
-        this.props.startLocalServer().then(() =>
-            WebBrowser.openBrowserAsync(constants(this.state.host.includes('dev.portcdm.eu')).MaritimeAuthURI));
-    }
+        console.log('Redirect: ' + AuthSession.getRedirectUrl());
+        const redirectUrl = AuthSession.getRedirectUrl();
+        const consts = constants(true);
+        const result = await AuthSession.startAsync({
+            authUrl: consts.MaritimeAuthURI
+        });
 
-    handleMaritimeRedirect = async event => {
-        if(!event.url.includes('/redirect')){
-            return;
-        }
-        WebBrowser.dismissBrowser();
-        Linking.removeEventListener('url', this.handleMaritimeRedirect);
-        this.props.loginKeycloak(event.url).then((result) => {
-            if(result) {
-                this.props.stopLocalServer();
+        if(result.type == 'success') {
+            const authenticated = await this.props.loginKeycloak(result.params.code);
+            if(authenticated) {
                 this.loginConfirmed();
             }
-        });
+        }
     }
 
     async loginConfirmed() {
+        if (!this.state.legacyLogin.enabled) {
+            this.setState({
+                legacyLogin: {
+                    username: '',
+                    password: ''
+                }
+            });
+        }
+
         this.setState({legacyLogin: {enabled: false}});
         const { navigate, dispatch } = this.props.navigation;
         this.props.changeHostSetting(this.reformatHostHttp(this.state.host));
@@ -131,6 +133,11 @@ class LoginKeyCloakView extends Component {
         this.setState({host: this.reformatHostHttp(this.state.host)});
 
         if(!this.validateForms()) return;
+
+        await this.props.fetchInstance();
+        if (this.props.error.hasError) {
+            navigate('Error');
+        }
 
         this.props.fetchLocations().then(() => {
             console.log('fetched locations');
@@ -222,7 +229,7 @@ class LoginKeyCloakView extends Component {
                         visible={this.state.legacyLogin.enabled && this.state.validHost && this.state.validPort && this.state.validUnlocode}
                         onRequestClose={() => this.setState({legacyLogin: {enabled: false}})}
                         >
-                        <TopHeader title="Legacy Login" navigation={this.props.navigation} backArrowFunction={() => this.setState({legacyLogin: {enabled: false}})} />
+                        <TopHeader modal title="Legacy Login" navigation={this.props.navigation} backArrowFunction={() => this.setState({legacyLogin: {enabled: false}})} />
                         
                         <View style={styles.containers.centralizer}>
                             <View style={styles.containers.blank}/>
@@ -317,8 +324,6 @@ function mapStateToProps(state) {
   }
 
 export default connect(mapStateToProps, {
-        stopLocalServer,
-        startLocalServer,
         removeError,
         loginKeycloak,
         changeFetchReliability,
@@ -328,4 +333,5 @@ export default connect(mapStateToProps, {
         changeUser,
         changePortUnlocode,
         checkNewVersion,
+        fetchInstance,
     })(LoginKeyCloakView);

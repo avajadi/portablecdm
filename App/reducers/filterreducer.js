@@ -21,6 +21,14 @@ const INITIAL_STATE = {
   arrivingWithin: 0,
   departingWithin: 0,
   onlyFetchActivePortCalls: false,
+  stages: [
+    'PLANNED',
+    'ARRIVED',
+    'BERTHED',
+    'ANCHORED',
+    'UNDER_WAY',
+    'SAILED',
+    ],
 };
 
 const filterReducer = (state=INITIAL_STATE, action) => {

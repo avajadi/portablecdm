@@ -34,12 +34,12 @@ class SideMenu extends Component {
   _logout() {
       const { navigation, connection, changeUser, logoutKeycloak } = this.props;
       if(!!connection.username) {
-        changeUser('', '');
+        changeUser('', '', false);
         console.log('Logging out legacy user...');
-        navigation.navigate('LoginKeyCloak');
+        navigation.navigate('LoginView');
       } else {
         console.log('Logging out keycloak user...');
-        logoutKeycloak().then(() => navigation.navigate('LoginKeyCloak'));
+        logoutKeycloak().then(() => navigation.navigate('LoginView'));
       }
   }
 
@@ -73,10 +73,10 @@ class SideMenu extends Component {
             </View>    
 
 
-<Divider style={{backgroundColor: colorScheme.secondaryContainerColor, height: 0.7,}}/>
+            <Divider style={{backgroundColor: colorScheme.secondaryContainerColor, height: 0.7,}}/>
 
             <View style={styles.listContainer}>
-                <List style={{paddingTop: 0}}>
+                <List style={{paddingTop: 0, backgroundColor: colorScheme.sidebarColor}}>
                     {/* Menu */}
                     <ListItem
                         containerStyle={activeItemKey === 'PortCalls' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
@@ -94,6 +94,24 @@ class SideMenu extends Component {
                         onPress={() => {
                             if(activeItemKey !== 'Login') navigate('PortCalls')}
                         }
+                    />
+
+                    <ListItem
+                        containerStyle={activeItemKey === 'Berths' ? [styles.menuContainer, styles.selectedContainer] : styles.menuContainer}
+                        leftIcon={{
+                            name: 'home',
+                            color: 'white'
+                        }}
+                        hideChevron
+                        underlayColor={colorScheme.secondaryColor}
+                        title={
+                            <View style={styles.textContainer}>
+                                <Text style={canBeAccessedEverywhereExceptOnLogin}>Select Berth</Text>
+                            </View>
+                        }
+                        onPress={() => {
+                            if(activeItemKey !== 'Login') navigate('Berths');
+                        }}
                     />
 
                     {true &&<ListItem
@@ -213,7 +231,7 @@ class SideMenu extends Component {
                     />
 
                     <ListItem
-                        containerStyle={styles.menuContainer}
+                        containerStyle={[styles.menuContainer]}
                         leftIcon={{
                           name:'exit-to-app',
                           color: 'white'
@@ -232,6 +250,8 @@ class SideMenu extends Component {
                     />
                 </List>
             </View>
+
+            <View style={{height: 25, backgroundColor: colorScheme.sidebarColor}} />
         </ScrollView>
     );
   }
@@ -265,7 +285,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     backgroundColor: colorScheme.sidebarColor,
     paddingLeft: 10,
-  },  
+  },
   menuText: {
     color: colorScheme.primaryTextColor,
   },

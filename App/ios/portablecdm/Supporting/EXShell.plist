@@ -7,6 +7,6 @@
 	<key>isShell</key>
 	<true/>
 	<key>manifestUrl</key>
-	<string>exp://exp.host/@pontusstjerna/portcdm-app</string>
+	<string>exp://exp.host/@rise_viktoria/portcdm-app?release-channel=staging</string>
 </dict>
 </plist>

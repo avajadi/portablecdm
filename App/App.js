@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import ReduxThunk from 'redux-thunk';
@@ -12,7 +12,7 @@ import colorScheme from './config/colors';
 
 import {LoginNavigator, AppNavigator} from './navigators/appnavigator';
 
-const store = compose(autoRehydrate(), applyMiddleware(ReduxThunk))(createStore)(reducers);
+const store = compose(applyMiddleware(ReduxThunk))(createStore)(reducers);
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    let persistore = persistStore(store, {whitelist: ['states', 'settings', 'filters', 'favorites', 'cache'], storage: AsyncStorage}, () => {
+    let persistore = persistStore(store, null, () => {
       this.setState({rehydrated: true})
     });
     // persistore.purge();

@@ -23,7 +23,7 @@ import TopHeader from '../top-header-view';
 import OperationView from './sections/operationview';
 
 import { 
-    fetchPortCallOperations, 
+    fetchPortCallEvents, 
     changeFetchReliability, 
     removeError, 
     toggleFavoritePortCall,
@@ -59,7 +59,7 @@ class TimeLineView extends Component {
     }
 
     loadOperations() {
-        this.props.fetchPortCallOperations(portCallId).then(() => {
+        this.props.fetchPortCallEvents(portCallId).then(() => {
             if(this.props.error.hasError) {
                 if(this.props.error.error.title == "RELIABILITY_FAIL") {
                     Alert.alert(
@@ -120,6 +120,7 @@ class TimeLineView extends Component {
                                 style={{alignSelf: 'center'}}
                                 animating={loading}
                                 size='large'/>}
+            <ScrollView maximumZoomScale={10} alwaysBounceVertical={false}>
                 {!loading && <ListView
                                 enableEmptySections
                                 dataSource={dataSource} 
@@ -150,6 +151,7 @@ class TimeLineView extends Component {
                                 }
                             />
                 }
+            </ScrollView>
             </View>
         );
     }
@@ -226,7 +228,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     changeFetchReliability, 
-    fetchPortCallOperations, 
+    fetchPortCallEvents, 
     removeError,
     toggleFavoritePortCall,
     toggleFavoriteVessel,

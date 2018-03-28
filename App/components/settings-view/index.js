@@ -7,6 +7,8 @@ import {
     Dimensions,
     ScrollView,
     Alert,
+    ActivityIndicator,
+    Platform,
 } from 'react-native';
 
 import {
@@ -21,6 +23,8 @@ import {
     Slider,
 } from 'react-native-elements';
 
+import { Util } from 'expo';
+
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 import styles from '../../config/styles';
@@ -30,6 +34,7 @@ import {
     changePortSetting,
     changePortUnlocode,
     changeFetchReliability,
+    changeScheme,
     clearCache,
     changeCacheLimit,
 } from '../../actions';
@@ -41,15 +46,33 @@ class Settings extends Component {
 
         this.state = {
             fetchReliability: props.fetchReliability,
+            useSSL: props.useSSL,
             limitCache: props.limitCache,
+            currentTimeZone: null
         }
 
         this.updateFetchReliability = this.updateFetchReliability.bind(this);
+        this.updateUseSSL = this.updateUseSSL.bind(this);
     }
 
     updateFetchReliability() {
         this.props.changeFetchReliability(!this.state.fetchReliability);
         this.setState({ fetchReliability: !this.state.fetchReliability });
+    }
+
+    updateUseSSL() {
+        this.props.changeScheme(!this.state.useSSL);
+        this.setState({useSSL: !this.state.useSSL});
+    }
+
+    componentWillMount() {
+        Util.getCurrentTimeZoneAsync()
+            .then(timeZoneName => {
+                const offset = new Date().getTimezoneOffset()*(-1)/60;
+                const offsetString = offset < 0 ? `-${Math.abs(offset)}` : `+${Math.abs(offset)}`;
+                let currentTimeZone = `${timeZoneName} (UTC ${offsetString})`
+                this.setState({currentTimeZone})
+            })
     }
 
     render() {
@@ -112,16 +135,32 @@ class Settings extends Component {
                         checked={this.state.fetchReliability}
                         onPress={this.updateFetchReliability}
                     />
+                    {Platform.Version !== 24 && // Android SDK 24 doesn't handle https well
+                        <CheckBox
+                        title='Use SSL'
+                        checked={this.state.useSSL}
+                        onPress={this.updateUseSSL}
+                    />    
+                    }
+            
                     <View style={styles.containers.info}>
                         <Text style={styles.texts.headerText} h3>
                             PortCDM connection information
                         </Text>
-                        <Text style={styles.texts.infoText}>
+                        {/* <Text style={styles.texts.infoText}>
                             <Text style={{ fontWeight: 'bold' }}>
                                 UN/LOCODE:
                         </Text>
                             <Text style={{ fontWeight: 'normal' }}>
                                 {' ' + connection.unlocode}
+                            </Text>
+                        </Text> */}
+                        <Text style={styles.texts.infoText}>
+                            <Text style={{fontWeight: 'bold' }}>
+                                Scheme:
+                            </Text>
+                            <Text style={{fontWeight: 'normal'}}>
+                                {' ' + connection.scheme}
                             </Text>
                         </Text>
                         <Text style={styles.texts.infoText}>
@@ -148,6 +187,13 @@ class Settings extends Component {
                                 {' ' + (!!connection.username ? connection.username : 'SeaSWIM user')}
                             </Text>
                         </Text>
+                    </View>
+                    <View style={styles.containers.info}>
+                        <Text style={styles.texts.headerText} h3>
+                            Current Time Zone
+                        </Text>
+                        {!!this.state.currentTimeZone && <Text style={{alignSelf: 'center'}}>{this.state.currentTimeZone}</Text>}
+                        {!this.state.currentTimeZone && <ActivityIndicator animating={!this.state.currentTimeZone} small/>}
                     </View>
                 </ScrollView>
             </View>
@@ -200,7 +246,8 @@ function mapStateToProps(state) {
     return {
         fetchReliability: state.settings.fetchReliability,
         connection: state.settings.connection,
-        limitCache: state.cache.limit,
+        limitCache: state.settings.cacheLimit,
+        useSSL: state.settings.connection.scheme === 'https://'
     };
 }
 
@@ -211,4 +258,5 @@ export default connect(mapStateToProps, {
     changeFetchReliability,
     clearCache,
     changeCacheLimit,
+    changeScheme,
 })(Settings);

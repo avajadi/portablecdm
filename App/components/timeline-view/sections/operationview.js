@@ -16,19 +16,18 @@ import {
   Badge
 } from 'react-native-elements';
 
+import WarningView from './warning-view';
+
 import Collapsible from 'react-native-collapsible';
 
-import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
-import colorScheme from '../../../config/colors';
 
-function removeStringReportedBy(string) {
-    let splitString = string.split(/:/g);
-    return splitString[splitString.length - 1]
-}
+import {getTimeDifferenceString, getTimeString, getDateString} from '../../../util/timeservices'
+import { cleanURN } from '../../../util/stringUtils';
+import colorScheme from '../../../config/colors';
 
 function getWarningText(warning) {
     let result;
-    if(warning.warningType) {
+    if(warning.warningType) { // New version
         let noUnderscore = warning.warningType.replace(/_/g, ' ');
         result = noUnderscore.charAt(0).toUpperCase() + noUnderscore.slice(1).toLowerCase();
     } else {
@@ -54,10 +53,12 @@ class OperationView extends Component {
           operation: undefined,
           timeContainer: undefined,
       },
+      selectedWarning: undefined,
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this);
     this.renderStateRow = this.renderStateRow.bind(this);
+    this.addStatement = this.addStatement.bind(this);
   }
   
   _toggleCollapsed() {
@@ -120,11 +121,13 @@ class OperationView extends Component {
     let redlineStyle = this._calculateRedline(startTime, endTime);
 
     return (
+      
       <View style={styles.container} onLayout={(event) => {
             if(renderRedLine) {
                 this.setState({dimensions: {...this.state.dimensions, operation: event.nativeEvent.layout}});
             }
           }}>
+    
         {/* Time Display */}
         <View style={styles.timeContainer}>
           {/*Start Time*/}
@@ -158,7 +161,7 @@ class OperationView extends Component {
 
         {/*Everything to the right of the line*/}
         <View
-          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0, paddingLeft: 15}}>
+          style={{flex: 1, flexDirection: 'column', marginTop: 0, paddingTop: 0, paddingLeft: 15}}>          
           
           {/*Clickable header to expand information*/}
           <TouchableWithoutFeedback
@@ -166,12 +169,15 @@ class OperationView extends Component {
             <View>
               <View style={{flexDirection: 'row'}}>
                 <Text style={styles.operationHeader}>{operation.definitionId.replace(/_/g, ' ')}</Text>
-                {operation.warnings.length > 0 && <Icon name='warning' color={colorScheme.warningColor}/>}
+                {operation.warnings.length > 0 && 
+                <Icon name='warning' color={colorScheme.warningColor}/>
+                }
               </View>
               {operation.reliability >= 0 && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>RELIABILITY </Text>{operation.reliability}%</Text>}
               {operation.fromLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>FROM </Text>{operation.fromLocation.name}</Text>}
               {operation.toLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>TO </Text>{operation.toLocation.name}</Text>}
               {operation.atLocation && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>AT </Text>{operation.atLocation.name}</Text>}
+              {operation.status && <Text style={styles.operationInfo}><Text style={{fontWeight: 'bold'}}>STATUS </Text>{this.renderStatus(operation.status)}</Text>}
             </View>
           </TouchableWithoutFeedback>
 
@@ -182,10 +188,17 @@ class OperationView extends Component {
             {/* Render warnings */}
             {operation.warnings.map((warning, index) => {
               return (
-                <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10,}} key={index}>
-                  <Icon name='warning' color={colorScheme.warningColor} size={14} paddingRight={10} />
-                  <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{getWarningText(warning)}</Text>
-                </View>
+                <TouchableWithoutFeedback
+                onPress={() => this.setState({selectedWarning: warning})}
+                key={index}
+                >
+                    <View  
+                        style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10,}} 
+                        >
+                        <Icon name='warning' color={colorScheme.warningColor} size={14} paddingRight={10} />
+                        <Text style={{fontSize: 8, paddingLeft: 0, maxWidth: Dimensions.get('window').width/1.4 }}>{getWarningText(warning)}</Text>
+                    </View>
+                </TouchableWithoutFeedback>
               );
             })}
 
@@ -204,7 +217,12 @@ class OperationView extends Component {
             </List>
           </Collapsible>
         </View>
-        
+        <WarningView 
+            operation={operation}
+            warning={this.state.selectedWarning}
+            onClose={() => this.setState({selectedWarning: undefined})}
+            addStatement={(stateId, mostRelevantStatement) => this.addStatement(stateId, mostRelevantStatement)}
+        />
       </View>
     );
   }
@@ -264,14 +282,8 @@ class OperationView extends Component {
                         color = {colorScheme.primaryColor}
                         name='add-circle'
                         size={35}
-                        onPress={() => navigate('SendPortCall', {
-                            stateId: stateToDisplay.stateDefinition, 
-                            fromLocation: operation.fromLocation, 
-                            toLocation: operation.toLocation, 
-                            atLocation: operation.atLocation,
-                            mostRelevantStatement: stateToDisplay
-                          })
-                        } />
+                        onPress={() => this.addStatement(stateToDisplay.stateDefinition, stateToDisplay)}
+                        />
         }
         title = {
             <TouchableWithoutFeedback 
@@ -309,15 +321,15 @@ class OperationView extends Component {
         }
         subtitle = {
             <View style={{flexDirection: 'column'}} >
-                {operation.atLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{operation.atLocation.name}</Text>}
-                {operation.fromLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{operation.fromLocation.name}</Text>}
-                {operation.toLocation && <Text style={{fontSize: 9}}>
-                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{operation.toLocation.name}</Text>}
+                {stateToDisplay.atLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle}>AT: </Text>{stateToDisplay.atLocation.name}</Text>}
+                {stateToDisplay.fromLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle} >FROM: </Text>{stateToDisplay.fromLocation.name}</Text>}
+                {stateToDisplay.toLocation && <Text style={{fontSize: 9}}>
+                  <Text style = {styles.stateDisplaySubTitle}>TO: </Text>{stateToDisplay.toLocation.name}</Text>}
                 <Text style={{fontSize: 9}}>
                   {/*Doesnt work!*/}
-                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{removeStringReportedBy(stateToDisplay.reportedBy)} 
+                  <Text style= {styles.stateDisplaySubTitle}>REPORTED BY: </Text>{cleanURN(stateToDisplay.reportedBy)} 
                   <Text style= {{color: colorScheme.tertiaryColor}} > {reportedTimeAgo} ago</Text> </Text>
                 {(stateToDisplay.reliability >= 0) && <Text style={{fontSize: 9}}>
                   <Text style = {styles.stateDisplaySubTitle}>RELIABILITY: </Text>{stateToDisplay.reliability}%</Text> }
@@ -345,10 +357,26 @@ class OperationView extends Component {
           }
         }
       />
-    );
+    ); 
   }
 
-  
+  renderStatus(status) {
+      const formattedStatus = status.charAt(0) + status.substring(1).toLowerCase();
+      return (
+          <Text style={{color: (status === 'OK' ? 'green' : 'red')}}>{formattedStatus}</Text>
+      )
+  }
+
+  addStatement(stateDef, mostRelevantStatement) {
+    const { operation } = this.state;
+    this.props.navigation.navigate('SendPortCall', {
+        stateId: stateDef, 
+        fromLocation: operation.fromLocation, 
+        toLocation: operation.toLocation, 
+        atLocation: operation.atLocation,
+        mostRelevantStatement: mostRelevantStatement
+    });
+  }
 
   /**
    * Finds the most relevant statement, i.e the latest Estimate or the latest Actual. 

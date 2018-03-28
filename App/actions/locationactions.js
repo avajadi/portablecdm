@@ -1,5 +1,5 @@
 import * as types from './types';
-import { checkResponse, catchError } from '../util/httpResultUtils';
+import { checkResponse, } from '../util/httpResultUtils';
 import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
 import pinch from 'react-native-pinch';
 
@@ -7,13 +7,14 @@ export const fetchLocations = (locationType) => {
     return (dispatch, getState) => {
         dispatch({type: types.FETCH_LOCATIONS});
         let connection = getState().settings.connection;
-        console.log('Connection: ' + JSON.stringify(connection));
+        //console.log('Connection: ' + JSON.stringify(connection));
         const token = getState().settings.token;
+        const contentType = getState().settings.instance.contentType;
         console.log('Requesting locations...');
-        return pinch.fetch(`${connection.host}:${connection.port}/location-registry/locations`,
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/location-registry/locations`,
             {
                 method: 'GET',
-                headers: !!connection.username ? createLegacyHeaders(connection) : createTokenHeaders(token, connection.host),
+                headers: !!connection.username ? createLegacyHeaders(connection, contentType) : createTokenHeaders(token, contentType),
                 sslPinning: getCert(connection),
             })
             .then(result => {
@@ -22,6 +23,8 @@ export const fetchLocations = (locationType) => {
                     return JSON.parse(result.bodyString);
                 
                 dispatch({type: types.SET_ERROR, payload: err});
+                console.log('Response from locations: ');
+                console.log(JSON.stringify(result));
             
                 throw new Error(types.ERR_DISPATCHED);
             })
@@ -50,11 +53,12 @@ export const fetchLocations = (locationType) => {
                 dispatch({type: types.FETCH_LOCATIONS_SUCCESS, payload: locations});
             }).catch(err => {
                 console.log('********LOCATION FETCH ERROR********');
+                console.log(JSON.stringify(err));
                 if (err.message !== types.ERR_DISPATCHED) {
                     dispatch({type: types.SET_ERROR, payload: {
                         title: 'Unable to fetch locations!', 
                         description: 
-                          !err.description ? 'Please check your internet connection.' 
+                          !err.description ? (!err.message ? 'Please check your internet connection.' : err.message) 
                                             : err.description}});
                 }
             });
@@ -69,7 +73,7 @@ function createLocation(unlocode, locationType, name, shortName) {
         area: null,
         position: null,
         locationType: locationType,
-        URN: `urn:mrn:stm:location:${unlocode}:${locationType}`
+        URN: `urn:mrn:stm:location:${(unlocode ? unlocode : 'aaaaa')}:${locationType}`
     }
 }
 
@@ -90,6 +94,3 @@ export const selectLocation = (locationSort, location) => {
         }
     }
 }
-
-
-// Helper functions

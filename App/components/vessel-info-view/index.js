@@ -14,12 +14,38 @@ import {
 import TopHeader from '../top-header-view';
 import colorScheme from '../../config/colors';
 
+import {
+    fetchVesselFromIMO
+} from '../../actions';
+
+import ships from '../../assets/ships';
+
 class VesselInfo extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            extraInfo: undefined,
+        };
+    }
+
+    componentDidMount() {
+        this.props.fetchVesselFromIMO(this.props.vessel.imo.split('IMO:')[1]).then(() => {
+            // DOUBLE EQUALS!! 
+            const ship = ships.find(ship => ship.mmsi == this.props.vessel.mmsi.split('MMSI:')[1]);
+            this.setState({extraInfo: ship});
+        });
+    }
+
+
   render(){
+    const { extraInfo } = this.state;
     const { navigate, state } = this.props.navigation;
-    const { selectedPortCall, vessel, activeItemKey } = this.props;
+    const { selectedPortCall, activeItemKey } = this.props;
+    const vessel = this.props.extendedVessel ? this.props.extendedVessel : this.props.vessel;
 
     return(
+
       <View style={styles.container}>  
         <TopHeader title = 'Vessel Info' firstPage navigation={this.props.navigation} rightIconFunction={this.goToStateList}/>
 
@@ -39,10 +65,24 @@ class VesselInfo extends Component {
         </View>
 
         <View style={styles.infoContainer}>
+          {!!vessel.vesselType &&
           <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Vessel Type:  </Text>{vessel.vesselType.replace(/_/g, ' ')}</Text> 
+          }
           <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>IMO:  </Text>{vessel.imo.replace('urn:mrn:stm:vessel:IMO:', '')}</Text>
           <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>MMSI:  </Text>{vessel.mmsi.replace('urn:mrn:stm:vessel:MMSI:', '')}</Text>
           <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Call Sign:  </Text>{vessel.callSign}</Text>
+          {!!vessel.flag && 
+          <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Flag: </Text>{vessel.flag}</Text>
+          }
+          {!!vessel.builtYear &&
+          <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Built year: </Text>{vessel.builtYear}</Text>
+          }
+          {(!!extraInfo && !!extraInfo.length) &&
+            <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Length: </Text>{extraInfo.length}m</Text>
+          }
+          {(!!extraInfo && !!extraInfo.beam) &&
+            <Text style={styles.infoText}><Text style={{fontWeight: 'bold'}}>Beam: </Text>{extraInfo.beam}m</Text>
+          }
         </View>
       </View>
     );
@@ -97,7 +137,10 @@ function mapStateToProps(state) {
     return {
         selectedPortCall: state.portCalls.selectedPortCall,
         vessel: state.portCalls.vessel,
+        extendedVessel: state.vessel.vessel,
     }
 }
 
-export default connect(mapStateToProps)(VesselInfo);
+export default connect(mapStateToProps, {
+    fetchVesselFromIMO,
+})(VesselInfo);

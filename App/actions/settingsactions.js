@@ -1,5 +1,9 @@
 import * as types from './types';   
 import { APP_VERSION } from '../config/version';
+import pinch from 'react-native-pinch';
+import { createTokenHeaders, createLegacyHeaders, getCert } from '../util/portcdmUtils';
+import { checkResponse } from '../util/httpResultUtils';
+import createInstanceInfo from '../config/instances';
 
 export const changeFetchReliability = (fetchReliability) => {
     return {
@@ -8,12 +12,13 @@ export const changeFetchReliability = (fetchReliability) => {
     }
 }
 
-export const changeUser = (username, password) => {
+export const changeUser = (username, password, remember) => {
     return {
         type: types.SETTINGS_CHANGE_USER,
         payload: {
-            username: username,
-            password: password
+            username,
+            password,
+            remember,
         }
     }
 };
@@ -42,6 +47,30 @@ export const changeHostSetting = (host) => {
         }
     }
 };
+
+export const changeScheme = (useSSL) => {
+    return (dispatch, getState) => {
+        if (useSSL) {
+            dispatch({
+                type: types.SETTINGS_CHANGE_SCHEME,
+                payload: 'https://'
+            });
+            dispatch({
+                type: types.SETTINGS_CHANGE_PORT,
+                payload: 8443,
+            })
+        } else {
+            dispatch({
+                type: types.SETTINGS_CHANGE_SCHEME,
+                payload: 'http://'
+            });
+            dispatch({
+                type: types.SETTINGS_CHANGE_PORT,
+                payload: 8080,
+            });
+        }
+    }
+}
 
 export const createVesselList = (vesselListName) => {
     return {
@@ -83,13 +112,6 @@ export const removeVesselFromList = (vessel, listName) => {
     };
 };
 
-export const changePortSetting = (port) => {
-    return {
-        type: types.SETTINGS_CHANGE_PORT,
-        payload: port
-    };
-};
-
 export const checkNewVersion = () => {
     return (dispatch, getState) => {
         console.log('Current version: ' + APP_VERSION);
@@ -110,4 +132,51 @@ export const checkNewVersion = () => {
     }
 
     return false;
+}
+
+export const fetchInstance = () => {
+    return (dispatch, getState) => {
+        let connection = getState().settings.connection;
+        const token = getState().settings.token;
+        console.log('Fetching instance info...');
+        console.log(JSON.stringify(connection));
+        console.log(`${connection.scheme + connection.host}:${connection.port}/application-info/version`);
+        return pinch.fetch(`${connection.scheme + connection.host}:${connection.port}/application-info/version`, {
+                method: 'GET',
+                headers: !!connection.username ? createLegacyHeaders(connection, 'application/json') : createTokenHeaders(token, 'application/json'),
+                sslPinning: getCert(connection),
+            })
+            .then(result => {
+                let err = checkResponse(result);
+                if(!err)
+                    return JSON.parse(result.bodyString);
+                
+                dispatch({type: types.SET_ERROR, payload: err});
+                throw new Error(types.ERR_DISPATCHED);
+            }).then(instanceInfo => 
+                dispatchInstanceInfo(instanceInfo, connection.host, dispatch)).catch(err => {
+                dispatchInstanceInfo(null, connection.host, dispatch);
+                if (err.message !== types.ERR_DISPATCHED) {
+                    if (connection.scheme === 'https://') { // Try again without https
+                        dispatch(changeScheme(false));
+                        dispatch(fetchInstance());
+                    } else {
+                        dispatch({type: types.SET_ERROR, payload: {
+                            title: 'Unable to fetch instance info!', 
+                            description: 
+                              !err.description ? 'Please check your internet connection.' 
+                                                : err.description}});
+                    }
+                }
+            });
+    }
+}
+
+function dispatchInstanceInfo(instanceInfo, host, dispatch) {
+    let generatedInfo = createInstanceInfo(instanceInfo, host);
+    console.log('Generated info: ' + JSON.stringify(generatedInfo));
+    dispatch({
+        type: types.SETTINGS_FETCH_INSTANCE,
+        payload: generatedInfo,
+    });
 }

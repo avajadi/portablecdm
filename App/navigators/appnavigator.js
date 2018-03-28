@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Text, Dimensions} from 'react-native';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
+import LoginView            from '../components/login-view';
 import SendPortCall         from '../components/send-portcall-view';
 import StateList            from '../components/state-list-view';
 import TimeLineView         from '../components/timeline-view';
@@ -16,6 +17,16 @@ import VesselLists          from '../components/vessel-lists-view';
 import SideMenu             from '../components/side-menu-view';
 import AboutView            from '../components/about-view';
 import ErrorView            from '../components/error-view';
+import BearthList           from '../components/berth-list-view';
+import BerthList            from '../components/berth-list-view';
+import BerthTimeLine        from '../components/berth-timeline-view';
+
+const BerthViewNavigator = StackNavigator({
+    BerthList: { screen: BearthList }, // THIS SHOULD BE FIRST!!
+    BerthTimeLine: { screen: BerthTimeLine },
+}, {
+    headerMode: 'none'
+});
 
 const TimeLineNavigator = StackNavigator({
   TimeLineDetails: {screen: TimeLineView},
@@ -51,23 +62,25 @@ const InitiatePortCallNavigator = StackNavigator({
 });
 
 const MainNavigator = DrawerNavigator({
-  PortCalls: { screen: PortCallListNavigator },
-  TimeLine: {screen: TimeLineNavigator},
-  FavoriteStatesSideMenu: { screen: StateList },
-  FavoriteStatesInit: { screen: InitiatePortCallNavigator },
-  VesselInfo: { screen: VesselInfo },
-  Settings: { screen: SettingsNavigator },
-  About: { screen: AboutView },
-  Error: { screen: ErrorView },
+    PortCalls: { screen: PortCallListNavigator }, // THIS SHOULD BE FIRST!!
+    Berths: { screen: BerthViewNavigator }, 
+    TimeLine: {screen: TimeLineNavigator},
+    FavoriteStatesSideMenu: { screen: StateList },
+    FavoriteStatesInit: { screen: InitiatePortCallNavigator },
+    VesselInfo: { screen: VesselInfo },
+    Settings: { screen: SettingsNavigator },
+    About: { screen: AboutView },
+    Error: { screen: ErrorView },
 }, {
-  headerMode: 'none',
-  drawerWidth: 3*Dimensions.get('window').width/4, 
-  contentComponent: SideMenu,
+    headerMode: 'none',
+    drawerWidth: 3*Dimensions.get('window').width/4, 
+    contentComponent: SideMenu,
 });
 
 export const AppNavigator  = StackNavigator({
-  LoginKeyCloak: { screen: LoginKeyCloakView },
-  Application: { screen: MainNavigator}
+    LoginView: { screen: LoginView },
+    //LoginKeyCloak: { screen: LoginKeyCloakView }, 
+    Application: { screen: MainNavigator},
 }, {
-  headerMode: 'none',
+    headerMode: 'none',
 });
