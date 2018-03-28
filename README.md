@@ -54,9 +54,9 @@ Android apps you also might have an installed emulator already.
 * exp = Expo = Exponent is a kind of platform for React Native and distributing JavaScript code
 * exp can be buggy. If it cannot be started, simply restart or run with exp start --tunnel to force tunnel mode. Read more about how to use exp here: https://docs.expo.io/versions/latest/guides/exp-cli.html
 * If, for some reason, your app can't find your expo account, you sometimes must change the DEVELOPMENT_URL under app/java/host.exp.exponent/generated/DetachBuildConstants but it shouldn't be needed.
-* When the device is running, you can see options with Ctrl + D or Cmd + D.
+* When the device is running, you can see options with Ctrl + M or Cmd + M.
 * If something breaks with the emulator, always try restarting first.
-* When developing in JavaScript and exp is running, live reload should be enabled. Everytime someting is saved in a file inside the App folder, the app will reload automatically. If it does not, you can use Cmd / Ctrl + R. 
+* When developing in JavaScript and exp is running, live reload should be enabled. Everytime someting is saved in a file inside the App folder, the app will reload automatically. If it does not, you can use Cmd / Ctrl + M.
 * Google is your friend.
 
 
