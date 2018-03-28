@@ -134,7 +134,7 @@ class PortCallList extends Component {
                             this.search(portCalls, searchTerm).map( (portCall) => (
                                 <ListItem
                                     roundAvatar
-                                    avatar={{uri: portCall.vessel.photoURL}}
+                                    avatar={portCall.vessel.photoURL ? {uri: portCall.vessel.photoURL} : null}
                                     key={portCall.portCallId}
                                     title={portCall.vessel.name}
                                     badge={{element: this.renderFavorites(portCall)}}

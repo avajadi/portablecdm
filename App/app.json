@@ -8,9 +8,7 @@
     "orientation": "default",
     "scheme": "pacdm",
     "ios": {
-      "bundleIdentifier": "se.viktoria.portablecdm",
-      "publishBundlePath": "ios/portablecdm/Supporting/shell-app.bundle",
-      "publishManifestPath": "ios/portablecdm/Supporting/shell-app-manifest.json"
+      "bundleIdentifier": "se.viktoria.portablecdm"
     },
     "android": {
       "package": "se.viktoria.portablecdm"
