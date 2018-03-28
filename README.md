@@ -15,7 +15,7 @@ them from the terminal. Both can be tested with command 'git --version' or 'npm 
 ### Forking the base project repo
 1. If you don't have a gihub account, create one 
 2. Go to https://github.com/avajadi/portablecdm
-3. Fork the repository by cklicking the Fork button in the upper right corner
+3. Fork the repository by clicking the Fork button in the upper right corner
 
 ### Cloning your repo
 1. Use the terminal to CD into your destination folder
