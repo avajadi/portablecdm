@@ -1,0 +1,11 @@
+
+App/android/build.gradle
+App/android/android.iml
+App/android/app/src/main/java/host/exp/exponent/generated/DetachBuildConstants.java
+App/android/app/build.gradle
+App/android/gradle/wrapper/gradle-wrapper.jar
+App/android/gradle/wrapper/gradle-wrapper.properties
+App/android/gradlew.bat
+App/package-lock.json
+App/package.json
+App/android/gradlew
