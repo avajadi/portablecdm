@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { 
-  sendPortCall, 
+import {
+  sendPortCall,
   initPortCall,
   clearReportResult,
   clearVesselResult,
@@ -77,7 +77,7 @@ class SendPortcall extends Component {
   // selectionFor = atLocation, toLocation, fromLocation
   _showLocationSelectionModal = (selectLocationFor) => this.setState({showLocationSelectionModal: true, selectLocationFor: selectLocationFor});
   _hideLocationSelectionModal = () => this.setState({showLocationSelectionModal: false})
-   
+
   _sendPortCall() {
     const { stateId } = this.props.navigation.state.params;
     const { selectedDate, selectedTimeType, comment } = this.state;
@@ -96,7 +96,7 @@ class SendPortcall extends Component {
     if (state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation)) {
         Alert.alert('Invalid location(s)', 'From- or To-location is missing!');
         return;
-    } 
+    }
 
     Alert.alert(
         'Confirmation',
@@ -105,7 +105,7 @@ class SendPortcall extends Component {
             {text: 'No'},
             {text: 'Yes', onPress: () => {
                 const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId, selectedDate, selectedTimeType, comment}, state);
-                
+
                 sendPortCall(pcm, type).then(() => {
                     if(!!this.props.sendingState.error) {
                         Alert.alert(
@@ -133,10 +133,10 @@ class SendPortcall extends Component {
                                     {text: 'Yes', onPress: () => {
                                         this.props.clearReportResult();
                                         navigate('SendPortCall', {
-                                            stateId: oppositeState.StateId, 
+                                            stateId: oppositeState.StateId,
                                             newVessel: false,
-                                            fromLocation: fromLocation, 
-                                            toLocation: toLocation, 
+                                            fromLocation: fromLocation,
+                                            toLocation: toLocation,
                                             atLocation: atLocation,
                                         });
                                     }}
@@ -151,9 +151,9 @@ class SendPortcall extends Component {
                                 this.props.clearReportResult();
                                 navigate('TimeLineDetails');
                             }, 1000);
-                        } 
+                        }
                     }
-                });          
+                });
             }}
         ]
     );
@@ -179,7 +179,7 @@ class SendPortcall extends Component {
     if (state.ServiceType === 'NAUTICAL' && (!fromLocation || !toLocation)) {
         Alert.alert('Invalid location(s)', 'From- or To-location is missing!');
         return;
-    } 
+    }
 
     Alert.alert(
         'Confirmation',
@@ -188,7 +188,7 @@ class SendPortcall extends Component {
             {text: 'No'},
             {text: 'Yes', onPress: () => {
                 const {type, pcm} = createPortCallMessageAsObject({atLocation, fromLocation, toLocation, vesselId, portCallId: null, selectedDate, selectedTimeType, comment}, state);
-                
+
                 initPortCall(pcm, type).then((portCallId) => {
                     if(!!this.props.sendingState.error) {
                         Alert.alert(
@@ -218,7 +218,7 @@ class SendPortcall extends Component {
 
                     }
                     clearVesselResult();
-                });       
+                });
             }}
         ]
     );
@@ -243,7 +243,7 @@ class SendPortcall extends Component {
 
   componentWillUnmount() {
     this.props.clearReportResult();
-    
+
     clearTimeout(navBackTimer);
     clearInterval(initRedirectTimer);
   }
@@ -261,15 +261,15 @@ class SendPortcall extends Component {
   render() {
     const { portCallId, getState, sendingState, navigation, vessel, host } = this.props;
     const { atLocation, fromLocation, toLocation } = sendingState;
-    const { stateId, mostRelevantStatement, newVessel } = this.props.navigation.state.params; 
+    const { stateId, mostRelevantStatement, newVessel } = this.props.navigation.state.params;
     const state = getState(stateId);
     const enableComment = this.props.instanceInfo.hasComment;
     const initializeNew = !!newVessel;
- 
+
     return(
       <View style={styles.container}>
-        <TopHeader 
-            title = {(initializeNew ? 'Create port call' : 'Report')} 
+        <TopHeader
+            title = {(initializeNew ? 'Create port call' : 'Report')}
             navigation={this.props.navigation}
             />
         {/* Information header */}
@@ -278,8 +278,8 @@ class SendPortcall extends Component {
           <Text style={styles.headerSubText}>{state.Name}</Text>
           <Text style={styles.headerSubInfoText}>
             {!!atLocation && <Text>AT: {atLocation.name}</Text>}
-            {!!fromLocation && <Text>FROM: {fromLocation.name}{'\n'}</Text>}    
-            {!!toLocation && <Text>TO: {toLocation.name}</Text>}          
+            {!!fromLocation && <Text>FROM: {fromLocation.name}{'\n'}</Text>}
+            {!!toLocation && <Text>TO: {toLocation.name}</Text>}
           </Text>
         </View>
 
@@ -293,11 +293,11 @@ class SendPortcall extends Component {
             <View style={styles.pickerContainer}>
                 <View style={styles.rowContainer}>
                 <SearchBar
-                autoCorrect={false} 
+                autoCorrect={false}
                 containerStyle = {styles.searchBarContainer}
                 clearIcon
                 inputStyle = {{backgroundColor: colorScheme.primaryContainerColor}}
-                lightTheme  
+                lightTheme
                 placeholder='Search by name or IMO number'
                 placeholderTextColor = {colorScheme.tertiaryTextColor}
                 onChangeText={text => this.setState({newVessel: text, selectedVessel: ''})}
@@ -345,7 +345,7 @@ class SendPortcall extends Component {
             </View>
         </View>
         }
-            {!!this.state.newVessel && !!this.props.newVessel && !this.state.selectedVessel && 
+            {!!this.state.newVessel && !!this.props.newVessel && !this.state.selectedVessel &&
             <View
                 style={styles.addToListContainer}
             >
@@ -362,7 +362,7 @@ class SendPortcall extends Component {
                   title="Select"
                   textStyle={{color: colorScheme.primaryTextColor, fontSize: 9}}
                   buttonStyle={styles.buttonStyle}
-                  onPress={() => this.setState({selectedVessel: this.props.newVessel})}                
+                  onPress={() => this.setState({selectedVessel: this.props.newVessel})}
                 />
               </View>
 
@@ -381,13 +381,21 @@ class SendPortcall extends Component {
             <Picker.Item label="Actual" value="ACTUAL" />
           </Picker>
 
-          <View style={styles.pickerContainer}> 
+          <View style={styles.pickerContainer}>
             <Text style={styles.selectedDateText}>{getDateTimeString(this.state.selectedDate)}</Text>
-            <Button 
-              title="Select Time" 
+            <Button
+              title="Select Time"
               buttonStyle={styles.buttonStyle}
               textStyle={{color: 'white'}}
               onPress={this._showDateTimePicker}/>
+            {(state.Name === "Cargo Operations Completed") &&
+              <Button
+                title="Calculate Time"
+                buttonStyle={styles.buttonStyle}
+                textStyle={{color: 'white'}}
+                //onPress={() => {this.props.navigation.navigate('FilterMenu');}}
+              />
+            }
           </View>
 
           {/* Location display */}
@@ -432,7 +440,7 @@ class SendPortcall extends Component {
 
           {enableComment && <View style={styles.commentContainer}>
             <FormLabel>Comment</FormLabel>
-            <FormInput 
+            <FormInput
                 inputStyle={{width: window.width * 0.8, height: 50}}
                 multiline
                 numberOfLines={5}
@@ -457,8 +465,8 @@ class SendPortcall extends Component {
             />
           </Modal>
 
-          <Button 
-            title="Send TimeStamp" 
+          <Button
+            title="Send TimeStamp"
             buttonStyle={this.getSendButtonEnabled() ? styles.sendButtonStyle : styles.sendButtonStyleGray}
             disabled={!this.getSendButtonEnabled()}
             onPress={!this.props.navigation.state.params.newVessel ? this._sendPortCall.bind(this) : this._initPortCall.bind(this)}
@@ -471,15 +479,15 @@ class SendPortcall extends Component {
             mode="datetime"
           />
 
-          <ActivityIndicator 
-            animating={sendingState.sending} 
-            size='large' 
-            color={colorScheme.primaryColor} 
-            style={{alignSelf: 'center'}} 
+          <ActivityIndicator
+            animating={sendingState.sending}
+            size='large'
+            color={colorScheme.primaryColor}
+            style={{alignSelf: 'center'}}
           />
-          { (sendingState.successCode === 200) && 
+          { (sendingState.successCode === 200) &&
             <View>
-                <Text h4 style={styles.success}>{initializeNew ? 
+                <Text h4 style={styles.success}>{initializeNew ?
                     'Creating port call...':
                     'Timestamp was successfully sent!'}</Text>
                 <ActivityIndicator size="large" color={colorScheme.primaryColor} />
@@ -491,23 +499,23 @@ class SendPortcall extends Component {
           { (!!sendingState.error) && // ERROR SENDING
             <Text h4 style={styles.error}>{sendingState.error}</Text>
           }
-        
-        {mostRelevantStatement && 
+
+        {mostRelevantStatement &&
           <View style={styles.bottomInfo}>
             <Text style={styles.bottomInfoText}>
               <Text style={styles.bottomInfoTitleText}>Most Relevant Statement: </Text>{'\n'}
             <Text>{mostRelevantStatement.timeType}{' '}
               {getDateTimeString(new Date(mostRelevantStatement.time))}{'\n'}</Text>
               <Text style={{fontWeight: 'bold'}}>Reported by: </Text>{cleanURN(mostRelevantStatement.reportedBy)}{'\n'}
-              <Text style={{fontWeight: 'bold'}}>At: </Text>{getDateTimeString(new Date(mostRelevantStatement.reportedAt))}  
+              <Text style={{fontWeight: 'bold'}}>At: </Text>{getDateTimeString(new Date(mostRelevantStatement.reportedAt))}
             </Text>
           </View>
         }
-        
+
         <View style={{height: 200}}/>
         </ScrollView>
 
-        
+
 
       </View>
     );
@@ -543,10 +551,10 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
  },
   pickerTextContainer: {
-    backgroundColor: colorScheme.primaryContainerColor, 
-    borderColor: colorScheme.tertiaryTextColor, 
+    backgroundColor: colorScheme.primaryContainerColor,
+    borderColor: colorScheme.tertiaryTextColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10,
@@ -557,57 +565,57 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 10,
     textAlign: 'center',
-    borderRadius: 5, 
+    borderRadius: 5,
     overflow: 'hidden',
     fontWeight: 'bold',
   },
   pickerContainer: {
-    backgroundColor: colorScheme.primaryContainerColor, 
-    borderColor: colorScheme.tertiaryTextColor, 
+    backgroundColor: colorScheme.primaryContainerColor,
+    borderColor: colorScheme.tertiaryTextColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
   },
   vesselSelectContainer: {
-    backgroundColor: colorScheme.primaryContainerColor, 
-    borderColor: colorScheme.tertiaryTextColor, 
+    backgroundColor: colorScheme.primaryContainerColor,
+    borderColor: colorScheme.tertiaryTextColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     marginLeft: 10,
     marginRight: 10,
   },
   commentContainer: {
-    backgroundColor: colorScheme.primaryContainerColor, 
-    borderColor: colorScheme.tertiaryTextColor, 
+    backgroundColor: colorScheme.primaryContainerColor,
+    borderColor: colorScheme.tertiaryTextColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
     height: 100,
   },
-  buttonStyle: { 
+  buttonStyle: {
     backgroundColor: colorScheme.primaryColor,
     marginBottom: 10,
     marginTop: 10,
-    borderColor: colorScheme.primaryColor, 
+    borderColor: colorScheme.primaryColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
   },
-  sendButtonStyle: { 
+  sendButtonStyle: {
     backgroundColor: colorScheme.actualColor,
-    borderColor: colorScheme.actualColor, 
+    borderColor: colorScheme.actualColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     flex: 1,
   },
   sendButtonStyleGray: {
     backgroundColor: colorScheme.secondaryContainerColor, // Gray
-    borderColor: colorScheme.actualColor, 
+    borderColor: colorScheme.actualColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     flex: 1,
   },
   selectedDateText: {
@@ -622,10 +630,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: colorScheme.primaryContainerColor, 
-    borderColor: colorScheme.tertiaryTextColor, 
+    backgroundColor: colorScheme.primaryContainerColor,
+    borderColor: colorScheme.tertiaryTextColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
@@ -636,9 +644,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 10,
     paddingLeft: 10,
-    borderRadius: 5, 
+    borderRadius: 5,
     overflow: 'hidden',
-    fontWeight: 'bold',  
+    fontWeight: 'bold',
     width: 60,
   },
   loocationStaticSubtitle: { // Location type
@@ -651,22 +659,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: 10,
     paddingTop: 10,
-    borderRadius: 5, 
-    overflow: 'hidden', 
+    borderRadius: 5,
+    overflow: 'hidden',
     flex: 1,
   },
   bottomInfo: {
-    backgroundColor: colorScheme.secondaryContainerColor, 
-    borderColor: colorScheme.tertiaryTextColor, 
+    backgroundColor: colorScheme.secondaryContainerColor,
+    borderColor: colorScheme.tertiaryTextColor,
     borderWidth: 1,
-    borderRadius: 5, 
+    borderRadius: 5,
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
   },
   bottomInfoTitleText: {
-    fontWeight: 'bold', 
-    fontSize: 14, 
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   bottomInfoText: {
     fontSize: 10,
@@ -685,7 +693,7 @@ const styles = StyleSheet.create({
         flex: 3,
         marginRight: 0,
         borderBottomWidth: 0,
-        borderTopWidth: 0,      
+        borderTopWidth: 0,
       },
       buttonContainer: {
         flex: 1,
@@ -695,19 +703,19 @@ const styles = StyleSheet.create({
       },
       addToListContainer: {
         backgroundColor: colorScheme.primaryContainerColor,
-        alignSelf: 'center', 
+        alignSelf: 'center',
         flexDirection: 'row',
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 10,
         marginLeft: 10,
         marginRight: 10,
-        borderColor: colorScheme.tertiaryTextColor, 
+        borderColor: colorScheme.tertiaryTextColor,
         borderWidth: 1,
-        borderRadius: 5, 
+        borderRadius: 5,
       },
       success: {
-          alignSelf: 'center', 
+          alignSelf: 'center',
           color: colorScheme.primaryColor,
           margin: 20,
           fontSize: 18,
@@ -734,14 +742,14 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-    mapStateToProps, 
+    mapStateToProps,
     {
-        fetchVessel, 
-        fetchVesselByName, 
-        removeError, 
-        sendPortCall, 
+        fetchVessel,
+        fetchVesselByName,
+        removeError,
+        sendPortCall,
         initPortCall,
-        clearReportResult, 
+        clearReportResult,
         selectLocation,
         clearVesselResult,
         clearLocations,
