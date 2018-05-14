@@ -393,7 +393,7 @@ class SendPortcall extends Component {
                 title="Calculate Time"
                 buttonStyle={styles.buttonStyle}
                 textStyle={{color: 'white'}}
-                //onPress={() => {this.props.navigation.navigate('FilterMenu');}}
+                onPress={() => {this.props.navigation.navigate('Calculator');}}
               />
             }
           </View>
